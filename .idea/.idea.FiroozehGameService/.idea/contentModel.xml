@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="FiroozehGameService" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Builder" t="Include">
+          <e p="GameServiceClientConfiguration.cs" t="Include" />
+        </e>
+        <e p="Core" t="Include">
+          <e p="ApiWebRequest" t="Include">
+            <e p="ApiRequest.cs" t="Include" />
+            <e p="GSWebRequest.cs" t="Include" />
+          </e>
+          <e p="DownloadManager.cs" t="Include" />
+          <e p="FiroozehGameService.cs" t="Include" />
+        </e>
+        <e p="FiroozehGameService.csproj" t="IncludeRecursive" />
+        <e p="GameService.cs" t="Include" />
+        <e p="Models" t="Include">
+          <e p="basicApi" t="Include">
+            <e p="Login.cs" t="Include" />
+          </e>
+          <e p="Command" t="Include">
+            <e p="Download.cs" t="Include" />
+            <e p="DownloadProgressArgs.cs" t="Include" />
+            <e p="Notification.cs" t="Include" />
+            <e p="NotificationTapAction.cs" t="Include" />
+          </e>
+          <e p="Consts" t="Include">
+            <e p="Api.cs" t="Include" />
+          </e>
+          <e p="Enums" t="Include">
+            <e p="Command" t="Include">
+              <e p="MarketType.cs" t="Include" />
+              <e p="TapActionType.cs" t="Include" />
+            </e>
+            <e p="GameServiceType.cs" t="Include" />
+            <e p="GSLive" t="Include">
+              <e p="AutoMatchStatus.cs" t="Include" />
+              <e p="GSLiveType.cs" t="Include" />
+              <e p="JoinType.cs" t="Include" />
+              <e p="RT" t="Include">
+                <e p="EventType.cs" t="Include" />
+                <e p="MessageType.cs" t="Include" />
+              </e>
+              <e p="TB" t="Include">
+                <e p="EventType.cs" t="Include" />
+              </e>
+            </e>
+            <e p="LoginType.cs" t="Include" />
+          </e>
+          <e p="EventArgs" t="Include">
+            <e p="ErrorArg.cs" t="Include" />
+          </e>
+          <e p="GameServiceException.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Utils" t="Include">
+          <e p="NetworkUtil.cs" t="Include" />
+        </e>
+      </e>
+      <e p="FiroozehGameService.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/Library/Caches/Rider2018.2/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_FiroozehGameService.236277605.00" t="ExcludeRecursive" />
+  </component>
+</project>

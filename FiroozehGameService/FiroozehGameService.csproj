@@ -32,20 +32,52 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+            <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+            <Private>True</Private>
+        </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Builder\GameServiceClientConfiguration.cs"/>
+        <Compile Include="Core\ApiWebRequest\ApiRequest.cs"/>
+        <Compile Include="Core\ApiWebRequest\GSWebRequest.cs"/>
+        <Compile Include="Core\DownloadManager.cs"/>
+        <Compile Include="Core\FiroozehGameService.cs"/>
+        <Compile Include="GameService.cs"/>
+        <Compile Include="Models\BasicApi\Login.cs"/>
+        <Compile Include="Models\Command\Download.cs"/>
+        <Compile Include="Models\Command\DownloadProgressArgs.cs"/>
+        <Compile Include="Models\Command\Notification.cs"/>
+        <Compile Include="Models\Command\NotificationTapAction.cs"/>
+        <Compile Include="Models\Consts\Api.cs"/>
+        <Compile Include="Models\Enums\Command\MarketType.cs"/>
+        <Compile Include="Models\Enums\Command\TapActionType.cs"/>
+        <Compile Include="Models\Enums\GameServiceType.cs"/>
+        <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs"/>
+        <Compile Include="Models\Enums\GSLive\GSLiveType.cs"/>
+        <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
+        <Compile Include="Models\Enums\GSLive\RT\EventType.cs"/>
+        <Compile Include="Models\Enums\GSLive\RT\MessageType.cs"/>
+        <Compile Include="Models\Enums\GSLive\TB\EventType.cs"/>
+        <Compile Include="Models\Enums\LoginType.cs"/>
+        <Compile Include="Models\EventArgs\ErrorArg.cs"/>
+        <Compile Include="Models\GameServiceException.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
+        <Compile Include="Utils\NetworkUtil.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="packages.config"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-           Other similar extension points exist, see Microsoft.Common.targets.
-      <Target Name="BeforeBuild">
-      </Target>
-      <Target Name="AfterBuild">
-      </Target>
-      -->
+             Other similar extension points exist, see Microsoft.Common.targets.
+        <Target Name="BeforeBuild">
+        </Target>
+        <Target Name="AfterBuild">
+        </Target>
+        -->
 </Project>
