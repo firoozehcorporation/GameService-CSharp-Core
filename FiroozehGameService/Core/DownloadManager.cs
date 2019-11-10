@@ -22,6 +22,8 @@
 */
 
 using System;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models.Command;
@@ -34,10 +36,13 @@ namespace FiroozehGameService.Core
         public event EventHandler<DownloadProgressArgs> DownloadProgress;
         public event EventHandler DownloadComplete;
         public event EventHandler<ErrorArg> DownloadError;
+        public event EventHandler DownloadCanceled;
         
+        private CancellationTokenSource DownloadStreamReaderToken = new CancellationTokenSource();
+
         private Builder.GameServiceClientConfiguration configuration;
         private string _gameId;
-        
+        private bool _enableDownload;
       
         public DownloadManager(Builder.GameServiceClientConfiguration config, string gameId)
         {
@@ -45,11 +50,55 @@ namespace FiroozehGameService.Core
             _gameId = gameId;
         }
 
-        public async Task StartDownload(string obbTag)
+        public async Task StartDownload(string tag , string path)
         {
-            var download = await ApiRequest.GetDataPackInfo(configuration.ClientId, obbTag, _gameId);
+            var download = await ApiRequest.GetDataPackInfo(configuration.ClientId, tag, _gameId);
+            var webRequest = new GsWebRequest();
+            var buffer = new byte[1024*10];
+            var totalReadBytes = 0;
+            var readBytes = 0;
+            _enableDownload = true;
             
+           using (var response = await webRequest.Get(download.Data.Url))
+           using (var stream = response.GetResponseStream())
+           {
+               while (totalReadBytes != response.ContentLength && _enableDownload)
+               {
+                   while (readBytes != buffer.Length && _enableDownload)
+                   {
+                       try
+                       {
+                           readBytes += await stream.ReadAsync(buffer, buffer.Length-readBytes, 
+                               buffer.Length, DownloadStreamReaderToken.Token);
+                       }
+                       catch(OperationCanceledException)
+                       {break;}
+                   }
+                   totalReadBytes += readBytes;
+                   readBytes = 0;
+                   
+                   if(_enableDownload)
+                       DownloadProgress?.Invoke(this,new DownloadProgressArgs
+                       {
+                           data = buffer,
+                           ProgessSize = totalReadBytes,
+                           TotalSize =response.ContentLength
+                       });  
+               }
+               
+               if(_enableDownload)
+                    DownloadComplete?.Invoke(this,EventArgs.Empty);   
+               else
+                   DownloadCanceled?.Invoke(this,EventArgs.Empty);
+               
+               _enableDownload = false;
+           }
         }
 
+        public void StopDownload()
+        {
+            _enableDownload = false;
+            DownloadStreamReaderToken.Cancel(true);
+        }
     }
 }

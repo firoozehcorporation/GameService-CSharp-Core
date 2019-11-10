@@ -39,9 +39,8 @@ namespace FiroozehGameService.Builder
         public readonly string ClientSecret;
         
 
-        public GameServiceClientConfiguration(bool haveNotification = default, bool checkAppStatus = default,
-            bool checkOptionalUpdate = default, bool enableLog = default,
-            string clientId = null, string clientSecret = null)
+        public GameServiceClientConfiguration(string clientId = null, string clientSecret = null,bool haveNotification = default, bool checkAppStatus = default,
+            bool checkOptionalUpdate = default, bool enableLog = default)
         {
             HaveNotification = haveNotification;
             CheckAppStatus = checkAppStatus;

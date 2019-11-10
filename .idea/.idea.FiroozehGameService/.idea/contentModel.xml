@@ -13,17 +13,15 @@
             <e p="GSWebRequest.cs" t="Include" />
           </e>
           <e p="DownloadManager.cs" t="Include" />
-          <e p="FiroozehGameService.cs" t="Include" />
+          <e p="GameService.cs" t="Include" />
         </e>
         <e p="FiroozehGameService.csproj" t="IncludeRecursive" />
-        <e p="GameService.cs" t="Include" />
         <e p="Models" t="Include">
           <e p="basicApi" t="Include">
             <e p="Login.cs" t="Include" />
           </e>
           <e p="Command" t="Include">
             <e p="Download.cs" t="Include" />
-            <e p="DownloadProgressArgs.cs" t="Include" />
             <e p="Notification.cs" t="Include" />
             <e p="NotificationTapAction.cs" t="Include" />
           </e>
@@ -51,6 +49,7 @@
             <e p="LoginType.cs" t="Include" />
           </e>
           <e p="EventArgs" t="Include">
+            <e p="DownloadProgressArgs.cs" t="Include" />
             <e p="ErrorArg.cs" t="Include" />
           </e>
           <e p="GameServiceException.cs" t="Include" />

@@ -21,12 +21,12 @@ namespace FiroozehGameService.Core.ApiWebRequest
             try
             {
                 var url = Models.Consts.Api.BaseUrl + "/game/" + gameId + "/datapack/?tag=" + tag;
-                var stream = await _webRequest.Get(url, new Dictionary<string, string>
+                var response = await _webRequest.Get(url, new Dictionary<string, string>
                 {
                     {"x-access-token", playToken}
                 });
 
-                using (var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(response.GetResponseStream()))
                     return JsonConvert.DeserializeObject<Download>(await reader.ReadToEndAsync());          
             }
             catch (Exception e)
@@ -44,9 +44,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
             try
             {
                 var body = JsonConvert.SerializeObject(CreateAuthDictionary(configuration,userToken,isGuest));
-                var stream = await _webRequest.Post(Models.Consts.Api.Start, body);
+                var response = await _webRequest.Post(Models.Consts.Api.Start, body);
 
-                using (var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(response.GetResponseStream()))
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());          
             }
             catch (Exception e)
@@ -63,9 +63,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
             try
             {
                 var body = JsonConvert.SerializeObject(CreateLoginDictionary(email,password,null));
-                var stream = await _webRequest.Post(Models.Consts.Api.LoginUser, body);
+                var response = await _webRequest.Post(Models.Consts.Api.LoginUser, body);
 
-                using (var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(response.GetResponseStream()))
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());       
             }
             catch (Exception e)
@@ -82,9 +82,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
             try
             {
                 var body = JsonConvert.SerializeObject(CreateLoginDictionary(email,password,nickName));
-                var stream = await _webRequest.Post(Models.Consts.Api.LoginUser, body);
+                var response = await _webRequest.Post(Models.Consts.Api.LoginUser, body);
 
-                using (var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(response.GetResponseStream()))
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());        
             }
             catch (Exception e)

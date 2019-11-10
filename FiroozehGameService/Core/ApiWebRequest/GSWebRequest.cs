@@ -8,42 +8,38 @@ namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal class GsWebRequest
     {
-        public async Task<Stream> Get(string url,Dictionary<string,string> headers = default)
+        public async Task<HttpWebResponse> Get(string url,Dictionary<string,string> headers = default)
         {
             var webRequest = Init(url, headers);
-            using (var response = await webRequest.GetResponseAsync())
-                return response.GetResponseStream();
+           return (HttpWebResponse)(await webRequest.GetResponseAsync());
         }
         
-        public async Task<Stream> Put(string url,string body,Dictionary<string,string> headers = default)
+        public async Task<HttpWebResponse> Put(string url,string body,Dictionary<string,string> headers = default)
         {
             var webRequest = Init(url, headers);
             webRequest.Method = "PUT";
             var encodedBody = Encoding.UTF8.GetBytes(body);
             await webRequest.GetRequestStream().WriteAsync(encodedBody, 0, encodedBody.Length);
            
-            using (var response = await webRequest.GetResponseAsync())
-                return response.GetResponseStream();
+            return (HttpWebResponse)(await webRequest.GetResponseAsync());
         }
         
-        public async Task<Stream> Post(string url,string body,Dictionary<string,string> headers = default)
+        public async Task<HttpWebResponse> Post(string url,string body,Dictionary<string,string> headers = default)
         {
             var webRequest = Init(url, headers);
             webRequest.Method = "POST";
             var encodedBody = Encoding.UTF8.GetBytes(body);
             await webRequest.GetRequestStream().WriteAsync(encodedBody, 0, encodedBody.Length);
            
-            using (var response = await webRequest.GetResponseAsync())
-                return response.GetResponseStream();
+            return (HttpWebResponse)(await webRequest.GetResponseAsync());
         }
         
-        public async Task<Stream> Delete(string url,Dictionary<string,string> headers = default)
+        public async Task<HttpWebResponse> Delete(string url,Dictionary<string,string> headers = default)
         {
             var webRequest = Init(url, headers);
             webRequest.Method = "DELETE";
            
-            using (var response = await webRequest.GetResponseAsync())
-                return response.GetResponseStream();
+            return (HttpWebResponse)(await webRequest.GetResponseAsync());
         }
 
         private static HttpWebRequest Init(string url,Dictionary<string,string> headers = default)

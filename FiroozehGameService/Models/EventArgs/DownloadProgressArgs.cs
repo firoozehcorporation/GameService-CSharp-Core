@@ -1,6 +1,6 @@
-namespace FiroozehGameService.Models.Command
+namespace FiroozehGameService.Models.EventArgs
 {
-    public class DownloadProgressArgs
+    public class DownloadProgressArgs:System.EventArgs
     {
         public long ProgessSize;
         public long TotalSize;

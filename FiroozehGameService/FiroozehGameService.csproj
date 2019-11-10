@@ -46,11 +46,9 @@
         <Compile Include="Core\ApiWebRequest\ApiRequest.cs"/>
         <Compile Include="Core\ApiWebRequest\GSWebRequest.cs"/>
         <Compile Include="Core\DownloadManager.cs"/>
-        <Compile Include="Core\FiroozehGameService.cs"/>
-        <Compile Include="GameService.cs"/>
+        <Compile Include="Core\GameService.cs"/>
         <Compile Include="Models\BasicApi\Login.cs"/>
         <Compile Include="Models\Command\Download.cs"/>
-        <Compile Include="Models\Command\DownloadProgressArgs.cs"/>
         <Compile Include="Models\Command\Notification.cs"/>
         <Compile Include="Models\Command\NotificationTapAction.cs"/>
         <Compile Include="Models\Consts\Api.cs"/>
@@ -64,6 +62,7 @@
         <Compile Include="Models\Enums\GSLive\RT\MessageType.cs"/>
         <Compile Include="Models\Enums\GSLive\TB\EventType.cs"/>
         <Compile Include="Models\Enums\LoginType.cs"/>
+        <Compile Include="Models\EventArgs\DownloadProgressArgs.cs"/>
         <Compile Include="Models\EventArgs\ErrorArg.cs"/>
         <Compile Include="Models\GameServiceException.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
@@ -74,10 +73,10 @@
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-             Other similar extension points exist, see Microsoft.Common.targets.
-        <Target Name="BeforeBuild">
-        </Target>
-        <Target Name="AfterBuild">
-        </Target>
-        -->
+               Other similar extension points exist, see Microsoft.Common.targets.
+          <Target Name="BeforeBuild">
+          </Target>
+          <Target Name="AfterBuild">
+          </Target>
+          -->
 </Project>

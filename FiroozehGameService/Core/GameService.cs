@@ -33,7 +33,7 @@ namespace FiroozehGameService.Core
     /// <summary>
     /// Represents Game Service Main Initializer
     /// </summary>
-    public sealed class FiroozehGameService
+    public sealed class GameService
     {       
         private const string Tag = "FiroozehGameService";
         public event EventHandler<Notification> NotificationReceived;
@@ -45,7 +45,7 @@ namespace FiroozehGameService.Core
         private static bool _isAvailable;
 
 
-        public static GameService Instance { get; private set; }
+       //TODO public static GameService Instance { get; private set; }
         public static GameServiceClientConfiguration Configuration { get; private set; }
 
         
@@ -68,7 +68,7 @@ namespace FiroozehGameService.Core
         /// Normal Login To Game Service
         /// It May Throw Exception
         /// </summary>
-        public static async Task Login(string email , string password)
+        public static async Task<bool> Login(string email , string password)
         {
            var login = await ApiRequest.Login(email, password);
             _userToken = login.UserToken;
@@ -78,26 +78,28 @@ namespace FiroozehGameService.Core
             _playToken = auth.UserToken;
             _gameId = auth.Game;
             _isAvailable = true;
+            return true;
         }
         
         /// <summary>
         /// Login To Game Service As Guest
         /// It May Throw Exception
         /// </summary>
-        public static async Task Login()
+        public static async Task<bool> Login()
         {
             var auth = await ApiRequest.Auth(Configuration, _userToken, true);
             DownloadManager = new DownloadManager(Configuration,auth.Game);
             _playToken = auth.UserToken;
             _gameId = auth.Game;
             _isAvailable = true;
+            return true;
         }
         
         /// <summary>
         /// Normal SignUp To Game Service
         /// It May Throw Exception
         /// </summary>
-        public static async Task SignUp(string nickName,string email , string password)
+        public static async Task<bool> SignUp(string nickName,string email , string password)
         {
             var login = await ApiRequest.SignUp(nickName,email,password);
             _userToken = login.UserToken;
@@ -106,6 +108,7 @@ namespace FiroozehGameService.Core
             _playToken = auth.UserToken;
             _gameId = auth.Game;
             _isAvailable = true;
+            return true;
         }
                
         
