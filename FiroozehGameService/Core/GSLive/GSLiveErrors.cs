@@ -1,4 +1,4 @@
-﻿// <copyright file="GameServiceException.cs" company="Firoozeh Technology LTD">
+// <copyright file="GSLiveErrors.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,33 +14,22 @@
 //    limitations under the License.
 // </copyright>
 
-using System;
-
 /**
-
 * @author Alireza Ghodrati
-
 */
 
 
-namespace FiroozehGameService.Models
+using System;
+
+namespace FiroozehGameService.Core.GSLive
 {
     /// <summary>
-    /// Represents Game Service Exception
+    /// Represents GSLive Errors
     /// </summary>
-    public class GameServiceException : Exception {
-
-
-        public GameServiceException()
-            : base("A GameService Runtime error occurred!")
-        {
-        
-        }
-        public GameServiceException(string msg)
-            : base(msg)
-        {
-        
-        }
+    public class GSLiveErrors
+    {
+        public const String NotAvailableYet = "GSLiveService Not Available yet";
+        public const String ServerError = "ServerError";
 
     }
 }

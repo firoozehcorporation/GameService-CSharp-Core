@@ -1,4 +1,4 @@
-﻿// <copyright file="GameServiceException.cs" company="Firoozeh Technology LTD">
+// <copyright file="Leave.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,32 +15,35 @@
 // </copyright>
 
 using System;
+using Newtonsoft.Json;
 
 /**
-
 * @author Alireza Ghodrati
-
 */
 
 
-namespace FiroozehGameService.Models
+namespace FiroozehGameService.Models.GSLive
 {
     /// <summary>
-    /// Represents Game Service Exception
+    /// Represents Leave Data Model In GameService MultiPlayer System (GSLive)
     /// </summary>
-    public class GameServiceException : Exception {
-
-
-        public GameServiceException()
-            : base("A GameService Runtime error occurred!")
-        {
+    [Serializable]
+    public class Leave
+    {
+        /// <summary>
+        /// Gets the Room id
+        /// </summary>
+        /// <value>the Room id</value>
+        [JsonProperty("1")]
+        public string RoomId { set; get; }
         
-        }
-        public GameServiceException(string msg)
-            : base(msg)
-        {
         
-        }
-
+        /// <summary>
+        /// Gets the Player Member Data Who Left the Room
+        /// </summary>
+        /// <value>the Player Member Data Who Left the Room</value>
+        [JsonProperty("2")]
+        public Member MemberLeave { set; get; }
+       
     }
 }

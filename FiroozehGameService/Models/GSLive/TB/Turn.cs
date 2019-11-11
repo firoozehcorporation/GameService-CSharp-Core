@@ -1,4 +1,4 @@
-﻿// <copyright file="GameServiceException.cs" company="Firoozeh Technology LTD">
+// <copyright file="Turn.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,33 +14,36 @@
 //    limitations under the License.
 // </copyright>
 
+
 using System;
+using Newtonsoft.Json;
 
 /**
-
 * @author Alireza Ghodrati
-
 */
 
-
-namespace FiroozehGameService.Models
+namespace FiroozehGameService.Models.GSLive.TB
 {
     /// <summary>
-    /// Represents Game Service Exception
+    /// Represents Turn Data Model In GameService TurnBased MultiPlayer System
     /// </summary>
-    public class GameServiceException : Exception {
-
-
-        public GameServiceException()
-            : base("A GameService Runtime error occurred!")
-        {
+    [Serializable]
+    public class Turn
+    {
         
-        }
-        public GameServiceException(string msg)
-            : base(msg)
-        {
+        /// <summary>
+        /// Gets the Data Send In Turn By Other Player.
+        /// </summary>
+        /// <value>the Data Send In Turn By Other Player</value>
+        [JsonProperty("0")]
+        public string Data { get; set; }
         
-        }
-
+        /// <summary>
+        /// Gets The Player Member who has TakeTurn.
+        /// </summary>
+        /// <value>The Player Member who has TakeTurn</value>
+        [JsonProperty("1")]
+        public Member WhoTakeTurn { get; set; }
+        
     }
 }

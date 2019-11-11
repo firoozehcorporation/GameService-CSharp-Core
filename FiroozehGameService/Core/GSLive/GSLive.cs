@@ -1,4 +1,4 @@
-﻿// <copyright file="GameServiceException.cs" company="Firoozeh Technology LTD">
+// <copyright file="GSLive.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,33 +14,45 @@
 //    limitations under the License.
 // </copyright>
 
-using System;
 
 /**
-
 * @author Alireza Ghodrati
-
 */
 
 
-namespace FiroozehGameService.Models
+
+namespace FiroozehGameService.Core.GSLive
 {
+    
     /// <summary>
-    /// Represents Game Service Exception
+    /// Represents Game Service MultiPlayer System (GSLive)
     /// </summary>
-    public class GameServiceException : Exception {
-
-
-        public GameServiceException()
-            : base("A GameService Runtime error occurred!")
-        {
+    public class GSLive
+    {
         
-        }
-        public GameServiceException(string msg)
-            : base(msg)
-        {
+        private const string Tag = "GSLive";
         
+        public GSLiveRT RealTime { get; private set; }
+        public GSLiveTB TurnBased { get; private set; }
+        public GSLiveChat Chat { get; private set; }
+
+        
+        public GSLive()
+        {
+            RealTime = new GSLiveRT();
+            Chat = new GSLiveChat();
+            TurnBased = new GSLiveTB();
         }
 
+        public bool IsRealTimeAvailable()
+        {
+            return RealTime.IsAvailable;
+        }
+        
+        public bool IsTurnBasedAvailable()
+        {
+            return TurnBased.IsAvailable;
+        }
+      
     }
 }

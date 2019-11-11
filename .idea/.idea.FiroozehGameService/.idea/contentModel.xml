@@ -14,14 +14,39 @@
           </e>
           <e p="DownloadManager.cs" t="Include" />
           <e p="GameService.cs" t="Include" />
+          <e p="GSLive" t="Include">
+            <e p="GSLive.cs" t="Include" />
+            <e p="GSLiveChat.cs" t="Include" />
+            <e p="GSLiveErrors.cs" t="Include" />
+            <e p="GSLiveOption.cs" t="Include" />
+            <e p="GSLiveRT.cs" t="Include" />
+            <e p="GSLiveTB.cs" t="Include" />
+          </e>
         </e>
         <e p="FiroozehGameService.csproj" t="IncludeRecursive" />
         <e p="Models" t="Include">
           <e p="basicApi" t="Include">
+            <e p="Achievement.cs" t="Include" />
+            <e p="Bucket.cs" t="Include" />
+            <e p="Error.cs" t="Include" />
             <e p="Game.cs" t="Include" />
+            <e p="LeaderBoard.cs" t="Include" />
+            <e p="LeaderBoardDetails.cs" t="Include" />
             <e p="Login.cs" t="Include" />
             <e p="Platform.cs" t="Include" />
             <e p="Publisher.cs" t="Include" />
+            <e p="SaveDetails.cs" t="Include" />
+            <e p="Score.cs" t="Include" />
+            <e p="SubmitScoreResponse.cs" t="Include" />
+            <e p="TResponse" t="Include">
+              <e p="TAchievement.cs" t="Include" />
+              <e p="TLeaderBoard.cs" t="Include" />
+              <e p="TSave.cs" t="Include" />
+              <e p="TSubmitScore.cs" t="Include" />
+              <e p="TUnlockAchievent.cs" t="Include" />
+              <e p="TUser.cs" t="Include" />
+            </e>
+            <e p="User.cs" t="Include" />
           </e>
           <e p="Command" t="Include">
             <e p="Download.cs" t="Include" />
@@ -56,6 +81,27 @@
             <e p="ErrorArg.cs" t="Include" />
           </e>
           <e p="GameServiceException.cs" t="Include" />
+          <e p="GSLive" t="Include">
+            <e p="Chat" t="Include">
+              <e p="Chat.cs" t="Include" />
+            </e>
+            <e p="Game.cs" t="Include" />
+            <e p="Invite.cs" t="Include" />
+            <e p="JoinData.cs" t="Include" />
+            <e p="Leave.cs" t="Include" />
+            <e p="Member.cs" t="Include" />
+            <e p="Room.cs" t="Include" />
+            <e p="RoomData.cs" t="Include" />
+            <e p="RT" t="Include">
+              <e p="Message.cs" t="Include" />
+            </e>
+            <e p="TB" t="Include">
+              <e p="Complete.cs" t="Include" />
+              <e p="Finish.cs" t="Include" />
+              <e p="Outcome.cs" t="Include" />
+              <e p="Turn.cs" t="Include" />
+            </e>
+          </e>
         </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />

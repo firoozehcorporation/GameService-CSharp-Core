@@ -1,4 +1,4 @@
-﻿// <copyright file="GameServiceException.cs" company="Firoozeh Technology LTD">
+// <copyright file="Outcome.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,33 +14,35 @@
 //    limitations under the License.
 // </copyright>
 
-using System;
+using Newtonsoft.Json;
 
 /**
-
 * @author Alireza Ghodrati
-
 */
 
 
-namespace FiroozehGameService.Models
+namespace FiroozehGameService.Models.GSLive.TB
 {
     /// <summary>
-    /// Represents Game Service Exception
+    /// Represents Outcome Data Model In GameService TurnBased MultiPlayer System
     /// </summary>
-    public class GameServiceException : Exception {
-
-
-        public GameServiceException()
-            : base("A GameService Runtime error occurred!")
-        {
+    public class Outcome
+    {
         
-        }
-        public GameServiceException(string msg)
-            : base(msg)
-        {
+        /// <summary>
+        /// Gets the Placement of Outcome.
+        /// </summary>
+        /// <value>the Placement of Outcome</value>
+        [JsonProperty("0")]
+        public int Placement { get; set; }
         
-        }
-
+        
+        /// <summary>
+        /// Gets the Result of Outcome.
+        /// </summary>
+        /// <value>the Result of Outcome</value>
+        [JsonProperty("1")]
+        public string Result { get; set; }
+        
     }
 }

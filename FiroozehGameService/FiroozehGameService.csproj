@@ -45,10 +45,31 @@
         <Compile Include="Core\ApiWebRequest\GSWebRequest.cs"/>
         <Compile Include="Core\DownloadManager.cs"/>
         <Compile Include="Core\GameService.cs"/>
+        <Compile Include="Core\GSLive\GSLive.cs"/>
+        <Compile Include="Core\GSLive\GSLiveChat.cs"/>
+        <Compile Include="Core\GSLive\GSLiveErrors.cs"/>
+        <Compile Include="Core\GSLive\GSLiveOption.cs"/>
+        <Compile Include="Core\GSLive\GSLiveRT.cs"/>
+        <Compile Include="Core\GSLive\GSLiveTB.cs"/>
+        <Compile Include="Models\BasicApi\Achievement.cs"/>
+        <Compile Include="Models\BasicApi\Bucket.cs"/>
+        <Compile Include="Models\BasicApi\Error.cs"/>
         <Compile Include="Models\BasicApi\Game.cs"/>
+        <Compile Include="Models\BasicApi\LeaderBoard.cs"/>
+        <Compile Include="Models\BasicApi\LeaderBoardDetails.cs"/>
         <Compile Include="Models\BasicApi\Login.cs"/>
         <Compile Include="Models\BasicApi\Platform.cs"/>
         <Compile Include="Models\BasicApi\Publisher.cs"/>
+        <Compile Include="Models\BasicApi\SaveDetails.cs"/>
+        <Compile Include="Models\BasicApi\Score.cs"/>
+        <Compile Include="Models\BasicApi\SubmitScoreResponse.cs"/>
+        <Compile Include="Models\BasicApi\TResponse\TAchievement.cs"/>
+        <Compile Include="Models\BasicApi\TResponse\TLeaderBoard.cs"/>
+        <Compile Include="Models\BasicApi\TResponse\TSave.cs"/>
+        <Compile Include="Models\BasicApi\TResponse\TSubmitScore.cs"/>
+        <Compile Include="Models\BasicApi\TResponse\TUnlockAchievent.cs"/>
+        <Compile Include="Models\BasicApi\TResponse\TUser.cs"/>
+        <Compile Include="Models\BasicApi\User.cs"/>
         <Compile Include="Models\Command\Download.cs"/>
         <Compile Include="Models\Command\Notification.cs"/>
         <Compile Include="Models\Command\NotificationTapAction.cs"/>
@@ -66,6 +87,19 @@
         <Compile Include="Models\EventArgs\DownloadProgressArgs.cs"/>
         <Compile Include="Models\EventArgs\ErrorArg.cs"/>
         <Compile Include="Models\GameServiceException.cs"/>
+        <Compile Include="Models\GSLive\Chat\Chat.cs"/>
+        <Compile Include="Models\GSLive\Game.cs"/>
+        <Compile Include="Models\GSLive\Invite.cs"/>
+        <Compile Include="Models\GSLive\JoinData.cs"/>
+        <Compile Include="Models\GSLive\Leave.cs"/>
+        <Compile Include="Models\GSLive\Member.cs"/>
+        <Compile Include="Models\GSLive\Room.cs"/>
+        <Compile Include="Models\GSLive\RoomData.cs"/>
+        <Compile Include="Models\GSLive\RT\Message.cs"/>
+        <Compile Include="Models\GSLive\TB\Complete.cs"/>
+        <Compile Include="Models\GSLive\TB\Finish.cs"/>
+        <Compile Include="Models\GSLive\TB\Outcome.cs"/>
+        <Compile Include="Models\GSLive\TB\Turn.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="Utils\NetworkUtil.cs"/>
     </ItemGroup>
@@ -74,10 +108,10 @@
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-                 Other similar extension points exist, see Microsoft.Common.targets.
-            <Target Name="BeforeBuild">
-            </Target>
-            <Target Name="AfterBuild">
-            </Target>
-            -->
+                   Other similar extension points exist, see Microsoft.Common.targets.
+              <Target Name="BeforeBuild">
+              </Target>
+              <Target Name="AfterBuild">
+              </Target>
+              -->
 </Project>

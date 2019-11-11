@@ -41,18 +41,16 @@ namespace FiroozehGameService.Core
         private CancellationTokenSource DownloadStreamReaderToken = new CancellationTokenSource();
 
         private Builder.GameServiceClientConfiguration configuration;
-        private string _gameId;
         private bool _enableDownload;
       
-        public DownloadManager(Builder.GameServiceClientConfiguration config, string gameId)
+        public DownloadManager(Builder.GameServiceClientConfiguration config)
         {
             configuration = config;
-            _gameId = gameId;
         }
 
         public async Task StartDownload(string tag , string path)
         {
-            var download = await ApiRequest.GetDataPackInfo(configuration.ClientId, tag, _gameId);
+            var download = await ApiRequest.GetDataPackInfo(configuration.ClientId, tag);
             var webRequest = new GsWebRequest();
             var buffer = new byte[1024*10];
             var totalReadBytes = 0;
