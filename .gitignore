@@ -2,7 +2,8 @@
 *.dll
 *.pdb
 ipch/
-obj/
+obj/*
+FiroozehGameService/obj/*
 [Bb]in
 [Dd]ebug*/
 [Rr]elease*/
