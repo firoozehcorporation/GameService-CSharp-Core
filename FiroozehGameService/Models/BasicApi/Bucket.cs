@@ -51,6 +51,6 @@ namespace FiroozehGameService.Models.BasicApi
         /// Gets the Bucket Object.
         /// </summary>
         /// <value>the Bucket Object</value>
-        public TBucket BucketData => (TBucket) _rawBucket;
+        public TBucket BucketData => JsonConvert.DeserializeObject<TBucket>(JsonConvert.SerializeObject(_rawBucket));
     }
 }

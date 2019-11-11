@@ -271,9 +271,8 @@ namespace FiroozehGameService.Core
         public static async Task<bool> Login(string email , string password)
         {
             var login = await ApiRequest.Login(email, password);
-            var auth = await ApiRequest.Authorize(Configuration, false);
-            
             UserToken = login.Token;
+            var auth = await ApiRequest.Authorize(Configuration, false);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -288,7 +287,6 @@ namespace FiroozehGameService.Core
         public static async Task<bool> Login()
         {
             var auth = await ApiRequest.Authorize(Configuration, true);
-            DownloadManager = new DownloadManager(Configuration);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -303,8 +301,8 @@ namespace FiroozehGameService.Core
         public static async Task<bool> SignUp(string nickName,string email , string password)
         {
             var login = await ApiRequest.SignUp(nickName,email,password);
-            var auth = await ApiRequest.Authorize(Configuration, false);
             UserToken = login.Token;
+            var auth = await ApiRequest.Authorize(Configuration, false);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;

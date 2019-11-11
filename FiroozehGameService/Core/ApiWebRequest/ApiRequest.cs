@@ -15,6 +15,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal static class ApiRequest
     {
+        
         private static string Pt => GameService.PlayToken;
         private static string Ut => GameService.UserToken;
         private static long Sp => GameService.StartPlaying;
@@ -408,9 +409,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             var param = new Dictionary<string, object>();
 
             if (nickname == null)
-            {
                 param.Add("mode", "login");
-            }
             else
             {
                 param.Add("name", nickname);
