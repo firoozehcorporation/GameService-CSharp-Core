@@ -1,0 +1,9 @@
+*.json
+*.dll
+*.pdb
+ipch/
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+vs/
