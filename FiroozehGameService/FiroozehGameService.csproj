@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{737E6392-923A-4DCB-8940-E03187632629}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FiroozehGameService</RootNamespace>
+    <AssemblyName>FiroozehGameService</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\VIP_eR\Desktop\Projects\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Builder\GameServiceClientConfiguration.cs" />
+    <Compile Include="Core\ApiWebRequest\ApiRequest.cs" />
+    <Compile Include="Core\ApiWebRequest\GSWebRequest.cs" />
+    <Compile Include="Core\DownloadManager.cs" />
+    <Compile Include="Core\GameService.cs" />
+    <Compile Include="Core\GSLive\GSLive.cs" />
+    <Compile Include="Core\GSLive\GSLiveChat.cs" />
+    <Compile Include="Core\GSLive\GSLiveErrors.cs" />
+    <Compile Include="Core\GSLive\GSLiveOption.cs" />
+    <Compile Include="Core\GSLive\GSLiveRT.cs" />
+    <Compile Include="Core\GSLive\GSLiveTB.cs" />
+    <Compile Include="Models\BasicApi\Achievement.cs" />
+    <Compile Include="Models\BasicApi\Bucket.cs" />
+    <Compile Include="Models\BasicApi\Error.cs" />
+    <Compile Include="Models\BasicApi\Game.cs" />
+    <Compile Include="Models\BasicApi\LeaderBoard.cs" />
+    <Compile Include="Models\BasicApi\LeaderBoardDetails.cs" />
+    <Compile Include="Models\BasicApi\Login.cs" />
+    <Compile Include="Models\BasicApi\Platform.cs" />
+    <Compile Include="Models\BasicApi\Publisher.cs" />
+    <Compile Include="Models\BasicApi\SaveDetails.cs" />
+    <Compile Include="Models\BasicApi\Score.cs" />
+    <Compile Include="Models\BasicApi\SubmitScoreResponse.cs" />
+    <Compile Include="Models\BasicApi\TResponse\TAchievement.cs" />
+    <Compile Include="Models\BasicApi\TResponse\TLeaderBoard.cs" />
+    <Compile Include="Models\BasicApi\TResponse\TSave.cs" />
+    <Compile Include="Models\BasicApi\TResponse\TSubmitScore.cs" />
+    <Compile Include="Models\BasicApi\TResponse\TUnlockAchievent.cs" />
+    <Compile Include="Models\BasicApi\TResponse\TUser.cs" />
+    <Compile Include="Models\BasicApi\User.cs" />
+    <Compile Include="Models\Command\Download.cs" />
+    <Compile Include="Models\Command\Notification.cs" />
+    <Compile Include="Models\Command\NotificationTapAction.cs" />
+    <Compile Include="Models\Consts\Api.cs" />
+    <Compile Include="Models\Enums\Command\MarketType.cs" />
+    <Compile Include="Models\Enums\Command\TapActionType.cs" />
+    <Compile Include="Models\Enums\GameServiceType.cs" />
+    <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs" />
+    <Compile Include="Models\Enums\GSLive\GSLiveType.cs" />
+    <Compile Include="Models\Enums\GSLive\JoinType.cs" />
+    <Compile Include="Models\Enums\GSLive\RT\EventType.cs" />
+    <Compile Include="Models\Enums\GSLive\RT\MessageType.cs" />
+    <Compile Include="Models\Enums\GSLive\TB\EventType.cs" />
+    <Compile Include="Models\Enums\LoginType.cs" />
+    <Compile Include="Models\EventArgs\DownloadProgressArgs.cs" />
+    <Compile Include="Models\EventArgs\ErrorArg.cs" />
+    <Compile Include="Models\GameServiceException.cs" />
+    <Compile Include="Models\GSLive\Chat\Chat.cs" />
+    <Compile Include="Models\GSLive\Game.cs" />
+    <Compile Include="Models\GSLive\Invite.cs" />
+    <Compile Include="Models\GSLive\JoinData.cs" />
+    <Compile Include="Models\GSLive\Leave.cs" />
+    <Compile Include="Models\GSLive\Member.cs" />
+    <Compile Include="Models\GSLive\Room.cs" />
+    <Compile Include="Models\GSLive\RoomData.cs" />
+    <Compile Include="Models\GSLive\RT\Message.cs" />
+    <Compile Include="Models\GSLive\TB\Complete.cs" />
+    <Compile Include="Models\GSLive\TB\Finish.cs" />
+    <Compile Include="Models\GSLive\TB\Outcome.cs" />
+    <Compile Include="Models\GSLive\TB\Turn.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\NetworkUtil.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+                   Other similar extension points exist, see Microsoft.Common.targets.
+              <Target Name="BeforeBuild">
+              </Target>
+              <Target Name="AfterBuild">
+              </Target>
+              -->
+</Project>
