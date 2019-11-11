@@ -8,9 +8,9 @@ namespace FiroozehGameService.Models.BasicApi
         public bool Status { get; set; }
         
         [JsonProperty("token")]
-        public string UserToken { get; set; }
+        public string Token { get; set; }
         
         [JsonProperty("game")]
-        public string Game { get; set; }
+        public Game Game { get; set; }
     }
 }

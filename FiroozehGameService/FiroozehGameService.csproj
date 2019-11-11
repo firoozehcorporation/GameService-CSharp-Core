@@ -32,14 +32,12 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="mscorlib"/>
         <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
             <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
             <Private>True</Private>
         </Reference>
         <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Builder\GameServiceClientConfiguration.cs"/>
@@ -47,7 +45,10 @@
         <Compile Include="Core\ApiWebRequest\GSWebRequest.cs"/>
         <Compile Include="Core\DownloadManager.cs"/>
         <Compile Include="Core\GameService.cs"/>
+        <Compile Include="Models\BasicApi\Game.cs"/>
         <Compile Include="Models\BasicApi\Login.cs"/>
+        <Compile Include="Models\BasicApi\Platform.cs"/>
+        <Compile Include="Models\BasicApi\Publisher.cs"/>
         <Compile Include="Models\Command\Download.cs"/>
         <Compile Include="Models\Command\Notification.cs"/>
         <Compile Include="Models\Command\NotificationTapAction.cs"/>
@@ -73,10 +74,10 @@
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-               Other similar extension points exist, see Microsoft.Common.targets.
-          <Target Name="BeforeBuild">
-          </Target>
-          <Target Name="AfterBuild">
-          </Target>
-          -->
+                 Other similar extension points exist, see Microsoft.Common.targets.
+            <Target Name="BeforeBuild">
+            </Target>
+            <Target Name="AfterBuild">
+            </Target>
+            -->
 </Project>

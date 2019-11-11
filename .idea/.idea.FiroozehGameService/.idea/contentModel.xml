@@ -18,7 +18,10 @@
         <e p="FiroozehGameService.csproj" t="IncludeRecursive" />
         <e p="Models" t="Include">
           <e p="basicApi" t="Include">
+            <e p="Game.cs" t="Include" />
             <e p="Login.cs" t="Include" />
+            <e p="Platform.cs" t="Include" />
+            <e p="Publisher.cs" t="Include" />
           </e>
           <e p="Command" t="Include">
             <e p="Download.cs" t="Include" />

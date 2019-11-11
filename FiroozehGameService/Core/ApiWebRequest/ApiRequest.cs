@@ -112,7 +112,6 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             param.Add("email", email);
             param.Add("password", password);
-            //TODO param.Add("system_info", sysInfo.ToJSON());
             return param;
         }
 

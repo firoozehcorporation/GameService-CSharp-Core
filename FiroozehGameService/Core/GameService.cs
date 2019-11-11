@@ -25,6 +25,7 @@ using System;
 using System.Threading.Tasks;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
+using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Command;
 
 namespace FiroozehGameService.Core
@@ -41,7 +42,7 @@ namespace FiroozehGameService.Core
         
         private static string _userToken;
         private static string _playToken;
-        private static string _gameId;
+        private static Game _currentGame;
         private static bool _isAvailable;
 
 
@@ -71,12 +72,12 @@ namespace FiroozehGameService.Core
         public static async Task<bool> Login(string email , string password)
         {
            var login = await ApiRequest.Login(email, password);
-            _userToken = login.UserToken;
+            _userToken = login.Token;
             
             var auth = await ApiRequest.Auth(Configuration, _userToken, false);
-            DownloadManager = new DownloadManager(Configuration,auth.Game);
-            _playToken = auth.UserToken;
-            _gameId = auth.Game;
+            _currentGame = auth.Game;
+            _playToken = auth.Token;
+            DownloadManager = new DownloadManager(Configuration,_playToken);
             _isAvailable = true;
             return true;
         }
@@ -88,9 +89,9 @@ namespace FiroozehGameService.Core
         public static async Task<bool> Login()
         {
             var auth = await ApiRequest.Auth(Configuration, _userToken, true);
-            DownloadManager = new DownloadManager(Configuration,auth.Game);
-            _playToken = auth.UserToken;
-            _gameId = auth.Game;
+            _playToken = auth.Token;
+            _currentGame = auth.Game;
+            DownloadManager = new DownloadManager(Configuration,_playToken);
             _isAvailable = true;
             return true;
         }
@@ -102,11 +103,11 @@ namespace FiroozehGameService.Core
         public static async Task<bool> SignUp(string nickName,string email , string password)
         {
             var login = await ApiRequest.SignUp(nickName,email,password);
-            _userToken = login.UserToken;
+            _userToken = login.Token;
             var auth = await ApiRequest.Auth(Configuration, _userToken, false);
-            DownloadManager = new DownloadManager(Configuration,auth.Game);
-            _playToken = auth.UserToken;
-            _gameId = auth.Game;
+            _playToken = auth.Token;
+            _currentGame = auth.Game;
+            DownloadManager = new DownloadManager(Configuration,_playToken);
             _isAvailable = true;
             return true;
         }
@@ -118,7 +119,7 @@ namespace FiroozehGameService.Core
         public static bool Logout()
         {
             _userToken = null;
-            _gameId = null;
+            _currentGame = null;
             _playToken = null;
             DownloadManager = null; 
             _isAvailable = false;
