@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi
 {
     [Serializable]
-    public class Platform
+    internal class Platform
     {
         [JsonProperty("os")]
         public string Os { get; set; }

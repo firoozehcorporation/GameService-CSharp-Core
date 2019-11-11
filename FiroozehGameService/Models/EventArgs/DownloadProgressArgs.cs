@@ -4,6 +4,6 @@ namespace FiroozehGameService.Models.EventArgs
     {
         public long ProgessSize;
         public long TotalSize;
-        public byte[] data;
+        public byte[] Data;
     }
 }

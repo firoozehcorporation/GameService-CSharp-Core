@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi
 {
     [Serializable]
-    public class Game
+    internal class Game
     {
         [JsonProperty("id")]
         public string Id { get; set; }

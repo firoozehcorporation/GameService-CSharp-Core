@@ -8,13 +8,13 @@ namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal class GsWebRequest
     {
-        public async Task<HttpWebResponse> Get(string url,Dictionary<string,string> headers = null)
+        internal static async Task<HttpWebResponse> Get(string url,Dictionary<string,string> headers = null)
         {
            var webRequest = Init(url, headers);
            return (HttpWebResponse)await webRequest.GetResponseAsync();
         }
         
-        public async Task<HttpWebResponse> Put(string url,string body,Dictionary<string,string> headers = null)
+        internal static async Task<HttpWebResponse> Put(string url,string body,Dictionary<string,string> headers = null)
         {
             var webRequest = Init(url, headers);
             webRequest.Method = "PUT";
@@ -25,7 +25,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             return (HttpWebResponse)await webRequest.GetResponseAsync();
         }
         
-        public async Task<HttpWebResponse> Post(string url,string body = null,Dictionary<string,string> headers = null)
+        internal static async Task<HttpWebResponse> Post(string url,string body = null,Dictionary<string,string> headers = null)
         {
             var webRequest = Init(url, headers);
             webRequest.Method = "POST";
@@ -36,7 +36,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             return (HttpWebResponse)await webRequest.GetResponseAsync();
         }
         
-        public async Task<HttpWebResponse> Delete(string url,Dictionary<string,string> headers = null)
+        internal static async Task<HttpWebResponse> Delete(string url,Dictionary<string,string> headers = null)
         {
             var webRequest = Init(url, headers);
             webRequest.Method = "DELETE";

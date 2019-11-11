@@ -57,7 +57,7 @@ namespace FiroozehGameService.Core
             var readBytes = 0;
             _enableDownload = true;
             
-           using (var response = await webRequest.Get(download.Data.Url))
+           using (var response = await GsWebRequest.Get(download.Data.Url))
            using (var stream = response.GetResponseStream())
            {
                while (totalReadBytes != response.ContentLength && _enableDownload)
@@ -78,7 +78,7 @@ namespace FiroozehGameService.Core
                    if(_enableDownload)
                        DownloadProgress?.Invoke(this,new DownloadProgressArgs
                        {
-                           data = buffer,
+                           Data = buffer,
                            ProgessSize = totalReadBytes,
                            TotalSize =response.ContentLength
                        });  
