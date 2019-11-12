@@ -22,6 +22,7 @@
 */
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,16 +52,18 @@ namespace FiroozehGameService.Core
         public async Task StartDownload(string tag , string path)
         {
             var download = await ApiRequest.GetDataPackInfo(configuration.ClientId, tag);
-            var webRequest = new GsWebRequest();
             var buffer = new byte[1024*10];
             var totalReadBytes = 0;
             var readBytes = 0;
             _enableDownload = true;
             
            using (var response = await GsWebRequest.Get(download.Data.Url))
-           using (var stream = response.GetResponseStream())
+           using (var stream = await response.Content.ReadAsStreamAsync())
            {
-               while (totalReadBytes != response.ContentLength && _enableDownload)
+               
+               var length = long.Parse(response.Content.Headers.First(h => h.Key.Equals("Content-Length")).Value.First());
+               
+               while (totalReadBytes != length && _enableDownload)
                {
                    while (readBytes != buffer.Length && _enableDownload)
                    {
@@ -80,7 +83,7 @@ namespace FiroozehGameService.Core
                        {
                            Data = buffer,
                            ProgessSize = totalReadBytes,
-                           TotalSize =response.ContentLength
+                           TotalSize = length
                        });  
                }
                

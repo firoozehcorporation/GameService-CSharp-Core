@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+      <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,6 +40,7 @@
       <HintPath>C:\Users\VIP_eR\Desktop\Projects\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+      <Reference Include="System.Net.Http"/>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builder\GameServiceClientConfiguration.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Models\Enums\GSLive\RT\EventType.cs" />
     <Compile Include="Models\Enums\GSLive\RT\MessageType.cs" />
     <Compile Include="Models\Enums\GSLive\TB\EventType.cs" />
+      <Compile Include="Models\Enums\GsWebRequestMethod.cs"/>
     <Compile Include="Models\Enums\LoginType.cs" />
     <Compile Include="Models\EventArgs\DownloadProgressArgs.cs" />
     <Compile Include="Models\EventArgs\ErrorArg.cs" />

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi.TResponse
 {
     [Serializable]
-    internal class TUnlockAchievment
+    internal class TUnlockAchievement
     {
         
         [JsonProperty("status")]

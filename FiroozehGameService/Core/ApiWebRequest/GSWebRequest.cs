@@ -1,58 +1,67 @@
 using System.Collections.Generic;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 
 namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal class GsWebRequest
     {
-        internal static async Task<HttpWebResponse> Get(string url,Dictionary<string,string> headers = null)
+        private static readonly HttpClient Client = new HttpClient();
+       
+        internal static async Task<HttpResponseMessage> Get(string url,Dictionary<string,string> headers = null)
         {
-           var webRequest = Init(url, headers);
-           return (HttpWebResponse)await webRequest.GetResponseAsync();
+            return await DoRequest(url,GsWebRequestMethod.Get,null,headers);
         }
         
-        internal static async Task<HttpWebResponse> Put(string url,string body,Dictionary<string,string> headers = null)
+        internal static async Task<HttpResponseMessage> Put(string url,string body,Dictionary<string,string> headers = null)
         {
-            var webRequest = Init(url, headers);
-            webRequest.Method = "PUT";
-            
-            var encodedBody = Encoding.UTF8.GetBytes(body);
-            await webRequest.GetRequestStream().WriteAsync(encodedBody, 0, encodedBody.Length);
-           
-            return (HttpWebResponse)await webRequest.GetResponseAsync();
+            return await DoRequest(url,GsWebRequestMethod.Put, body, headers);
         }
         
-        internal static async Task<HttpWebResponse> Post(string url,string body = null,Dictionary<string,string> headers = null)
+        internal static async Task<HttpResponseMessage> Post(string url,string body = null,Dictionary<string,string> headers = null)
         {
-            var webRequest = Init(url, headers);
-            webRequest.Method = "POST";
-
-            var encodedBody = Encoding.UTF8.GetBytes(body);
-            await webRequest.GetRequestStream().WriteAsync(encodedBody, 0, encodedBody.Length);
-           
-            return (HttpWebResponse)await webRequest.GetResponseAsync();
+            return await DoRequest(url, GsWebRequestMethod.Post, body, headers);
         }
         
-        internal static async Task<HttpWebResponse> Delete(string url,Dictionary<string,string> headers = null)
+        internal static async Task<HttpResponseMessage> Delete(string url,Dictionary<string,string> headers = null)
         {
-            var webRequest = Init(url, headers);
-            webRequest.Method = "DELETE";
-
-            return (HttpWebResponse)await webRequest.GetResponseAsync();
+            return await DoRequest(url, GsWebRequestMethod.Delete, null, headers);
         }
 
-        private static HttpWebRequest Init(string url,Dictionary<string,string> headers = null)
+        private static HttpClient Init(Dictionary<string,string> headers = null)
         {
-            var webRequest = (HttpWebRequest) WebRequest.Create(url);
-            webRequest.ContentType = "application/json";
-
-            if (headers == null) return webRequest;
+            if (headers == null) return Client;
+            Client.DefaultRequestHeaders.Clear();
             foreach (var header in headers)
-                webRequest.Headers.Add(header.Key, header.Value);
+                Client.DefaultRequestHeaders.Add(header.Key, header.Value);
+            return Client;
+        }
 
-            return webRequest;
+              
+        private static async Task<HttpResponseMessage> DoRequest(string url, GsWebRequestMethod method= GsWebRequestMethod.Get, string body = null,
+            Dictionary<string, string> headers = null)
+        {
+            var httpClient = Init(headers);
+
+            StringContent content = null;
+            if(body != null) content = new StringContent(body, Encoding.UTF8, "application/json");
+          
+            switch (method)
+                {
+                    case GsWebRequestMethod.Get:
+                        return await httpClient.GetAsync(url);
+                    case GsWebRequestMethod.Post:
+                        return await httpClient.PostAsync(url,content);
+                    case GsWebRequestMethod.Put:
+                        return await httpClient.PutAsync(url,content);
+                    case GsWebRequestMethod.Delete:
+                        return await httpClient.DeleteAsync(url);
+                    default:
+                        throw new GameServiceException();
+                }
         }
     }
 }

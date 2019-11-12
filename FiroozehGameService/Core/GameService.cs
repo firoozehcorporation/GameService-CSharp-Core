@@ -270,6 +270,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task<bool> Login(string email , string password)
         {
+            Logout();
             var login = await ApiRequest.Login(email, password);
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize(Configuration, false);
@@ -286,6 +287,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task<bool> Login()
         {
+            Logout();
             var auth = await ApiRequest.Authorize(Configuration, true);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
@@ -300,6 +302,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task<bool> SignUp(string nickName,string email , string password)
         {
+            Logout();
             var login = await ApiRequest.SignUp(nickName,email,password);
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize(Configuration, false);
@@ -314,14 +317,13 @@ namespace FiroozehGameService.Core
         /// <summary>
         /// Logout To Game Service
         /// </summary>
-        public static bool Logout()
+        public static void Logout()
         {
             UserToken = null;
             CurrentGame = null;
             PlayToken = null;
             DownloadManager = null; 
             IsAvailable = false;
-            return true;
         }
 
     }  

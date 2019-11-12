@@ -41,6 +41,11 @@ namespace FiroozehGameService.Models
         {
         
         }
+        public GameServiceException(string msg,Exception inner):
+            base(msg,inner)
+        {
+            
+        }
 
     }
 }

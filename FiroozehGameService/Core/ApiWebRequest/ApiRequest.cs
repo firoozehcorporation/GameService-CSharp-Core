@@ -28,7 +28,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 var url = Models.Consts.Api.BaseUrl + "/game/" + gameId + "/datapack/?tag=" + tag;
                 var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<Download>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -47,7 +47,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 var body = JsonConvert.SerializeObject(CreateAuthorizationDictionary(configuration, Ut, isGuest));
                 var response = await GsWebRequest.Post(Models.Consts.Api.Start, body);
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -65,7 +65,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 var body = JsonConvert.SerializeObject(CreateLoginDictionary(email, password, null));
                 var response = await GsWebRequest.Post(Models.Consts.Api.LoginUser, body);
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -83,7 +83,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 var body = JsonConvert.SerializeObject(CreateLoginDictionary(email, password, nickName));
                 var response = await GsWebRequest.Post(Models.Consts.Api.LoginUser, body);
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -101,7 +101,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 var response = await GsWebRequest.Get(Models.Consts.Api.GetLeaderboard, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<TLeaderBoard>(await reader.ReadToEndAsync())
                         .LeaderBoards;
             }
@@ -120,7 +120,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 var response = await GsWebRequest.Get(Models.Consts.Api.GetAchievements, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<TAchievement>(await reader.ReadToEndAsync())
                         .Achievements;
             }
@@ -140,7 +140,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 const string url = Models.Consts.Api.GetSavegame;
                 var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<T>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -158,7 +158,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 var response = await GsWebRequest.Get(Models.Consts.Api.UserData, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<TUser>(await reader.ReadToEndAsync())
                         .User;
             }
@@ -177,7 +177,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 var url = Models.Consts.Api.Bucket + bucketId;
                 var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<List<TBucket>>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -196,7 +196,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 var url = Models.Consts.Api.Bucket + bucketId + '/' + itemId;
                 var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<Bucket<TBucket>>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -216,7 +216,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<LeaderBoardDetails>(await reader.ReadToEndAsync());
 
             }
@@ -238,7 +238,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var response = await GsWebRequest.Post(Models.Consts.Api.SetSavegame, body, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .SaveDetails;
             }
@@ -260,7 +260,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var response = await GsWebRequest.Post(url, body, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<TSubmitScore>(await reader.ReadToEndAsync())
                         .SubmitScoreResponse;
             }
@@ -281,8 +281,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var response = await GsWebRequest.Post(url, headers: CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                    return JsonConvert.DeserializeObject<TUnlockAchievment>(await reader.ReadToEndAsync())
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+                    return JsonConvert.DeserializeObject<TUnlockAchievement>(await reader.ReadToEndAsync())
                         .Achievement;
             }
             catch (Exception e)
@@ -303,7 +303,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var response = await GsWebRequest.Put(url, body, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<Bucket<TBucket>>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -323,7 +323,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var response = await GsWebRequest.Post(url, body, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<Bucket<TBucket>>(await reader.ReadToEndAsync());
             }
             catch (Exception e)
@@ -341,7 +341,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 var response = await GsWebRequest.Delete(Models.Consts.Api.DeleteLastSave, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .Status;
             }
@@ -361,7 +361,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var response = await GsWebRequest.Delete(url, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .Status;
             }
@@ -381,7 +381,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var response = await GsWebRequest.Delete(url, CreatePlayTokenHeader());
 
-                using (var reader = new StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .Status;
             }
@@ -395,8 +395,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         private static async Task HandleWebException(Exception e)
         {
-            if (!(e is WebException ee)) throw new GameServiceException(e.Message);
-            if (ee.Status != WebExceptionStatus.ProtocolError) throw new GameServiceException(e.Message);
+            if (!(e is WebException ee)) throw new GameServiceException(e.Message,e.InnerException);
+            if (ee.Status != WebExceptionStatus.ProtocolError) throw new GameServiceException(e.Message,e.InnerException);
             using (var reader = new StreamReader(ee.Response.GetResponseStream()))
             {
                 var err = JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync());
