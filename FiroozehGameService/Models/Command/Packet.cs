@@ -18,14 +18,15 @@ namespace FiroozehGameService.Models.Command
         
         [JsonProperty("3")]
         public string Message { get; set; }
-        
-        public Packet (string token, int action, string data, string message) {
+
+        public Packet(string token, int action, string data = null, string message = null)
+        {
             Token = token;
             Action = action;
             Data = data;
             Message = message;
         }
-        
+
         public override string ToString () {
             return "Packet{" +
                    "Token='" + Token + '\'' +

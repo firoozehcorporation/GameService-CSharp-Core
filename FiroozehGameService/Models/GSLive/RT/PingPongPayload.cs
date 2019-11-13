@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.RT
 {
     [Serializable]
-    internal class PingPongPayload
+    internal class PingPongPayload : Payload
     {
       
         [JsonProperty("1")]

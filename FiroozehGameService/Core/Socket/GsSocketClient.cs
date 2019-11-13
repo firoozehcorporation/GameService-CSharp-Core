@@ -2,7 +2,6 @@
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.EventArgs;
 using System;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,24 +11,31 @@ namespace FiroozehGameService.Core.Socket
     internal abstract class GsSocketClient
     {
         #region Fields
-        const int BufferCapacity = 1024 * 10;
-        protected Area _endpoint;
-        protected CancellationTokenSource _operaionCancelationToken = new CancellationTokenSource();
+        private const int BufferCapacity = 1024 * 64;
+        protected Area Endpoint;
+        protected CancellationTokenSource OpraitonCancelationToken = new CancellationTokenSource();
 
         //TODO replace string to byteArrayStream
-        protected StringBuilder _dataBuilder = new StringBuilder();
+        protected StringBuilder DataBuilder = new StringBuilder();
 
-        protected byte[] _buffer = new byte[BufferCapacity];
-        protected int _bufferOffset = 0;
-        protected int _bufferReceivedBytes = 0;
-        protected IValidator _packetValidator = new JsonDataValidator();
+        protected byte[] Buffer = new byte[BufferCapacity];
+        protected const int BufferOffset = 0;
+        protected int BufferReceivedBytes = 0;
+        protected readonly IValidator PacketValidator = new JsonDataValidator();
         #endregion
 
         public event EventHandler<SocketDataReceived> DataReceived;
+        public event EventHandler<ErrorArg> Error;
 
-        protected virtual void OnDataReceived(SocketDataReceived arg)
+
+        protected void OnDataReceived(SocketDataReceived arg)
         {
             DataReceived?.Invoke(this, arg);
+        }
+        
+        protected void OnClosed(ErrorArg errorArg)
+        {
+            Error?.Invoke(this,errorArg);
         }
 
         public abstract Task Init();
@@ -40,4 +46,5 @@ namespace FiroozehGameService.Core.Socket
 
         public abstract void StopReceiving();
     }
+    
 }

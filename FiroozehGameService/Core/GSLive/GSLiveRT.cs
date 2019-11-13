@@ -22,6 +22,8 @@
 */
 
 
+using FiroozehGameService.Models.Interfaces;
+
 namespace FiroozehGameService.Core.GSLive
 {
     /// <summary>
@@ -38,85 +40,11 @@ namespace FiroozehGameService.Core.GSLive
             
         }
         
-        /*
-        private static void SetEventListener(IEventListener listener)
+      
+        private static void AddEventListener(GSLiveRealTimeListener listener)
         {
-           var rt = GSLiveProvider.GetGSLiveRT();
-           rt.Call("SetListener", listener);
         }
 
-        /// <summary>
-        /// Set Listener For Receive GSLive RealTime System Events.
-        /// </summary>
-        /// <param name="realTimeListener">(NOTNULL)Listener For Receive GSLive RealTime System Events</param>
-        public void SetListener(GSLiveRealTimeListener realTimeListener)
-        {            
-            if (realTimeListener != null)
-            {
-                _realTimeListener = realTimeListener;
-                var eventListener = new IEventListener((type, payload) =>
-                {
-                    switch ((EventType) type)
-                    {
-                        case EventType.JoinRoom:
-                            var join = JsonConvert.DeserializeObject<JoinData>(payload);
-                            _realTimeListener.OnJoin(join,(JoinType)join.JoinType);
-                            break;
-                        case EventType.LeaveRoom:
-                            var leave = JsonConvert.DeserializeObject<Message>(payload);
-                            _realTimeListener.OnLeave(new Leave {RoomId = leave.RoomId, MemberLeave = JsonConvert.DeserializeObject<Member>(leave.Data)});
-                            break;
-                        case EventType.PublicMessageReceive:
-                            _realTimeListener.OnMessageReceive(JsonConvert.DeserializeObject<Message>(payload),MessageType.Public);
-                            break;
-                        case EventType.PrivateMessageReceive:
-                            _realTimeListener.OnMessageReceive(JsonConvert.DeserializeObject<Message>(payload),MessageType.Private);
-                            break;
-                        case EventType.AvailableRoom:
-                            _realTimeListener.OnAvailableRooms(JsonConvert.DeserializeObject<List<Room>>(payload));
-                            break;
-                        case EventType.MemberForAutoMatch:
-                            _realTimeListener.OnAutoMatchUpdate(AutoMatchStatus.OnUserJoined,JsonConvert.DeserializeObject<List<User>>(payload));
-                            break;
-                        case EventType.AutoMatchWaiting:
-                            _realTimeListener.OnAutoMatchUpdate(AutoMatchStatus.OnWaiting,JsonConvert.DeserializeObject<List<User>>(payload));
-                            break;
-                        case EventType.MembersDetail:
-                            var details = JsonConvert.DeserializeObject<Message>(payload);
-                            _realTimeListener.OnRoomMembersDetail(JsonConvert.DeserializeObject<List<Member>>(details.Data));
-                            break; 
-                        case EventType.ActionGetInviteList:
-                            _realTimeListener.OnInviteInbox(JsonConvert.DeserializeObject<List<Invite>>(payload));
-                            break; 
-                        case EventType.ActionInviteUser:
-                            _realTimeListener.OnInviteSend();
-                            break; 
-                        case EventType.ActionFindUser:
-                            _realTimeListener.OnFindUsers(JsonConvert.DeserializeObject<List<User>>(payload));
-                            break; 
-                        case EventType.ActionInviteReceive:
-                            _realTimeListener.OnInviteReceive(JsonConvert.DeserializeObject<Invite>(payload));
-                            break; 
-                        case EventType.Success:
-                            _realTimeListener.OnSuccess();
-                            break;   
-                        default:
-                            break;
-                    }
-
-                }, _realTimeListener.OnRealTimeError);
-
-                IsAvailable = true;
-                SetEventListener(eventListener);
-            }
-            else
-            {
-                LogUtil.LogError(Tag,"Listener Must not be NULL");
-            }
-        }
-        */
-
-        
         /// <summary>
         /// Create Room With Option Like : Name , Min , Max , Role , IsPrivate
         /// </summary>

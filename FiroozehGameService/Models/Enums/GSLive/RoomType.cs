@@ -18,12 +18,12 @@
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameServiceAndroid.Enums.GSLive
+namespace FiroozehGameService.Models.Enums.GSLive
 {
     /// <summary>
     /// Represents GSLiveType Of GSLive System
     /// </summary>
-    public enum GSLiveType
+    public enum RoomType
     {
        NotSet , TurnBased , RealTime
     }

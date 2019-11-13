@@ -5,13 +5,13 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.TB
 {
     [Serializable]
-    internal class DataPayload
+    internal class DataPayload : Payload
     {
         [JsonProperty("0")]
         public int Action { get; set; }
         
         [JsonProperty("1")]
-        public string RoomId { get; set; }
+        public string Id { get; set; }
         
         [JsonProperty("2")]
         public string Data { get; set; }
@@ -30,7 +30,7 @@ namespace FiroozehGameService.Models.GSLive.TB
         public override string ToString () {
             return "DataPayload{" +
                    "Action=" + Action +
-                   ", ID='" + RoomId + '\'' +
+                   ", ID='" + Id + '\'' +
                    ", Data='" + Data + '\'' +
                    ", Next='" + NextId + '\'' +
                    ", Outcomes=" + Outcomes +

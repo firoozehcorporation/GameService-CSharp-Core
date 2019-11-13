@@ -16,6 +16,7 @@
 
 
 using System;
+using FiroozehGameService.Models.Enums.GSLive;
 using Newtonsoft.Json;
 
 
@@ -124,6 +125,13 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Room Status Value</value>
         [JsonProperty("status")]
         public int Status { set; get; }
+        
+        /// <summary>
+        /// Gets the Room Status Value.
+        /// </summary>
+        /// <value>the Room Status Value</value>
+        [JsonProperty("syncMode")]
+        public RoomType RoomType { set; get; }
         
     }
 }

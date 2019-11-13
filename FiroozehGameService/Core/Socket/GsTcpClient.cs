@@ -9,10 +9,9 @@ namespace FiroozehGameService.Core.Socket
 {
     internal class GsTcpClient : GsSocketClient
     {
-        private TcpClient _client;
+        private readonly TcpClient _client;
         private NetworkStream _clientStream;
-
-        // public bool IsAvailable { set; get; }
+        public bool IsAvailable { get; private set; }
 
         public GsTcpClient(Area area)
         {
@@ -20,14 +19,14 @@ namespace FiroozehGameService.Core.Socket
                 throw new InvalidOperationException("Only TCP Protocol Supported");
 
             _client = new TcpClient();
-            _endpoint = area;
+            Endpoint = area;
         }
 
         public override async Task Init()
         {
-            await _client.ConnectAsync(_endpoint.IP, _endpoint.Port);
+            await _client.ConnectAsync(Endpoint.IP, Endpoint.Port);
             _clientStream = _client.GetStream();
-            //IsAvailable = true;
+            IsAvailable = true;
         }
 
         public override async Task StartReceiving()
@@ -36,23 +35,32 @@ namespace FiroozehGameService.Core.Socket
             {
                 try
                 {
-                    _bufferReceivedBytes += await _clientStream.ReadAsync(
-                        _buffer,
-                        _bufferOffset,
-                        _buffer.Length - _bufferOffset,
-                        _operaionCancelationToken.Token);
+                    BufferReceivedBytes += await _clientStream.ReadAsync(
+                        Buffer,
+                        BufferOffset,
+                        Buffer.Length - BufferOffset,
+                        OpraitonCancelationToken.Token);
 
-                    _dataBuilder.Append(Encoding.UTF8.GetString(_buffer, _bufferOffset, _bufferReceivedBytes));
-                    _bufferReceivedBytes = 0;
+                    DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
+                    BufferReceivedBytes = 0;
 
-                    if (_packetValidator.ValidateData(_dataBuilder))
-                    {
-                        OnDataReceived(new SocketDataReceived() { Message = _dataBuilder.ToString() });
-                        _dataBuilder.Clear();
-                    }
+                    if (!PacketValidator.ValidateData(DataBuilder)) continue;
+                    OnDataReceived(new SocketDataReceived {Data = DataBuilder.ToString()});
+                    DataBuilder.Clear();
                 }
-                catch (OperationCanceledException) {/* nothing to be afraid of :3 */ break; }
-                catch (ObjectDisposedException) { break; }
+                catch (OperationCanceledException e)
+                {
+                    /* nothing to be afraid of :3 */
+                    IsAvailable = false;
+                    OnClosed(new ErrorArg {Error = e.Message});
+                    break;
+                }
+                catch (ObjectDisposedException e)
+                {
+                    IsAvailable = false;
+                    OnClosed(new ErrorArg {Error = e.Message});
+                    break;
+                }
             }
         }
 
@@ -61,9 +69,11 @@ namespace FiroozehGameService.Core.Socket
 
         public override void StopReceiving()
         {
-            _operaionCancelationToken.Cancel(true);
+            OpraitonCancelationToken.Cancel(true);
             _client.Close();
             _client.Dispose();
+            IsAvailable = false;
         }
+       
     }
 }

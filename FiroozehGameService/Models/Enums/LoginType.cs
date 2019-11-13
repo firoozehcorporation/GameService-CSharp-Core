@@ -18,7 +18,7 @@
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameServiceAndroid.Enums
+namespace FiroozehGameService.Models.Enums
 {
     /// <summary>
     /// Represents LoginType Of Game Service In First Initialize

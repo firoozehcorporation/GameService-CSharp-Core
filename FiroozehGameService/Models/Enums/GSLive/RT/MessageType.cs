@@ -19,7 +19,7 @@
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameServiceAndroid.Enums.GSLive.RT
+namespace FiroozehGameService.Models.Enums.GSLive.RT
 {
     /// <summary>
     /// Represents MessageType Of RealTime System

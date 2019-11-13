@@ -23,7 +23,7 @@
 
 namespace FiroozehGameService.Models.EventArgs
 {
-    public class ErrorArg
+    public class ErrorArg : System.EventArgs
     {
         public string Error { get; set; }
     }

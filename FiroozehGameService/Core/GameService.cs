@@ -39,7 +39,7 @@ namespace FiroozehGameService.Core
     public sealed class GameService
     {       
         private const string Tag = "FiroozehGameService";
-        public event EventHandler<Notification> NotificationReceived;
+        public static event EventHandler<Notification> NotificationReceived;
         public static DownloadManager DownloadManager;
         
         internal static string UserToken;
@@ -64,8 +64,8 @@ namespace FiroozehGameService.Core
             GSLive = new GSLive.GSLive();
         }
 
-        public void OnNotificationReceived(Notification notification)
-            => NotificationReceived?.Invoke(this,notification);
+        public static void OnNotificationReceived(Notification notification)
+            => NotificationReceived?.Invoke(null,notification);
 
 
 

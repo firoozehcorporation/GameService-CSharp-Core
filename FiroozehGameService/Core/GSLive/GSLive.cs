@@ -20,6 +20,8 @@
 */
 
 
+using System.Threading.Tasks;
+using FiroozehGameService.Handlers;
 
 namespace FiroozehGameService.Core.GSLive
 {
@@ -31,6 +33,7 @@ namespace FiroozehGameService.Core.GSLive
     {
         
         private const string Tag = "GSLive";
+        internal static GsHandler Handler;
         
         public GSLiveRT RealTime { get; private set; }
         public GSLiveTB TurnBased { get; private set; }
@@ -39,9 +42,15 @@ namespace FiroozehGameService.Core.GSLive
         
         public GSLive()
         {
+            Handler = new GsHandler();
             RealTime = new GSLiveRT();
             Chat = new GSLiveChat();
             TurnBased = new GSLiveTB();
+        }
+
+        public async Task<bool> Init()
+        {
+           return await Handler.Init();
         }
 
         public bool IsRealTimeAvailable()

@@ -20,7 +20,7 @@
 
 
 
-namespace FiroozehGameServiceAndroid.Enums.GSLive
+namespace FiroozehGameService.Models.Enums.GSLive
 {
     /// <summary>
     /// Represents JoinType Of GSLive System

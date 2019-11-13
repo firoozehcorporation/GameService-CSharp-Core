@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.RT
 {
     [Serializable]
-    internal class DataPayload
+    internal class DataPayload : Payload
     {
         [JsonProperty("1")]
         public int Action { get; set; }
@@ -22,7 +22,7 @@ namespace FiroozehGameService.Models.GSLive.RT
         public string Payload { get; set; }
         
         
-        public DataPayload (int action, string roomId, string userHash, string receiverId, String payload) {
+        public DataPayload (int action, string roomId, string userHash, string receiverId = null, string payload = null) {
             Action = action;
             RoomId = roomId;
             UserHash = userHash;

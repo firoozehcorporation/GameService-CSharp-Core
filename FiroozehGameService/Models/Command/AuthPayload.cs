@@ -1,10 +1,11 @@
 using System;
+using FiroozehGameService.Models.GSLive;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.Command
 {
     [Serializable]
-    internal class AuthPayload
+    internal class AuthPayload : Payload
     {
         [JsonProperty("0")]
         public string GameId { get; set; }

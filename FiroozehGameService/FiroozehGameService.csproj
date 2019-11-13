@@ -59,6 +59,10 @@
     <Compile Include="Core\Socket\GsUdpClient.cs" />
     <Compile Include="Core\Socket\PacketValidators\IValidator.cs" />
     <Compile Include="Core\Socket\PacketValidators\JsonDataValidator.cs" />
+      <Compile Include="Handlers\CommandHandler.cs"/>
+      <Compile Include="Handlers\GsHandler.cs"/>
+      <Compile Include="Handlers\RTHandler.cs"/>
+      <Compile Include="Handlers\TBHandler.cs"/>
     <Compile Include="Models\BasicApi\Achievement.cs" />
     <Compile Include="Models\BasicApi\Bucket.cs" />
     <Compile Include="Models\BasicApi\Download.cs" />
@@ -94,11 +98,13 @@
     <Compile Include="Models\Command\StartPayload.cs" />
     <Compile Include="Models\Consts\Api.cs" />
     <Compile Include="Models\Consts\Command.cs" />
+      <Compile Include="Models\Consts\RT.cs"/>
+      <Compile Include="Models\Consts\TB.cs"/>
     <Compile Include="Models\Enums\Command\MarketType.cs" />
     <Compile Include="Models\Enums\Command\TapActionType.cs" />
     <Compile Include="Models\Enums\GameServiceType.cs" />
     <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs" />
-    <Compile Include="Models\Enums\GSLive\GSLiveType.cs" />
+      <Compile Include="Models\Enums\GSLive\RoomType.cs"/>
     <Compile Include="Models\Enums\GSLive\JoinType.cs" />
     <Compile Include="Models\Enums\GSLive\RT\EventType.cs" />
     <Compile Include="Models\Enums\GSLive\RT\MessageType.cs" />
@@ -117,6 +123,7 @@
     <Compile Include="Models\GSLive\Leave.cs" />
     <Compile Include="Models\GSLive\Member.cs" />
     <Compile Include="Models\GSLive\Message.cs" />
+      <Compile Include="Models\GSLive\Payload.cs"/>
     <Compile Include="Models\GSLive\Room.cs" />
     <Compile Include="Models\GSLive\RoomData.cs" />
     <Compile Include="Models\GSLive\RT\AuthPayload.cs" />
@@ -131,6 +138,10 @@
     <Compile Include="Models\GSLive\TB\Finish.cs" />
     <Compile Include="Models\GSLive\TB\Outcome.cs" />
     <Compile Include="Models\GSLive\TB\Turn.cs" />
+      <Compile Include="Models\Interfaces\GSLiveChatListener.cs"/>
+      <Compile Include="Models\Interfaces\GSLiveCommandListeners.cs"/>
+      <Compile Include="Models\Interfaces\GSLiveRealTimeListener.cs"/>
+      <Compile Include="Models\Interfaces\GSLiveTurnBasedListener.cs"/>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\NetworkUtil.cs" />
   </ItemGroup>

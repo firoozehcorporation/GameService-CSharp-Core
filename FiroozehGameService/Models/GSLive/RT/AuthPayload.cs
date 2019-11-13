@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.RT
 {
     [Serializable]
-    internal class AuthPayload
+    internal class AuthPayload : Payload
     {
         [JsonProperty("1")]
         public string RoomId { get; set; }

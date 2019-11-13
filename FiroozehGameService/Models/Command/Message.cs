@@ -28,7 +28,9 @@ namespace FiroozehGameService.Models.Command
             SenderId = sender;
             Data = data;
         }
-        
+
+       
+
         public override string ToString () {
             return "Message{" +
                    "isPrivate=" + IsPrivate +

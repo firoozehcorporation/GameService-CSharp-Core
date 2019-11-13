@@ -19,7 +19,7 @@
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameServiceAndroid.Enums.GSLive
+namespace FiroozehGameService.Models.Enums.GSLive
 {
     /// <summary>
     /// Represents AutoMatchStatus Of GSLive System

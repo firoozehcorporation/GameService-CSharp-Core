@@ -21,7 +21,7 @@
 */
 
 
-namespace FiroozehGameServiceAndroid.Enums.GSLive.TB
+namespace FiroozehGameService.Models.Enums.GSLive.TB
 {
     /// <summary>
     /// Represents EventType Of TurnBased System

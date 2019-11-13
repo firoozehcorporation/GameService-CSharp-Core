@@ -3,50 +3,62 @@ using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using FiroozehGameService.Models.EventArgs;
 
 namespace FiroozehGameService.Core.Socket
 {
     internal class GsUdpClient : GsSocketClient
     {
-        private UdpClient _client;
+        private readonly UdpClient _client;
+        public bool IsAvailable { get; private set; }
 
         public GsUdpClient(Area endpoint)
         {
             if (endpoint.Protocol.ToUpper() != "UDP")
                 throw new InvalidOperationException("Only UDP Protocol Supported");
 
-            _endpoint = endpoint;
+            Endpoint = endpoint;
             _client = new UdpClient(endpoint.IP, endpoint.Port);
+            IsAvailable = true;
         }
 
         public override async Task StartReceiving()
         {
-            UdpReceiveResult packet;
             while (true)
             {
                 try
                 {
-                    packet = await _client.ReceiveAsync();
+                    var packet = await _client.ReceiveAsync();
 
-                    OnDataReceived(new Models.EventArgs.SocketDataReceived()
-                    { Message = Encoding.UTF8.GetString(packet.Buffer) });
+                    OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(packet.Buffer) });
                 }
-                catch (OperationCanceledException) { break; }
-                catch (ObjectDisposedException) { break; }
+                catch (OperationCanceledException e)
+                {
+                    /* nothing to be afraid of :3 */
+                    IsAvailable = false;
+                    OnClosed(new ErrorArg {Error = e.Message});
+                    break;
+                }
+                catch (ObjectDisposedException e)
+                {
+                    IsAvailable = false;
+                    OnClosed(new ErrorArg {Error = e.Message});
+                    break;
+                }
             }
         }
 
         public override Task Init()
         {
-            _operaionCancelationToken = null;
-            _buffer = null;
-            _dataBuilder = null;
+            OpraitonCancelationToken = null;
+            Buffer = null;
+            DataBuilder = null;
 
             return Task.CompletedTask;
         }
 
         public override async Task Send(byte[] buffer)
-            => await _client.SendAsync(buffer, buffer.Length, _endpoint.IP, _endpoint.Port);
+            => await _client.SendAsync(buffer, buffer.Length, Endpoint.IP, Endpoint.Port);
 
         public override void StopReceiving()
         {

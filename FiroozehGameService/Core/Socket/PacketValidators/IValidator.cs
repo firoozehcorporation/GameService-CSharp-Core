@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace FiroozehGameService.Core.Socket.PacketValidators
 {
-    interface IValidator
+    internal interface IValidator
     {
-        bool ValidateData(StringBuilder dataBuffer);
+        bool ValidateData(StringBuilder dataBuilder);
 
         bool ValidateBinaryData(byte[] buffer, int offset, int length);
     }

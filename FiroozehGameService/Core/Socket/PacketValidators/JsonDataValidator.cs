@@ -4,21 +4,28 @@ namespace FiroozehGameService.Core.Socket.PacketValidators
 {
     internal class JsonDataValidator : IValidator
     {
-        private static byte OpenedBracketByte = Encoding.ASCII.GetBytes("{")[0];
-        private static byte ClosedBracketByte = Encoding.ASCII.GetBytes("}")[0];
+        private static readonly byte OpenedBracketByte = Encoding.ASCII.GetBytes("{")[0];
+        private static readonly byte ClosedBracketByte = Encoding.ASCII.GetBytes("}")[0];
 
-        public bool ValidateData(StringBuilder _dataBuiler)
+        public bool ValidateData(StringBuilder dataBuilder)
         {
-            char openedBracket = '{';
-            char closedBracket = '}';
-            int scopeLevel = 0;
+            const char openedBracket = '{';
+            const char closedBracket = '}';
+            var scopeLevel = 0;
 
-            for (int i = 0; i < _dataBuiler.Length; i++)
+            for (var i = 0; i < dataBuilder.Length; i++)
             {
-                if (_dataBuiler[i] == openedBracket)
-                    scopeLevel++;
-                else if (_dataBuiler[i] == closedBracket)
-                    scopeLevel--;
+                switch (dataBuilder[i])
+                {
+                    case openedBracket:
+                        scopeLevel++;
+                        break;
+                    case closedBracket:
+                        scopeLevel--;
+                        break;
+                    default:
+                        break;
+                }
             }
 
             return scopeLevel == 0;
@@ -26,17 +33,17 @@ namespace FiroozehGameService.Core.Socket.PacketValidators
 
         public bool ValidateBinaryData(byte[] buffer, int offset, int length)
         {
-            bool continuouse = false;
-            int scopeLevel = 0;
+            var continuous = false;
+            var scopeLevel = 0;
 
-            for (int i = offset; i < length && i < buffer.Length; i++)
+            for (var i = offset; i < length && i < buffer.Length; i++)
             {
                 if (i > 0)
-                    continuouse = buffer[i - 1] > 128; //highest bit (128)
+                    continuous = buffer[i - 1] > 128; //highest bit (128)
 
-                if (!continuouse && buffer[i] == OpenedBracketByte)
+                if (!continuous && buffer[i] == OpenedBracketByte)
                     scopeLevel++;
-                else if (!continuouse && buffer[i] == ClosedBracketByte)
+                else if (!continuous && buffer[i] == ClosedBracketByte)
                     scopeLevel--;
             }
             return scopeLevel == 0;

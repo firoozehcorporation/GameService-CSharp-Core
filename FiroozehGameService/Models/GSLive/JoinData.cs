@@ -15,6 +15,7 @@
 // </copyright>
 
 using System;
+using FiroozehGameService.Models.Enums.GSLive;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.GSLive
@@ -29,7 +30,7 @@ namespace FiroozehGameService.Models.GSLive
         /// Gets the Room Join Type.
         /// </summary>
         /// <value>the Room Join Type</value>
-        /// <see cref="FiroozehGameServiceAndroid.Enums.GSLive.JoinType"/>
+        /// <see cref="Enums.GSLive.JoinType"/>
         [JsonProperty("1")]
         public int JoinType { get; set; }
         

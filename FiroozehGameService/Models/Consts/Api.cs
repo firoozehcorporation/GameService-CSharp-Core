@@ -1,6 +1,6 @@
 namespace FiroozehGameService.Models.Consts
 {
-    public sealed class Api
+    internal sealed class Api
     {
         public const string BaseUrl = "https://gamesservice.ir";
         public const string Wsuri = "wss://gamesservice.ir";
