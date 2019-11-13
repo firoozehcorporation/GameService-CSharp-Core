@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Models.Command
+namespace FiroozehGameService.Models.BasicApi
 {
     public class Data
     {
