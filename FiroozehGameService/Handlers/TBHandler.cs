@@ -89,7 +89,7 @@ namespace FiroozehGameService.Handlers
             await DoRequest(TB.OnComplete,new DataPayload { Id = whoIsComplete });
         }
         
-        public async Task Complete()
+        public async Task GetMembersDetail()
         {
             if(!_tcpClient.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
             await DoRequest(TB.GetUsers);
@@ -101,9 +101,7 @@ namespace FiroozehGameService.Handlers
             await DoRequest(TB.ActionPingPong);
         }
 
-        
-        
-        
+                
         public void Dispose()
         {
             _tcpClient.StopReceiving();
@@ -111,8 +109,6 @@ namespace FiroozehGameService.Handlers
         }
         
 
-    
-        
         
         private async Task DoRequest(int action, Payload payload = null)
         {
