@@ -46,5 +46,6 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Member User Data</value>
         [JsonProperty("user")]
         public User User { set; get; }
+        
     }
 }

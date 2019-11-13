@@ -23,7 +23,7 @@ using Newtonsoft.Json;
 */
 
 
-namespace FiroozehGameService.Models.GSLive.RT
+namespace FiroozehGameService.Models.GSLive
 {
     /// <summary>
     /// Represents Message Data Model In GameService RealTime MultiPlayer System
