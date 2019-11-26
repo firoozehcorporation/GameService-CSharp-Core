@@ -52,13 +52,13 @@ namespace FiroozehGameService.Core.Socket
                 {
                     /* nothing to be afraid of :3 */
                     IsAvailable = false;
-                    OnClosed(new ErrorArg {Error = e.Message});
+                    //OnClosed(new ErrorArg {Error = e.Message});
                     break;
                 }
                 catch (ObjectDisposedException e)
                 {
                     IsAvailable = false;
-                    OnClosed(new ErrorArg {Error = e.Message});
+                    //OnClosed(new ErrorArg {Error = e.Message});
                     break;
                 }
             }
@@ -71,9 +71,9 @@ namespace FiroozehGameService.Core.Socket
         {
             OpraitonCancelationToken.Cancel(true);
             _client.Close();
+            //unsafe, haven't tested yet
             _client.Dispose();
             IsAvailable = false;
         }
-       
     }
 }

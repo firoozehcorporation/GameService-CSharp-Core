@@ -19,6 +19,7 @@
 * @author Alireza Ghodrati
 */
 
+using FiroozehGameService.Models.Enums.GSLive;
 namespace FiroozehGameService.Core.GSLive
 {
     /// <summary>
@@ -27,18 +28,6 @@ namespace FiroozehGameService.Core.GSLive
     public class GSLiveOption
     {
         /// <summary>
-        /// Represents GSLive CreateRoomOption
-        /// </summary>
-        public class CreateRoomOption
-        {
-            public string RoomName { set; get; }   
-            public int MinPlayer { set; get; }
-            public int MaxPlayer { set; get; }
-            public string Role { set; get; }
-            public bool IsPrivate { set; get; }
-        }
-        
-        /// <summary>
         /// Represents GSLive AutoMatchOption
         /// </summary>
         public class AutoMatchOption
@@ -46,7 +35,18 @@ namespace FiroozehGameService.Core.GSLive
             public int MinPlayer { set; get; }
             public int MaxPlayer { set; get; }
             public string Role { set; get; }
+            public RoomType RoomType { set; get; }
         }
+
+        /// <summary>
+        /// Represents GSLive CreateRoomOption
+        /// </summary>
+        public class CreateRoomOption : AutoMatchOption
+        {
+            public string RoomName { set; get; }   
+            public bool IsPrivate { set; get; }
+        }
+
 
     }
 }

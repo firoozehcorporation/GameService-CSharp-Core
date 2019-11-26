@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
+      <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+          <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\VIP_eR\Desktop\Projects\Newtonsoft.Json.dll</HintPath>
@@ -59,8 +62,26 @@
     <Compile Include="Core\Socket\GsUdpClient.cs" />
     <Compile Include="Core\Socket\PacketValidators\IValidator.cs" />
     <Compile Include="Core\Socket\PacketValidators\JsonDataValidator.cs" />
+      <Compile Include="DictionaryHelper.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\BaseHandler.cs"/>
       <Compile Include="Handlers\CommandHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\AcceptInviteHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\AuthorizationHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\AutoMatchHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\CreateRoomHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\FindUserHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\GetRoomsHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\InviteListHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\InviteUserHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\JoinRoomHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\PingPongHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\SendChannelMessageHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\SubscribeChannelHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_RequestHandlers\UnsubscribeChannelHandler.cs"/>
+      <Compile Include="Handlers\CommandServer_ResponseHandlers\BasicServerResponseHandler.cs"/>
       <Compile Include="Handlers\GsHandler.cs"/>
+      <Compile Include="Handlers\IRequestHandler.cs"/>
+      <Compile Include="Handlers\RoomHandler.cs"/>
       <Compile Include="Handlers\RTHandler.cs"/>
       <Compile Include="Handlers\TBHandler.cs"/>
     <Compile Include="Models\BasicApi\Achievement.cs" />
@@ -111,6 +132,7 @@
     <Compile Include="Models\Enums\GSLive\TB\EventType.cs" />
     <Compile Include="Models\Enums\GsWebRequestMethod.cs" />
     <Compile Include="Models\Enums\LoginType.cs" />
+      <Compile Include="Models\EventArgs\CommandResponseArgs.cs"/>
     <Compile Include="Models\EventArgs\SocketDataReceived.cs" />
     <Compile Include="Models\EventArgs\DownloadProgressArgs.cs" />
     <Compile Include="Models\EventArgs\ErrorArg.cs" />
@@ -148,6 +170,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+    <ItemGroup/>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
                    Other similar extension points exist, see Microsoft.Common.targets.

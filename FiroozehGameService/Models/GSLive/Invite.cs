@@ -66,7 +66,7 @@ namespace FiroozehGameService.Models.GSLive
             
         
         /// <summary>
-        /// Gets The Game Where You Are Invited.
+        /// Gets The Game Which You Are Invited.
         /// </summary>
         /// <value>The Game Where You Are Invited</value>
         [JsonProperty("game")]

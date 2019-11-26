@@ -24,7 +24,7 @@ namespace FiroozehGameService.Handlers
         private static GsUdpClient _udpClient;
         private Task _clientTask;
         private readonly CancellationTokenSource _cancellationToken;
-        private string _playerHash;
+        private string PlayerHash;
         private static string RoomId => GameService.CurrentGame?._Id;
         private static string UserToken => GameService.UserToken;
         private static string PlayToken => GameService.PlayToken;
@@ -66,34 +66,34 @@ namespace FiroozehGameService.Handlers
         
         private async Task SendPingPong()
         {
-            await DoRequest(new PingPongPayload(RoomId,_playerHash), RT.ActionPingPong);
+            await DoRequest(new PingPongPayload(RoomId,PlayerHash), RT.ActionPingPong);
         }
         
         
         public async Task LeaveRoom()
         {
             if(!_udpClient.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
-            await DoRequest(new DataPayload(RT.OnLeave,RoomId,_playerHash),RT.ActionData);
+            await DoRequest(new DataPayload(RT.OnLeave,RoomId,PlayerHash),RT.ActionData);
             Dispose();
         }
         
         public async Task SendPublicMessage(string message)
         {
             if(!_udpClient.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
-            await DoRequest(new DataPayload(RT.SendPublicMessage,RoomId,_playerHash,payload:message),RT.ActionData);
+            await DoRequest(new DataPayload(RT.SendPublicMessage,RoomId,PlayerHash,payload:message),RT.ActionData);
         }
 
         public async Task SendPrivateMessage(string receiverId,string message)
         {
             if(!_udpClient.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
-            await DoRequest(new DataPayload(RT.SendPrivateMessage,RoomId,_playerHash,receiverId,message),RT.ActionData);
+            await DoRequest(new DataPayload(RT.SendPrivateMessage,RoomId,PlayerHash,receiverId,message),RT.ActionData);
         }
         
         
         public async Task GetMembersDetail()
         {
             if(!_udpClient.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
-            await DoRequest(new DataPayload(RT.OnMembersDetail,RoomId,_playerHash),RT.ActionData);
+            await DoRequest(new DataPayload(RT.OnMembersDetail,RoomId,PlayerHash),RT.ActionData);
         }
 
 
@@ -179,7 +179,7 @@ namespace FiroozehGameService.Handlers
             if (payload.Status)
             {
                 IsAvailable = true;
-                _playerHash = payload.Message;
+                PlayerHash = payload.Message;
                 // TODO invoke OnSuccess()
             }
             else

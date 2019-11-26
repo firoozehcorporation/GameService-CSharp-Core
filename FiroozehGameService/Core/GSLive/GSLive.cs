@@ -48,9 +48,9 @@ namespace FiroozehGameService.Core.GSLive
             TurnBased = new GSLiveTB();
         }
 
-        public async Task<bool> Init()
+        public async Task Init()
         {
-           return await Handler.Init();
+            await Handler.Init();
         }
 
         public bool IsRealTimeAvailable()

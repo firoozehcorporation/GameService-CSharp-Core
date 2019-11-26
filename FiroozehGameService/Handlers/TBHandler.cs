@@ -11,6 +11,7 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.TB;
 using Newtonsoft.Json;
+using System;
 using AuthPayload = FiroozehGameService.Models.Command.AuthPayload;
 
 namespace FiroozehGameService.Handlers
@@ -21,11 +22,12 @@ namespace FiroozehGameService.Handlers
         private static GsTcpClient _tcpClient;
         private Task _clientTask;
         private readonly CancellationTokenSource _cancellationToken;
-        private string _playerHash;
+        private string PlayerHash;
         private static string RoomId => GameService.CurrentGame?._Id;
         private static string UserToken => GameService.UserToken;
         private static string PlayToken => GameService.PlayToken;
         public bool IsAvailable { get; private set; }
+
         #endregion
 
         
@@ -36,8 +38,6 @@ namespace FiroozehGameService.Handlers
             _tcpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
         }
-
-       
         
         public async Task<bool> Init()
         {
@@ -47,8 +47,7 @@ namespace FiroozehGameService.Handlers
             IsAvailable = true;
             return true;
         }
-        
-        
+
         private async Task Auth()
         {
             if (_tcpClient.IsAvailable)
@@ -117,7 +116,7 @@ namespace FiroozehGameService.Handlers
         
         private async Task RequestRoomFunctions(int action, Payload payload = null,string message = null)
         {
-            var packet = new Packet(_playerHash,action,JsonConvert.SerializeObject(payload),message);
+            var packet = new Packet(PlayerHash,action,JsonConvert.SerializeObject(payload),message);
             await Send(packet);
         }
        
@@ -140,7 +139,7 @@ namespace FiroozehGameService.Handlers
             switch (packet.Action)
             {
                     case TB.ActionAuth:
-                        _playerHash = packet.Token;
+                        PlayerHash = packet.Token;
                         IsAvailable = true;
                         // TODO invoke OnSuccess()
                         break;
