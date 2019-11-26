@@ -1,11 +1,11 @@
-﻿using FiroozehGameService.Models.Command;
+﻿using System;
+using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
 using Newtonsoft.Json;
-using System;
 
-namespace FiroozehGameService.Handlers.CommandHandlers
+namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
 {
-    internal class SendChannelMessageHandler : BaseHandler<SendChannelMessageHandler>
+    internal class SendChannelMessageHandler : BaseHandler
     {
         public static new string Signature
             => "SENDMESSAGE";

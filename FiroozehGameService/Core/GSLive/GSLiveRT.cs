@@ -22,6 +22,8 @@
 */
 
 
+using FiroozehGameService.Handlers.CommandServer_RequestHandlers;
+using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Interfaces;
 
 namespace FiroozehGameService.Core.GSLive
@@ -51,7 +53,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)Create Room Option</param>
         public void CreateRoom(GSLiveOption.CreateRoomOption option)
         {
-                     
+            GSLive.Handler.CommandHandler.Request(CreateRoomHandler.Signature,option);     
         }
         
         
@@ -61,7 +63,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
         public void AutoMatch(GSLiveOption.AutoMatchOption option)
         {
-            
+            GSLive.Handler.CommandHandler.Request(AutoMatchHandler.Signature,option);     
         }
         
         
@@ -71,7 +73,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
         public void JoinRoom(string roomId)
         {
-           
+            GSLive.Handler.CommandHandler.Request(JoinRoomHandler.Signature,roomId);     
         }
         
         /// <summary>
@@ -79,7 +81,8 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public void LeaveRoom()
         {
-           
+            // TODO Implement Rooms Functions
+           // GSLive.Handler._commandHandler.Request(Leav.Signature,null);     
         }
 
         
@@ -89,7 +92,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="role">(NOTNULL)Room's Role </param>
         public void GetAvailableRooms(string role)
         {
-           
+            GSLive.Handler.CommandHandler.Request(GetRoomsHandler.Signature,role);     
         }
         
        
@@ -99,7 +102,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="data">(NOTNULL) Data To BroadCast </param>
         public void SendPublicMessage(string data)
         {
-             
+            // TODO Implement Rooms Functions
         }    
         
         
@@ -110,7 +113,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="data">(NOTNULL) Data for Send</param>
         public void SendPrivateMessage(string receiverId,string data)
         {
-           
+            // TODO Implement Rooms Functions
         }    
        
         
@@ -119,7 +122,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public void GetRoomMembersDetail()
         {
-             
+            // TODO Implement Rooms Functions
         }
         
         
@@ -128,7 +131,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public void GetInviteInbox()
         {
-           
+            GSLive.Handler.CommandHandler.Request(InviteListHandler.Signature,null);     
         }
         
         
@@ -139,7 +142,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
         public void InviteUser(string roomId,string userId)
         {
-           
+            GSLive.Handler.CommandHandler.Request(InviteUserHandler.Signature,new RoomDetail{User = userId , Id = roomId});     
         }
         
         
@@ -150,7 +153,8 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
         public void AcceptInvite(string inviteId)
         {
-           
+            GSLive.Handler.CommandHandler.Request(AcceptInviteHandler.Signature,inviteId);     
+
         }
         
         /// <summary>
@@ -160,7 +164,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="limit">(Max = 15) The Result Limits</param>
         public void FindUser(string query,int limit)
         {
-           
+            GSLive.Handler.CommandHandler.Request(FindUserHandler.Signature,new RoomDetail{Max = limit , User = query});     
         }
         
     }

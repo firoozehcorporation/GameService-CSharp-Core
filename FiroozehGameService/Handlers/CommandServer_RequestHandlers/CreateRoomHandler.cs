@@ -4,15 +4,15 @@ using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Handlers.CommandHandlers
+namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
 {
-    internal class CreateRoomHandler : BaseHandler<CreateRoomHandler>
+    internal class CreateRoomHandler : BaseHandler
     {
         public static new string Signature =>
           "CREATEROOM";
 
-        public CreateRoomHandler(CommandHandler _handler) =>
-            this._commandHander = _handler;
+        public CreateRoomHandler(CommandHandler handler) =>
+            _commandHander = handler;
 
         protected Packet DoAction(GSLiveOption.CreateRoomOption options)
         {
@@ -20,7 +20,7 @@ namespace FiroozehGameService.Handlers.CommandHandlers
             return new Packet(
                 _commandHander.PlayerHash,
                 Command.ActionCreateRoom,
-                JsonConvert.SerializeObject(new RoomDetail()
+                JsonConvert.SerializeObject(new RoomDetail
                 {
                     Name = options.RoomName,
                     Role = options.Role,

@@ -285,7 +285,7 @@ namespace FiroozehGameService.Core
         /// Login To Game Service As Guest
         /// It May Throw Exception
         /// </summary>
-        public static async Task<bool> Login()
+        public static async Task Login()
         {
             Logout();
             var auth = await ApiRequest.Authorize(Configuration, true);
@@ -293,14 +293,14 @@ namespace FiroozehGameService.Core
             CurrentGame = auth.Game;
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             IsAvailable = true;
-            return true;
+            await GSLive.Init();
         }
         
         /// <summary>
         /// Normal SignUp To Game Service
         /// It May Throw Exception
         /// </summary>
-        public static async Task<bool> SignUp(string nickName,string email , string password)
+        public static async Task SignUp(string nickName,string email , string password)
         {
             Logout();
             var login = await ApiRequest.SignUp(nickName,email,password);
@@ -310,7 +310,7 @@ namespace FiroozehGameService.Core
             CurrentGame = auth.Game;
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             IsAvailable = true;
-            return true;
+            await GSLive.Init();
         }
                
         

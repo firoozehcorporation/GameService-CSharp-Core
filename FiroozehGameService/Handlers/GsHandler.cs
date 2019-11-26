@@ -16,7 +16,7 @@ namespace FiroozehGameService.Handlers
 {
     internal class GsHandler
     {
-        private CommandHandler _commandHandler;
+        public CommandHandler CommandHandler { get; private set; }
         private RTHandler realTimeHandler;
         private TBHandler turnBasedHandler;
 
@@ -25,9 +25,9 @@ namespace FiroozehGameService.Handlers
 
         private GameServiceClientConfiguration Configuration
             => GameService.Configuration;
-
+        
         public GsHandler()
-        { _commandHandler = new CommandHandler();}
+        { CommandHandler = new CommandHandler();}
 
         private async Task ConnectToRTServer(StartPayload payload)
         {
@@ -55,7 +55,7 @@ namespace FiroozehGameService.Handlers
 
         public async Task Init()
         {
-            await _commandHandler.Init();
+            await CommandHandler.Init();
         }
     }
 }

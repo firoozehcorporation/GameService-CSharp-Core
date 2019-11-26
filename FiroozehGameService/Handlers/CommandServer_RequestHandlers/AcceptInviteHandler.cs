@@ -2,10 +2,9 @@
 using FiroozehGameService.Models.Consts;
 using Newtonsoft.Json;
 
-
-namespace FiroozehGameService.Handlers.CommandHandlers
+namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
 {
-    internal class AcceptInviteHandler : BaseHandler<AcceptInviteHandler>
+    internal class AcceptInviteHandler : BaseHandler
     {
         public static new string Signature
             => "ACCEPTINVITE";

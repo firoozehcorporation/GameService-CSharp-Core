@@ -1,12 +1,9 @@
-﻿using FiroozehGameService.Core.GSLive;
-using FiroozehGameService.Models;
-using FiroozehGameService.Models.Command;
+﻿using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
-using Newtonsoft.Json;
 
-namespace FiroozehGameService.Handlers.CommandHandlers
+namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
 {
-    internal class UnsubscribeChannelHandler : BaseHandler<UnsubscribeChannelHandler>
+    internal class UnsubscribeChannelHandler : BaseHandler
     {
         public static new string Signature
             => "UNSUBSCRIBECHANNEL";

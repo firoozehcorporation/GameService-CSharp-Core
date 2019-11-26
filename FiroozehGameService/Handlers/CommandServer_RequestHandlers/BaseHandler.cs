@@ -1,9 +1,9 @@
 ﻿using System;
 using FiroozehGameService.Models.Command;
 
-namespace FiroozehGameService.Handlers
+namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
 {
-    internal abstract class BaseHandler<T> : IRequestHandler where T : class
+    internal abstract class BaseHandler : IRequestHandler
     {
         public static string Signature 
             => throw new NotImplementedException();

@@ -2,10 +2,9 @@
 using FiroozehGameService.Models.Consts;
 using Newtonsoft.Json;
 
-
-namespace FiroozehGameService.Handlers.CommandHandlers
+namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
 {
-    internal class GetRoomsHandler : BaseHandler<GetRoomsHandler>
+    internal class GetRoomsHandler : BaseHandler
     {
         public static new string Signature
             => "AVAILABLEROOMS";

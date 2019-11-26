@@ -4,9 +4,9 @@ using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Handlers.CommandHandlers
+namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
 {
-    internal class AutoMatchHandler : BaseHandler<AutoMatchHandler>
+    internal class AutoMatchHandler : BaseHandler
     {
         public static new string Signature =>
           "AUTOMATCH";
