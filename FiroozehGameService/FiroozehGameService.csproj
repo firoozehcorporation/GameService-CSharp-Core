@@ -37,10 +37,7 @@
     <Reference Include="mscorlib" />
       <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
           <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\VIP_eR\Desktop\Projects\Newtonsoft.Json.dll</HintPath>
+          <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net.Http" />
@@ -63,27 +60,51 @@
     <Compile Include="Core\Socket\PacketValidators\IValidator.cs" />
     <Compile Include="Core\Socket\PacketValidators\JsonDataValidator.cs" />
       <Compile Include="DictionaryHelper.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\BaseHandler.cs"/>
-      <Compile Include="Handlers\CommandHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\AcceptInviteHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\AuthorizationHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\AutoMatchHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\CreateRoomHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\FindUserHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\GetRoomsHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\InviteListHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\InviteUserHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\JoinRoomHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\PingPongHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\SendChannelMessageHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\SubscribeChannelHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_RequestHandlers\UnsubscribeChannelHandler.cs"/>
-      <Compile Include="Handlers\CommandServer_ResponseHandlers\BasicServerResponseHandler.cs"/>
+      <Compile Include="Handlers\Command\CommandHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\AcceptInviteHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\AuthorizationHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\AutoMatchHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\BaseRequestHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\CreateRoomHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\FindUserHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\GetRoomsHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\InviteListHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\InviteUserHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\JoinRoomHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\PingPongHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\SendChannelMessageHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\SubscribeChannelHandler.cs"/>
+      <Compile Include="Handlers\Command\RequestHandlers\UnsubscribeChannelHandler.cs"/>
+      <Compile Include="Handlers\Command\ResponseHandlers\BaseResponseHandler.cs"/>
+      <Compile Include="Handlers\Command\ResponseHandlers\GetRoomResponseHandler.cs"/>
+      <Compile Include="Handlers\Command\ResponseHandlers\IResponseHandler.cs"/>
+      <Compile Include="Handlers\Command\IRequestHandler.cs"/>
       <Compile Include="Handlers\GsHandler.cs"/>
-      <Compile Include="Handlers\IRequestHandler.cs"/>
+      <Compile Include="Handlers\RealTime\IRequestHandler.cs"/>
+      <Compile Include="Handlers\RealTime\RequestHandlers\AuthorizationHandler.cs"/>
+      <Compile Include="Handlers\RealTime\RequestHandlers\BaseRequestHandler.cs"/>
+      <Compile Include="Handlers\RealTime\RequestHandlers\GetMembersHandler.cs"/>
+      <Compile Include="Handlers\RealTime\RequestHandlers\SendPrivateMessageHandler.cs"/>
+      <Compile Include="Handlers\RealTime\RequestHandlers\SendPublicMessageHandler.cs"/>
+      <Compile Include="Handlers\RealTime\RequestHandlers\LeaveRoomHandler.cs"/>
+      <Compile Include="Handlers\RealTime\RequestHandlers\PingPongHandler.cs"/>
+      <Compile Include="Handlers\RealTime\ResponseHandlers\BaseResponseHandler.cs"/>
+      <Compile Include="Handlers\RealTime\ResponseHandlers\IResponseHandler.cs"/>
+      <Compile Include="Handlers\RealTime\RealTimeHandler.cs"/>
       <Compile Include="Handlers\RoomHandler.cs"/>
-      <Compile Include="Handlers\RTHandler.cs"/>
-      <Compile Include="Handlers\TBHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\IRequestHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\AuthorizationHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\BaseRequestHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\ChooseNextHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\CompleteHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\FinishHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\GetMembersHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\LeaveRoomHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\PingPongHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\RequestHandlers\TakeTurnHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\ResponseHandlers\BaseResponseHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\ResponseHandlers\IResponseHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\TurnBasedHandler.cs"/>
     <Compile Include="Models\BasicApi\Achievement.cs" />
     <Compile Include="Models\BasicApi\Bucket.cs" />
     <Compile Include="Models\BasicApi\Download.cs" />
@@ -170,7 +191,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-    <ItemGroup/>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
                    Other similar extension points exist, see Microsoft.Common.targets.

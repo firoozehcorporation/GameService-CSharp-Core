@@ -23,7 +23,8 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FiroozehGameService.Handlers.CommandServer_RequestHandlers;
+using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.TB;
@@ -36,94 +37,6 @@ namespace FiroozehGameService.Core.GSLive
     public class GSLiveTB
     {
         private const string Tag = "GSLive-TurnBased";
-        //private GSLiveTurnBasedListener _turnBasedListener;
-        public bool IsAvailable { get; private set; }
-
-        
-        /*
-          private static void SetEventListener(IEventListener listener)
-        {
-           var tb = GSLiveProvider.GetGSLiveTB();
-            tb.Call("SetListener", listener);
-        }
-
-        /// <summary>
-        /// Set Listener For Receive GSLive TurnBased System Events.
-        /// </summary>
-        /// <param name="turnBasedListener">(NOTNULL)Listener For Receive GSLive TurnBased System Events</param>
-        public void SetListener(GSLiveTurnBasedListener turnBasedListener)
-        {            
-            if (turnBasedListener != null)
-            {
-                _turnBasedListener = turnBasedListener;
-                var eventListener = new IEventListener((type, payload) =>
-                {
-                    switch ((EventType) type)
-                    { 
-                        case EventType.JoinRoom:
-                            var join = JsonConvert.DeserializeObject<JoinData>(payload);
-                            _turnBasedListener.OnJoin(join,(JoinType)join.JoinType);
-                            break;
-                        case EventType.LeaveRoom:
-                            _turnBasedListener.OnLeave(JsonConvert.DeserializeObject<Leave>(payload));
-                            break;    
-                        case EventType.Success:
-                            _turnBasedListener.OnSuccess();
-                            break;
-                        case EventType.TakeTurn:
-                            _turnBasedListener.OnTakeTurn(JsonConvert.DeserializeObject<Turn>(payload));
-                            break;
-                        case EventType.ChooseNext:
-                            _turnBasedListener.OnChooseNext(JsonConvert.DeserializeObject<Member>(payload));
-                            break;
-                        case EventType.Finish:
-                            _turnBasedListener.OnFinish(JsonConvert.DeserializeObject<Finish>(payload));
-                            break;
-                        case EventType.Complete:
-                            _turnBasedListener.OnComplete(JsonConvert.DeserializeObject<Complete>(payload));
-                            break;
-                        case EventType.GetUsers:
-                            _turnBasedListener.OnRoomMembersDetail(JsonConvert.DeserializeObject<List<Member>>(payload));
-                            break;
-                        case EventType.GetInviteList:
-                            _turnBasedListener.OnInviteInbox(JsonConvert.DeserializeObject<List<Invite>>(payload));
-                            break;
-                        case EventType.InviteUser:
-                            _turnBasedListener.OnInviteSend();
-                            break;
-                        case EventType.FindUser:
-                            _turnBasedListener.OnFindUsers(JsonConvert.DeserializeObject<List<User>>(payload));
-                            break;
-                        case EventType.ActionInviteReceive:
-                            _turnBasedListener.OnInviteReceive(JsonConvert.DeserializeObject<Invite>(payload));
-                            break;
-                        case EventType.MatchWaiting:
-                            _turnBasedListener.OnAutoMatchUpdate(AutoMatchStatus.OnWaiting,JsonConvert.DeserializeObject<List<User>>(payload));
-                            break;
-                        case EventType.MemberForAutoMatch:
-                            _turnBasedListener.OnAutoMatchUpdate(AutoMatchStatus.OnUserJoined,JsonConvert.DeserializeObject<List<User>>(payload));
-                            break;
-                        case EventType.AvailableRoom:
-                            _turnBasedListener.OnAvailableRooms(JsonConvert.DeserializeObject<List<Room>>(payload));
-                            break;
-                        case EventType.AcceptInvite:
-                            break;
-                        case EventType.OnConnect:
-                            break;
-                    }
-
-                }, _turnBasedListener.OnTurnBasedError);
-
-                IsAvailable = true;
-                SetEventListener(eventListener);
-            }
-            else
-            {
-                LogUtil.LogError(Tag,"Listener Must not be NULL");
-            }
-        }
-        
-        */
         
         /// <summary>
         /// Create Room With Option Like : Name , Min , Max , Role , IsPrivate
@@ -175,10 +88,9 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="data">(NULLABLE)Room's Role </param>
         /// <param name="whoIsNext">(NULLABLE) Next Player's ID </param>
-        public void TakeTurn(string data , string whoIsNext)
+        public async Task TakeTurn(string data , string whoIsNext)
         {
-           
-           
+            await GSLive.Handler.TurnBasedHandler.Request(TakeTurnHandler.Signature,new DataPayload{Data = data,NextId = whoIsNext});     
         }
         
         
@@ -188,10 +100,9 @@ namespace FiroozehGameService.Core.GSLive
         /// if whoIsNext Set Null , Server Automatically Selects Next Turn 
         /// </summary>
         /// <param name="whoIsNext">(NULLABLE)Next Player's ID </param>
-        public void ChooseNext(string whoIsNext)
+        public async Task ChooseNext(string whoIsNext)
         {
-         
-           
+           await GSLive.Handler.TurnBasedHandler.Request(ChooseNextHandler.Signature,new DataPayload{NextId = whoIsNext});     
         }
 
 
@@ -199,9 +110,10 @@ namespace FiroozehGameService.Core.GSLive
         /// Leave The Current Room , if whoIsNext Set Null , Server Automatically Selects Next Turn 
         /// </summary>
         /// <param name="whoIsNext">(NULLABLE)(Type : Member's ID) Player's id You Want To Select Next Turn</param>
-        public void LeaveRoom(string whoIsNext)
+        public async Task LeaveRoom(string whoIsNext)
         {
-            
+           await GSLive.Handler.TurnBasedHandler.Request(LeaveRoomHandler.Signature,new DataPayload{NextId = whoIsNext});     
+           GSLive.Handler.TurnBasedHandler.Dispose();
         }
 
 
@@ -209,9 +121,9 @@ namespace FiroozehGameService.Core.GSLive
         /// If you want to announce the end of the game, use this function to send the result of your game to other players.
         /// </summary>
         /// <param name="outcomes">(NOTNULL) A set of players and their results</param>
-        public void Finish(Dictionary <string,Outcome> outcomes)
+        public async Task Finish(Dictionary <string,Outcome> outcomes)
         {
-          
+           await GSLive.Handler.TurnBasedHandler.Request(FinishHandler.Signature,new DataPayload{Outcomes = outcomes});     
         }
         
         
@@ -219,18 +131,18 @@ namespace FiroozehGameService.Core.GSLive
         /// If you would like to confirm one of the results posted by other Players
         /// </summary>
         /// <param name="memberId">(NOTNULL)The Specific player ID</param>
-        public void Complete(string memberId)
+        public async Task Complete(string memberId)
         {
-            
+           await GSLive.Handler.TurnBasedHandler.Request(FinishHandler.Signature,new DataPayload{Id = memberId});     
         }
         
         
         /// <summary>
         /// Get Room Members Details 
         /// </summary>
-        public void GetRoomMembersDetail()
+        public async Task GetRoomMembersDetail()
         {
-         
+           await GSLive.Handler.TurnBasedHandler.Request(GetMemberHandler.Signature);     
         }
         
         

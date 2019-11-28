@@ -22,6 +22,8 @@
 
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
+using FiroozehGameService.Handlers.RealTime;
+using FiroozehGameService.Handlers.TurnBased;
 
 namespace FiroozehGameService.Core.GSLive
 {
@@ -35,9 +37,9 @@ namespace FiroozehGameService.Core.GSLive
         private const string Tag = "GSLive";
         internal static GsHandler Handler;
         
-        public GSLiveRT RealTime { get; private set; }
-        public GSLiveTB TurnBased { get; private set; }
-        public GSLiveChat Chat { get; private set; }
+        public GSLiveRT RealTime { get; }
+        public GSLiveTB TurnBased { get; }
+        public GSLiveChat Chat { get; }
 
         
         public GSLive()
@@ -48,19 +50,19 @@ namespace FiroozehGameService.Core.GSLive
             TurnBased = new GSLiveTB();
         }
 
-        public async Task Init()
+        public static async Task Init()
         {
             await Handler.Init();
         }
 
         public bool IsRealTimeAvailable()
         {
-            return RealTime.IsAvailable;
+            return RealTimeHandler.IsAvailable;
         }
         
         public bool IsTurnBasedAvailable()
         {
-            return TurnBased.IsAvailable;
+            return TurnBasedHandler.IsAvailable;
         }
       
     }

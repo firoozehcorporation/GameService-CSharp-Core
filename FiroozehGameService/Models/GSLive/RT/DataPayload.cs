@@ -30,7 +30,11 @@ namespace FiroozehGameService.Models.GSLive.RT
             Payload = payload;
         }
 
-        
+        public DataPayload()
+        {
+        }
+
+
         public override string ToString () {
             return "DataPayload{" +
                    "Action=" + Action +

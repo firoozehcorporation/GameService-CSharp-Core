@@ -64,6 +64,7 @@ namespace FiroozehGameService.Core.Socket
         {
             _client.Close();
             _client.Dispose();
+            IsAvailable = false;
         }
     }
 }

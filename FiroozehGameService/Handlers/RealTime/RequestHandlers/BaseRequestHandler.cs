@@ -1,0 +1,21 @@
+﻿using System;
+using FiroozehGameService.Models.GSLive.RT;
+
+namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
+{
+    internal abstract class BaseRequestHandler : IRequestHandler
+    {
+        protected RealTimeHandler RealTimeHandler;
+
+        public virtual Packet HandleAction(object payload)
+        {
+            if (CheckAction(payload))
+                return DoAction(payload);
+            throw new ArgumentException();
+        }
+
+        protected abstract bool CheckAction(object payload);
+
+        protected abstract Packet DoAction(object payload);
+    }
+}

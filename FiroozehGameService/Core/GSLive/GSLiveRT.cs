@@ -23,9 +23,11 @@
 
 
 using System.Threading.Tasks;
-using FiroozehGameService.Handlers.CommandServer_RequestHandlers;
+using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Models.Interfaces;
 
 namespace FiroozehGameService.Core.GSLive
@@ -36,19 +38,11 @@ namespace FiroozehGameService.Core.GSLive
     public class GSLiveRT
     {
         private const string Tag = "GSLive-RealTime";
-        //private GSLiveRealTimeListener _realTimeListener;
-        public bool IsAvailable { get; private set; }
-
         public GSLiveRT()
         {
             
         }
         
-      
-        private static void AddEventListener(GSLiveRealTimeListener listener)
-        {
-        }
-
         /// <summary>
         /// Create Room With Option Like : Name , Min , Max , Role , IsPrivate
         /// </summary>
@@ -83,10 +77,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <summary>
         /// Leave The Current Room
         /// </summary>
-        public void LeaveRoom()
+        public async Task LeaveRoom()
         {
-            // TODO Implement Rooms Functions
-           // GSLive.Handler._commandHandler.Request(Leav.Signature,null);     
+            await GSLive.Handler.RealTimeHandler.Request(LeaveRoomHandler.Signature);     
+            GSLive.Handler.RealTimeHandler.Dispose();
         }
 
         
@@ -104,9 +98,9 @@ namespace FiroozehGameService.Core.GSLive
         /// Send A Data To All Players in Room. 
         /// </summary>
         /// <param name="data">(NOTNULL) Data To BroadCast </param>
-        public void SendPublicMessage(string data)
+        public async Task SendPublicMessage(string data)
         {
-            // TODO Implement Rooms Functions
+            await GSLive.Handler.RealTimeHandler.Request(SendPublicMessageHandler.Signature,new DataPayload{Payload = data});     
         }    
         
         
@@ -115,18 +109,18 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="receiverId">(NOTNULL) (Type : MemberID)Player's ID</param>
         /// <param name="data">(NOTNULL) Data for Send</param>
-        public void SendPrivateMessage(string receiverId,string data)
+        public async Task SendPrivateMessage(string receiverId,string data)
         {
-            // TODO Implement Rooms Functions
+            await GSLive.Handler.RealTimeHandler.Request(SendPrivateMessageHandler.Signature,new DataPayload{ReceiverId = receiverId,Payload = data});     
         }    
        
         
         /// <summary>
         /// Get Room Members Details 
         /// </summary>
-        public void GetRoomMembersDetail()
+        public async Task GetRoomMembersDetail()
         {
-            // TODO Implement Rooms Functions
+            await GSLive.Handler.RealTimeHandler.Request(GetMemberHandler.Signature);     
         }
         
         
