@@ -4,13 +4,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class PingPongHandler : BaseRequestHandler
     {
-        public static new string Signature
-            => "PINGPONG";
+        public static string Signature
+            => "PING_PONG";
 
-        public PingPongHandler(CommandHandler _handler)
-            => this.CommandHandler = _handler;
+        public PingPongHandler(CommandHandler handler)
+            => CommandHandler = handler;
 
-        protected Packet DoAction()
+        private static Packet DoAction()
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionPing);

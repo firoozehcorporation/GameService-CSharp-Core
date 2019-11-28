@@ -9,7 +9,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
     internal class LeaveRoomHandler : BaseRequestHandler
     {
         public static string Signature =>
-            "LEAVEROOM";
+            "LEAVE_ROOM";
 
         public LeaveRoomHandler(RealTimeHandler handler) =>
             RealTimeHandler = handler;

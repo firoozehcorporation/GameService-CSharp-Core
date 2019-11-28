@@ -7,13 +7,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class AutoMatchHandler : BaseRequestHandler
     {
-        public static new string Signature =>
-          "AUTOMATCH";
+        public static string Signature =>
+          "AUTO_MATCH";
 
-        public AutoMatchHandler(CommandHandler _handler) =>
-            this.CommandHandler = _handler;
+        public AutoMatchHandler(CommandHandler handler) =>
+            this.CommandHandler = handler;
 
-        protected Packet DoAction(GSLiveOption.AutoMatchOption options)
+        private static Packet DoAction(GSLiveOption.AutoMatchOption options)
         {
             if (!CommandHandler.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
             return new Packet(

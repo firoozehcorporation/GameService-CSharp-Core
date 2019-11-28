@@ -12,7 +12,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public SendChannelMessageHandler(CommandHandler handler)
             => CommandHandler = handler;
 
-        private Packet DoAction(Tuple<string, string> channelMessage)
+        private static Packet DoAction(Tuple<string, string> channelMessage)
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionChat,

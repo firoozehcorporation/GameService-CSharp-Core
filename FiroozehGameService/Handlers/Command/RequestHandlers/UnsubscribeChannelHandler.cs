@@ -10,7 +10,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public UnsubscribeChannelHandler(CommandHandler handler)
             => CommandHandler = handler;
 
-        private Packet DoAction(string channelName)
+        private static Packet DoAction(string channelName)
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionUnSubscribe,

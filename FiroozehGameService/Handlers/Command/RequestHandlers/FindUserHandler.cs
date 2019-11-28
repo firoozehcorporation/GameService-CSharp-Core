@@ -5,13 +5,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class FindUserHandler : BaseRequestHandler
     {
-        public static new string Signature
-            => "FINDUSER";
+        public static string Signature
+            => "FIND_USER";
 
-        public FindUserHandler(CommandHandler _handler)
-            => this.CommandHandler = _handler;
+        public FindUserHandler(CommandHandler handler)
+            => CommandHandler = handler;
 
-        protected Packet DoAction(RoomDetail options)
+        private static Packet DoAction(RoomDetail options)
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionFindUser,

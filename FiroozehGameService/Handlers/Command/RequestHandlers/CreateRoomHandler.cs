@@ -7,13 +7,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class CreateRoomHandler : BaseRequestHandler
     {
-        public static new string Signature =>
-          "CREATEROOM";
+        public static string Signature =>
+          "CREATE_ROOM";
 
         public CreateRoomHandler(CommandHandler handler) =>
             CommandHandler = handler;
 
-        protected Packet DoAction(GSLiveOption.CreateRoomOption options)
+        private static Packet DoAction(GSLiveOption.CreateRoomOption options)
         {
             if (!CommandHandler.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
             return new Packet(

@@ -5,13 +5,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class InviteListHandler : BaseRequestHandler
     {
-        public static new string Signature
-            => "INVITELIST";
+        public static string Signature
+            => "INVITE_LIST";
 
-        public InviteListHandler(CommandHandler _handler)
-            => this.CommandHandler = _handler;
+        public InviteListHandler(CommandHandler handler)
+            => CommandHandler = handler;
 
-        protected Packet DoAction(RoomDetail inviteOptions)
+        private static Packet DoAction(RoomDetail inviteOptions)
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionGetInviteList,

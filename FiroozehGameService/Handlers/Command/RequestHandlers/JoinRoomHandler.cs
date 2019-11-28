@@ -5,13 +5,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class JoinRoomHandler : BaseRequestHandler
     {
-        public static new string Signature
-            => "JOINROOM";
+        public static string Signature
+            => "JOIN_ROOM";
 
-        public JoinRoomHandler(CommandHandler _handler)
-            => this.CommandHandler = _handler;
+        public JoinRoomHandler(CommandHandler handler)
+            => CommandHandler = handler;
 
-        protected Packet DoAction(RoomDetail room)
+        private static Packet DoAction(RoomDetail room)
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionJoinRoom,

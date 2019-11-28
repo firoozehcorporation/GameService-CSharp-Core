@@ -5,13 +5,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class GetRoomsHandler : BaseRequestHandler
     {
-        public static new string Signature
-            => "AVAILABLEROOMS";
+        public static string Signature
+            => "AVAILABLE_ROOMS";
 
-        public GetRoomsHandler(CommandHandler _handler)
-            => this.CommandHandler = _handler;
+        public GetRoomsHandler(CommandHandler handler)
+            => CommandHandler = handler;
 
-        protected Packet DoAction(RoomDetail roomOptions)
+        private static Packet DoAction(RoomDetail roomOptions)
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionGetRooms,

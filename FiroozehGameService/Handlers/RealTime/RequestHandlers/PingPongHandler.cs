@@ -10,7 +10,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
     internal class PingPongHandler : BaseRequestHandler
     {
         public static string Signature
-            => "PINGPONG";
+            => "PING_PONG";
 
         public PingPongHandler(RealTimeHandler handler)
             => RealTimeHandler = handler;

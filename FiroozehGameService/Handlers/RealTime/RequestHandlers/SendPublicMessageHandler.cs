@@ -14,7 +14,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public SendPublicMessageHandler(RealTimeHandler handler) =>
             RealTimeHandler = handler;
 
-        private Packet DoAction(DataPayload payload)
+        private static Packet DoAction(DataPayload payload)
             => new Packet(RT.ActionData
                 , JsonConvert.SerializeObject(
                     new DataPayload(
