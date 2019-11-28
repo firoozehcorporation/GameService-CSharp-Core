@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using FiroozehGameService.Models.Command;
 
 namespace FiroozehGameService.Handlers
 {
-    public interface IRequestHandler
+    internal interface IRequestHandler
     {
-        void HandleAction(object payload);
+        Packet HandleAction(object payload);
     }
 }

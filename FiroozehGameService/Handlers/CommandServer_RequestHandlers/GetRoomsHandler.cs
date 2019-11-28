@@ -10,11 +10,11 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
             => "AVAILABLEROOMS";
 
         public GetRoomsHandler(CommandHandler _handler)
-            => this._commandHander = _handler;
+            => this.CommandHandler = _handler;
 
         protected Packet DoAction(RoomDetail roomOptions)
             => new Packet(
-                _commandHander.PlayerHash,
+                CommandHandler.PlayerHash,
                 Command.ActionGetRooms,
                 JsonConvert.SerializeObject(roomOptions));
 

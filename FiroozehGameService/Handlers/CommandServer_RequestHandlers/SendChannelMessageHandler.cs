@@ -11,11 +11,11 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
             => "SENDMESSAGE";
 
         public SendChannelMessageHandler(CommandHandler _handler)
-            => this._commandHander = _handler;
+            => this.CommandHandler = _handler;
 
         protected Packet DoAction(Tuple<string, string> channelMessage)
             => new Packet(
-                _commandHander.PlayerHash,
+                CommandHandler.PlayerHash,
                 Command.ActionChat,
                 JsonConvert.SerializeObject(
                     new Message(

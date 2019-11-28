@@ -37,6 +37,9 @@ namespace FiroozehGameService.Models.Command
         [JsonProperty("9")]
         public bool IsPrivate { get; set; }
         
+        [JsonProperty("10")]
+        public bool IsPersist { get; set; }
+        
         public override string ToString () {
             return "RoomDetail{" +
                    "ID='" + Id + '\'' +
@@ -48,6 +51,7 @@ namespace FiroozehGameService.Models.Command
                    ", Max=" + Max +
                    ", Role='" + Role + '\'' +
                    ", Private=" + IsPrivate +
+                   ", Persist=" + IsPersist +
                    ", GSLiveType=" + GsLiveType +
                    '}';
         }

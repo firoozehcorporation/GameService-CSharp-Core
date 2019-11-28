@@ -9,11 +9,11 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
             => "PINGPONG";
 
         public PingPongHandler(CommandHandler _handler)
-            => this._commandHander = _handler;
+            => this.CommandHandler = _handler;
 
         protected Packet DoAction()
             => new Packet(
-                _commandHander.PlayerHash,
+                CommandHandler.PlayerHash,
                 Command.ActionPing);
 
         protected override bool CheckAction(object payload)

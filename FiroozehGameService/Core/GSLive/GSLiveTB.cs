@@ -22,6 +22,10 @@
 
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using FiroozehGameService.Handlers.CommandServer_RequestHandlers;
+using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.TB;
 
 namespace FiroozehGameService.Core.GSLive
@@ -125,9 +129,10 @@ namespace FiroozehGameService.Core.GSLive
         /// Create Room With Option Like : Name , Min , Max , Role , IsPrivate
         /// </summary>
         /// <param name="option">(NOTNULL)Create Room Option</param>
-        public void CreateRoom(GSLiveOption.CreateRoomOption option)
+        public async Task CreateRoom(GSLiveOption.CreateRoomOption option)
         {
-                    
+            option.RoomType = RoomType.TurnBased;
+            await GSLive.Handler.CommandHandler.Request(CreateRoomHandler.Signature,option);     
         }
         
         
@@ -135,9 +140,10 @@ namespace FiroozehGameService.Core.GSLive
         /// Create AutoMatch With Option Like :  Min , Max , Role 
         /// </summary>
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
-        public void AutoMatch(GSLiveOption.AutoMatchOption option)
+        public async Task AutoMatch(GSLiveOption.AutoMatchOption option)
         {
-            
+            option.RoomType = RoomType.TurnBased;
+            await GSLive.Handler.CommandHandler.Request(AutoMatchHandler.Signature,option);     
         }
         
         
@@ -145,9 +151,9 @@ namespace FiroozehGameService.Core.GSLive
         /// Join In Room With RoomID
         /// </summary>
         /// <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
-        public void JoinRoom(string roomId)
+        public async Task JoinRoom(string roomId)
         {
-             
+            await GSLive.Handler.CommandHandler.Request(JoinRoomHandler.Signature,new RoomDetail{Id = roomId});     
         }
         
         
@@ -155,9 +161,9 @@ namespace FiroozehGameService.Core.GSLive
         /// Get Available Rooms According To Room's Role  
         /// </summary>
         /// <param name="role">(NOTNULL)Room's Role </param>
-        public void GetAvailableRooms(string role)
+        public async Task GetAvailableRooms(string role)
         {
-          
+            await GSLive.Handler.CommandHandler.Request(GetRoomsHandler.Signature,new RoomDetail{Role = role});     
         }
 
        
@@ -231,9 +237,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <summary>
         /// Get Your Invite Inbox
         /// </summary>
-        public void GetInviteInbox()
+        public async Task GetInviteInbox()
         {
-           
+            await GSLive.Handler.CommandHandler.Request(InviteListHandler.Signature,null);     
         }
         
         
@@ -242,9 +248,10 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="roomId">(NOTNULL) (Type : RoomID)Room's ID</param>
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
-        public void InviteUser(string roomId,string userId)
+        public async Task InviteUser(string roomId,string userId)
         {
-            
+            await GSLive.Handler.CommandHandler.Request(InviteUserHandler.Signature,new RoomDetail{User = userId , Id = roomId});     
+
         }
         
         
@@ -253,9 +260,9 @@ namespace FiroozehGameService.Core.GSLive
         /// Note: After accepting the invitation, you will be automatically entered into the game room
         /// </summary>
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
-        public void AcceptInvite(string inviteId)
+        public async Task AcceptInvite(string inviteId)
         {
-           
+            await GSLive.Handler.CommandHandler.Request(AcceptInviteHandler.Signature,new RoomDetail{Invite = inviteId});     
         }
         
         
@@ -264,9 +271,9 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="query">(NOTNULL) Player's NickName</param>
         /// <param name="limit">(Max = 15) The Result Limits</param>
-        public void FindUser(string query,int limit)
+        public async Task FindUser(string query,int limit)
         {
-             
+            await GSLive.Handler.CommandHandler.Request(FindUserHandler.Signature,new RoomDetail{Max = limit , User = query});     
         }
    
     }

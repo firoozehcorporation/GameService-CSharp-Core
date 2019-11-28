@@ -8,7 +8,7 @@ namespace FiroozehGameService.Handlers.CommandServer_ResponseHandlers
 {
     internal class ResponseHandler<T> where T : EventArgs
     {
-        public string Signature { set; get; } //redunant ... either use this or the next one
+        public string Signature { set; get; } //redundant ... either use this or the next one
         public int ActionCommand { set; get; }
 
         public EventHandler<T> EventHandler { set; get; }

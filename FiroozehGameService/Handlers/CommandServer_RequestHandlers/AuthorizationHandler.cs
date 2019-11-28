@@ -10,7 +10,7 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
             "AUTHORIZATION";
 
         public AuthorizationHandler(CommandHandler _handler) =>
-            this._commandHander = _handler;
+            this.CommandHandler = _handler;
 
         protected override Packet DoAction(object payload = null)
         => new Packet(

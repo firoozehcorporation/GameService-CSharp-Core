@@ -16,12 +16,9 @@ namespace FiroozehGameService.Handlers
 {
     internal class GsHandler
     {
-        public CommandHandler CommandHandler { get; private set; }
-        private RTHandler realTimeHandler;
-        private TBHandler turnBasedHandler;
-
-        private StartPayload _turnBasedStartPayload;
-        private StartPayload _realTimeStartPayload;
+        public CommandHandler CommandHandler { get; }
+        public RTHandler RealTimeHandler { get; private set; }
+        public TBHandler TurnBasedHandler { get; private set; }
 
         private GameServiceClientConfiguration Configuration
             => GameService.Configuration;
@@ -31,26 +28,26 @@ namespace FiroozehGameService.Handlers
 
         private async Task ConnectToRTServer(StartPayload payload)
         {
-            if (realTimeHandler != null && realTimeHandler.IsAvailable)
+            if (RealTimeHandler != null && RealTimeHandler.IsAvailable)
             {
-                await realTimeHandler.LeaveRoom();
-                realTimeHandler.Dispose();
-                realTimeHandler = null;
+                await RealTimeHandler.LeaveRoom();
+                RealTimeHandler.Dispose();
+                RealTimeHandler = null;
             }
-            realTimeHandler = new RTHandler(payload.Area);
-            await realTimeHandler.Init();
+            RealTimeHandler = new RTHandler(payload.Area);
+            await RealTimeHandler.Init();
         }
 
         private async Task ConnectToTBServer(StartPayload payload)
         {
-            if (turnBasedHandler != null && turnBasedHandler.IsAvailable)
+            if (TurnBasedHandler != null && TurnBasedHandler.IsAvailable)
             {
-                await turnBasedHandler.LeaveRoom();
-                turnBasedHandler.Dispose();
-                turnBasedHandler = null;
+                await TurnBasedHandler.LeaveRoom();
+                TurnBasedHandler.Dispose();
+                TurnBasedHandler = null;
             }
-            turnBasedHandler = new TBHandler(payload.Area);
-            await turnBasedHandler.Init();
+            TurnBasedHandler = new TBHandler(payload.Area);
+            await TurnBasedHandler.Init();
         }
 
         public async Task Init()

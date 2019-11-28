@@ -12,20 +12,21 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
           "AUTOMATCH";
 
         public AutoMatchHandler(CommandHandler _handler) =>
-            this._commandHander = _handler;
+            this.CommandHandler = _handler;
 
         protected Packet DoAction(GSLiveOption.AutoMatchOption options)
         {
-            if (!_commandHander.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
+            if (!CommandHandler.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
             return new Packet(
-                _commandHander.PlayerHash,
+                CommandHandler.PlayerHash,
                 Command.ActionAutoMatch,
-                JsonConvert.SerializeObject(new RoomDetail()
+                JsonConvert.SerializeObject(new RoomDetail
                 {
                     Role = options.Role,
                     Min = options.MinPlayer,
                     Max = options.MaxPlayer,
                     Type = Command.ActionAutoMatch,
+                    IsPersist = options.IsPersist,
                     GsLiveType = (int)options.RoomType
                 }));
         }

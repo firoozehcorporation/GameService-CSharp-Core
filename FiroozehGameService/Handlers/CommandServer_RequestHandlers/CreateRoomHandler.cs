@@ -12,13 +12,13 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
           "CREATEROOM";
 
         public CreateRoomHandler(CommandHandler handler) =>
-            _commandHander = handler;
+            CommandHandler = handler;
 
         protected Packet DoAction(GSLiveOption.CreateRoomOption options)
         {
-            if (!_commandHander.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
+            if (!CommandHandler.IsAvailable) throw new GameServiceException("GSLiveService Not Available yet");
             return new Packet(
-                _commandHander.PlayerHash,
+                CommandHandler.PlayerHash,
                 Command.ActionCreateRoom,
                 JsonConvert.SerializeObject(new RoomDetail
                 {
@@ -27,6 +27,7 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
                     Min = options.MinPlayer,
                     Max = options.MaxPlayer,
                     IsPrivate = options.IsPrivate,
+                    IsPersist = options.IsPersist,
                     Type = Command.ActionCreateRoom,
                     GsLiveType = (int)options.RoomType
                 }));

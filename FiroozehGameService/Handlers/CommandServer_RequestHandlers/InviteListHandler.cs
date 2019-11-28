@@ -10,11 +10,11 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
             => "INVITELIST";
 
         public InviteListHandler(CommandHandler _handler)
-            => this._commandHander = _handler;
+            => this.CommandHandler = _handler;
 
         protected Packet DoAction(RoomDetail inviteOptions)
             => new Packet(
-                _commandHander.PlayerHash,
+                CommandHandler.PlayerHash,
                 Command.ActionGetInviteList,
                 JsonConvert.SerializeObject(inviteOptions)
                 );

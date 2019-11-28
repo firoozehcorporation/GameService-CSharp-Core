@@ -35,7 +35,8 @@ namespace FiroozehGameService.Core.GSLive
             public int MinPlayer { set; get; }
             public int MaxPlayer { set; get; }
             public string Role { set; get; }
-            public RoomType RoomType { set; get; }
+            public bool IsPersist { set; get; }
+            internal RoomType RoomType { set; get; }
         }
 
         /// <summary>

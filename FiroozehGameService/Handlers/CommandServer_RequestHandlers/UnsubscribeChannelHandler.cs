@@ -9,11 +9,11 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
             => "UNSUBSCRIBECHANNEL";
 
         public UnsubscribeChannelHandler(CommandHandler _handler)
-            => this._commandHander = _handler;
+            => this.CommandHandler = _handler;
 
         protected Packet DoAction(string channelName)
             => new Packet(
-                _commandHander.PlayerHash,
+                CommandHandler.PlayerHash,
                 Command.ActionUnSubscribe,
                 null,
                 channelName);

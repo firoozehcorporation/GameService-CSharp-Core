@@ -32,13 +32,13 @@ namespace FiroozehGameService.Handlers
         public static string UserToken => GameService.UserToken;
         public static string PlayToken => GameService.PlayToken;
 
-        public bool IsAvailable =>
+        public static bool IsAvailable =>
             _tcpClient?.IsAvailable ?? false;
 
-        private Dictionary<int, ResponseHandler<CommandResponseArgs>> _responseHandlers =
+        private readonly Dictionary<int, ResponseHandler<CommandResponseArgs>> _responseHandlers =
              new Dictionary<int, ResponseHandler<CommandResponseArgs>>();
 
-        private Dictionary<string, IRequestHandler> _requestHandlers =
+        private readonly Dictionary<string, IRequestHandler> _requestHandlers =
             new Dictionary<string, IRequestHandler>();
         #endregion
 
@@ -75,8 +75,8 @@ namespace FiroozehGameService.Handlers
             return true;
         }
 
-        public void AddNewResponseHandler(ResponseHandler<CommandResponseArgs> _responseHandler)
-            => _responseHandlers.Add(_responseHandler.ActionCommand, _responseHandler);
+        public void AddNewResponseHandler(ResponseHandler<CommandResponseArgs> responseHandler)
+            => _responseHandlers.Add(responseHandler.ActionCommand, responseHandler);
 
         public void RemoveResponseHandler(int actionCommand)
             => _responseHandlers.Remove(actionCommand);
@@ -84,8 +84,8 @@ namespace FiroozehGameService.Handlers
         public ResponseHandler<CommandResponseArgs> GetResponseHandler(int actionCommand)
             => _responseHandlers.GetValue(actionCommand);
 
-        public void Request(string handlerName, object payload)
-            => _requestHandlers[handlerName].HandleAction(payload);
+        public async Task Request(string handlerName, object payload)
+            => await Send(_requestHandlers[handlerName].HandleAction(payload));
 
         private static async Task Send(Packet packet)
         {

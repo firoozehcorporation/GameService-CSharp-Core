@@ -10,11 +10,11 @@ namespace FiroozehGameService.Handlers.CommandServer_RequestHandlers
             => "FINDUSER";
 
         public FindUserHandler(CommandHandler _handler)
-            => this._commandHander = _handler;
+            => this.CommandHandler = _handler;
 
         protected Packet DoAction(RoomDetail options)
             => new Packet(
-                _commandHander.PlayerHash,
+                CommandHandler.PlayerHash,
                 Command.ActionFindUser,
                 JsonConvert.SerializeObject(options)
                 );
