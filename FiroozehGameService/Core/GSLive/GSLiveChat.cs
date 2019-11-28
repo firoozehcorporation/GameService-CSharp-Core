@@ -19,6 +19,10 @@
 * @author Alireza Ghodrati
 */
 
+using System;
+using System.Threading.Tasks;
+using FiroozehGameService.Handlers.Command.RequestHandlers;
+
 namespace FiroozehGameService.Core.GSLive
 {
     /// <summary>
@@ -27,75 +31,23 @@ namespace FiroozehGameService.Core.GSLive
     public class GSLiveChat
     {
         private const string Tag = "GSLiveChat";
-        //private GSLiveChatListener _chatListener;
-        public bool IsAvailable { get; private set; }
-        
-        private const int ActionSubscribe = 12;
-        private const int ActionChat = 13;
-        private const int ActionUnSubscribe = 14;
-
-        /*
-        /// <summary>
-        /// Set Listener For Receive Chat System Events.
-        /// </summary>
-        /// <param name="listener">(Not NULL)Listener For Receive Chat System Events</param>
-        public void SetListener(GSLiveChatListener listener)
-        {
-            if (listener == null)
-            {
-                LogUtil.LogError(Tag,"Listener Must not be NULL");
-                return;
-            }
-            
-            var eventListener = new IChatListener((type, payload) =>
-            {
-                switch (type)
-                {
-                    case ActionChat:
-                        _chatListener.OnChatReceive(JsonConvert.DeserializeObject<Chat>(payload));
-                        break;
-                    case ActionSubscribe:
-                         _chatListener.OnSubscribeChannel(payload);
-                        break;
-                    case ActionUnSubscribe:
-                        _chatListener.OnUnSubscribeChannel(payload);
-                        break;
-                }
-            },listener.OnChatError);
-            
-            IsAvailable = true;
-            _chatListener = listener;
-            SetEventListener(eventListener);
-        }
-        
-       
-
-
-        private static void SetEventListener(IChatListener listener)
-        {
-            var chat = GSLiveProvider.GetGSLiveChat();
-            chat.Call("setListener", listener);
-        }
-        
-         */
-        
-        
+                
         /// <summary>
         /// Subscribe In Channel With channelName.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Subscribe</param>
-        public void SubscribeChannel(string channelName)
+        public async Task SubscribeChannel(string channelName)
         {
-              
+           await GSLive.Handler.CommandHandler.Request(SubscribeChannelHandler.Signature,channelName);     
         }
         
         /// <summary>
         /// UnSubscribeChannel With channelName.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To UnSubscribe</param>
-        public void UnSubscribeChannel(string channelName)
+        public async Task UnSubscribeChannel(string channelName)
         {
-            
+            await GSLive.Handler.CommandHandler.Request(UnsubscribeChannelHandler.Signature,channelName);     
         }
         
         /// <summary>
@@ -104,9 +56,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
 
-        public void SendChannelMessage(string channelName,string message)
+        public async Task SendChannelMessage(string channelName,string message)
         {
-          
+            await GSLive.Handler.CommandHandler.Request(SendChannelMessageHandler.Signature,Tuple.Create(channelName,message));     
         }
     }
 }

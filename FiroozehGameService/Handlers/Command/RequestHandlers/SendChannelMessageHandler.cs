@@ -6,13 +6,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class SendChannelMessageHandler : BaseRequestHandler
     {
-        public static new string Signature
-            => "SENDMESSAGE";
+        public static string Signature
+            => "SEND_MESSAGE";
 
-        public SendChannelMessageHandler(CommandHandler _handler)
-            => this.CommandHandler = _handler;
+        public SendChannelMessageHandler(CommandHandler handler)
+            => CommandHandler = handler;
 
-        protected Packet DoAction(Tuple<string, string> channelMessage)
+        private Packet DoAction(Tuple<string, string> channelMessage)
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionChat,
@@ -29,7 +29,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 
         protected override Packet DoAction(object payload)
         {
-            if (!CheckAction(payload)) throw new System.ArgumentException();
+            if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction(payload as Tuple<string,string>);
         }
     }

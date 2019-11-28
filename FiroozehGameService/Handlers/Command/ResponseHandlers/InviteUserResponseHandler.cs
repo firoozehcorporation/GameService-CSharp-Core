@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
+using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.GSLive;
 using Newtonsoft.Json;
+using Invite = FiroozehGameService.Models.GSLive.Invite;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 {
-    internal class GetRoomResponseHandler : BaseResponseHandler
+    internal class InviteUserResponseHandler : BaseResponseHandler
     {
         public static int ActionCommand 
-            => Models.Consts.Command.ActionGetRooms;
+            => Models.Consts.Command.ActionInviteUser;
 
         protected override void HandleResponse(Packet packet)
         {
-            var rooms = JsonConvert.DeserializeObject<List<Room>>(packet.Data);
-            CommandEventHandler.onGetRooms?.Invoke(null, rooms);
+            CommandEventHandler.onInviteUser?.Invoke(null, null);
         }
     }
 }

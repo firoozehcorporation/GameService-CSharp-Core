@@ -19,21 +19,16 @@ namespace FiroozehGameService.Handlers.Command
     {
         #region Fields
         private static GsTcpClient _tcpClient;
-        private Task _clientTask;
         private readonly CancellationTokenSource _cancellationToken;
-
-        public string PlayerHash { set; get; }
-
+        public static string PlayerHash { set; get; }
+        
         public static string RoomId => GameService.CurrentGame?._Id;
         public static string UserToken => GameService.UserToken;
-        public static string PlayToken => GameService.PlayToken;
-
         public static bool IsAvailable =>
             _tcpClient?.IsAvailable ?? false;
 
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
              new Dictionary<int, IResponseHandler>();
-
         private readonly Dictionary<string, IRequestHandler> _requestHandlers =
             new Dictionary<string, IRequestHandler>();
         #endregion
@@ -49,7 +44,7 @@ namespace FiroozehGameService.Handlers.Command
             InitResponseMessageHandlers();
         }
 
-        private void InitRequestMessageHandlers()
+                private void InitRequestMessageHandlers()
         {
             var baseInterface = typeof(IRequestHandler);
             var subclassTypes = Assembly
@@ -82,11 +77,11 @@ namespace FiroozehGameService.Handlers.Command
         public async Task Init()
         {
             await _tcpClient.Init();
-            await Request(AuthorizationHandler.Signature, null);
-            _clientTask = Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+            await Request(AuthorizationHandler.Signature);
+            Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
         }
 
-        public async Task Request(string handlerName, object payload)
+        public async Task Request(string handlerName, object payload = null)
             => await Send(_requestHandlers[handlerName].HandleAction(payload));
 
         private static async Task Send(Packet packet)

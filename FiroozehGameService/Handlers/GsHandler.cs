@@ -1,19 +1,13 @@
-using FiroozehGameService.Core;
-using FiroozehGameService.Core.Socket;
-using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Consts;
-using FiroozehGameService.Models.EventArgs;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+using FiroozehGameService.Core;
+using FiroozehGameService.Models.Command;
 using System.Threading.Tasks;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Handlers.Command;
 using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased;
+using FiroozehGameService.Models.Enums.GSLive;
 
 namespace FiroozehGameService.Handlers
 {
@@ -25,9 +19,31 @@ namespace FiroozehGameService.Handlers
 
         private GameServiceClientConfiguration Configuration
             => GameService.Configuration;
-        
+
         public GsHandler()
-        { CommandHandler = new CommandHandler();}
+        {
+            CommandHandler = new CommandHandler();
+            CoreEventHandlers.OnJoinRoom += OnJoinRoom;
+        }
+
+        private async void OnJoinRoom(object sender, StartPayload startPayload)
+        {
+            switch (startPayload.Room?.RoomType)
+            {
+                case RoomType.NotSet:
+                    break;
+                case RoomType.TurnBased:
+                    await ConnectToTbServer(startPayload);
+                    break;
+                case RoomType.RealTime:
+                    await ConnectToRtServer(startPayload);
+                    break;
+                case null:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
 
         private async Task ConnectToRtServer(StartPayload payload)
         {
@@ -45,7 +61,7 @@ namespace FiroozehGameService.Handlers
         {
             if (TurnBasedHandler != null && TurnBasedHandler.IsAvailable)
             {
-                await TurnBasedHandler.Request(LeaveRoomHandler.Signature);
+                await TurnBasedHandler.Request(TurnBased.RequestHandlers.LeaveRoomHandler.Signature);
                 TurnBasedHandler.Dispose();
                 TurnBasedHandler = null;
             }

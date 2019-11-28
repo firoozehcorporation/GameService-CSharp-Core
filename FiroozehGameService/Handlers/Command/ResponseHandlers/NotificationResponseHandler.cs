@@ -1,0 +1,17 @@
+﻿using FiroozehGameService.Models.Command;
+using Newtonsoft.Json;
+
+namespace FiroozehGameService.Handlers.Command.ResponseHandlers
+{
+    internal class NotificationResponseHandler : BaseResponseHandler
+    {
+        public static int ActionCommand 
+            => Models.Consts.Command.Notification;
+
+        protected override void HandleResponse(Packet packet)
+        {
+            var notification = JsonConvert.DeserializeObject<Notification>(packet.Data);
+            CoreEventHandlers.OnNotification?.Invoke(null,notification);
+        }
+    }
+}

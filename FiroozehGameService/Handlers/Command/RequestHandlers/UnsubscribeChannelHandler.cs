@@ -4,13 +4,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class UnsubscribeChannelHandler : BaseRequestHandler
     {
-        public static new string Signature
-            => "UNSUBSCRIBECHANNEL";
+        public static string Signature
+            => "UNSUBSCRIBE_CHANNEL";
 
-        public UnsubscribeChannelHandler(CommandHandler _handler)
-            => this.CommandHandler = _handler;
+        public UnsubscribeChannelHandler(CommandHandler handler)
+            => CommandHandler = handler;
 
-        protected Packet DoAction(string channelName)
+        private Packet DoAction(string channelName)
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionUnSubscribe,
@@ -18,7 +18,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                 channelName);
 
         protected override bool CheckAction(object payload)
-           => payload.GetType() == typeof(string);
+           => payload is string;
 
         protected override Packet DoAction(object payload)
         {

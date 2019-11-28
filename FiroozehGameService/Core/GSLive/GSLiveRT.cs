@@ -40,7 +40,6 @@ namespace FiroozehGameService.Core.GSLive
         private const string Tag = "GSLive-RealTime";
         public GSLiveRT()
         {
-            
         }
         
         /// <summary>

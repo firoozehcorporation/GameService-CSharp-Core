@@ -20,11 +20,9 @@ namespace FiroozehGameService.Handlers.TurnBased
     {
         #region TBHandlerRegion
         private static GsTcpClient _tcpClient;
-        private Task _clientTask;
         public static Room CurrentRoom;
         private readonly CancellationTokenSource _cancellationToken;
         public static string PlayerHash;
-        public static string RoomId => GameService.CurrentGame?._Id;
         public static string UserToken => GameService.UserToken;
         public static bool IsAvailable => _tcpClient?.IsAvailable ?? false;
         
@@ -86,7 +84,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             await _tcpClient.Init();
             await Request(AuthorizationHandler.Signature);
-            _clientTask = Task.Run(async() => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+            Task.Run(async() => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
         }
        
                 
@@ -114,49 +112,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
             _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
-            /*switch (packet.Action)
-            {
-                    case TB.ActionAuth:
-                        PlayerHash = packet.Token;
-                        IsAvailable = true;
-                        // TODO invoke OnSuccess()
-                        break;
-                    case TB.ActionPingPong:
-                        await SendPingPong();
-                        break;
-                    case TB.OnJoin:
-                        var join = JsonConvert.DeserializeObject<JoinData>(packet.Data);
-                        // TODO Invoke OnJoin(join,(JoinType)join.JoinType)
-                        break;
-                    case TB.OnLeave:
-                        var leave = JsonConvert.DeserializeObject<Leave>(packet.Data);
-                        // TODO Invoke OnLeave(leave)
-                        break;
-                    case TB.GetUsers:
-                        var members = JsonConvert.DeserializeObject<List<Member>>(packet.Data);
-                        // TODO Invoke OnRoomMembersDetail(members)
-                        break;
-                    case TB.OnChooseNext:
-                        var member = JsonConvert.DeserializeObject<Member>(packet.Data);
-                        // TODO Invoke OnChooseNext(member)
-                        break;
-                    case TB.OnComplete:
-                        var complete = JsonConvert.DeserializeObject<Complete>(packet.Data);
-                        // TODO Invoke OnComplete(complete)
-                        break;
-                    case TB.OnFinish:
-                        var finish = JsonConvert.DeserializeObject<Finish>(packet.Data);
-                        // TODO Invoke OnFinish(finish)
-                        break;
-                    case TB.OnTakeTurn:
-                        var turn = JsonConvert.DeserializeObject<Turn>(packet.Data);
-                        // TODO Invoke OnTakeTurn(turn)
-                        break;
-                    case TB.Errors:
-                        // TODO Invoke OnTurnBasedError(packet.message)
-                        break;
-            }
-            */
         }
 
     }

@@ -24,7 +24,6 @@ namespace FiroozehGameService.Handlers.RealTime
     {
         #region RTHandlerRegion
         private static GsUdpClient _udpClient;
-        private Task _clientTask;
         public static Room CurrentRoom;
         private readonly CancellationTokenSource _cancellationToken;
         public static string PlayerHash;
@@ -92,8 +91,8 @@ namespace FiroozehGameService.Handlers.RealTime
         public async Task Init()
         {
             await _udpClient.Init();
-            await Request(AuthorizationHandler.Signature,null);
-            _clientTask = Task.Run(async() => { await _udpClient.StartReceiving(); }, _cancellationToken.Token);
+            await Request(AuthorizationHandler.Signature);
+            Task.Run(async() => { await _udpClient.StartReceiving(); }, _cancellationToken.Token);
         }
         
             
@@ -113,73 +112,8 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-            _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
-
-            /*
-            switch (packet.Action)
-            {
-                case RT.ActionData:
-                    var dataPayload = JsonConvert.DeserializeObject<DataPayload>(packet.Payload);
-                    HandelData(dataPayload);
-                    break;
-                case RT.ActionStatus:
-                    var statusPayload = JsonConvert.DeserializeObject<StatusPayload>(packet.Payload);
-                    HandelStatus(statusPayload);
-                    break;
-                case RT.ActionPingPong:
-                    await SendPingPong();
-                    break;
-            }
-            */
+            _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);           
         }
-
-
-        private static void HandelData(DataPayload payload)
-        {
-            switch (payload.Action)
-            {
-                 case RT.OnJoin:
-                     var join = JsonConvert.DeserializeObject<JoinData>(payload.Payload);
-                     // TODO Invoke OnJoin(join,(JoinType)join.JoinType)
-                     break;
-                case RT.SendPublicMessage:
-                    var publicMsg = JsonConvert.DeserializeObject<Message>(payload.Payload);
-                    // TODO Invoke OnMessageReceive(publicMsg,MessageType.Public)
-                    break;
-                case RT.SendPrivateMessage:
-                    var privateMsg = JsonConvert.DeserializeObject<Message>(payload.Payload);
-                    // TODO Invoke OnMessageReceive(privateMsg,MessageType.Private)
-                    break;
-                case RT.OnMembersDetail:
-                    var memberMsg = JsonConvert.DeserializeObject<Message>(payload.Payload);
-                    var members = JsonConvert.DeserializeObject<List<Member>>(memberMsg.Data);
-                    // TODO Invoke OnRoomMembersDetail(members)
-                    break;
-                case RT.OnLeave:
-                    var leaveMsg = JsonConvert.DeserializeObject<Message>(payload.Payload);
-                    var member = JsonConvert.DeserializeObject<Member>(leaveMsg.Data);
-                    var leave = new Leave { RoomId = leaveMsg.RoomId , MemberLeave = member};
-                    // TODO Invoke OnLeave(leave)
-                    break;
-            }
-        }
-        
-        private void HandelStatus(StatusPayload payload)
-        {
-            if (payload.Status)
-            {
-                //IsAvailable = true;
-                PlayerHash = payload.Message;
-                // TODO invoke OnSuccess()
-            }
-            else
-            {
-                // TODO invoke OnRealTimeError("ServerError")
-            }
-                
-        }
-        
-        
         
     }
 }

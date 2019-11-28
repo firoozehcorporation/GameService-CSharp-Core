@@ -4,13 +4,13 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal class SubscribeChannelHandler : BaseRequestHandler
     {
-        public static new string Signature
-            => "SUBSCRIBECHANNEL";
+        public static string Signature
+            => "SUBSCRIBE_CHANNEL";
 
-        public SubscribeChannelHandler(CommandHandler _handler)
-            => this.CommandHandler = _handler;
+        public SubscribeChannelHandler(CommandHandler handler)
+            => CommandHandler = handler;
 
-        protected Packet DoAction(string channelName)
+        private Packet DoAction(string channelName)
             => new Packet(
                 CommandHandler.PlayerHash, 
                 Models.Consts.Command.ActionSubscribe,
@@ -18,7 +18,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                 channelName);
 
         protected override bool CheckAction(object payload)
-           => payload.GetType() == typeof(string);
+           => payload is string;
 
         protected override Packet DoAction(object payload)
         {
