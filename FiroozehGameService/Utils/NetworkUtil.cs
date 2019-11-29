@@ -3,9 +3,9 @@ using System.Net.NetworkInformation;
 
 namespace FiroozehGameService.Utils
 {
-    public class NetworkUtil
+    internal class NetworkUtil
     {
-        public static string GetMacAddress()
+        internal static string GetMacAddress()
         {
            return NetworkInterface
                 .GetAllNetworkInterfaces()

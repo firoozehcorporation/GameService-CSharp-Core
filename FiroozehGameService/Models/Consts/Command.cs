@@ -7,13 +7,6 @@ namespace FiroozehGameService.Models.Consts
         public static readonly Area CommandArea 
             = new Area { IP = "37.228.139.39" , Port = 3003 ,Protocol = "tcp"};
        
-        // For Receive
-        public const int Notification = 0;
-        public const int AvailableRooms = 2;
-        public const int AvailableMembersForAutoMatch = 3;
-        public const int GoToGame = 4;
-        public const int Fail = 100;
-
         // For Send
         public const int ActionAuth = 0;
         public const int ActionAutoMatch = 1;

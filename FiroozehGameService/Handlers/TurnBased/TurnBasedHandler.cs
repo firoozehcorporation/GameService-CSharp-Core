@@ -10,8 +10,10 @@ using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.ResponseHandlers;
 using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased
@@ -21,14 +23,15 @@ namespace FiroozehGameService.Handlers.TurnBased
         #region TBHandlerRegion
         private static GsTcpClient _tcpClient;
         public static Room CurrentRoom;
+        private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
+        
         public static string PlayerHash { private set; get; }
         public static string UserToken => GameService.UserToken;
         public static bool IsAvailable => _tcpClient?.IsAvailable ?? false;
         
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
             new Dictionary<int, IResponseHandler>();
-
         private readonly Dictionary<string, IRequestHandler> _requestHandlers =
             new Dictionary<string, IRequestHandler>();
 
@@ -42,6 +45,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
+            _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
             
             // Set Internal Event Handlers
             CoreEventHandlers.OnPing += OnPing;
@@ -103,20 +107,16 @@ namespace FiroozehGameService.Handlers.TurnBased
             await Request(AuthorizationHandler.Signature);
             Task.Run(async() => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
         }
-       
-                
-        public void Dispose()
-        {
-            _tcpClient.StopReceiving();
-            _cancellationToken.Cancel(true);
-        }
-        
+             
                
-        private static async Task Send(Packet packet)
+        private async Task Send(Packet packet)
         {
-            var json = JsonConvert.SerializeObject(packet);
-            var data = Encoding.UTF8.GetBytes(json);
-            await _tcpClient.Send(data);
+            if (_observer.Increase())
+            {
+                var json = JsonConvert.SerializeObject(packet);
+                var data = Encoding.UTF8.GetBytes(json);
+                await _tcpClient.Send(data);
+            }
         }
         
         
@@ -130,6 +130,14 @@ namespace FiroozehGameService.Handlers.TurnBased
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
             _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
         }
+        
+        public void Dispose()
+        {
+            _tcpClient.StopReceiving();
+            _observer.Dispose();
+            _cancellationToken.Cancel(true);
+        }
+
 
     }
 }

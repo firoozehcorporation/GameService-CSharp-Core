@@ -8,8 +8,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "INVITE_USER";
 
-        public InviteUserHandler(CommandHandler handler)
-            => CommandHandler = handler;
+        public InviteUserHandler(){}
 
         private static Packet DoAction(RoomDetail inviteOptions)
             => new Packet(

@@ -7,8 +7,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "SUBSCRIBE_CHANNEL";
 
-        public SubscribeChannelHandler(CommandHandler handler)
-            => CommandHandler = handler;
+        public SubscribeChannelHandler(){}
 
         private static Packet DoAction(string channelName)
             => new Packet(

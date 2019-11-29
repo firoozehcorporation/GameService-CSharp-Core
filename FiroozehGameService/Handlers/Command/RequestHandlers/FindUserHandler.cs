@@ -8,8 +8,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "FIND_USER";
 
-        public FindUserHandler(CommandHandler handler)
-            => CommandHandler = handler;
+        public FindUserHandler(){}
 
         private static Packet DoAction(RoomDetail options)
             => new Packet(

@@ -19,7 +19,6 @@ namespace FiroozehGameService.Models.Consts
 
 
         public const int TurnBasedLimit = 10; // 10 Request per sec
-        public const int RealTimeLimit = 60; // 60 Request per sec
         public const int RestLimit = 1000; //  RestLimit per sec in long
     }
 }

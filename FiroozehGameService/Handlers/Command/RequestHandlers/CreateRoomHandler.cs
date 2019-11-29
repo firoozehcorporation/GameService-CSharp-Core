@@ -10,8 +10,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature =>
           "CREATE_ROOM";
 
-        public CreateRoomHandler(CommandHandler handler) =>
-            CommandHandler = handler;
+        public CreateRoomHandler() {}
 
         private static Packet DoAction(GSLiveOption.CreateRoomOption options)
         {

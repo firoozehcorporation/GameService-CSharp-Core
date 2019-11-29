@@ -7,8 +7,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "PING_PONG";
 
-        public PingPongHandler(CommandHandler handler)
-            => CommandHandler = handler;
+        public PingPongHandler(){}
 
         private static Packet DoAction()
             => new Packet(

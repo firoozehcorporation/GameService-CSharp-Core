@@ -5,8 +5,6 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
     internal abstract class BaseRequestHandler : IRequestHandler
     {
-        protected CommandHandler CommandHandler;
-
         public virtual Packet HandleAction(object payload)
         {
             if (CheckAction(payload))

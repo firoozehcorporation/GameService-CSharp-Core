@@ -10,7 +10,9 @@ using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.Command.ResponseHandlers;
 using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
+using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command
@@ -19,6 +21,7 @@ namespace FiroozehGameService.Handlers.Command
     {
         #region Fields
         private static GsTcpClient _tcpClient;
+        private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
         public static string PlayerHash { private set; get; }
         
@@ -39,6 +42,7 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
+            _observer = new GsLiveSystemObserver(GSLiveType.Core);
             
             // Set Internal Event Handlers
             CoreEventHandlers.OnPing += OnPing;
@@ -102,11 +106,14 @@ namespace FiroozehGameService.Handlers.Command
         public async Task Request(string handlerName, object payload = null)
             => await Send(_requestHandlers[handlerName].HandleAction(payload));
 
-        private static async Task Send(Packet packet)
+        private async Task Send(Packet packet)
         {
-            var json = JsonConvert.SerializeObject(packet);
-            var data = Encoding.UTF8.GetBytes(json);
-            await _tcpClient.Send(data);
+            if (_observer.Increase())
+            {
+                var json = JsonConvert.SerializeObject(packet);
+                var data = Encoding.UTF8.GetBytes(json);
+                await _tcpClient.Send(data);
+            }
         }
 
         private async void OnError(object sender, ErrorArg e)
@@ -125,6 +132,7 @@ namespace FiroozehGameService.Handlers.Command
         public void Dispose()
         {
             _tcpClient.StopReceiving();
+            _observer.Dispose();
             _cancellationToken.Cancel(true);
         }
     }

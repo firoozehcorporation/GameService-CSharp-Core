@@ -7,8 +7,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "UNSUBSCRIBE_CHANNEL";
 
-        public UnsubscribeChannelHandler(CommandHandler handler)
-            => CommandHandler = handler;
+        public UnsubscribeChannelHandler(){}
 
         private static Packet DoAction(string channelName)
             => new Packet(

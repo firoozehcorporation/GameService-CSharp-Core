@@ -8,8 +8,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "AVAILABLE_ROOMS";
 
-        public GetRoomsHandler(CommandHandler handler)
-            => CommandHandler = handler;
+        public GetRoomsHandler(){}
 
         private static Packet DoAction(RoomDetail roomOptions)
             => new Packet(

@@ -8,8 +8,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "JOIN_ROOM";
 
-        public JoinRoomHandler(CommandHandler handler)
-            => CommandHandler = handler;
+        public JoinRoomHandler(){}
 
         private static Packet DoAction(RoomDetail room)
             => new Packet(

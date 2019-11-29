@@ -9,13 +9,11 @@ using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.ResponseHandlers;
 using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
-using FiroozehGameService.Models.GSLive.RT;
+using FiroozehGameService.Utils;
 using Newtonsoft.Json;
-using Leave = FiroozehGameService.Models.GSLive.Leave;
-using Message = FiroozehGameService.Models.GSLive.Message;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
@@ -25,13 +23,14 @@ namespace FiroozehGameService.Handlers.RealTime
         #region RTHandlerRegion
         private static GsUdpClient _udpClient;
         public static Room CurrentRoom;
+        
+        private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
         public static string PlayerHash { private set; get; }
         public static bool IsAvailable => _udpClient?.IsAvailable ?? false;
         
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
             new Dictionary<int, IResponseHandler>();
-
         private readonly Dictionary<string, IRequestHandler> _requestHandlers =
             new Dictionary<string, IRequestHandler>();
         
@@ -44,6 +43,8 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.DataReceived += OnDataReceived;
             _udpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
+            _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
+
             
             // Set Internal Event Handlers
             CoreEventHandlers.OnPing += OnPing;
@@ -99,11 +100,6 @@ namespace FiroozehGameService.Handlers.RealTime
         public async Task Request(string handlerName, object payload = null)
             => await Send(_requestHandlers[handlerName].HandleAction(payload));
         
-        public void Dispose()
-        {
-            _udpClient.StopReceiving();
-            _cancellationToken.Cancel(true);
-        }
        
         public async Task Init()
         {
@@ -113,11 +109,14 @@ namespace FiroozehGameService.Handlers.RealTime
         }
         
             
-        private static async Task Send(Packet packet)
+        private async Task Send(Packet packet)
         {
-            var json = JsonConvert.SerializeObject(packet);
-            var data = Encoding.UTF8.GetBytes(json);
-            await _udpClient.Send(data);
+            if (_observer.Increase())
+            {
+                var json = JsonConvert.SerializeObject(packet);
+                var data = Encoding.UTF8.GetBytes(json);
+                await _udpClient.Send(data);
+            }
         }
         
         
@@ -130,6 +129,13 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
             _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);           
+        }
+        
+        public void Dispose()
+        {
+            _udpClient.StopReceiving();
+            _observer.Dispose();
+            _cancellationToken.Cancel(true);
         }
         
     }

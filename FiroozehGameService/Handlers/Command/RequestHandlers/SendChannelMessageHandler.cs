@@ -9,8 +9,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "SEND_MESSAGE";
 
-        public SendChannelMessageHandler(CommandHandler handler)
-            => CommandHandler = handler;
+        public SendChannelMessageHandler(){}
 
         private static Packet DoAction(Tuple<string, string> channelMessage)
             => new Packet(

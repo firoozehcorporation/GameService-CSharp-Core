@@ -50,7 +50,7 @@ namespace FiroozehGameService.Core
 
 
         public static GSLive.GSLive GSLive { get; private set; }
-        public static GameServiceClientConfiguration Configuration { get; private set; }
+        internal static GameServiceClientConfiguration Configuration { get; private set; }
 
         
         /// <summary>
@@ -62,6 +62,7 @@ namespace FiroozehGameService.Core
             Configuration = configuration;   
             DownloadManager = new DownloadManager(Configuration);
             GSLive = new GSLive.GSLive();
+            Console.WriteLine("ConfigurationInstance");
         }
 
         internal static void OnNotificationReceived(Notification notification)
@@ -297,6 +298,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task<bool> Login(string email , string password)
         {
+            if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
             Logout();
             var login = await ApiRequest.Login(email, password);
             UserToken = login.Token;
@@ -314,6 +316,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task Login()
         {
+            if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
             Logout();
             var auth = await ApiRequest.Authorize(Configuration, true);
             PlayToken = auth.Token;
@@ -329,6 +332,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task SignUp(string nickName,string email , string password)
         {
+            if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
             Logout();
             var login = await ApiRequest.SignUp(nickName,email,password);
             UserToken = login.Token;

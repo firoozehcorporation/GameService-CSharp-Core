@@ -10,8 +10,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature =>
           "AUTO_MATCH";
 
-        public AutoMatchHandler(CommandHandler handler) =>
-            this.CommandHandler = handler;
+        public AutoMatchHandler() {}
 
         private static Packet DoAction(GSLiveOption.AutoMatchOption options)
         {
