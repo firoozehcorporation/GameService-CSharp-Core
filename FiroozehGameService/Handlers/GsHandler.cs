@@ -13,14 +13,17 @@ namespace FiroozehGameService.Handlers
 {
     internal class GsHandler
     {
+        #region GsHandlerRegion
         public CommandHandler CommandHandler { get; }
         public RealTimeHandler RealTimeHandler { get; private set; }
         public TurnBasedHandler TurnBasedHandler { get; private set; }
 
         private GameServiceClientConfiguration Configuration
             => GameService.Configuration;
+        #endregion
+      
 
-        public GsHandler()
+        internal GsHandler()
         {
             CommandHandler = new CommandHandler();
             CoreEventHandlers.OnJoinRoom += OnJoinRoom;
@@ -71,9 +74,16 @@ namespace FiroozehGameService.Handlers
             await TurnBasedHandler.Init();
         }
 
-        public async Task Init()
+        internal async Task Init()
         {
             await CommandHandler.Init();
+        }
+
+        internal void Dispose()
+        {
+            CommandHandler?.Dispose();
+            RealTimeHandler?.Dispose();
+            TurnBasedHandler?.Dispose();
         }
     }
 }

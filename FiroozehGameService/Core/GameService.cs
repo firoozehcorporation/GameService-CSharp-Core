@@ -351,6 +351,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static void Logout()
         {
+            GSLive?.Dispose();
             UserToken = null;
             CurrentGame = null;
             PlayToken = null;

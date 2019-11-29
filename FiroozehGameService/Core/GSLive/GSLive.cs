@@ -64,6 +64,11 @@ namespace FiroozehGameService.Core.GSLive
         {
             return TurnBasedHandler.IsAvailable;
         }
+
+        internal void Dispose()
+        {
+            Handler?.Dispose();
+        }
       
     }
 }
