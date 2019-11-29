@@ -28,7 +28,6 @@ using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
-using FiroozehGameService.Models.Interfaces;
 
 namespace FiroozehGameService.Core.GSLive
 {

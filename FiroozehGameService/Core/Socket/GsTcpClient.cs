@@ -48,14 +48,14 @@ namespace FiroozehGameService.Core.Socket
                     OnDataReceived(new SocketDataReceived {Data = DataBuilder.ToString()});
                     DataBuilder.Clear();
                 }
-                catch (OperationCanceledException e)
+                catch (OperationCanceledException)
                 {
                     /* nothing to be afraid of :3 */
                     IsAvailable = false;
                     //OnClosed(new ErrorArg {Error = e.Message});
                     break;
                 }
-                catch (ObjectDisposedException e)
+                catch (ObjectDisposedException)
                 {
                     IsAvailable = false;
                     //OnClosed(new ErrorArg {Error = e.Message});
