@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("FiroozehGameService")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("FiroozehGameService Unity Native SDK")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Firoozeh Corp LTD")]
 [assembly: AssemblyProduct("FiroozehGameService")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]

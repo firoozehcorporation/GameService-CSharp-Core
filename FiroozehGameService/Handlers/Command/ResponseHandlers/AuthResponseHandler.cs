@@ -9,8 +9,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CommandHandler.PlayerHash = packet.Token;
-            CoreEventHandlers.OnAuth?.Invoke(null,packet.Token);
+            CoreEventHandlers.OnAuth?.Invoke(this,packet.Token);
         }
     }
 }

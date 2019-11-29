@@ -131,7 +131,7 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Room Status Value</value>
         [JsonProperty("syncMode")]
-        public RoomType RoomType { set; get; }
+        public GSLiveType GsLiveType { set; get; }
         
     }
 }

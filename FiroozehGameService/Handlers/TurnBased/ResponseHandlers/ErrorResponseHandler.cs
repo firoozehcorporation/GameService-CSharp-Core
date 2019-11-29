@@ -1,19 +1,19 @@
 ﻿using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums.GSLive;
-using Newtonsoft.Json;
 
-namespace FiroozehGameService.Handlers.Command.ResponseHandlers
+namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 {
-    internal class ErrorResponseHandler : BaseResponseHandler
+    internal class ErrorResponseHandler :BaseResponseHandler
     {
         public static int ActionCommand 
-            => Models.Consts.Command.Error;
+            => TB.Errors;
 
         protected override void HandleResponse(Packet packet)
         {
             CoreEventHandlers.OnError?.Invoke(this,new ErrorEvent
             {
-                Type = GSLiveType.Core,
+                Type = GSLiveType.TurnBased,
                 Error = packet.Message
             });
         }

@@ -26,7 +26,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                     Max = options.MaxPlayer,
                     Type = Models.Consts.Command.ActionAutoMatch,
                     IsPersist = options.IsPersist,
-                    GsLiveType = (int)options.RoomType
+                    GsLiveType = (int)options.GsLiveType
                 }));
         }
 

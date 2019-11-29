@@ -1,4 +1,6 @@
-﻿using FiroozehGameService.Models.Consts;
+﻿using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
@@ -13,8 +15,13 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         {
             var statusPayload = JsonConvert.DeserializeObject<StatusPayload>(packet.Payload);
             if (statusPayload.Status)
-                RealTimeHandler.PlayerHash = statusPayload.Message;
-            CoreEventHandlers.OnAuth?.Invoke(this,statusPayload.Message);
+                CoreEventHandlers.OnAuth?.Invoke(this,statusPayload.Message);
+            else 
+                CoreEventHandlers.OnError?.Invoke(this,new ErrorEvent
+                {
+                    Type = GSLiveType.RealTime,
+                    Error = statusPayload.Message
+                });
         }
       
     }

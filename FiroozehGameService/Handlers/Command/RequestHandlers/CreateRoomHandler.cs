@@ -28,7 +28,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                     IsPrivate = options.IsPrivate,
                     IsPersist = options.IsPersist,
                     Type = Models.Consts.Command.ActionCreateRoom,
-                    GsLiveType = (int)options.RoomType
+                    GsLiveType = (int)options.GsLiveType
                 }));
         }
 

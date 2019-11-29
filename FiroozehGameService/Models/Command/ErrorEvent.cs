@@ -1,4 +1,4 @@
-// <copyright file="GSLiveOption.cs" company="Firoozeh Technology LTD">
+// <copyright file="ErrorEvent.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,39 +15,30 @@
 // </copyright>
 
 
+using FiroozehGameService.Models.Enums.GSLive;
+
 /**
 * @author Alireza Ghodrati
 */
 
-using FiroozehGameService.Models.Enums.GSLive;
-namespace FiroozehGameService.Core.GSLive
+
+namespace FiroozehGameService.Models.Command
 {
     /// <summary>
-    /// Represents GSLive GSLiveOption
+    /// Represents ErrorEvent When Error Happened in GSLive
     /// </summary>
-    public class GSLiveOption
+    public class ErrorEvent
     {
         /// <summary>
-        /// Represents GSLive AutoMatchOption
+        /// Gets the Error Happened Type
         /// </summary>
-        public class AutoMatchOption
-        {
-            public int MinPlayer { set; get; }
-            public int MaxPlayer { set; get; }
-            public string Role { set; get; }
-            public bool IsPersist { set; get; }
-            internal GSLiveType GsLiveType { set; get; }
-        }
-
+        /// <value>Error Happened Type</value>
+        public GSLiveType Type { internal set; get; }
+        
         /// <summary>
-        /// Represents GSLive CreateRoomOption
+        /// Gets the Error Text
         /// </summary>
-        public class CreateRoomOption : AutoMatchOption
-        {
-            public string RoomName { set; get; }   
-            public bool IsPrivate { set; get; }
-        }
-
-
+        /// <value>the Error Text</value>
+        public string Error { internal set; get; }
     }
 }

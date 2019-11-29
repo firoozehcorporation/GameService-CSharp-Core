@@ -7,9 +7,8 @@ namespace FiroozehGameService.Handlers
     {
         internal static EventHandler<string> OnAuth;
         internal static EventHandler<StartPayload> OnJoinRoom;
-        internal static EventHandler<string> OnError;
         internal static EventHandler OnPing;
 
-        public static EventHandler<Notification> OnNotification;
+        public static EventHandler<ErrorEvent> OnError;
     }
 }

@@ -26,7 +26,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private static GsUdpClient _udpClient;
         public static Room CurrentRoom;
         private readonly CancellationTokenSource _cancellationToken;
-        public static string PlayerHash;
+        public static string PlayerHash { private set; get; }
         public static bool IsAvailable => _udpClient?.IsAvailable ?? false;
         
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
@@ -45,8 +45,25 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
             
+            // Set Internal Event Handlers
+            CoreEventHandlers.OnPing += OnPing;
+            CoreEventHandlers.OnAuth += OnAuth;
+            
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
+        }
+
+        
+        private static void OnAuth(object sender, string playerHash)
+        {
+            if (sender.GetType() == typeof(StatusResponseHandler))
+                PlayerHash = playerHash;
+        }
+
+        private async void OnPing(object sender, EventArgs e)
+        {
+            if (sender.GetType() == typeof(PingResponseHandler))
+                await Request(PingPongHandler.Signature);
         }
 
         private void InitRequestMessageHandlers()

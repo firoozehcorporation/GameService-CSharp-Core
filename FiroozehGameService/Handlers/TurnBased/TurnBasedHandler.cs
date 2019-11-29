@@ -22,7 +22,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         private static GsTcpClient _tcpClient;
         public static Room CurrentRoom;
         private readonly CancellationTokenSource _cancellationToken;
-        public static string PlayerHash;
+        public static string PlayerHash { private set; get; }
         public static string UserToken => GameService.UserToken;
         public static bool IsAvailable => _tcpClient?.IsAvailable ?? false;
         
@@ -43,8 +43,25 @@ namespace FiroozehGameService.Handlers.TurnBased
             _tcpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
             
+            // Set Internal Event Handlers
+            CoreEventHandlers.OnPing += OnPing;
+            CoreEventHandlers.OnAuth += OnAuth;
+
+            
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
+        }
+
+        private static void OnAuth(object sender, string playerHash)
+        {
+            if (sender.GetType() == typeof(AuthResponseHandler))
+                PlayerHash = playerHash;
+        }
+
+        private async void OnPing(object sender, EventArgs e)
+        {
+            if (sender.GetType() == typeof(PingResponseHandler))
+                await Request(PingPongHandler.Signature);
         }
         
         private void InitRequestMessageHandlers()

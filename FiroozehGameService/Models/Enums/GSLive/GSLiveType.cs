@@ -23,8 +23,8 @@ namespace FiroozehGameService.Models.Enums.GSLive
     /// <summary>
     /// Represents GSLiveType Of GSLive System
     /// </summary>
-    public enum RoomType
+    public enum GSLiveType
     {
-       NotSet , TurnBased , RealTime
+       NotSet , TurnBased , RealTime , Core
     }
 }

@@ -28,15 +28,17 @@ namespace FiroozehGameService.Handlers
 
         private async void OnJoinRoom(object sender, StartPayload startPayload)
         {
-            switch (startPayload.Room?.RoomType)
+            switch (startPayload.Room?.GsLiveType)
             {
-                case RoomType.NotSet:
+                case GSLiveType.NotSet:
                     break;
-                case RoomType.TurnBased:
+                case GSLiveType.TurnBased:
                     await ConnectToTbServer(startPayload);
                     break;
-                case RoomType.RealTime:
+                case GSLiveType.RealTime:
                     await ConnectToRtServer(startPayload);
+                    break;
+                case GSLiveType.Core:
                     break;
                 case null:
                     break;

@@ -20,7 +20,7 @@ namespace FiroozehGameService.Handlers.Command
         #region Fields
         private static GsTcpClient _tcpClient;
         private readonly CancellationTokenSource _cancellationToken;
-        public static string PlayerHash { set; get; }
+        public static string PlayerHash { private set; get; }
         
         public static string RoomId => GameService.CurrentGame?._Id;
         public static string UserToken => GameService.UserToken;
@@ -39,12 +39,30 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
+            
+            // Set Internal Event Handlers
+            CoreEventHandlers.OnPing += OnPing;
+            CoreEventHandlers.OnAuth += OnAuth;
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
         }
 
-                private void InitRequestMessageHandlers()
+        private static void OnAuth(object sender, string playerHash)
+        {
+            if (sender.GetType() == typeof(AuthResponseHandler))
+                PlayerHash = playerHash;
+        }
+
+        private async void OnPing(object sender, EventArgs e)
+        {
+            if (sender.GetType() == typeof(PingResponseHandler))
+                await Request(PingPongHandler.Signature);
+        }
+
+        
+        
+        private void InitRequestMessageHandlers()
         {
             var baseInterface = typeof(IRequestHandler);
             var subclassTypes = Assembly

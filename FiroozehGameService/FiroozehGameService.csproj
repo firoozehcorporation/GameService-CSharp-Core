@@ -126,6 +126,7 @@
       <Compile Include="Handlers\TurnBased\ResponseHandlers\BaseResponseHandler.cs"/>
       <Compile Include="Handlers\TurnBased\ResponseHandlers\ChooseNextResponseHandler.cs"/>
       <Compile Include="Handlers\TurnBased\ResponseHandlers\CompleteResponseHandler.cs"/>
+      <Compile Include="Handlers\TurnBased\ResponseHandlers\ErrorResponseHandler.cs"/>
       <Compile Include="Handlers\TurnBased\ResponseHandlers\FinishResponseHandler.cs"/>
       <Compile Include="Handlers\TurnBased\ResponseHandlers\IResponseHandler.cs"/>
       <Compile Include="Handlers\TurnBased\ResponseHandlers\JoinRoomResponseHandler.cs"/>
@@ -160,6 +161,7 @@
     <Compile Include="Models\Command\AutoMatch.cs" />
       <Compile Include="Models\Command\AutoMatchEvent.cs"/>
     <Compile Include="Models\Command\Chat.cs" />
+      <Compile Include="Models\Command\ErrorEvent.cs"/>
     <Compile Include="Models\Command\Invite.cs" />
     <Compile Include="Models\Command\InvitePayload.cs" />
     <Compile Include="Models\Command\Message.cs" />
@@ -177,7 +179,7 @@
     <Compile Include="Models\Enums\Command\TapActionType.cs" />
     <Compile Include="Models\Enums\GameServiceType.cs" />
     <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs" />
-      <Compile Include="Models\Enums\GSLive\RoomType.cs"/>
+      <Compile Include="Models\Enums\GSLive\GSLiveType.cs"/>
     <Compile Include="Models\Enums\GSLive\JoinType.cs" />
     <Compile Include="Models\Enums\GSLive\RT\EventType.cs" />
     <Compile Include="Models\Enums\GSLive\RT\MessageType.cs" />

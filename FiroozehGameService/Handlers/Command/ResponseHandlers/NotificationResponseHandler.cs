@@ -1,4 +1,5 @@
-﻿using FiroozehGameService.Models.Command;
+﻿using FiroozehGameService.Core;
+using FiroozehGameService.Models.Command;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers
@@ -11,7 +12,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
             var notification = JsonConvert.DeserializeObject<Notification>(packet.Data);
-            CoreEventHandlers.OnNotification?.Invoke(null,notification);
+            GameService.OnNotificationReceived(notification);
         }
     }
 }

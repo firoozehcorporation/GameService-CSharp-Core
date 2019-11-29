@@ -11,8 +11,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            TurnBasedHandler.PlayerHash = packet.Token;
-            CoreEventHandlers.OnAuth?.Invoke(null,packet.Token);
+            CoreEventHandlers.OnAuth?.Invoke(this,packet.Token);
         }
     }
 }

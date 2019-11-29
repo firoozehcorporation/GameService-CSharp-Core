@@ -44,7 +44,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)Create Room Option</param>
         public async Task CreateRoom(GSLiveOption.CreateRoomOption option)
         {
-            option.RoomType = RoomType.TurnBased;
+            option.GsLiveType = GSLiveType.TurnBased;
             await GSLive.Handler.CommandHandler.Request(CreateRoomHandler.Signature,option);     
         }
         
@@ -55,7 +55,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
         public async Task AutoMatch(GSLiveOption.AutoMatchOption option)
         {
-            option.RoomType = RoomType.TurnBased;
+            option.GsLiveType = GSLiveType.TurnBased;
             await GSLive.Handler.CommandHandler.Request(AutoMatchHandler.Signature,option);     
         }
         

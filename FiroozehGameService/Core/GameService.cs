@@ -45,7 +45,7 @@ namespace FiroozehGameService.Core
         internal static string UserToken;
         internal static string PlayToken;
         internal static Game CurrentGame;
-        internal static bool IsAvailable;
+        private static bool _isAvailable;
         internal static long StartPlaying;
 
 
@@ -64,7 +64,7 @@ namespace FiroozehGameService.Core
             GSLive = new GSLive.GSLive();
         }
 
-        public static void OnNotificationReceived(Notification notification)
+        internal static void OnNotificationReceived(Notification notification)
             => NotificationReceived?.Invoke(null,notification);
 
 
@@ -76,7 +76,7 @@ namespace FiroozehGameService.Core
         /// <value> GetLeaderBoards List </value>
         public static async Task<List<LeaderBoard>> GetLeaderBoards()
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetLeaderBoard();
         }
         
@@ -87,7 +87,7 @@ namespace FiroozehGameService.Core
         /// <value> GetAchievements List </value>
         public static async Task<List<Achievement>> GetAchievements()
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetAchievements();
         }
 
@@ -105,7 +105,7 @@ namespace FiroozehGameService.Core
             , string saveGameDescription
             , object saveGameObj)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.SaveGame(saveGameName,saveGameDescription,saveGameObj);
         }
 
@@ -120,7 +120,7 @@ namespace FiroozehGameService.Core
         public static async Task<SubmitScoreResponse> SubmitScore(
             string leaderBoardId,int scoreValue)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.SubmitScore(leaderBoardId,scoreValue);
         }
 
@@ -133,7 +133,7 @@ namespace FiroozehGameService.Core
         /// <value> return unlocked Achievement </value>
         public static async Task<Achievement> UnlockAchievement(string achievementId)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.UnlockAchievement(achievementId);
         }
 
@@ -144,7 +144,7 @@ namespace FiroozehGameService.Core
         /// <value> return Player Last Save </value>
         public static async Task<T> GetSaveGame<T>()
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetSaveGame<T>();
         }
 
@@ -158,7 +158,7 @@ namespace FiroozehGameService.Core
         /// <value> return LeaderBoardDetails </value>
         public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetLeaderBoardDetails(leaderBoardId);
         }
 
@@ -169,7 +169,7 @@ namespace FiroozehGameService.Core
         /// <value> return GetCurrentPlayer </value>
         public static async Task<User> GetCurrentPlayer()
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetCurrentPlayer();
         }
 
@@ -180,7 +180,7 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> RemoveLastSave()
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.RemoveLastSave();
         }
 
@@ -192,7 +192,7 @@ namespace FiroozehGameService.Core
         /// <value> return List of all Bucket Items</value>
         public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetBucketItems<TBucket>(bucketId);
         }
 
@@ -205,7 +205,7 @@ namespace FiroozehGameService.Core
         /// <value> return a Bucket Item</value>
         public static async Task<Bucket<TBucket>> GetBucketItem<TBucket>(string bucketId, string itemId)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetBucketItem<TBucket>(bucketId,itemId);
         }
 
@@ -220,7 +220,7 @@ namespace FiroozehGameService.Core
         /// <value> return Edited Bucket Item</value>
         public static async Task<Bucket<TBucket>> UpdateBucketItem<TBucket>(string bucketId, string itemId, TBucket editedBucket)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.UpdateBucketItem(bucketId,itemId,editedBucket);
         }
 
@@ -232,7 +232,7 @@ namespace FiroozehGameService.Core
         /// <value> return Added Bucket Item</value>
         public static async Task<Bucket<TBucket>> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.AddBucketItem(bucketId,newBucket);
         }
 
@@ -245,7 +245,7 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> DeleteBucketItems(string bucketId)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.DeleteBucketItems(bucketId);
         }
 
@@ -258,10 +258,37 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> DeleteBucketItem(string bucketId, string itemId)
         {
-            if (!IsAvailable) throw new GameServiceException("GameService Not Available");
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.DeleteBucketItem(bucketId,itemId);
         }
         
+        
+        /// <summary>
+        /// Download Asset With Tag
+        /// Set DownloadManager Event Handlers To Get Download Status 
+        /// </summary>
+        /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
+        /// <param name="path">(Not NULL)Specifies the Download File Path </param>
+        /// <value> return true if Download Successfully </value>
+        public static async Task DownloadAsset(string tag,string path)
+        {
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            await DownloadManager.StartDownload(tag, path);
+        }
+        
+        
+        /// <summary>
+        /// Download Asset With Tag
+        /// Set DownloadManager Event Handlers To Get Download Status 
+        /// </summary>
+        /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
+        /// <value> return File Buffer if Download Successfully </value>
+        public static async Task<byte[]> DownloadAsset(string tag)
+        {
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            return await DownloadManager.StartDownload(tag);
+        }
+
         
         
         /// <summary>
@@ -277,7 +304,7 @@ namespace FiroozehGameService.Core
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            IsAvailable = true;
+            _isAvailable = true;
             return true;
         }
         
@@ -292,7 +319,7 @@ namespace FiroozehGameService.Core
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            IsAvailable = true;
+            _isAvailable = true;
             await Core.GSLive.GSLive.Init();
         }
         
@@ -309,7 +336,7 @@ namespace FiroozehGameService.Core
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            IsAvailable = true;
+            _isAvailable = true;
             await Core.GSLive.GSLive.Init();
         }
                
@@ -323,7 +350,7 @@ namespace FiroozehGameService.Core
             CurrentGame = null;
             PlayToken = null;
             DownloadManager = null; 
-            IsAvailable = false;
+            _isAvailable = false;
         }
 
     }  

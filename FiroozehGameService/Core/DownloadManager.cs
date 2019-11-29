@@ -34,72 +34,89 @@ namespace FiroozehGameService.Core
 {
     public class DownloadManager
     {
+        #region DownloadRegion
         public event EventHandler<DownloadProgressArgs> DownloadProgress;
         public event EventHandler DownloadComplete;
         public event EventHandler<ErrorArg> DownloadError;
-        public event EventHandler DownloadCanceled;
-        
-        private CancellationTokenSource DownloadStreamReaderToken = new CancellationTokenSource();
 
-        private Builder.GameServiceClientConfiguration configuration;
-        private bool _enableDownload;
-      
+        private readonly Builder.GameServiceClientConfiguration _configuration;
+       
+        private readonly WebClient _client = new WebClient();
+        #endregion
+       
         public DownloadManager(Builder.GameServiceClientConfiguration config)
         {
-            configuration = config;
+            _configuration = config;
         }
 
-        public async Task StartDownload(string tag , string path)
+        internal async Task<byte[]> StartDownload(string tag)
         {
-            var download = await ApiRequest.GetDataPackInfo(configuration.ClientId, tag);
-            var buffer = new byte[1024*10];
-            var totalReadBytes = 0;
-            var readBytes = 0;
-            _enableDownload = true;
-            
-           using (var response = await GsWebRequest.Get(download.Data.Url))
-           using (var stream = await response.Content.ReadAsStreamAsync())
-           {
-               
-               var length = long.Parse(response.Content.Headers.First(h => h.Key.Equals("Content-Length")).Value.First());
-               
-               while (totalReadBytes != length && _enableDownload)
-               {
-                   while (readBytes != buffer.Length && _enableDownload)
-                   {
-                       try
-                       {
-                           readBytes += await stream.ReadAsync(buffer, buffer.Length-readBytes, 
-                               buffer.Length, DownloadStreamReaderToken.Token);
-                       }
-                       catch(OperationCanceledException)
-                       {break;}
-                   }
-                   totalReadBytes += readBytes;
-                   readBytes = 0;
-                   
-                   if(_enableDownload)
-                       DownloadProgress?.Invoke(this,new DownloadProgressArgs
-                       {
-                           Data = buffer,
-                           ProgessSize = totalReadBytes,
-                           TotalSize = length
-                       });  
-               }
-               
-               if(_enableDownload)
-                    DownloadComplete?.Invoke(this,EventArgs.Empty);   
-               else
-                   DownloadCanceled?.Invoke(this,EventArgs.Empty);
-               
-               _enableDownload = false;
-           }
+            try
+            {
+                var download = await ApiRequest.GetDataPackInfo(_configuration.ClientId, tag);
+                    // Set Events
+                _client.DownloadProgressChanged += (s, progress) =>
+                    {
+                        DownloadProgress?.Invoke(this,new DownloadProgressArgs
+                        {
+                            FileTag = tag,
+                            BytesReceived = progress.BytesReceived,
+                            TotalBytesToReceive = progress.TotalBytesToReceive,
+                            ProgressPercentage = progress.ProgressPercentage
+                        });
+                    };
+                _client.DownloadFileCompleted += (sender, args) =>
+                    {
+                        DownloadComplete?.Invoke(this,null);
+                    }; 
+                return await _client.DownloadDataTaskAsync(download.Data.Url);
+                
+            }
+            catch (Exception e)
+            {
+                DownloadError?.Invoke(this,new ErrorArg
+                {
+                    Error = e.Message
+                });
+                return null;
+            }
+        }
+       
+        internal async Task StartDownload(string tag,string path)
+        {
+            try
+            {
+                var download = await ApiRequest.GetDataPackInfo(_configuration.ClientId, tag);
+                    // Set Events
+                _client.DownloadProgressChanged += (s, progress) =>
+                    {
+                        DownloadProgress?.Invoke(this,new DownloadProgressArgs
+                        {
+                            FileTag = tag,
+                            BytesReceived = progress.BytesReceived,
+                            TotalBytesToReceive = progress.TotalBytesToReceive,
+                            ProgressPercentage = progress.ProgressPercentage
+                        });
+                    };
+                _client.DownloadFileCompleted += (sender, args) =>
+                    {
+                        DownloadComplete?.Invoke(this,null);
+                    }; 
+                _client.DownloadFileAsync(new Uri(download.Data.Url),path);
+            }
+            catch (Exception e)
+            {
+                DownloadError?.Invoke(this,new ErrorArg
+                {
+                    Error = e.Message
+                });
+            }
         }
 
-        public void StopDownload()
+
+        internal void StopDownload()
         {
-            _enableDownload = false;
-            DownloadStreamReaderToken.Cancel(true);
+            _client.CancelAsync();
         }
     }
 }
