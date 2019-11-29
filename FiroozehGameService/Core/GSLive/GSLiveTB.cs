@@ -76,7 +76,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="role">(NOTNULL)Room's Role </param>
         public async Task GetAvailableRooms(string role)
         {
-            await GSLive.Handler.CommandHandler.Request(GetRoomsHandler.Signature,new RoomDetail{Role = role});     
+            await GSLive.Handler.CommandHandler.Request(GetRoomsHandler.Signature,new RoomDetail{Role = role , GsLiveType = (int) GSLiveType.TurnBased});     
         }
 
        
@@ -151,7 +151,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task GetInviteInbox()
         {
-            await GSLive.Handler.CommandHandler.Request(InviteListHandler.Signature,null);     
+            await GSLive.Handler.CommandHandler.Request(InviteListHandler.Signature,new RoomDetail{GsLiveType = (int) GSLiveType.TurnBased});     
         }
         
         
@@ -162,7 +162,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
         public async Task InviteUser(string roomId,string userId)
         {
-            await GSLive.Handler.CommandHandler.Request(InviteUserHandler.Signature,new RoomDetail{User = userId , Id = roomId});     
+            await GSLive.Handler.CommandHandler.Request(InviteUserHandler.Signature,new RoomDetail{User = userId , Id = roomId , GsLiveType = (int) GSLiveType.TurnBased});     
 
         }
         
@@ -174,7 +174,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
         public async Task AcceptInvite(string inviteId)
         {
-            await GSLive.Handler.CommandHandler.Request(AcceptInviteHandler.Signature,new RoomDetail{Invite = inviteId});     
+            await GSLive.Handler.CommandHandler.Request(AcceptInviteHandler.Signature,new RoomDetail{Invite = inviteId , GsLiveType = (int) GSLiveType.TurnBased});     
         }
         
         
