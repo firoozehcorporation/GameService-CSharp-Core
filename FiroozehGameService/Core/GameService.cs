@@ -37,7 +37,9 @@ namespace FiroozehGameService.Core
     /// Represents Game Service Main Initializer
     /// </summary>
     public sealed class GameService
-    {       
+    {
+        
+        #region GameServiceRegion
         private const string Tag = "FiroozehGameService";
         public static event EventHandler<Notification> NotificationReceived;
         public static DownloadManager DownloadManager;
@@ -48,10 +50,9 @@ namespace FiroozehGameService.Core
         private static bool _isAvailable;
         internal static long StartPlaying;
 
-
         public static GSLive.GSLive GSLive { get; private set; }
         internal static GameServiceClientConfiguration Configuration { get; private set; }
-
+        #endregion
         
         /// <summary>
         /// Set configuration For Initialize Game Service.
