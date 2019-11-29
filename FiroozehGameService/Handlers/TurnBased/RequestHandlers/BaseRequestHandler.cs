@@ -5,8 +5,6 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 {
     internal abstract class BaseRequestHandler : IRequestHandler
     {
-        protected TurnBasedHandler TurnBasedHandler;
-
         public virtual Packet HandleAction(object payload)
         {
             if (CheckAction(payload))

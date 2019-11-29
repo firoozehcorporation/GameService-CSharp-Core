@@ -1,5 +1,4 @@
-﻿using FiroozehGameService.Handlers.Command;
-using FiroozehGameService.Models.Command;
+﻿using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers

@@ -11,8 +11,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public static string Signature =>
             "GET_MEMBERS";
 
-        public GetMemberHandler(RealTimeHandler handler) =>
-            RealTimeHandler = handler;
+        public GetMemberHandler() {}
 
         protected override Packet DoAction(object payload)
         { 

@@ -11,8 +11,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "FINISH";
 
-        public FinishHandler(TurnBasedHandler handler) =>
-            TurnBasedHandler = handler;
+        public FinishHandler() {}
 
         private static Packet DoAction(DataPayload payload)
             => new Packet(TurnBasedHandler.PlayerHash,TB.OnFinish,

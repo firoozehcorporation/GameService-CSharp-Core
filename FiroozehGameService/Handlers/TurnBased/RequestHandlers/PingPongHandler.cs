@@ -9,8 +9,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature
             => "PING_PONG";
 
-        public PingPongHandler(TurnBasedHandler handler)
-            => TurnBasedHandler = handler;
+        public PingPongHandler() {}
 
         private static Packet DoAction()
             => new Packet(TurnBasedHandler.PlayerHash,TB.ActionPingPong);        

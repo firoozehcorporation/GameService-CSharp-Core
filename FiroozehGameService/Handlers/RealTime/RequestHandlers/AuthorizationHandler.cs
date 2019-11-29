@@ -11,9 +11,8 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public static string Signature =>
             "AUTHORIZATION";
 
-        public AuthorizationHandler(RealTimeHandler handler) =>
-            RealTimeHandler = handler;
-
+        public AuthorizationHandler() {}
+        
         protected override Packet DoAction(object payload)
         { 
             if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");

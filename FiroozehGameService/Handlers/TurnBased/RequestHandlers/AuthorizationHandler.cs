@@ -8,8 +8,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "AUTHORIZATION";
 
-        public AuthorizationHandler(TurnBasedHandler handler) =>
-            TurnBasedHandler = handler;
+        public AuthorizationHandler() {}
 
         protected override Packet DoAction(object payload)
             => new Packet(

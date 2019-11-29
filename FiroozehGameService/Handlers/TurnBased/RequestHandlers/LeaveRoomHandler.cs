@@ -12,8 +12,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "LEAVE_ROOM";
 
-        public LeaveRoomHandler(TurnBasedHandler handler) =>
-            TurnBasedHandler = handler;
+        public LeaveRoomHandler() {}
 
         private static Packet DoAction(DataPayload payload)
             => new Packet(TurnBasedHandler.PlayerHash,TB.OnLeave,

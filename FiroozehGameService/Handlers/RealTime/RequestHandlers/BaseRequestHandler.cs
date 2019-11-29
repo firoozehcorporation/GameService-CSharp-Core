@@ -5,8 +5,6 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 {
     internal abstract class BaseRequestHandler : IRequestHandler
     {
-        protected RealTimeHandler RealTimeHandler;
-
         public virtual Packet HandleAction(object payload)
         {
             if (CheckAction(payload))

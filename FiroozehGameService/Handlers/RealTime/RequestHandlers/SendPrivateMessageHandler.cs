@@ -10,8 +10,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public static string Signature =>
             "SEND_PRIVATE_MESSAGE";
 
-        public SendPrivateMessageHandler(RealTimeHandler handler) =>
-            RealTimeHandler = handler;
+        public SendPrivateMessageHandler() {}
 
         private static Packet DoAction(DataPayload payload)
             => new Packet(RT.ActionData

@@ -9,8 +9,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "GET_MEMBERS";
 
-        public GetMemberHandler(TurnBasedHandler handler) =>
-            TurnBasedHandler = handler;
+        public GetMemberHandler() {}
 
         protected override Packet DoAction(object payload)
         { 

@@ -37,7 +37,6 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
                     DoLeave(dataPayload);
                     break;
             }
-          
         }
 
         private void DoJoin(DataPayload payload)

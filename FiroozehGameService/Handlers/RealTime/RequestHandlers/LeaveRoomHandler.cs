@@ -11,8 +11,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public static string Signature =>
             "LEAVE_ROOM";
 
-        public LeaveRoomHandler(RealTimeHandler handler) =>
-            RealTimeHandler = handler;
+        public LeaveRoomHandler() {}
 
         protected override Packet DoAction(object payload)
         { 

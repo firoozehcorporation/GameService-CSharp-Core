@@ -11,8 +11,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "CHOOSE_NEXT";
 
-        public ChooseNextHandler(TurnBasedHandler handler) =>
-            TurnBasedHandler = handler;
+        public ChooseNextHandler() {}
 
         private static Packet DoAction(DataPayload payload)
             => new Packet(TurnBasedHandler.PlayerHash,TB.OnChooseNext,

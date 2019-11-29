@@ -11,8 +11,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "TAKE_TURN";
 
-        public TakeTurnHandler(TurnBasedHandler handler) =>
-            TurnBasedHandler = handler;
+        public TakeTurnHandler() {}
 
         private static Packet DoAction(DataPayload payload)
             => new Packet(TurnBasedHandler.PlayerHash,TB.OnTakeTurn,
