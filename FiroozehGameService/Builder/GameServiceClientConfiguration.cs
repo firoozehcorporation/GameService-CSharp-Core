@@ -31,21 +31,11 @@ namespace FiroozehGameService.Builder
     /// </summary>
     public class GameServiceClientConfiguration
     {
-        public readonly bool HaveNotification;
-        public readonly bool CheckAppStatus;
-        public readonly bool CheckOptionalUpdate;
-        public readonly bool EnableLog;
         public readonly string ClientId;
         public readonly string ClientSecret;
-        
 
-        public GameServiceClientConfiguration(string clientId = null, string clientSecret = null,bool haveNotification = false, bool checkAppStatus = false,
-            bool checkOptionalUpdate = false, bool enableLog = false)
+        public GameServiceClientConfiguration(string clientId = null, string clientSecret = null)
         {
-            HaveNotification = haveNotification;
-            CheckAppStatus = checkAppStatus;
-            CheckOptionalUpdate = checkOptionalUpdate;
-            EnableLog = enableLog;
             ClientId = string.IsNullOrEmpty(clientId) ? throw new GameServiceException("clientId Cant Be Empty") : ClientId = clientId;
             ClientSecret = string.IsNullOrEmpty(clientSecret) ? throw new GameServiceException("clientSecret Cant Be Empty") : ClientSecret = clientSecret;
         }
