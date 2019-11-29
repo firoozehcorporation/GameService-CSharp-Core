@@ -23,6 +23,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Models.Command;
@@ -38,6 +39,7 @@ namespace FiroozehGameService.Core.GSLive
     {
         private const string Tag = "GSLive-TurnBased";
         
+        public GSLiveTB(){}
         /// <summary>
         /// Create Room With Option Like : Name , Min , Max , Role , IsPrivate
         /// </summary>

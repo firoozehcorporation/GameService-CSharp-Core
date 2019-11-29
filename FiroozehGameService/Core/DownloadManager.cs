@@ -27,6 +27,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.ApiWebRequest;
+using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.EventArgs;
 
@@ -35,12 +36,7 @@ namespace FiroozehGameService.Core
     public class DownloadManager
     {
         #region DownloadRegion
-        public event EventHandler<DownloadProgressArgs> DownloadProgress;
-        public event EventHandler DownloadComplete;
-        public event EventHandler<ErrorArg> DownloadError;
-
         private readonly Builder.GameServiceClientConfiguration _configuration;
-       
         private readonly WebClient _client = new WebClient();
         #endregion
        
@@ -57,7 +53,7 @@ namespace FiroozehGameService.Core
                     // Set Events
                 _client.DownloadProgressChanged += (s, progress) =>
                     {
-                        DownloadProgress?.Invoke(this,new DownloadProgressArgs
+                        DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
                         {
                             FileTag = tag,
                             BytesReceived = progress.BytesReceived,
@@ -67,14 +63,14 @@ namespace FiroozehGameService.Core
                     };
                 _client.DownloadFileCompleted += (sender, args) =>
                     {
-                        DownloadComplete?.Invoke(this,null);
+                        DownloadEventHandlers.DownloadComplete?.Invoke(this,null);
                     }; 
                 return await _client.DownloadDataTaskAsync(download.Data.Url);
                 
             }
             catch (Exception e)
             {
-                DownloadError?.Invoke(this,new ErrorArg
+                DownloadEventHandlers.DownloadError?.Invoke(this,new ErrorArg
                 {
                     Error = e.Message
                 });
@@ -90,7 +86,7 @@ namespace FiroozehGameService.Core
                     // Set Events
                 _client.DownloadProgressChanged += (s, progress) =>
                     {
-                        DownloadProgress?.Invoke(this,new DownloadProgressArgs
+                        DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
                         {
                             FileTag = tag,
                             BytesReceived = progress.BytesReceived,
@@ -100,13 +96,13 @@ namespace FiroozehGameService.Core
                     };
                 _client.DownloadFileCompleted += (sender, args) =>
                     {
-                        DownloadComplete?.Invoke(this,null);
+                        DownloadEventHandlers.DownloadComplete?.Invoke(this,null);
                     }; 
                 _client.DownloadFileAsync(new Uri(download.Data.Url),path);
             }
             catch (Exception e)
             {
-                DownloadError?.Invoke(this,new ErrorArg
+                DownloadEventHandlers.DownloadError?.Invoke(this,new ErrorArg
                 {
                     Error = e.Message
                 });

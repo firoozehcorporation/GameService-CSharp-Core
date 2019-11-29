@@ -94,6 +94,7 @@
     <Compile Include="Handlers\Command\ResponseHandlers\SubscribeChannelResponseHandler.cs"/>
     <Compile Include="Handlers\Command\ResponseHandlers\UnSubscribeChannelResponseHandler.cs"/>
     <Compile Include="Handlers\CoreEventHandlers.cs"/>
+    <Compile Include="Handlers\DownloadEventHandlers.cs"/>
     <Compile Include="Handlers\GsHandler.cs"/>
     <Compile Include="Handlers\RealTimeEventHandlers.cs"/>
     <Compile Include="Handlers\RealTime\IRequestHandler.cs"/>

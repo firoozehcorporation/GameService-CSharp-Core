@@ -23,6 +23,7 @@
 
 
 using System.Threading.Tasks;
+using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models.Command;
@@ -36,10 +37,8 @@ namespace FiroozehGameService.Core.GSLive
     /// </summary>
     public class GSLiveRT
     {
-        private const string Tag = "GSLive-RealTime";
-        public GSLiveRT()
-        {
-        }
+        private const string Tag = "GSLive-RealTime";        
+        public GSLiveRT() {}
         
         /// <summary>
         /// Create Room With Option Like : Name , Min , Max , Role , IsPrivate
