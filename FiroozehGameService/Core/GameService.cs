@@ -63,7 +63,6 @@ namespace FiroozehGameService.Core
             Configuration = configuration;   
             DownloadManager = new DownloadManager(Configuration);
             GSLive = new GSLive.GSLive();
-            Console.WriteLine("ConfigurationInstance");
         }
 
         internal static void OnNotificationReceived(Notification notification)
@@ -297,7 +296,7 @@ namespace FiroozehGameService.Core
         /// Normal Login To Game Service
         /// It May Throw Exception
         /// </summary>
-        public static async Task<bool> Login(string email , string password)
+        public static async Task Login(string email , string password)
         {
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
             Logout();
@@ -308,7 +307,7 @@ namespace FiroozehGameService.Core
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
-            return true;
+            await Core.GSLive.GSLive.Init();
         }
         
         /// <summary>

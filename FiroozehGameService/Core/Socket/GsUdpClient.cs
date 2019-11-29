@@ -50,7 +50,7 @@ namespace FiroozehGameService.Core.Socket
 
         public override Task Init()
         {
-            OpraitonCancelationToken = null;
+            OperationCancellationToken = null;
             Buffer = null;
             DataBuilder = null;
 

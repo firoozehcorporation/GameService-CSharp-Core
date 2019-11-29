@@ -2,14 +2,11 @@ using FiroozehGameService.Builder;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.TResponse;
-using FiroozehGameService.Models.Command;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace FiroozehGameService.Core.ApiWebRequest

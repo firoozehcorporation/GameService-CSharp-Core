@@ -39,7 +39,7 @@ namespace FiroozehGameService.Core.Socket
                         Buffer,
                         BufferOffset,
                         Buffer.Length - BufferOffset,
-                        OpraitonCancelationToken.Token);
+                        OperationCancellationToken.Token);
 
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     BufferReceivedBytes = 0;
@@ -69,7 +69,7 @@ namespace FiroozehGameService.Core.Socket
 
         public override void StopReceiving()
         {
-            OpraitonCancelationToken.Cancel(true);
+            OperationCancellationToken.Cancel(true);
             _client.Close();
             //unsafe, haven't tested yet
             _client.Dispose();
