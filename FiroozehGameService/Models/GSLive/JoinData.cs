@@ -26,13 +26,14 @@ namespace FiroozehGameService.Models.GSLive
     [Serializable]
     public class JoinData
     {
+        
         /// <summary>
         /// Gets the Room Join Type.
         /// </summary>
         /// <value>the Room Join Type</value>
         /// <see cref="Enums.GSLive.JoinType"/>
         [JsonProperty("1")]
-        public int JoinType { get; set; }
+        public JoinType JoinType { get; set; }
         
         
         /// <summary>

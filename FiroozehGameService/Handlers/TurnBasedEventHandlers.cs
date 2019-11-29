@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.TB;
 
@@ -7,7 +8,7 @@ namespace FiroozehGameService.Handlers
 {
     public class TurnBasedEventHandlers : CommandEventHandler
     {
-        public static EventHandler<JoinData> onJoinRoom;
+        public static EventHandler<JoinEvent> onJoinRoom;
         public static EventHandler<Leave> onLeaveRoom;
         public static EventHandler<Turn> onTakeTurn;
         public static EventHandler<Member> onChooseNext;

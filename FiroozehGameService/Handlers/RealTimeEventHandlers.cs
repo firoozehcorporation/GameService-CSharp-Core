@@ -7,7 +7,7 @@ namespace FiroozehGameService.Handlers
 {
     public class RealTimeEventHandlers : CommandEventHandler
     {
-        public static EventHandler<JoinData> onJoinRoom;
+        public static EventHandler<JoinEvent> onJoinRoom;
         public static EventHandler<Leave> onLeaveRoom;
         public static EventHandler<MessageReceiveEvent> onMessageReceive;
         public static EventHandler<List<Member>> onRoomMembersDetail;

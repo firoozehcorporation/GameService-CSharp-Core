@@ -164,6 +164,7 @@
       <Compile Include="Models\Command\ErrorEvent.cs"/>
     <Compile Include="Models\Command\Invite.cs" />
     <Compile Include="Models\Command\InvitePayload.cs" />
+      <Compile Include="Models\Command\JoinEvent.cs"/>
     <Compile Include="Models\Command\Message.cs" />
       <Compile Include="Models\Command\MessageReceiveEvent.cs"/>
     <Compile Include="Models\Command\Notification.cs" />

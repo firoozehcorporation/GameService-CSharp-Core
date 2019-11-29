@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.Enums.GSLive.RT;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
@@ -39,15 +40,19 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
           
         }
 
-        private static void DoJoin(DataPayload payload)
+        private void DoJoin(DataPayload payload)
         {
             var joinData = JsonConvert.DeserializeObject<JoinData>(payload.Payload);
-            RealTimeEventHandlers.onJoinRoom?.Invoke(null, joinData);
+            RealTimeEventHandlers.onJoinRoom?.Invoke(this, new JoinEvent
+            {
+                Type = GSLiveType.RealTime,
+                JoinData = joinData
+            });
         }
         
-        private static void DoPublicMessage(DataPayload payload)
+        private void DoPublicMessage(DataPayload payload)
         {
-            RealTimeEventHandlers.onMessageReceive?.Invoke(null, new MessageReceiveEvent
+            RealTimeEventHandlers.onMessageReceive?.Invoke(this, new MessageReceiveEvent
             {
                 MessageType = MessageType.Public,
                 Message = new Message
@@ -60,9 +65,9 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
             });
         }
         
-        private static void DoPrivateMessage(DataPayload payload)
+        private void DoPrivateMessage(DataPayload payload)
         {
-            RealTimeEventHandlers.onMessageReceive?.Invoke(null, new MessageReceiveEvent
+            RealTimeEventHandlers.onMessageReceive?.Invoke(this, new MessageReceiveEvent
             {
                 MessageType = MessageType.Private,
                 Message = new Message
@@ -75,14 +80,14 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
             });
         }
         
-        private static void DoMemberDetails(DataPayload payload)
+        private void DoMemberDetails(DataPayload payload)
         {
-            RealTimeEventHandlers.onRoomMembersDetail?.Invoke(null,JsonConvert.DeserializeObject<List<Member>>(payload.Payload));
+            RealTimeEventHandlers.onRoomMembersDetail?.Invoke(this,JsonConvert.DeserializeObject<List<Member>>(payload.Payload));
         }
         
-        private static void DoLeave(DataPayload payload)
+        private void DoLeave(DataPayload payload)
         {
-            RealTimeEventHandlers.onLeaveRoom?.Invoke(null,new Leave {RoomId = payload.RoomId, MemberLeave = JsonConvert.DeserializeObject<Member>(payload.Payload)});
+            RealTimeEventHandlers.onLeaveRoom?.Invoke(this,new Leave {RoomId = payload.RoomId, MemberLeave = JsonConvert.DeserializeObject<Member>(payload.Payload)});
         }
     }
 }

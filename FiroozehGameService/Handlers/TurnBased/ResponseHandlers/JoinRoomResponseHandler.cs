@@ -1,6 +1,7 @@
 ﻿
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using Newtonsoft.Json;
 
@@ -13,7 +14,11 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
            var joinData = JsonConvert.DeserializeObject<JoinData>(packet.Data);
-           TurnBasedEventHandlers.onJoinRoom?.Invoke(this,joinData);
+           TurnBasedEventHandlers.onJoinRoom?.Invoke(this, new JoinEvent
+            {
+                Type = GSLiveType.TurnBased,
+                JoinData = joinData
+            });
         }
       
     }
