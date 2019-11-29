@@ -16,7 +16,7 @@ namespace FiroozehGameService.Handlers
         public static EventHandler<List<Invite>> OnInviteInbox;
         public static EventHandler<Invite> OnInviteReceived;
         public static EventHandler<List<User>> OnFindUser;
-        public static EventHandler OnInviteUser;
+        public static EventHandler OnInviteSend;
        
     }
 }

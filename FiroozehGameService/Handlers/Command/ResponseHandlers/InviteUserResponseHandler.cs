@@ -13,7 +13,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CommandEventHandler.OnInviteUser?.Invoke(null, null);
+            CommandEventHandler.OnInviteSend?.Invoke(null, null);
         }
     }
 }
