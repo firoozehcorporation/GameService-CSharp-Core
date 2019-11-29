@@ -42,7 +42,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         private void DoJoin(DataPayload payload)
         {
             var joinData = JsonConvert.DeserializeObject<JoinData>(payload.Payload);
-            RealTimeEventHandlers.onJoinRoom?.Invoke(this, new JoinEvent
+            RealTimeEventHandlers.OnJoinRoom?.Invoke(this, new JoinEvent
             {
                 Type = GSLiveType.RealTime,
                 JoinData = joinData
@@ -51,7 +51,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         
         private void DoPublicMessage(DataPayload payload)
         {
-            RealTimeEventHandlers.onMessageReceive?.Invoke(this, new MessageReceiveEvent
+            RealTimeEventHandlers.OnMessageReceive?.Invoke(this, new MessageReceiveEvent
             {
                 MessageType = MessageType.Public,
                 Message = new Message
@@ -66,7 +66,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         
         private void DoPrivateMessage(DataPayload payload)
         {
-            RealTimeEventHandlers.onMessageReceive?.Invoke(this, new MessageReceiveEvent
+            RealTimeEventHandlers.OnMessageReceive?.Invoke(this, new MessageReceiveEvent
             {
                 MessageType = MessageType.Private,
                 Message = new Message
@@ -81,12 +81,12 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         
         private void DoMemberDetails(DataPayload payload)
         {
-            RealTimeEventHandlers.onRoomMembersDetail?.Invoke(this,JsonConvert.DeserializeObject<List<Member>>(payload.Payload));
+            RealTimeEventHandlers.OnRoomMembersDetail?.Invoke(this,JsonConvert.DeserializeObject<List<Member>>(payload.Payload));
         }
         
         private void DoLeave(DataPayload payload)
         {
-            RealTimeEventHandlers.onLeaveRoom?.Invoke(this,new Leave {RoomId = payload.RoomId, MemberLeave = JsonConvert.DeserializeObject<Member>(payload.Payload)});
+            RealTimeEventHandlers.OnLeaveRoom?.Invoke(this,new Leave {RoomId = payload.RoomId, MemberLeave = JsonConvert.DeserializeObject<Member>(payload.Payload)});
         }
     }
 }

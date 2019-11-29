@@ -15,7 +15,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         {
             if (packet.Message == "waiting_queue")
             {
-                CommandEventHandler.onAutoMatchUpdate?.Invoke(null,new AutoMatchEvent
+                CommandEventHandler.OnAutoMatchUpdate?.Invoke(null,new AutoMatchEvent
                 {
                     Status = AutoMatchStatus.OnWaiting,
                     Players = new List<User>()
@@ -23,7 +23,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
             }
             else
             {
-                CommandEventHandler.onAutoMatchUpdate?.Invoke(null,new AutoMatchEvent
+                CommandEventHandler.OnAutoMatchUpdate?.Invoke(null,new AutoMatchEvent
                 {
                     Status = AutoMatchStatus.OnUserJoined,
                     Players = JsonConvert.DeserializeObject<List<User>>(packet.Data)

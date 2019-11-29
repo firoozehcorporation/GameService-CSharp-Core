@@ -13,7 +13,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-           TurnBasedEventHandlers.onFinish?.Invoke(this,JsonConvert.DeserializeObject<Finish>(packet.Data));
+           TurnBasedEventHandlers.OnFinish?.Invoke(this,JsonConvert.DeserializeObject<Finish>(packet.Data));
         }
       
     }

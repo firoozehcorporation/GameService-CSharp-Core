@@ -13,7 +13,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
             var invite = JsonConvert.DeserializeObject<Invite>(packet.Data);
-            CommandEventHandler.onInviteReceived?.Invoke(null, invite);
+            CommandEventHandler.OnInviteReceived?.Invoke(null, invite);
         }
     }
 }
