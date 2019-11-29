@@ -12,7 +12,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
             var chat = JsonConvert.DeserializeObject<Chat>(packet.Data);
-            ChatEventHandlers.onChatReceived?.Invoke(null, chat);
+            ChatEventHandlers.OnChatReceived?.Invoke(null, chat);
         }
     }
 }

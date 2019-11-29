@@ -11,7 +11,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            ChatEventHandlers.onSubscribeChannel?.Invoke(null, packet.Message);
+            ChatEventHandlers.OnSubscribeChannel?.Invoke(null, packet.Message);
         }
     }
 }
