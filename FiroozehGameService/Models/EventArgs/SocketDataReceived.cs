@@ -2,6 +2,6 @@
 {
     internal class SocketDataReceived : System.EventArgs
     {
-        public string Data { set; get; }
+        internal string Data { set; get; }
     }
 }

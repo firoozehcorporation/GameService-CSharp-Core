@@ -74,8 +74,8 @@ namespace FiroozehGameService.Utils
 
         public void Dispose()
         {
-            _timer.Stop();
-            _timer.Close();
+            _timer?.Stop();
+            _timer?.Close();
         }
         
         

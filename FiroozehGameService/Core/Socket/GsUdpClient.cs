@@ -18,7 +18,7 @@ namespace FiroozehGameService.Core.Socket
                 throw new InvalidOperationException("Only UDP Protocol Supported");
 
             Endpoint = endpoint;
-            _client = new UdpClient(endpoint.IP, endpoint.Port);
+            _client = new UdpClient(endpoint.Ip, endpoint.Port);
             IsAvailable = true;
         }
 
@@ -29,7 +29,6 @@ namespace FiroozehGameService.Core.Socket
                 try
                 {
                     var packet = await _client.ReceiveAsync();
-
                     OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(packet.Buffer) });
                 }
                 catch (OperationCanceledException e)
@@ -58,12 +57,12 @@ namespace FiroozehGameService.Core.Socket
         }
 
         public override async Task Send(byte[] buffer)
-            => await _client.SendAsync(buffer, buffer.Length, Endpoint.IP, Endpoint.Port);
+            => await _client.SendAsync(buffer, buffer.Length);
 
         public override void StopReceiving()
         {
-            _client.Close();
-            _client.Dispose();
+            _client?.Close();
+            _client?.Dispose();
             IsAvailable = false;
         }
     }

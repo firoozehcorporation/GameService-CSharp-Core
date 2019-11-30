@@ -7,7 +7,7 @@ namespace FiroozehGameService.Models.Command
     internal class Area
     {
         [JsonProperty("0")]
-        public string IP { get; set; }
+        public string Ip { get; set; }
         
         [JsonProperty("1")]
         public string Protocol { get; set; }
@@ -17,7 +17,7 @@ namespace FiroozehGameService.Models.Command
         
         public override string ToString () {
             return "Area{" +
-                   "EndPoint='" + IP + '\'' +
+                   "EndPoint='" + Ip + '\'' +
                    ", Protocol='" + Protocol + '\'' +
                    ", Port='" + Port + '\'' +
                    '}';

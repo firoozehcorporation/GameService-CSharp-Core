@@ -22,7 +22,6 @@ namespace FiroozehGameService.Handlers
             => GameService.Configuration;
         #endregion
       
-
         internal GsHandler()
         {
             CommandHandler = new CommandHandler();

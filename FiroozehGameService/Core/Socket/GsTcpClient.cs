@@ -24,7 +24,7 @@ namespace FiroozehGameService.Core.Socket
 
         public override async Task Init()
         {
-            await _client.ConnectAsync(Endpoint.IP, Endpoint.Port);
+            await _client.ConnectAsync(Endpoint.Ip, Endpoint.Port);
             _clientStream = _client.GetStream();
             IsAvailable = true;
         }
@@ -70,9 +70,8 @@ namespace FiroozehGameService.Core.Socket
         public override void StopReceiving()
         {
             OperationCancellationToken.Cancel(true);
-            _client.Close();
-            //unsafe, haven't tested yet
-            _client.Dispose();
+            _client?.Close();
+            _client?.Dispose();
             IsAvailable = false;
         }
     }

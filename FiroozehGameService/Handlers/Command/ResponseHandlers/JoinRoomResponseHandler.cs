@@ -11,7 +11,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
             var payload = JsonConvert.DeserializeObject<StartPayload>(packet.Data);
-            CoreEventHandlers.OnStartGsLiveSystem?.Invoke(null,payload);
+            CoreEventHandlers.OnStartGsLiveSystem?.Invoke(this,payload);
         }
     }
 }

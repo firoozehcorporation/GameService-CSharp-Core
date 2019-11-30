@@ -99,19 +99,18 @@ namespace FiroozehGameService.Handlers.Command
         public async Task Init()
         {
             await _tcpClient.Init();
-            await Request(AuthorizationHandler.Signature);
             Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+            await Request(AuthorizationHandler.Signature);
         }
 
         public async Task Request(string handlerName, object payload = null)
-            => await Send(_requestHandlers[handlerName].HandleAction(payload));
+            => await Send(_requestHandlers[handlerName]?.HandleAction(payload));
 
         private async Task Send(Packet packet)
         {
             if (_observer.Increase())
             {
                 var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                Console.WriteLine(json);
                 var data = Encoding.UTF8.GetBytes(json);
                 await _tcpClient.Send(data);
             }
@@ -126,14 +125,13 @@ namespace FiroozehGameService.Handlers.Command
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
-            Console.WriteLine(e.Data);
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
             _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
         }
 
         public void Dispose()
         {
-            _tcpClient.StopReceiving();
+            _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
         }

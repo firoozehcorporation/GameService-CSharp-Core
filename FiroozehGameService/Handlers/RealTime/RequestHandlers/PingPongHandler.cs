@@ -18,7 +18,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         {
             if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
             return new Packet(RT.ActionPingPong
-                ,JsonConvert.SerializeObject(new PingPongPayload(GameService.CurrentGame?._Id,RealTimeHandler.PlayerHash)
+                ,JsonConvert.SerializeObject(new PingPongPayload(RealTimeHandler.CurrentRoom?.Id,RealTimeHandler.PlayerHash)
                 ,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));         
         }
 

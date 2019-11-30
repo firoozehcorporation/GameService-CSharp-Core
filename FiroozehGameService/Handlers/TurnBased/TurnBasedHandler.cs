@@ -98,14 +98,14 @@ namespace FiroozehGameService.Handlers.TurnBased
         }
      
         public async Task Request(string handlerName, object payload = null)
-            => await Send(_requestHandlers[handlerName].HandleAction(payload));
+            => await Send(_requestHandlers[handlerName]?.HandleAction(payload));
 
         
         public async Task Init()
         {
             await _tcpClient.Init();
-            await Request(AuthorizationHandler.Signature);
             Task.Run(async() => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+            await Request(AuthorizationHandler.Signature);
         }
              
                
