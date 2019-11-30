@@ -14,8 +14,8 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionJoinRoom,
-                JsonConvert.SerializeObject(room)
-                );
+                JsonConvert.SerializeObject(room
+                    , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
 
         protected override bool CheckAction(object payload)
            => payload.GetType() == typeof(RoomDetail);

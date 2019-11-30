@@ -29,6 +29,7 @@ using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Command;
+using Newtonsoft.Json;
 
 namespace FiroozehGameService.Core
 {
@@ -59,7 +60,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         /// <param name="configuration">(Not NULL)configuration For Initialize Game Service</param>
         public static void ConfigurationInstance(GameServiceClientConfiguration configuration)
-        {  
+        {
             Configuration = configuration;   
             DownloadManager = new DownloadManager(Configuration);
             GSLive = new GSLive.GSLive();

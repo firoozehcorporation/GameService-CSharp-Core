@@ -18,7 +18,8 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
             if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
             return new Packet(RT.ActionData
                 , JsonConvert.SerializeObject(
-                    new DataPayload(RT.OnMembersDetail, GameService.CurrentGame?._Id, RealTimeHandler.PlayerHash)));
+                    new DataPayload(RT.OnMembersDetail, GameService.CurrentGame?._Id, RealTimeHandler.PlayerHash)
+                    ,new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
 
         protected override bool CheckAction(object payload)

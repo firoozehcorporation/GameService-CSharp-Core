@@ -14,7 +14,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
             => new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionFindUser,
-                JsonConvert.SerializeObject(options)
+                JsonConvert.SerializeObject(options, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                 );
 
         protected override bool CheckAction(object payload)

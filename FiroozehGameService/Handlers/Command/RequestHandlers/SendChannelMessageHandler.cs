@@ -20,7 +20,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                         false, 
                         channelMessage.Item1,
                         null,
-                        channelMessage.Item2))
+                        channelMessage.Item2), new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
                 );
 
         protected override bool CheckAction(object payload)

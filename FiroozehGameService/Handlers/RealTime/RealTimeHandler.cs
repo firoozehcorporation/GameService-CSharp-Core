@@ -113,7 +113,7 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (_observer.Increase())
             {
-                var json = JsonConvert.SerializeObject(packet);
+                var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 var data = Encoding.UTF8.GetBytes(json);
                 await _udpClient.Send(data);
             }

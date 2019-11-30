@@ -15,7 +15,8 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
                 null,
                 Models.Consts.Command.ActionAuth,
                 JsonConvert.SerializeObject(
-                    new AuthPayload(TurnBasedHandler.CurrentRoom?.Id, TurnBasedHandler.UserToken)));
+                    new AuthPayload(TurnBasedHandler.CurrentRoom?.Id, TurnBasedHandler.UserToken),
+                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
 
 
         protected override bool CheckAction(object payload)

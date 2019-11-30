@@ -25,7 +25,7 @@ namespace FiroozehGameService.Handlers.Command
         private readonly CancellationTokenSource _cancellationToken;
         public static string PlayerHash { private set; get; }
         
-        public static string RoomId => GameService.CurrentGame?._Id;
+        public static string GameId => GameService.CurrentGame?._Id;
         public static string UserToken => GameService.UserToken;
         public static bool IsAvailable =>
             _tcpClient?.IsAvailable ?? false;
@@ -110,7 +110,8 @@ namespace FiroozehGameService.Handlers.Command
         {
             if (_observer.Increase())
             {
-                var json = JsonConvert.SerializeObject(packet);
+                var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                Console.WriteLine(json);
                 var data = Encoding.UTF8.GetBytes(json);
                 await _tcpClient.Send(data);
             }
@@ -125,6 +126,7 @@ namespace FiroozehGameService.Handlers.Command
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
+            Console.WriteLine(e.Data);
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
             _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
         }

@@ -15,7 +15,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                 null,
                 Models.Consts.Command.ActionAuth,
                 JsonConvert.SerializeObject(
-                    new AuthPayload(CommandHandler.RoomId, CommandHandler.UserToken)));
+                    new AuthPayload(CommandHandler.GameId, CommandHandler.UserToken)));
 
         protected override bool CheckAction(object payload)
             => true;

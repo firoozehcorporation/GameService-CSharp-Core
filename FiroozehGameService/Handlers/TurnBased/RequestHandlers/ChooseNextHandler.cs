@@ -15,7 +15,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 
         private static Packet DoAction(DataPayload payload)
             => new Packet(TurnBasedHandler.PlayerHash,TB.OnChooseNext,
-                JsonConvert.SerializeObject(payload));
+                JsonConvert.SerializeObject(payload, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         
         protected override Packet DoAction(object payload)
         { 

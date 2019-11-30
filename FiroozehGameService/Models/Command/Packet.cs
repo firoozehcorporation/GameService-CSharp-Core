@@ -6,6 +6,7 @@ namespace FiroozehGameService.Models.Command
     [Serializable]
     internal class Packet
     {
+        
         [JsonProperty("0")]
         public string Token { get; set; }
         
