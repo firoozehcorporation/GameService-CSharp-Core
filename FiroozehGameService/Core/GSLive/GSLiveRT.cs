@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
@@ -76,6 +77,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task LeaveRoom()
         {
+            if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
             await GSLive.Handler.RealTimeHandler.Request(LeaveRoomHandler.Signature);     
             GSLive.Handler.RealTimeHandler.Dispose();
         }
@@ -97,6 +99,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="data">(NOTNULL) Data To BroadCast </param>
         public async Task SendPublicMessage(string data)
         {
+            if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
             await GSLive.Handler.RealTimeHandler.Request(SendPublicMessageHandler.Signature,new DataPayload{Payload = data});     
         }    
         
@@ -108,6 +111,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="data">(NOTNULL) Data for Send</param>
         public async Task SendPrivateMessage(string receiverId,string data)
         {
+            if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
             await GSLive.Handler.RealTimeHandler.Request(SendPrivateMessageHandler.Signature,new DataPayload{ReceiverId = receiverId,Payload = data});     
         }    
        
@@ -117,6 +121,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task GetRoomMembersDetail()
         {
+            if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
             await GSLive.Handler.RealTimeHandler.Request(GetMemberHandler.Signature);     
         }
         

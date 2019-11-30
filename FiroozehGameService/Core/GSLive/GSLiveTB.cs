@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.TB;
@@ -92,6 +93,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="whoIsNext">(NULLABLE) Next Player's ID </param>
         public async Task TakeTurn(string data , string whoIsNext)
         {
+            if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
             await GSLive.Handler.TurnBasedHandler.Request(TakeTurnHandler.Signature,new DataPayload{Data = data,NextId = whoIsNext});     
         }
         
@@ -104,6 +106,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="whoIsNext">(NULLABLE)Next Player's ID </param>
         public async Task ChooseNext(string whoIsNext)
         {
+            if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.Request(ChooseNextHandler.Signature,new DataPayload{NextId = whoIsNext});     
         }
 
@@ -114,6 +117,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="whoIsNext">(NULLABLE)(Type : Member's ID) Player's id You Want To Select Next Turn</param>
         public async Task LeaveRoom(string whoIsNext)
         {
+           if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.Request(LeaveRoomHandler.Signature,new DataPayload{NextId = whoIsNext});     
            GSLive.Handler.TurnBasedHandler.Dispose();
         }
@@ -125,6 +129,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="outcomes">(NOTNULL) A set of players and their results</param>
         public async Task Finish(Dictionary <string,Outcome> outcomes)
         {
+           if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.Request(FinishHandler.Signature,new DataPayload{Outcomes = outcomes});     
         }
         
@@ -134,7 +139,8 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="memberId">(NOTNULL)The Specific player ID</param>
         public async Task Complete(string memberId)
-        {
+        {           
+           if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.Request(FinishHandler.Signature,new DataPayload{Id = memberId});     
         }
         
@@ -144,6 +150,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task GetRoomMembersDetail()
         {
+           if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.Request(GetMemberHandler.Signature);     
         }
         
@@ -165,7 +172,6 @@ namespace FiroozehGameService.Core.GSLive
         public async Task InviteUser(string roomId,string userId)
         {
             await GSLive.Handler.CommandHandler.Request(InviteUserHandler.Signature,new RoomDetail{User = userId , Id = roomId , GsLiveType = (int) GSLiveType.TurnBased});     
-
         }
         
         

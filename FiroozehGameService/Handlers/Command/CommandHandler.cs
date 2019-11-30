@@ -134,6 +134,9 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
+            
+            CoreEventHandlers.OnPing = null;
+            CoreEventHandlers.OnAuth = null;
         }
     }
 }

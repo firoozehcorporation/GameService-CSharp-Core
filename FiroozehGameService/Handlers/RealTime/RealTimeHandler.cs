@@ -114,8 +114,6 @@ namespace FiroozehGameService.Handlers.RealTime
             if (_observer.Increase())
             {
                 var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                // TODO Remove it
-                Console.WriteLine("Send > " + json);
                 var data = Encoding.UTF8.GetBytes(json);
                 await _udpClient.Send(data);
             }
@@ -129,8 +127,6 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
-            // TODO Remove it
-            Console.WriteLine("Recv < " + e.Data);
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
             _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);           
         }
