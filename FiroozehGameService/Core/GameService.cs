@@ -299,7 +299,8 @@ namespace FiroozehGameService.Core
         public static async Task Login(string email , string password)
         {
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
-            Logout();
+            if(_isAvailable) Logout();
+            
             var login = await ApiRequest.Login(email, password);
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize(Configuration, false);
@@ -317,7 +318,8 @@ namespace FiroozehGameService.Core
         public static async Task Login()
         {
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
-            Logout();
+            if(_isAvailable) Logout();
+           
             var auth = await ApiRequest.Authorize(Configuration, true);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
@@ -333,7 +335,8 @@ namespace FiroozehGameService.Core
         public static async Task SignUp(string nickName,string email , string password)
         {
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
-            Logout();
+            if(_isAvailable) Logout();
+           
             var login = await ApiRequest.SignUp(nickName,email,password);
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize(Configuration, false);

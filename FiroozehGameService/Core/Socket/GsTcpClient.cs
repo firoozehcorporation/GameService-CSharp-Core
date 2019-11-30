@@ -17,7 +17,7 @@ namespace FiroozehGameService.Core.Socket
         {
             if (area.Protocol.ToUpper() != "TCP")
                 throw new InvalidOperationException("Only TCP Protocol Supported");
-
+            
             _client = new TcpClient();
             Endpoint = area;
         }
