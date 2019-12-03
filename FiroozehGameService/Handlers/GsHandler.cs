@@ -53,7 +53,7 @@ namespace FiroozehGameService.Handlers
         {
             if (RealTimeHandler != null && RealTimeHandler.IsAvailable)
             {
-                await RealTimeHandler.Request(LeaveRoomHandler.Signature);
+                RealTimeHandler.Request(LeaveRoomHandler.Signature);
                 RealTimeHandler.Dispose();
                 RealTimeHandler = null;
             }
@@ -65,7 +65,7 @@ namespace FiroozehGameService.Handlers
         {
             if (TurnBasedHandler != null && TurnBasedHandler.IsAvailable)
             {
-                await TurnBasedHandler.Request(TurnBased.RequestHandlers.LeaveRoomHandler.Signature);
+                TurnBasedHandler.Request(TurnBased.RequestHandlers.LeaveRoomHandler.Signature);
                 TurnBasedHandler.Dispose();
                 TurnBasedHandler = null;
             }

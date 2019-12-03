@@ -40,7 +40,7 @@ namespace FiroozehGameService.Core.Socket
 
         public abstract Task Init();
 
-        public abstract Task Send(byte[] buffer);
+        public abstract void Send(byte[] buffer);
 
         public abstract Task StartReceiving();
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -54,14 +55,15 @@ namespace FiroozehGameService.Handlers.Command
 
         private static void OnAuth(object sender, string playerHash)
         {
-            if (sender.GetType() == typeof(AuthResponseHandler))
-                PlayerHash = playerHash;
+            if (sender.GetType() != typeof(AuthResponseHandler)) return;
+            PlayerHash = playerHash;
+            CoreEventHandlers.SuccessfulLogin?.Invoke(null,null);
         }
 
-        private async void OnPing(object sender, EventArgs e)
+        private void OnPing(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
-                await Request(PingPongHandler.Signature);
+                Request(PingPongHandler.Signature);
         }
 
         
@@ -100,20 +102,18 @@ namespace FiroozehGameService.Handlers.Command
         {
             await _tcpClient.Init();
             Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
-            await Request(AuthorizationHandler.Signature);
+            Request(AuthorizationHandler.Signature);
         }
 
-        public async Task Request(string handlerName, object payload = null)
-            => await Send(_requestHandlers[handlerName]?.HandleAction(payload));
+        public void Request(string handlerName, object payload = null)
+            => Send(_requestHandlers[handlerName]?.HandleAction(payload));
 
-        private async Task Send(Packet packet)
+        private void Send(Packet packet)
         {
-            if (_observer.Increase())
-            {
-                var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                var data = Encoding.UTF8.GetBytes(json);
-                await _tcpClient.Send(data);
-            }
+            if (!_observer.Increase()) return;
+            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var data = Encoding.UTF8.GetBytes(json);
+            _tcpClient.Send(data);
         }
 
         private async void OnError(object sender, ErrorArg e)
@@ -125,7 +125,7 @@ namespace FiroozehGameService.Handlers.Command
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
-            var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
             _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
         }
 

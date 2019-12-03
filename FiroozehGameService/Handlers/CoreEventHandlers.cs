@@ -9,6 +9,7 @@ namespace FiroozehGameService.Handlers
         internal static EventHandler<StartPayload> OnStartGsLiveSystem;
         internal static EventHandler OnPing;
 
+        public static EventHandler SuccessfulLogin;
         public static EventHandler<ErrorEvent> OnError;
     }
 }

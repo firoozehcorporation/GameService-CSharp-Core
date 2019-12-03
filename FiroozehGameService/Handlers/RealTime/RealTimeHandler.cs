@@ -61,10 +61,10 @@ namespace FiroozehGameService.Handlers.RealTime
                 PlayerHash = playerHash;
         }
 
-        private async void OnPing(object sender, EventArgs e)
+        private void OnPing(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
-                await Request(PingPongHandler.Signature);
+                Request(PingPongHandler.Signature);
         }
 
         private void InitRequestMessageHandlers()
@@ -97,26 +97,24 @@ namespace FiroozehGameService.Handlers.RealTime
         }
      
 
-        public async Task Request(string handlerName, object payload = null)
-            => await Send(_requestHandlers[handlerName]?.HandleAction(payload));
+        public void Request(string handlerName, object payload = null)
+            => Send(_requestHandlers[handlerName]?.HandleAction(payload));
         
        
         public async Task Init()
         {
             await _udpClient.Init();
             Task.Run(async() => { await _udpClient.StartReceiving(); }, _cancellationToken.Token);
-            await Request(AuthorizationHandler.Signature);
+            Request(AuthorizationHandler.Signature);
         }
         
             
-        private async Task Send(Packet packet)
+        private void Send(Packet packet)
         {
-            if (_observer.Increase())
-            {
-                var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                var data = Encoding.UTF8.GetBytes(json);
-                await _udpClient.Send(data);
-            }
+            if (!_observer.Increase()) return;
+            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var data = Encoding.UTF8.GetBytes(json);
+            _udpClient.Send(data);
         }
         
         

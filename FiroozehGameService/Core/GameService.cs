@@ -29,6 +29,7 @@ using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Command;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core
 {
@@ -298,6 +299,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task Login(string email , string password)
         {
+            if(!NetworkUtil.CheckForInternetConnection()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
             if(_isAvailable) Logout();
             
@@ -317,6 +319,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task Login()
         {
+            if(!NetworkUtil.CheckForInternetConnection()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
             if(_isAvailable) Logout();
            
@@ -334,6 +337,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task SignUp(string nickName,string email , string password)
         {
+            if(!NetworkUtil.CheckForInternetConnection()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
             if(_isAvailable) Logout();
            

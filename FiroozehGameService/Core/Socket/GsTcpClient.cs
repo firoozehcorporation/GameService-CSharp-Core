@@ -48,30 +48,31 @@ namespace FiroozehGameService.Core.Socket
                     OnDataReceived(new SocketDataReceived {Data = DataBuilder.ToString()});
                     DataBuilder.Clear();
                 }
-                catch (OperationCanceledException)
+                catch (OperationCanceledException e)
                 {
                     /* nothing to be afraid of :3 */
                     IsAvailable = false;
-                    //OnClosed(new ErrorArg {Error = e.Message});
+                    OnClosed(new ErrorArg {Error = e.Message});
                     break;
                 }
-                catch (ObjectDisposedException)
+                catch (ObjectDisposedException e)
                 {
                     IsAvailable = false;
-                    //OnClosed(new ErrorArg {Error = e.Message});
+                    OnClosed(new ErrorArg {Error = e.Message});
                     break;
                 }
             }
         }
 
-        public override async Task Send(byte[] buffer)
-            => await _clientStream.WriteAsync(buffer, 0, buffer.Length);
+        public override void Send(byte[] buffer)
+        {
+            Task.Run(() => { _clientStream?.Write(buffer, 0, buffer.Length); },OperationCancellationToken.Token);
+        }
 
         public override void StopReceiving()
         {
             OperationCancellationToken.Cancel(true);
             _client?.Close();
-            _client?.Dispose();
             IsAvailable = false;
         }
     }

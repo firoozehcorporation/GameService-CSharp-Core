@@ -1,10 +1,26 @@
 using System.Linq;
+using System.Net;
 using System.Net.NetworkInformation;
 
 namespace FiroozehGameService.Utils
 {
     internal class NetworkUtil
     {
+        
+        internal static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (client.OpenRead("http://google.com/generate_204")) 
+                    return true; 
+            }
+            catch
+            {
+                return false;
+            }
+        }
+     
         internal static string GetMacAddress()
         {
            return NetworkInterface
