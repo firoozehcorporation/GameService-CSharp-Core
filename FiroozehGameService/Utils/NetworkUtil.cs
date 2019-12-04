@@ -7,7 +7,7 @@ namespace FiroozehGameService.Utils
     internal class NetworkUtil
     {
         
-        internal static bool CheckForInternetConnection()
+        internal static bool IsConnected()
         {
             try
             {

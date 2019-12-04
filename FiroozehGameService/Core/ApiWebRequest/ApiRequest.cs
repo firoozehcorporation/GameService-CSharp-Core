@@ -354,7 +354,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             param.Add("game", configuration.ClientId);
             param.Add("secret", configuration.ClientSecret);
-            //TODO param.Add("system_info", sysInfo.ToJSON());
+            param.Add("system_info",JsonConvert.SerializeObject(configuration.SystemInfo));
             return param;
         }
 

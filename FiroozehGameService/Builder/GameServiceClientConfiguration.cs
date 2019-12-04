@@ -23,6 +23,7 @@
 
 
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Internal;
 
 namespace FiroozehGameService.Builder
 {
@@ -31,13 +32,15 @@ namespace FiroozehGameService.Builder
     /// </summary>
     public class GameServiceClientConfiguration
     {
-        public readonly string ClientId;
-        public readonly string ClientSecret;
+        internal readonly string ClientId;
+        internal readonly string ClientSecret;
+        internal readonly SystemInfo SystemInfo;
 
-        public GameServiceClientConfiguration(string clientId = null, string clientSecret = null)
+        public GameServiceClientConfiguration(string clientId = null, string clientSecret = null,SystemInfo systemInfo = null)
         {
-            ClientId = string.IsNullOrEmpty(clientId) ? throw new GameServiceException("clientId Cant Be Empty") : ClientId = clientId;
-            ClientSecret = string.IsNullOrEmpty(clientSecret) ? throw new GameServiceException("clientSecret Cant Be Empty") : ClientSecret = clientSecret;
+            ClientId = string.IsNullOrEmpty(clientId) ? throw new GameServiceException("ClientId Cant Be Empty") : ClientId = clientId;
+            ClientSecret = string.IsNullOrEmpty(clientSecret) ? throw new GameServiceException("ClientSecret Cant Be Empty") : ClientSecret = clientSecret;
+            SystemInfo = systemInfo == null ? throw new GameServiceException("SystemInfo Cant Be NULL") : SystemInfo = systemInfo;
         }
     }
 }
