@@ -49,7 +49,6 @@ namespace FiroozehGameService.Core.Socket
 
         public override Task Init()
         {
-            OperationCancellationToken = null;
             Buffer = null;
             DataBuilder = null;
 
@@ -65,6 +64,7 @@ namespace FiroozehGameService.Core.Socket
         {
             _client?.Close();
             _client?.Dispose();
+            OperationCancellationToken?.Cancel(true);
             IsAvailable = false;
         }
     }
