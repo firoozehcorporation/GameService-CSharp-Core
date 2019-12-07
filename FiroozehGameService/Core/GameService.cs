@@ -272,7 +272,7 @@ namespace FiroozehGameService.Core
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
         /// <param name="path">(Not NULL)Specifies the Download File Path </param>
         /// <value> return true if Download Successfully </value>
-        public static async Task DownloadAsset(string tag,string path)
+        public static async void DownloadAsset(string tag,string path)
         {
             if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             await DownloadManager.StartDownload(tag, path);
@@ -294,10 +294,11 @@ namespace FiroozehGameService.Core
         
         
         /// <summary>
-        /// Normal Login To Game Service
+        /// Normal Login (InFirstOnly) To Game Service
         /// It May Throw Exception
         /// </summary>
-        public static async Task Login(string email , string password)
+        /// <value> return UserToken if Login Successfully </value>
+        public static async Task<string> Login(string email , string password)
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
@@ -305,6 +306,26 @@ namespace FiroozehGameService.Core
             
             var login = await ApiRequest.Login(email, password);
             UserToken = login.Token;
+            var auth = await ApiRequest.Authorize(Configuration, false);
+            PlayToken = auth.Token;
+            CurrentGame = auth.Game;
+            StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            _isAvailable = true;
+            await Core.GSLive.GSLive.Init();
+            return UserToken;
+        }
+        
+        /// <summary>
+        /// Normal Login With UserToken To Game Service
+        /// It May Throw Exception
+        /// </summary>
+        public static async void Login(string userToken)
+        {
+            if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
+            if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
+            if(_isAvailable) Logout();
+            
+            UserToken = userToken;
             var auth = await ApiRequest.Authorize(Configuration, false);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
@@ -335,7 +356,8 @@ namespace FiroozehGameService.Core
         /// Normal SignUp To Game Service
         /// It May Throw Exception
         /// </summary>
-        public static async Task SignUp(string nickName,string email , string password)
+        /// <value> return UserToken if SignUp Successfully </value>
+        public static async Task<string> SignUp(string nickName,string email , string password)
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
@@ -349,6 +371,7 @@ namespace FiroozehGameService.Core
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
             await Core.GSLive.GSLive.Init();
+            return UserToken;
         }
                
         
