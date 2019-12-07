@@ -272,7 +272,7 @@ namespace FiroozehGameService.Core
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
         /// <param name="path">(Not NULL)Specifies the Download File Path </param>
         /// <value> return true if Download Successfully </value>
-        public static async void DownloadAsset(string tag,string path)
+        public static async Task DownloadAsset(string tag,string path)
         {
             if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             await DownloadManager.StartDownload(tag, path);
@@ -319,7 +319,7 @@ namespace FiroozehGameService.Core
         /// Normal Login With UserToken To Game Service
         /// It May Throw Exception
         /// </summary>
-        public static async void Login(string userToken)
+        public static async Task Login(string userToken)
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
