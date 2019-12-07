@@ -60,10 +60,10 @@ namespace FiroozehGameService.Handlers.Command
             CoreEventHandlers.SuccessfulLogin?.Invoke(null,null);
         }
 
-        private void OnPing(object sender, EventArgs e)
+        private async void OnPing(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
-                Request(PingPongHandler.Signature);
+                await RequestAsync(PingPongHandler.Signature);
         }
 
         
@@ -102,18 +102,33 @@ namespace FiroozehGameService.Handlers.Command
         {
             await _tcpClient.Init();
             Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
-            Request(AuthorizationHandler.Signature);
+            await RequestAsync(AuthorizationHandler.Signature);
         }
 
+        
+        
         public void Request(string handlerName, object payload = null)
             => Send(_requestHandlers[handlerName]?.HandleAction(payload));
+        
+        public async Task RequestAsync(string handlerName, object payload = null)
+            => await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
 
+        
+        
         private void Send(Packet packet)
         {
             if (!_observer.Increase()) return;
             var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             var data = Encoding.UTF8.GetBytes(json);
             _tcpClient.Send(data);
+        }
+        
+        private async Task SendAsync(Packet packet)
+        {
+            if (!_observer.Increase()) return;
+            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var data = Encoding.UTF8.GetBytes(json);
+            await _tcpClient.SendAsync(data);
         }
 
         private async void OnError(object sender, ErrorArg e)
@@ -134,9 +149,6 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
-            
-            CoreEventHandlers.OnPing = null;
-            CoreEventHandlers.OnAuth = null;
-        }
+         }
     }
 }

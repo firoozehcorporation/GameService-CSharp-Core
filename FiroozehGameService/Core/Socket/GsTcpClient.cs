@@ -29,23 +29,31 @@ namespace FiroozehGameService.Core.Socket
             IsAvailable = true;
         }
 
+       
+
         public override async Task StartReceiving()
         {
             while (true)
             {
                 try
                 {
+                    if (!_clientStream.DataAvailable) continue;
                     BufferReceivedBytes += await _clientStream.ReadAsync(
                         Buffer,
                         BufferOffset,
                         Buffer.Length - BufferOffset,
                         OperationCancellationToken.Token);
 
+                    
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     BufferReceivedBytes = 0;
+                    
+                    
+                    var packets = PacketValidator.ValidateDataAndReturn(DataBuilder.ToString());
+                    foreach (var packet in packets)                        
+                        OnDataReceived(new SocketDataReceived {Data = packet});
+                    
 
-                    if (!PacketValidator.ValidateData(DataBuilder)) continue;
-                    OnDataReceived(new SocketDataReceived {Data = DataBuilder.ToString()});
                     DataBuilder.Clear();
                 }
                 catch (OperationCanceledException e)
@@ -63,11 +71,19 @@ namespace FiroozehGameService.Core.Socket
                 }
             }
         }
+        
 
         public override void Send(byte[] buffer)
-        {
-            Task.Run(() => { _clientStream?.Write(buffer, 0, buffer.Length); },OperationCancellationToken.Token);
-        }
+            => Task.Run(() =>
+            {
+                _clientStream?.Write(buffer, 0, buffer.Length);
+            },OperationCancellationToken.Token);
+        
+        
+        public override async Task SendAsync(byte[] buffer)
+            => await _clientStream.WriteAsync(buffer, 0, buffer.Length);
+        
+
 
         public override void StopReceiving()
         {

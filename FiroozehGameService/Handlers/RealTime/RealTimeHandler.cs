@@ -18,7 +18,7 @@ using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
 {
-    internal class RealTimeHandler
+    internal class RealTimeHandler : IDisposable
     {
         #region RTHandlerRegion
         private static GsUdpClient _udpClient;
@@ -36,7 +36,7 @@ namespace FiroozehGameService.Handlers.RealTime
         
         #endregion
         
-        public RealTimeHandler(StartPayload payload)
+        internal RealTimeHandler(StartPayload payload)
         {
             CurrentRoom = payload.Room;
             _udpClient = new GsUdpClient(payload.Area);
@@ -61,10 +61,10 @@ namespace FiroozehGameService.Handlers.RealTime
                 PlayerHash = playerHash;
         }
 
-        private void OnPing(object sender, EventArgs e)
+        private async void OnPing(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
-                Request(PingPongHandler.Signature);
+                await RequestAsync(PingPongHandler.Signature);
         }
 
         private void InitRequestMessageHandlers()
@@ -97,24 +97,38 @@ namespace FiroozehGameService.Handlers.RealTime
         }
      
 
-        public void Request(string handlerName, object payload = null)
+        internal void Request(string handlerName, object payload = null)
             => Send(_requestHandlers[handlerName]?.HandleAction(payload));
         
-       
-        public async Task Init()
+        internal async Task RequestAsync(string handlerName, object payload = null)
+            => await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
+
+
+        
+        
+        internal async Task Init()
         {
             await _udpClient.Init();
             Task.Run(async() => { await _udpClient.StartReceiving(); }, _cancellationToken.Token);
-            Request(AuthorizationHandler.Signature);
+            await RequestAsync(AuthorizationHandler.Signature);
         }
         
             
+        
         private void Send(Packet packet)
         {
             if (!_observer.Increase()) return;
             var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             var data = Encoding.UTF8.GetBytes(json);
             _udpClient.Send(data);
+        }
+        
+        private async Task SendAsync(Packet packet)
+        {
+            if (!_observer.Increase()) return;
+            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            var data = Encoding.UTF8.GetBytes(json);
+            await _udpClient.SendAsync(data);
         }
         
         
@@ -131,7 +145,7 @@ namespace FiroozehGameService.Handlers.RealTime
         
         public void Dispose()
         {
-            _udpClient.StopReceiving();
+            _udpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
         }

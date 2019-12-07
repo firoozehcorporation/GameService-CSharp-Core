@@ -1,5 +1,6 @@
 ﻿using FiroozehGameService.Models.Command;
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace FiroozehGameService.Core.Socket
     {
         private readonly UdpClient _client;
         public bool IsAvailable { get; private set; }
+        private IPEndPoint _endPoint;
 
         public GsUdpClient(Area endpoint)
         {
@@ -18,6 +20,7 @@ namespace FiroozehGameService.Core.Socket
                 throw new InvalidOperationException("Only UDP Protocol Supported");
 
             Endpoint = endpoint;
+            _endPoint = new IPEndPoint(IPAddress.Parse(endpoint.Ip),endpoint.Port);
             _client = new UdpClient(endpoint.Ip, endpoint.Port);
             IsAvailable = true;
         }
@@ -28,8 +31,33 @@ namespace FiroozehGameService.Core.Socket
             {
                 try
                 {
-                    var packet = await _client.ReceiveAsync();
+                    var packet = await _client.ReceiveAsync();                   
                     OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(packet.Buffer) });
+                }
+                catch (OperationCanceledException e)
+                {
+                    /* nothing to be afraid of :3 */
+                    IsAvailable = false;
+                    OnClosed(new ErrorArg {Error = e.Message});
+                    break;
+                }
+                catch (ObjectDisposedException e)
+                {
+                    IsAvailable = false;
+                    OnClosed(new ErrorArg {Error = e.Message});
+                    break;
+                }
+            }
+        }
+
+        public void StartReceivingSync()
+        {
+            while (true)
+            {
+                try
+                {
+                    var buff = _client.Receive(ref _endPoint);
+                    OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(buff) });
                 }
                 catch (OperationCanceledException e)
                 {
@@ -56,9 +84,13 @@ namespace FiroozehGameService.Core.Socket
         }
 
         public override void Send(byte[] buffer)
-        {
-            Task.Run(() => { _client?.Send(buffer, buffer.Length); },OperationCancellationToken.Token);
-        }
+           => Task.Run(() => { _client?.Send(buffer, buffer.Length); },OperationCancellationToken.Token);
+        
+        
+        public override async Task SendAsync(byte[] buffer)
+           => await _client.SendAsync(buffer, buffer.Length);
+        
+
 
         public override void StopReceiving()
         {

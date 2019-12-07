@@ -11,9 +11,9 @@ namespace FiroozehGameService.Core.Socket
     internal abstract class GsSocketClient
     {
         #region Fields
-        private const int BufferCapacity = 1024 * 64;
+        private const int BufferCapacity = 1024 * 128;
         protected Area Endpoint;
-        protected CancellationTokenSource OperationCancellationToken = new CancellationTokenSource();
+        protected readonly CancellationTokenSource OperationCancellationToken = new CancellationTokenSource();
 
         //TODO replace string to byteArrayStream
         protected StringBuilder DataBuilder = new StringBuilder();
@@ -41,6 +41,8 @@ namespace FiroozehGameService.Core.Socket
         public abstract Task Init();
 
         public abstract void Send(byte[] buffer);
+        
+        public abstract Task SendAsync(byte[] buffer);
 
         public abstract Task StartReceiving();
 

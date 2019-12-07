@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace FiroozehGameService.Core.Socket.PacketValidators
 {
@@ -7,29 +8,37 @@ namespace FiroozehGameService.Core.Socket.PacketValidators
         private static readonly byte OpenedBracketByte = Encoding.ASCII.GetBytes("{")[0];
         private static readonly byte ClosedBracketByte = Encoding.ASCII.GetBytes("}")[0];
 
-        public bool ValidateData(StringBuilder dataBuilder)
+        public IEnumerable<string> ValidateDataAndReturn(string inputData)
         {
             const char openedBracket = '{';
             const char closedBracket = '}';
-            var scopeLevel = 0;
+            
+            var list = new List<string>();
+            var buff = "";
+            var current = 0;
 
-            for (var i = 0; i < dataBuilder.Length; i++)
+
+            foreach (var data in inputData)
             {
-                switch (dataBuilder[i])
+                buff += data;
+                switch (data)
                 {
                     case openedBracket:
-                        scopeLevel++;
+                        current++;
                         break;
                     case closedBracket:
-                        scopeLevel--;
-                        break;
-                    default:
+                        current--;
+                        if (current == 0)
+                        {
+                            list.Add(buff);
+                            buff = "";
+                        }
                         break;
                 }
             }
-
-            return scopeLevel == 0;
+            return list;         
         }
+        
 
         public bool ValidateBinaryData(byte[] buffer, int offset, int length)
         {

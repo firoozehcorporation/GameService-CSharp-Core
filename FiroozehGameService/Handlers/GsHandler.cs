@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using FiroozehGameService.Core;
 using FiroozehGameService.Models.Command;
 using System.Threading.Tasks;
@@ -17,9 +18,6 @@ namespace FiroozehGameService.Handlers
         public CommandHandler CommandHandler { get; }
         public RealTimeHandler RealTimeHandler { get; private set; }
         public TurnBasedHandler TurnBasedHandler { get; private set; }
-
-        private GameServiceClientConfiguration Configuration
-            => GameService.Configuration;
         #endregion
       
         internal GsHandler()
@@ -30,7 +28,7 @@ namespace FiroozehGameService.Handlers
 
         private async void OnJoinRoom(object sender, StartPayload startPayload)
         {
-            switch (startPayload.Room?.GsLiveType)
+            switch (startPayload.Room.GsLiveType)
             {
                 case GSLiveType.NotSet:
                     break;
@@ -42,8 +40,6 @@ namespace FiroozehGameService.Handlers
                     break;
                 case GSLiveType.Core:
                     break;
-                case null:
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -51,21 +47,21 @@ namespace FiroozehGameService.Handlers
 
         private async Task ConnectToRtServer(StartPayload payload)
         {
-            if (RealTimeHandler != null && RealTimeHandler.IsAvailable)
-            {
-                RealTimeHandler.Request(LeaveRoomHandler.Signature);
-                RealTimeHandler.Dispose();
-                RealTimeHandler = null;
-            }
-            RealTimeHandler = new RealTimeHandler(payload);
-            await RealTimeHandler.Init();
+                if (RealTimeHandler != null && RealTimeHandler.IsAvailable)
+                {
+                    await RealTimeHandler.RequestAsync(LeaveRoomHandler.Signature);
+                    RealTimeHandler.Dispose();
+                    RealTimeHandler = null;
+                }
+                RealTimeHandler = new RealTimeHandler(payload);
+                await RealTimeHandler.Init();            
         }
 
         private async Task ConnectToTbServer(StartPayload payload)
         {
             if (TurnBasedHandler != null && TurnBasedHandler.IsAvailable)
             {
-                TurnBasedHandler.Request(TurnBased.RequestHandlers.LeaveRoomHandler.Signature);
+                await TurnBasedHandler.RequestAsync(TurnBased.RequestHandlers.LeaveRoomHandler.Signature);
                 TurnBasedHandler.Dispose();
                 TurnBasedHandler = null;
             }

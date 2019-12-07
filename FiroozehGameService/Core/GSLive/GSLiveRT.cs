@@ -22,8 +22,6 @@
 */
 
 
-using System.Threading.Tasks;
-using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
