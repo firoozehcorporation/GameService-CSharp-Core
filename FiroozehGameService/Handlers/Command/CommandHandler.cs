@@ -109,8 +109,8 @@ namespace FiroozehGameService.Handlers.Command
         
         public void Request(string handlerName, object payload = null)
             => Send(_requestHandlers[handlerName]?.HandleAction(payload));
-        
-        public async Task RequestAsync(string handlerName, object payload = null)
+
+        private async Task RequestAsync(string handlerName, object payload = null)
             => await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
 
         

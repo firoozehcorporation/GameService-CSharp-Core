@@ -9,7 +9,7 @@ namespace FiroozehGameService.Core.Socket
 {
     internal class GsTcpClient : GsSocketClient
     {
-        private readonly TcpClient _client;
+        private TcpClient _client;
         private NetworkStream _clientStream;
         public bool IsAvailable { get; private set; }
 
@@ -18,12 +18,12 @@ namespace FiroozehGameService.Core.Socket
             if (area.Protocol.ToUpper() != "TCP")
                 throw new InvalidOperationException("Only TCP Protocol Supported");
             
-            _client = new TcpClient();
             Endpoint = area;
         }
 
         public override async Task Init()
         {
+            _client = new TcpClient();
             await _client.ConnectAsync(Endpoint.Ip, Endpoint.Port);
             _clientStream = _client.GetStream();
             IsAvailable = true;
@@ -87,9 +87,16 @@ namespace FiroozehGameService.Core.Socket
 
         public override void StopReceiving()
         {
-            OperationCancellationToken.Cancel(true);
-            _client?.Close();
-            IsAvailable = false;
+            try
+            {
+                OperationCancellationToken.Cancel(true);
+                _client?.Close();
+                IsAvailable = false;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
     }
 }

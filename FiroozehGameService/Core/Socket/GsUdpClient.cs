@@ -10,7 +10,7 @@ namespace FiroozehGameService.Core.Socket
 {
     internal class GsUdpClient : GsSocketClient
     {
-        private readonly UdpClient _client;
+        private UdpClient _client;
         public bool IsAvailable { get; private set; }
         private IPEndPoint _endPoint;
 
@@ -50,31 +50,6 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-        public void StartReceivingSync()
-        {
-            while (true)
-            {
-                try
-                {
-                    var buff = _client.Receive(ref _endPoint);
-                    OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(buff) });
-                }
-                catch (OperationCanceledException e)
-                {
-                    /* nothing to be afraid of :3 */
-                    IsAvailable = false;
-                    OnClosed(new ErrorArg {Error = e.Message});
-                    break;
-                }
-                catch (ObjectDisposedException e)
-                {
-                    IsAvailable = false;
-                    OnClosed(new ErrorArg {Error = e.Message});
-                    break;
-                }
-            }
-        }
-
         public override Task Init()
         {
             Buffer = null;
@@ -94,10 +69,17 @@ namespace FiroozehGameService.Core.Socket
 
         public override void StopReceiving()
         {
-            _client?.Close();
-            _client?.Dispose();
-            OperationCancellationToken?.Cancel(true);
-            IsAvailable = false;
+            try
+            {
+                OperationCancellationToken?.Cancel(true);
+                _client?.Close();
+                _client = null;
+                IsAvailable = false;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
     }
 }
