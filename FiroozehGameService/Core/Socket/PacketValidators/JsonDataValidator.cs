@@ -13,18 +13,24 @@ namespace FiroozehGameService.Core.Socket.PacketValidators
         public IEnumerable<string> ValidateDataAndReturn(StringBuilder inputData)
         {
             var scopeLevel = 0;
-            int offset = 0;
-            for (int i = 0; i < inputData.Length; i++)
+            var offset = 0;
+            for (var i = 0; i < inputData.Length; i++)
             {
-                if (inputData[i] == OpenedBracket)
-                    scopeLevel++;
-                else if (inputData[i] == ClosedBracket)
+                switch (inputData[i])
                 {
-                    scopeLevel--;
-                    if (scopeLevel == 0)
+                    case OpenedBracket:
+                        scopeLevel++;
+                        break;
+                    case ClosedBracket:
                     {
-                        yield return inputData.ToString(offset, i - offset + 1);
-                        offset = i + 1;
+                        scopeLevel--;
+                        if (scopeLevel == 0)
+                        {
+                            yield return inputData.ToString(offset, i - offset + 1);
+                            offset = i + 1;
+                        }
+
+                        break;
                     }
                 }
             }

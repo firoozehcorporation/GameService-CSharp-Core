@@ -42,13 +42,13 @@ namespace FiroozehGameService.Core
         
         #region GameServiceRegion
         private const string Tag = "FiroozehGameService";
+        private static bool _isAvailable;
         public static event EventHandler<Notification> NotificationReceived;
         public static DownloadManager DownloadManager;
         
         internal static string UserToken;
         internal static string PlayToken;
         internal static Game CurrentGame;
-        private static bool _isAvailable;
         internal static long StartPlaying;
 
         public static GSLive.GSLive GSLive { get; private set; }
@@ -61,6 +61,7 @@ namespace FiroozehGameService.Core
         /// <param name="configuration">(Not NULL)configuration For Initialize Game Service</param>
         public static void ConfigurationInstance(GameServiceClientConfiguration configuration)
         {
+            if(IsAuthenticated()) throw new GameServiceException("Must Logout First To ReConfigurationInstance");
             Configuration = configuration;   
             DownloadManager = new DownloadManager(Configuration);
             GSLive = new GSLive.GSLive();
@@ -373,7 +374,15 @@ namespace FiroozehGameService.Core
             await Core.GSLive.GSLive.Init();
             return UserToken;
         }
-               
+
+
+        /// <summary>
+        /// Check if Current User Authenticated
+        /// </summary>
+        /// <value> return True if Current User Authenticated Before </value>
+        public static bool IsAuthenticated()
+            => _isAvailable;
+
         
         /// <summary>
         /// Logout To Game Service
