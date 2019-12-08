@@ -150,6 +150,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
+            CoreEventHandlers.Dispose?.Invoke(this,null);
         }
 
 

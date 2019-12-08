@@ -22,6 +22,7 @@
 */
 
 
+using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
@@ -43,10 +44,10 @@ namespace FiroozehGameService.Core.GSLive
         /// Create Room With Option Like : Name , Min , Max , Role , IsPrivate
         /// </summary>
         /// <param name="option">(NOTNULL)Create Room Option</param>
-        public void CreateRoom(GSLiveOption.CreateRoomOption option)
+        public async Task CreateRoom(GSLiveOption.CreateRoomOption option)
         {
             option.GsLiveType = GSLiveType.RealTime;
-            GSLive.Handler.CommandHandler.Request(CreateRoomHandler.Signature,option);     
+            await GSLive.Handler.CommandHandler.RequestAsync(CreateRoomHandler.Signature,option);     
         }
         
         
@@ -54,10 +55,10 @@ namespace FiroozehGameService.Core.GSLive
         /// Create AutoMatch With Option Like :  Min , Max , Role 
         /// </summary>
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
-        public void AutoMatch(GSLiveOption.AutoMatchOption option)
+        public async Task AutoMatch(GSLiveOption.AutoMatchOption option)
         {
             option.GsLiveType = GSLiveType.RealTime;
-            GSLive.Handler.CommandHandler.Request(AutoMatchHandler.Signature,option);     
+            await GSLive.Handler.CommandHandler.RequestAsync(AutoMatchHandler.Signature,option);     
         }
         
         
@@ -65,18 +66,18 @@ namespace FiroozehGameService.Core.GSLive
         /// Join In Room With RoomID
         /// </summary>
         /// <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
-        public void JoinRoom(string roomId)
+        public async Task JoinRoom(string roomId)
         {
-           GSLive.Handler.CommandHandler.Request(JoinRoomHandler.Signature,new RoomDetail{Id = roomId});     
+           await GSLive.Handler.CommandHandler.RequestAsync(JoinRoomHandler.Signature,new RoomDetail{Id = roomId});     
         }
         
         /// <summary>
         /// Leave The Current Room
         /// </summary>
-        public void LeaveRoom()
+        public async Task LeaveRoom()
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-            GSLive.Handler.RealTimeHandler.Request(LeaveRoomHandler.Signature);     
+            await GSLive.Handler.RealTimeHandler.RequestAsync(LeaveRoomHandler.Signature);     
             GSLive.Handler.RealTimeHandler.Dispose();
         }
 
@@ -85,9 +86,9 @@ namespace FiroozehGameService.Core.GSLive
         /// Get Available Rooms According To Room's Role  
         /// </summary>
         /// <param name="role">(NOTNULL)Room's Role </param>
-        public void GetAvailableRooms(string role)
+        public async Task GetAvailableRooms(string role)
         {
-            GSLive.Handler.CommandHandler.Request(GetRoomsHandler.Signature,new RoomDetail{Role = role , GsLiveType = (int) GSLiveType.RealTime});     
+            await GSLive.Handler.CommandHandler.RequestAsync(GetRoomsHandler.Signature,new RoomDetail{Role = role , GsLiveType = (int) GSLiveType.RealTime});     
         }
         
        
@@ -95,10 +96,10 @@ namespace FiroozehGameService.Core.GSLive
         /// Send A Data To All Players in Room. 
         /// </summary>
         /// <param name="data">(NOTNULL) Data To BroadCast </param>
-        public void SendPublicMessage(string data)
+        public async Task SendPublicMessage(string data)
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-            GSLive.Handler.RealTimeHandler.Request(SendPublicMessageHandler.Signature,new DataPayload{Payload = data});     
+            await GSLive.Handler.RealTimeHandler.RequestAsync(SendPublicMessageHandler.Signature,new DataPayload{Payload = data});     
         }    
         
         
@@ -107,29 +108,29 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="receiverId">(NOTNULL) (Type : MemberID)Player's ID</param>
         /// <param name="data">(NOTNULL) Data for Send</param>
-        public void SendPrivateMessage(string receiverId,string data)
+        public async Task SendPrivateMessage(string receiverId,string data)
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-            GSLive.Handler.RealTimeHandler.Request(SendPrivateMessageHandler.Signature,new DataPayload{ReceiverId = receiverId,Payload = data});     
+            await GSLive.Handler.RealTimeHandler.RequestAsync(SendPrivateMessageHandler.Signature,new DataPayload{ReceiverId = receiverId,Payload = data});     
         }    
        
         
         /// <summary>
         /// Get Room Members Details 
         /// </summary>
-        public void GetRoomMembersDetail()
+        public async Task GetRoomMembersDetail()
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-            GSLive.Handler.RealTimeHandler.Request(GetMemberHandler.Signature);     
+            await GSLive.Handler.RealTimeHandler.RequestAsync(GetMemberHandler.Signature);     
         }
         
         
         /// <summary>
         /// Get Your Invite Inbox
         /// </summary>
-        public void GetInviteInbox()
+        public async Task GetInviteInbox()
         {
-            GSLive.Handler.CommandHandler.Request(InviteListHandler.Signature,new RoomDetail{GsLiveType = (int) GSLiveType.RealTime});     
+            await GSLive.Handler.CommandHandler.RequestAsync(InviteListHandler.Signature,new RoomDetail{GsLiveType = (int) GSLiveType.RealTime});     
         }
         
         
@@ -138,9 +139,9 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="roomId">(NOTNULL) (Type : RoomID)Room's ID</param>
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
-        public void InviteUser(string roomId,string userId)
+        public async Task InviteUser(string roomId,string userId)
         {
-           GSLive.Handler.CommandHandler.Request(InviteUserHandler.Signature,new RoomDetail{User = userId , Id = roomId , GsLiveType = (int) GSLiveType.RealTime});     
+           await GSLive.Handler.CommandHandler.RequestAsync(InviteUserHandler.Signature,new RoomDetail{User = userId , Id = roomId , GsLiveType = (int) GSLiveType.RealTime});     
         }
         
         
@@ -149,9 +150,9 @@ namespace FiroozehGameService.Core.GSLive
         /// Note: After accepting the invitation, you will be automatically entered into the game room
         /// </summary>
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
-        public void AcceptInvite(string inviteId)
+        public async Task AcceptInvite(string inviteId)
         {
-           GSLive.Handler.CommandHandler.Request(AcceptInviteHandler.Signature,new RoomDetail{Invite = inviteId , GsLiveType = (int) GSLiveType.RealTime});     
+           await GSLive.Handler.CommandHandler.RequestAsync(AcceptInviteHandler.Signature,new RoomDetail{Invite = inviteId , GsLiveType = (int) GSLiveType.RealTime});     
         }
         
         /// <summary>
@@ -159,9 +160,9 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="query">(NOTNULL) Player's NickName</param>
         /// <param name="limit">(Max = 15) The Result Limits</param>
-        public void FindUser(string query,int limit)
+        public async Task FindUser(string query,int limit)
         {
-            GSLive.Handler.CommandHandler.Request(FindUserHandler.Signature,new RoomDetail{Max = limit , User = query});     
+            await GSLive.Handler.CommandHandler.RequestAsync(FindUserHandler.Signature,new RoomDetail{Max = limit , User = query});     
         }
         
     }

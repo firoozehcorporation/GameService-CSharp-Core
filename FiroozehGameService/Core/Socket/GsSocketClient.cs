@@ -13,7 +13,7 @@ namespace FiroozehGameService.Core.Socket
         #region Fields
         private const int BufferCapacity = 1024 * 128;
         protected Area Endpoint;
-        protected readonly CancellationTokenSource OperationCancellationToken = new CancellationTokenSource();
+        protected CancellationTokenSource OperationCancellationToken;
 
         //TODO replace string to byteArrayStream
         protected StringBuilder DataBuilder = new StringBuilder();

@@ -1,8 +1,10 @@
 ﻿using FiroozehGameService.Models.Command;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Models.EventArgs;
 
@@ -12,7 +14,6 @@ namespace FiroozehGameService.Core.Socket
     {
         private UdpClient _client;
         public bool IsAvailable { get; private set; }
-        private IPEndPoint _endPoint;
 
         public GsUdpClient(Area endpoint)
         {
@@ -20,8 +21,8 @@ namespace FiroozehGameService.Core.Socket
                 throw new InvalidOperationException("Only UDP Protocol Supported");
 
             Endpoint = endpoint;
-            _endPoint = new IPEndPoint(IPAddress.Parse(endpoint.Ip),endpoint.Port);
             _client = new UdpClient(endpoint.Ip, endpoint.Port);
+            OperationCancellationToken = new CancellationTokenSource();
             IsAvailable = true;
         }
 
@@ -59,7 +60,10 @@ namespace FiroozehGameService.Core.Socket
         }
         
         public override void Send(byte[] buffer)
-           => Task.Run(() => { _client?.Send(buffer, buffer.Length); },OperationCancellationToken.Token);
+           => Task.Run(() =>
+           {
+               _client.Send(buffer, buffer.Length);
+           },OperationCancellationToken.Token);
         
         public override async Task SendAsync(byte[] buffer)
            => await _client.SendAsync(buffer, buffer.Length);
@@ -71,6 +75,7 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 OperationCancellationToken?.Cancel(true);
+                OperationCancellationToken?.Dispose();
                 _client?.Close();
                 _client = null;
                 IsAvailable = false;

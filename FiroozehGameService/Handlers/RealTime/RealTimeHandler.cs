@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -119,7 +120,7 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (!_observer.Increase()) return;
             var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            var data = Encoding.UTF8.GetBytes(json);
+            var data = Encoding.UTF8.GetBytes(json);          
             _udpClient.Send(data);
         }
         
@@ -148,6 +149,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
+            CoreEventHandlers.Dispose?.Invoke(this,null);
         }
         
     }

@@ -8,6 +8,7 @@ namespace FiroozehGameService.Handlers
         internal static EventHandler<string> Authorized;
         internal static EventHandler<StartPayload> GsLiveSystemStarted;
         internal static EventHandler Ping;
+        internal static EventHandler Dispose;
 
         public static EventHandler SuccessfullyLogined;
         public static EventHandler<ErrorEvent> Error;

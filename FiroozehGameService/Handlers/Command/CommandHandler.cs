@@ -107,10 +107,10 @@ namespace FiroozehGameService.Handlers.Command
 
         
         
-        public void Request(string handlerName, object payload = null)
+        internal void Request(string handlerName, object payload = null)
             => Send(_requestHandlers[handlerName]?.HandleAction(payload));
 
-        private async Task RequestAsync(string handlerName, object payload = null)
+        internal async Task RequestAsync(string handlerName, object payload = null)
             => await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
 
         
@@ -149,6 +149,7 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
+            CoreEventHandlers.Dispose?.Invoke(this,null);
          }
     }
 }

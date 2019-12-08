@@ -3,6 +3,7 @@ using FiroozehGameService.Models.EventArgs;
 using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FiroozehGameService.Core.Socket
@@ -24,6 +25,7 @@ namespace FiroozehGameService.Core.Socket
         public override async Task Init()
         {
             _client = new TcpClient();
+            OperationCancellationToken = new CancellationTokenSource();
             await _client.ConnectAsync(Endpoint.Ip, Endpoint.Port);
             _clientStream = _client.GetStream();
             IsAvailable = true;
@@ -85,7 +87,8 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                OperationCancellationToken.Cancel(true);
+                OperationCancellationToken?.Cancel(true);
+                OperationCancellationToken?.Dispose();
                 _client?.Close();
                 IsAvailable = false;
             }

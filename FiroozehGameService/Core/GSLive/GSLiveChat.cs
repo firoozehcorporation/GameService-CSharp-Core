@@ -36,18 +36,18 @@ namespace FiroozehGameService.Core.GSLive
         /// Subscribe In Channel With channelName.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Subscribe</param>
-        public void SubscribeChannel(string channelName)
+        public async Task SubscribeChannel(string channelName)
         {
-           GSLive.Handler.CommandHandler.Request(SubscribeChannelHandler.Signature,channelName);     
+           await GSLive.Handler.CommandHandler.RequestAsync(SubscribeChannelHandler.Signature,channelName);     
         }
         
         /// <summary>
         /// UnSubscribeChannel With channelName.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To UnSubscribe</param>
-        public void UnSubscribeChannel(string channelName)
+        public async Task UnSubscribeChannel(string channelName)
         {
-            GSLive.Handler.CommandHandler.Request(UnsubscribeChannelHandler.Signature,channelName);     
+            await GSLive.Handler.CommandHandler.RequestAsync(UnsubscribeChannelHandler.Signature,channelName);     
         }
         
         /// <summary>
@@ -56,9 +56,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
 
-        public void SendChannelMessage(string channelName,string message)
+        public async Task SendChannelMessage(string channelName,string message)
         {
-           GSLive.Handler.CommandHandler.Request(SendChannelMessageHandler.Signature,Tuple.Create(channelName,message));     
+           await GSLive.Handler.CommandHandler.RequestAsync(SendChannelMessageHandler.Signature,Tuple.Create(channelName,message));     
         }
     }
 }
