@@ -11,7 +11,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CoreEventHandlers.OnError?.Invoke(this,new ErrorEvent
+            CoreEventHandlers.Error?.Invoke(this,new ErrorEvent
             {
                 Type = GSLiveType.TurnBased,
                 Error = packet.Message

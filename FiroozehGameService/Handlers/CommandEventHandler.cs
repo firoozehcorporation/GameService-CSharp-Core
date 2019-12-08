@@ -9,14 +9,14 @@ namespace FiroozehGameService.Handlers
 {
     public class CommandEventHandler : CoreEventHandlers
     {
-        public static EventHandler<List<Room>> OnAvailableRooms;
-        public static EventHandler<AutoMatchEvent> OnAutoMatchUpdate;
+        public static EventHandler<List<Room>> AvailableRoomsReceived;
+        public static EventHandler<AutoMatchEvent> AutoMatchUpdated;
         
         // Invite EventHandlers
-        public static EventHandler<List<Invite>> OnInviteInbox;
-        public static EventHandler<Invite> OnInviteReceived;
-        public static EventHandler<List<User>> OnFindUser;
-        public static EventHandler OnInviteSend;
+        public static EventHandler<List<Invite>> InviteInboxReceived;
+        public static EventHandler<Invite> NewInviteReceived;
+        public static EventHandler<List<User>> FindUserReceived;
+        public static EventHandler InvitationSent;
        
     }
 }

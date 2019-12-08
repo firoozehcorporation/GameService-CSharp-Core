@@ -63,7 +63,7 @@ namespace FiroozehGameService.Core
                     };
                 _client.DownloadFileCompleted += (sender, args) =>
                     {
-                        DownloadEventHandlers.DownloadComplete?.Invoke(this,null);
+                        DownloadEventHandlers.DownloadCompleted?.Invoke(this, EventArgs.Empty);
                     }; 
                 return await _client.DownloadDataTaskAsync(download.Data.Url);
                 
@@ -74,6 +74,7 @@ namespace FiroozehGameService.Core
                 {
                     Error = e.Message
                 });
+                //TODO Use "throw" instead
                 return null;
             }
         }
@@ -85,7 +86,6 @@ namespace FiroozehGameService.Core
                 var download = await ApiRequest.GetDataPackInfo(_configuration.ClientId, tag);
                     // Set Events
                 _client.DownloadProgressChanged += (s, progress) =>
-                    {
                         DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
                         {
                             FileTag = tag,
@@ -93,11 +93,11 @@ namespace FiroozehGameService.Core
                             TotalBytesToReceive = progress.TotalBytesToReceive,
                             ProgressPercentage = progress.ProgressPercentage
                         });
-                    };
-                _client.DownloadFileCompleted += (sender, args) =>
-                    {
-                        DownloadEventHandlers.DownloadComplete?.Invoke(this,null);
-                    }; 
+                    
+
+                _client.DownloadFileCompleted += (s, e) =>
+                        DownloadEventHandlers.DownloadCompleted?.Invoke(this,EventArgs.Empty);
+
                 _client.DownloadFileAsync(new Uri(download.Data.Url),path);
             }
             catch (Exception e)

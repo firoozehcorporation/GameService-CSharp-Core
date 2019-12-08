@@ -46,8 +46,8 @@ namespace FiroozehGameService.Handlers.Command
             _observer = new GsLiveSystemObserver(GSLiveType.Core);
             
             // Set Internal Event Handlers
-            CoreEventHandlers.OnPing += OnPing;
-            CoreEventHandlers.OnAuth += OnAuth;
+            CoreEventHandlers.Ping += OnPing;
+            CoreEventHandlers.Authorized += OnAuth;
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
@@ -57,7 +57,7 @@ namespace FiroozehGameService.Handlers.Command
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
-            CoreEventHandlers.SuccessfulLogin?.Invoke(null,null);
+            CoreEventHandlers.SuccessfullyLogined?.Invoke(null,null);
         }
 
         private async void OnPing(object sender, EventArgs e)

@@ -57,10 +57,9 @@ namespace FiroozehGameService.Core.Socket
 
             return Task.CompletedTask;
         }
-
+        
         public override void Send(byte[] buffer)
            => Task.Run(() => { _client?.Send(buffer, buffer.Length); },OperationCancellationToken.Token);
-        
         
         public override async Task SendAsync(byte[] buffer)
            => await _client.SendAsync(buffer, buffer.Length);

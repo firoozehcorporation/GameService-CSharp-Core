@@ -37,24 +37,20 @@ namespace FiroozehGameService.Core.Socket
             {
                 try
                 {
-                    if (!_clientStream.DataAvailable) continue;
+                    //wasting ALL CPU cycles here
+                    //if (!_clientStream.DataAvailable) continue;
                     BufferReceivedBytes += await _clientStream.ReadAsync(
                         Buffer,
                         BufferOffset,
                         Buffer.Length - BufferOffset,
                         OperationCancellationToken.Token);
 
-                    
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     BufferReceivedBytes = 0;
                     
-                    
-                    var packets = PacketValidator.ValidateDataAndReturn(DataBuilder.ToString());
+                    var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
                     foreach (var packet in packets)                        
-                        OnDataReceived(new SocketDataReceived {Data = packet});
-                    
-
-                    DataBuilder.Clear();
+                        OnDataReceived(new SocketDataReceived {Data = packet}); 
                 }
                 catch (OperationCanceledException e)
                 {
@@ -93,7 +89,7 @@ namespace FiroozehGameService.Core.Socket
                 _client?.Close();
                 IsAvailable = false;
             }
-            catch (Exception)
+            catch
             {
                 // ignored
             }

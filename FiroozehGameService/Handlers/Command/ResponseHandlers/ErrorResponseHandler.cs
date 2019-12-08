@@ -11,7 +11,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CoreEventHandlers.OnError?.Invoke(this,new ErrorEvent
+            CoreEventHandlers.Error?.Invoke(this,new ErrorEvent
             {
                 Type = GSLiveType.Core,
                 Error = packet.Message

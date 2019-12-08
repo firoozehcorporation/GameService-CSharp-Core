@@ -9,7 +9,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CoreEventHandlers.OnAuth?.Invoke(this,packet.Token);
+            CoreEventHandlers.Authorized?.Invoke(this,packet.Token);
         }
     }
 }

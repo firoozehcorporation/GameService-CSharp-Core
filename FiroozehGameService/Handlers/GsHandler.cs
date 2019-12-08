@@ -23,7 +23,7 @@ namespace FiroozehGameService.Handlers
         internal GsHandler()
         {
             CommandHandler = new CommandHandler();
-            CoreEventHandlers.OnStartGsLiveSystem += OnJoinRoom;
+            CoreEventHandlers.GsLiveSystemStarted += OnJoinRoom;
         }
 
         private async void OnJoinRoom(object sender, StartPayload startPayload)

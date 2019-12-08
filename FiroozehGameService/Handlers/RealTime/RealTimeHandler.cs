@@ -47,8 +47,8 @@ namespace FiroozehGameService.Handlers.RealTime
 
             
             // Set Internal Event Handlers
-            CoreEventHandlers.OnPing += OnPing;
-            CoreEventHandlers.OnAuth += OnAuth;
+            CoreEventHandlers.Ping += OnPing;
+            CoreEventHandlers.Authorized += OnAuth;
             
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();

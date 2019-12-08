@@ -14,7 +14,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
             var users = JsonConvert.DeserializeObject<List<User>>(packet.Data);
-            CommandEventHandler.OnFindUser?.Invoke(null, users);
+            CommandEventHandler.FindUserReceived?.Invoke(null, users);
         }
     }
 }
