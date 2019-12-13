@@ -99,7 +99,7 @@ namespace FiroozehGameService.Core.GSLive
         public async Task SendPublicMessage(string data)
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-            await GSLive.Handler.RealTimeHandler.RequestAsync(SendPublicMessageHandler.Signature,new DataPayload{Payload = data});     
+             await GSLive.Handler.RealTimeHandler.RequestAsync(SendPublicMessageHandler.Signature,new DataPayload{Payload = data});     
         }    
         
         

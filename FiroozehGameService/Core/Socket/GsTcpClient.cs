@@ -1,6 +1,7 @@
 ﻿using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.EventArgs;
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -39,8 +40,6 @@ namespace FiroozehGameService.Core.Socket
             {
                 try
                 {
-                    //wasting ALL CPU cycles here
-                    //if (!_clientStream.DataAvailable) continue;
                     BufferReceivedBytes += await _clientStream.ReadAsync(
                         Buffer,
                         BufferOffset,
@@ -56,7 +55,6 @@ namespace FiroozehGameService.Core.Socket
                 }
                 catch (OperationCanceledException e)
                 {
-                    /* nothing to be afraid of :3 */
                     IsAvailable = false;
                     OnClosed(new ErrorArg {Error = e.Message});
                     break;
