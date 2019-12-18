@@ -1,21 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.ResponseHandlers;
 using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
-using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
 {
@@ -28,6 +27,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
         public static string PlayerHash { private set; get; }
+        public static string UserToken => GameService.UserToken;
         public static bool IsAvailable => _udpClient?.IsAvailable ?? false;
         
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
@@ -48,7 +48,6 @@ namespace FiroozehGameService.Handlers.RealTime
 
             
             // Set Internal Event Handlers
-            CoreEventHandlers.Ping += OnPing;
             CoreEventHandlers.Authorized += OnAuth;
             
             InitRequestMessageHandlers();
@@ -58,14 +57,8 @@ namespace FiroozehGameService.Handlers.RealTime
         
         private static void OnAuth(object sender, string playerHash)
         {
-            if (sender.GetType() == typeof(StatusResponseHandler))
+            if (sender.GetType() == typeof(AuthResponseHandler))
                 PlayerHash = playerHash;
-        }
-
-        private async void OnPing(object sender, EventArgs e)
-        {
-            if (sender.GetType() == typeof(PingResponseHandler))
-                await RequestAsync(PingPongHandler.Signature);
         }
 
         private void InitRequestMessageHandlers()
@@ -98,41 +91,26 @@ namespace FiroozehGameService.Handlers.RealTime
         }
      
 
-        internal void Request(string handlerName, object payload = null)
-            => Send(_requestHandlers[handlerName]?.HandleAction(payload));
+        internal void Request(string handlerName, GProtocolSendType type, object payload = null)
+            => Send(_requestHandlers[handlerName]?.HandleAction(payload),type);
         
-        internal async Task RequestAsync(string handlerName, object payload = null)
-            => await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
-
-
-        
-        
-        internal async Task Init()
+       
+        internal void Init()
         {
-            await _udpClient.Init();
-            Task.Run(async() => { await _udpClient.StartReceiving(); }, _cancellationToken.Token);
-            await RequestAsync(AuthorizationHandler.Signature);
+            _udpClient.Init();
+            Request(AuthorizationHandler.Signature,GProtocolSendType.Reliable);
         }
         
-            
         
-        private void Send(Packet packet)
+        private void Send(Packet packet,GProtocolSendType type)
         {
             if (!_observer.Increase()) return;
             var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             var data = Encoding.UTF8.GetBytes(json);          
-            _udpClient.Send(data);
+            _udpClient.Send(data,type);
         }
         
-        private async Task SendAsync(Packet packet)
-        {
-            if (!_observer.Increase()) return;
-            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            var data = Encoding.UTF8.GetBytes(json);
-            await _udpClient.SendAsync(data);
-        }
-        
-        
+              
         private static void OnError(object sender, ErrorArg e)
         {
             // TODO Connect Again??
@@ -141,7 +119,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-            _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);           
+            _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet,e.Type);           
         }
         
         public void Dispose()

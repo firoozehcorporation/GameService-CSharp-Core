@@ -38,15 +38,15 @@ namespace FiroozehGameService.Core.Socket
             Error?.Invoke(this,errorArg);
         }
 
-        public abstract Task Init();
+        internal abstract Task Init();
 
-        public abstract void Send(byte[] buffer);
+        internal abstract void Send(byte[] buffer);
         
-        public abstract Task SendAsync(byte[] buffer);
+        internal abstract Task SendAsync(byte[] buffer);
 
-        public abstract Task StartReceiving();
+        internal abstract Task StartReceiving();
 
-        public abstract void StopReceiving();
+        internal abstract void StopReceiving();
     }
     
 }

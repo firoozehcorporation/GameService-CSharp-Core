@@ -8,6 +8,7 @@ using FiroozehGameService.Handlers.Command;
 using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 
 namespace FiroozehGameService.Handlers
@@ -48,7 +49,7 @@ namespace FiroozehGameService.Handlers
                     await ConnectToTbServer(startPayload);
                     break;
                 case GSLiveType.RealTime:
-                    await ConnectToRtServer(startPayload);
+                    ConnectToRtServer(startPayload);
                     break;
                 case GSLiveType.Core:
                     break;
@@ -57,16 +58,16 @@ namespace FiroozehGameService.Handlers
             }
         }
 
-        private async Task ConnectToRtServer(StartPayload payload)
+        private void ConnectToRtServer(StartPayload payload)
         {
                 if (RealTimeHandler != null && RealTimeHandler.IsAvailable)
                 {
-                    await RealTimeHandler.RequestAsync(LeaveRoomHandler.Signature);
+                    RealTimeHandler.Request(LeaveRoomHandler.Signature,GProtocolSendType.Reliable);
                     RealTimeHandler.Dispose();
                     RealTimeHandler = null;
                 }
                 RealTimeHandler = new RealTimeHandler(payload);
-                await RealTimeHandler.Init();            
+                RealTimeHandler.Init();            
         }
 
         private async Task ConnectToTbServer(StartPayload payload)

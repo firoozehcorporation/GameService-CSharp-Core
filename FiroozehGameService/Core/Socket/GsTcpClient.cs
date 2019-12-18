@@ -23,7 +23,7 @@ namespace FiroozehGameService.Core.Socket
             Endpoint = area;
         }
 
-        public override async Task Init()
+        internal override async Task Init()
         {
             _client = new TcpClient();
             OperationCancellationToken = new CancellationTokenSource();
@@ -34,7 +34,7 @@ namespace FiroozehGameService.Core.Socket
 
        
 
-        public override async Task StartReceiving()
+        internal override async Task StartReceiving()
         {
             while (true)
             {
@@ -69,19 +69,19 @@ namespace FiroozehGameService.Core.Socket
         }
         
 
-        public override void Send(byte[] buffer)
+        internal override void Send(byte[] buffer)
             => Task.Run(() =>
             {
                 _clientStream?.Write(buffer, 0, buffer.Length);
             },OperationCancellationToken.Token);
         
         
-        public override async Task SendAsync(byte[] buffer)
+        internal override async Task SendAsync(byte[] buffer)
             => await _clientStream.WriteAsync(buffer, 0, buffer.Length);
         
 
 
-        public override void StopReceiving()
+        internal override void StopReceiving()
         {
             try
             {

@@ -1,4 +1,5 @@
 ﻿using FiroozehGameService.Models;
+using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
@@ -13,14 +14,11 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public SendPrivateMessageHandler() {}
 
         private static Packet DoAction(DataPayload payload)
-            => new Packet(RT.ActionData
+            => new Packet(RealTimeHandler.PlayerHash,RT.ActionPrivateMessage
                 , JsonConvert.SerializeObject(
                     new DataPayload(
-                        RT.SendPrivateMessage,
-                        RealTimeHandler.CurrentRoom?.Id,
-                        RealTimeHandler.PlayerHash,
-                        payload.ReceiverId,
-                        payload.Payload)
+                        receiverId:payload.ReceiverId,
+                        payload:payload.Payload)
                 ));        
         
         protected override Packet DoAction(object payload)

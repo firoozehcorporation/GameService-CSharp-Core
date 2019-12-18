@@ -1,18 +1,15 @@
 ﻿using FiroozehGameService.Models.Command;
 using System;
-using System.IO;
-using System.Net;
-using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
+using GProtocol;
+using GProtocol.Core;
 
 namespace FiroozehGameService.Core.Socket
 {
-    internal class GsUdpClient : GsSocketClient
+    internal class GsUdpClient : GProtocolClient
     {
-        private UdpClient _client;
         public bool IsAvailable { get; private set; }
 
         public GsUdpClient(Area endpoint)
@@ -20,64 +17,67 @@ namespace FiroozehGameService.Core.Socket
             if (endpoint.Protocol.ToUpper() != "UDP")
                 throw new InvalidOperationException("Only UDP Protocol Supported");
 
-            Endpoint = endpoint;
-            _client = new UdpClient(endpoint.Ip, endpoint.Port);
-            OperationCancellationToken = new CancellationTokenSource();
+            Client = new Client(endpoint.Ip + ':' + endpoint.Port)
+            {
+                ServerConnect = ServerConnect,
+                ServerDisconnect = ServerDisconnect,
+                ServerTimeout = ServerTimeout,
+                PacketHandler = HandleClientPacket
+            };
+        }
+
+        private void ServerConnect(Connection conn, byte[] data)
+        {
+            Connection = conn;
             IsAvailable = true;
         }
 
-        public override async Task StartReceiving()
+        private void ServerDisconnect(Connection conn, byte[] data)
         {
-            while (true)
+            OnClosed(new ErrorArg {Error = "ServerDisconnect"});
+        }
+
+        private void ServerTimeout(Connection conn, byte[] data)
+        {
+            OnClosed(new ErrorArg {Error = "ServerTimeout"});
+        }
+
+        private void HandleClientPacket(Connection conn, byte[] data, Connection.Channel channel)
+        {
+            OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(data) 
+                , Type =
+                    channel == Connection.Channel.Reliable ? GProtocolSendType.Reliable : GProtocolSendType.UnReliable});
+        }
+
+        internal override void Init()
+        {
+            Client?.Connect(null);
+        }
+
+
+        internal override void Send(byte[] buffer,GProtocolSendType type)
+        {
+            switch (type)
             {
-                try
-                {
-                    var packet = await _client.ReceiveAsync();                   
-                    OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(packet.Buffer) });
-                }
-                catch (OperationCanceledException e)
-                {
-                    /* nothing to be afraid of :3 */
-                    IsAvailable = false;
-                    OnClosed(new ErrorArg {Error = e.Message});
+                case GProtocolSendType.Reliable:
+                    Connection?.SendReliable(buffer);
                     break;
-                }
-                catch (ObjectDisposedException e)
-                {
-                    IsAvailable = false;
-                    OnClosed(new ErrorArg {Error = e.Message});
+                case GProtocolSendType.UnReliable:
+                    Connection?.SendUnreliable(buffer);
                     break;
-                }
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
-
-        public override Task Init()
-        {
-            Buffer = null;
-            DataBuilder = null;
-
-            return Task.CompletedTask;
-        }
         
-        public override void Send(byte[] buffer)
-           => Task.Run(() =>
-           {
-               _client.Send(buffer, buffer.Length);
-           },OperationCancellationToken.Token);
-        
-        public override async Task SendAsync(byte[] buffer)
-           => await _client.SendAsync(buffer, buffer.Length);
-        
-
-
-        public override void StopReceiving()
+        internal override void StopReceiving()
         {
             try
             {
-                OperationCancellationToken?.Cancel(true);
-                OperationCancellationToken?.Dispose();
-                _client?.Close();
-                _client = null;
+                Connection?.Disconnect(null);
+                Client?.Disconnect();
+                Connection = null;
+                Client = null;
                 IsAvailable = false;
             }
             catch (Exception)
@@ -85,5 +85,6 @@ namespace FiroozehGameService.Core.Socket
                 // ignored
             }
         }
+       
     }
 }

@@ -1,8 +1,8 @@
-﻿using FiroozehGameService.Core;
-using FiroozehGameService.Models;
+﻿using FiroozehGameService.Models;
+using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
-using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
+using AuthPayload = FiroozehGameService.Models.GSLive.RT.AuthPayload;
 
 namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 {
@@ -16,8 +16,14 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         protected override Packet DoAction(object payload)
         { 
             if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
-            return new Packet(RT.ActionAuth
-                ,JsonConvert.SerializeObject(new AuthPayload(RealTimeHandler.CurrentRoom?.Id,GameService.PlayToken), new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));           
+            return new Packet(
+                null,
+                RT.ActionAuth,
+                JsonConvert.SerializeObject(
+                    new AuthPayload(RealTimeHandler.CurrentRoom?.Id, RealTimeHandler.UserToken),
+                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }
+            ));
+
         }
 
         protected override bool CheckAction(object payload)

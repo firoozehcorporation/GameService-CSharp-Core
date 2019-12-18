@@ -27,6 +27,7 @@ using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
 
@@ -74,10 +75,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <summary>
         /// Leave The Current Room
         /// </summary>
-        public async Task LeaveRoom()
+        public void LeaveRoom()
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-            await GSLive.Handler.RealTimeHandler.RequestAsync(LeaveRoomHandler.Signature);     
+            GSLive.Handler.RealTimeHandler.Request(LeaveRoomHandler.Signature,GProtocolSendType.Reliable);     
             GSLive.Handler.RealTimeHandler.Dispose();
         }
 
@@ -90,16 +91,17 @@ namespace FiroozehGameService.Core.GSLive
         {
             await GSLive.Handler.CommandHandler.RequestAsync(GetRoomsHandler.Signature,new RoomDetail{Role = role , GsLiveType = (int) GSLiveType.RealTime});     
         }
-        
-       
+
+
         /// <summary>
         /// Send A Data To All Players in Room. 
         /// </summary>
         /// <param name="data">(NOTNULL) Data To BroadCast </param>
-        public async Task SendPublicMessage(string data)
+        /// <param name="sendType">(NOTNULL) Send Type </param>
+        public void SendPublicMessage(string data,GProtocolSendType sendType)
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-             await GSLive.Handler.RealTimeHandler.RequestAsync(SendPublicMessageHandler.Signature,new DataPayload{Payload = data});     
+             GSLive.Handler.RealTimeHandler.Request(SendPublicMessageHandler.Signature,sendType,new DataPayload{Payload = data});     
         }    
         
         
@@ -108,20 +110,20 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="receiverId">(NOTNULL) (Type : MemberID)Player's ID</param>
         /// <param name="data">(NOTNULL) Data for Send</param>
-        public async Task SendPrivateMessage(string receiverId,string data)
+        public void SendPrivateMessage(string receiverId,string data)
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-            await GSLive.Handler.RealTimeHandler.RequestAsync(SendPrivateMessageHandler.Signature,new DataPayload{ReceiverId = receiverId,Payload = data});     
+            GSLive.Handler.RealTimeHandler.Request(SendPrivateMessageHandler.Signature,GProtocolSendType.Reliable,new DataPayload{ReceiverId = receiverId,Payload = data});     
         }    
        
         
         /// <summary>
         /// Get Room Members Details 
         /// </summary>
-        public async Task GetRoomMembersDetail()
+        public void GetRoomMembersDetail()
         {
             if(GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-            await GSLive.Handler.RealTimeHandler.RequestAsync(GetMemberHandler.Signature);     
+            GSLive.Handler.RealTimeHandler.Request(GetMemberHandler.Signature,GProtocolSendType.Reliable);     
         }
         
         

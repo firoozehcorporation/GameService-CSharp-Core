@@ -34,6 +34,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+      <Reference Include="Crc32.NET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99">
+          <HintPath>..\packages\Crc32.NET.1.2.0\lib\net20\Crc32.NET.dll</HintPath>
+          <Private>True</Private>
+      </Reference>
+      <Reference Include="GProtocol, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\GProtocol\GProtocol\bin\Release\GProtocol.dll</HintPath>
+      </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -54,6 +61,7 @@
     <Compile Include="Core\GSLive\GSLiveOption.cs" />
     <Compile Include="Core\GSLive\GSLiveRT.cs" />
     <Compile Include="Core\GSLive\GSLiveTB.cs" />
+      <Compile Include="Core\Socket\GProtocolClient.cs"/>
     <Compile Include="Core\Socket\GsSocketClient.cs" />
     <Compile Include="Core\Socket\GsTcpClient.cs" />
     <Compile Include="Core\Socket\GsUdpClient.cs" />
@@ -104,14 +112,17 @@
     <Compile Include="Handlers\RealTime\RequestHandlers\SendPrivateMessageHandler.cs" />
     <Compile Include="Handlers\RealTime\RequestHandlers\SendPublicMessageHandler.cs" />
     <Compile Include="Handlers\RealTime\RequestHandlers\LeaveRoomHandler.cs" />
-    <Compile Include="Handlers\RealTime\RequestHandlers\PingPongHandler.cs" />
+      <Compile Include="Handlers\RealTime\ResponseHandlers\AuthResponseHandler.cs"/>
     <Compile Include="Handlers\RealTime\ResponseHandlers\BaseResponseHandler.cs" />
+      <Compile Include="Handlers\RealTime\ResponseHandlers\ErrorResponseHandler.cs"/>
     <Compile Include="Handlers\RealTime\ResponseHandlers\IResponseHandler.cs" />
     <Compile Include="Handlers\RealTime\RealTimeHandler.cs" />
     <Compile Include="Handlers\CommandEventHandler.cs" />
-    <Compile Include="Handlers\RealTime\ResponseHandlers\DataResponseHandler.cs" />
-    <Compile Include="Handlers\RealTime\ResponseHandlers\PingResponseHandler.cs" />
-    <Compile Include="Handlers\RealTime\ResponseHandlers\StatusResponseHandler.cs" />
+      <Compile Include="Handlers\RealTime\ResponseHandlers\JoinRoomResponseHandler.cs"/>
+      <Compile Include="Handlers\RealTime\ResponseHandlers\LeaveRoomResponseHandler.cs"/>
+      <Compile Include="Handlers\RealTime\ResponseHandlers\MemberDetailsResponseHandler.cs"/>
+      <Compile Include="Handlers\RealTime\ResponseHandlers\PrivateMessageResponseHandler.cs"/>
+      <Compile Include="Handlers\RealTime\ResponseHandlers\PublicMessageResponseHandler.cs"/>
     <Compile Include="Handlers\TurnBasedEventHandlers.cs" />
     <Compile Include="Handlers\TurnBased\IRequestHandler.cs" />
     <Compile Include="Handlers\TurnBased\RequestHandlers\AuthorizationHandler.cs" />
@@ -180,6 +191,7 @@
     <Compile Include="Models\Enums\Command\MarketType.cs" />
     <Compile Include="Models\Enums\Command\TapActionType.cs" />
     <Compile Include="Models\Enums\GameServiceType.cs" />
+      <Compile Include="Models\Enums\GProtocolSendType.cs"/>
     <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs" />
     <Compile Include="Models\Enums\GSLive\GSLiveType.cs" />
     <Compile Include="Models\Enums\GSLive\JoinType.cs" />
@@ -207,7 +219,6 @@
     <Compile Include="Models\GSLive\RT\AuthPayload.cs" />
     <Compile Include="Models\GSLive\RT\DataPayload.cs" />
     <Compile Include="Models\GSLive\RT\Leave.cs" />
-    <Compile Include="Models\GSLive\RT\Packet.cs" />
     <Compile Include="Models\GSLive\RT\PingPongPayload.cs" />
     <Compile Include="Models\GSLive\RT\StatusPayload.cs" />
     <Compile Include="Models\GSLive\TB\AuthPayload.cs" />
