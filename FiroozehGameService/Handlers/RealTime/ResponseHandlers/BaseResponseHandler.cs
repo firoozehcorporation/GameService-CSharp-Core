@@ -1,5 +1,5 @@
-﻿using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Enums;
+﻿using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.GSLive.RT;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {

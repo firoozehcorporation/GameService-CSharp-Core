@@ -16,20 +16,16 @@
 
 
 
+using System;
+using System.Net;
+using System.Threading.Tasks;
+using FiroozehGameService.Core.ApiWebRequest;
+using FiroozehGameService.Handlers;
+using FiroozehGameService.Models.EventArgs;
 
 /**
 * @author Alireza Ghodrati
 */
-
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using FiroozehGameService.Core.ApiWebRequest;
-using FiroozehGameService.Handlers;
-using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.EventArgs;
 
 namespace FiroozehGameService.Core
 {

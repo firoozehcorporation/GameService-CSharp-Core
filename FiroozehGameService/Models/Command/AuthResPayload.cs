@@ -11,7 +11,7 @@ namespace FiroozehGameService.Models.Command
                 
         public override string ToString () {
             return "AuthResPayload{" +
-                   "Token='" + Token + '\'' +
+                   "Hash='" + Token + '\'' +
                    '}';
         }
     }

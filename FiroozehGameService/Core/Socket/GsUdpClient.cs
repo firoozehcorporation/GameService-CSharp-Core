@@ -1,6 +1,7 @@
 ﻿using FiroozehGameService.Models.Command;
 using System;
 using System.Text;
+using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using GProtocol;
@@ -30,15 +31,18 @@ namespace FiroozehGameService.Core.Socket
         {
             Connection = conn;
             IsAvailable = true;
+            CoreEventHandlers.GProtocolConnected?.Invoke(null,null);
         }
 
         private void ServerDisconnect(Connection conn, byte[] data)
         {
+            IsAvailable = false;
             OnClosed(new ErrorArg {Error = "ServerDisconnect"});
         }
 
         private void ServerTimeout(Connection conn, byte[] data)
         {
+            IsAvailable = false;
             OnClosed(new ErrorArg {Error = "ServerTimeout"});
         }
 

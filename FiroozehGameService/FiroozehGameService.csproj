@@ -178,7 +178,6 @@
     <Compile Include="Models\Command\InvitePayload.cs" />
     <Compile Include="Models\Command\JoinEvent.cs" />
     <Compile Include="Models\Command\Message.cs" />
-    <Compile Include="Models\Command\MessageReceiveEvent.cs" />
     <Compile Include="Models\Command\Notification.cs" />
     <Compile Include="Models\Command\NotificationTapAction.cs" />
     <Compile Include="Models\Command\Packet.cs" />
@@ -210,7 +209,6 @@
     <Compile Include="Models\GSLive\Game.cs" />
     <Compile Include="Models\GSLive\Invite.cs" />
     <Compile Include="Models\GSLive\JoinData.cs" />
-    <Compile Include="Models\GSLive\Leave.cs" />
     <Compile Include="Models\GSLive\Member.cs" />
     <Compile Include="Models\GSLive\Message.cs" />
     <Compile Include="Models\GSLive\Payload.cs" />
@@ -219,6 +217,8 @@
     <Compile Include="Models\GSLive\RT\AuthPayload.cs" />
     <Compile Include="Models\GSLive\RT\DataPayload.cs" />
     <Compile Include="Models\GSLive\RT\Leave.cs" />
+      <Compile Include="Models\GSLive\RT\MessageReceiveEvent.cs"/>
+      <Compile Include="Models\GSLive\RT\Packet.cs"/>
     <Compile Include="Models\GSLive\RT\PingPongPayload.cs" />
     <Compile Include="Models\GSLive\RT\StatusPayload.cs" />
     <Compile Include="Models\GSLive\TB\AuthPayload.cs" />

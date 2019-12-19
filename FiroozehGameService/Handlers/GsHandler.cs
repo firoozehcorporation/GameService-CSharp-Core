@@ -66,6 +66,8 @@ namespace FiroozehGameService.Handlers
                     RealTimeHandler.Dispose();
                     RealTimeHandler = null;
                 }
+
+                payload.Area.Port = 3010;
                 RealTimeHandler = new RealTimeHandler(payload);
                 RealTimeHandler.Init();            
         }

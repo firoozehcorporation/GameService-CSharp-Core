@@ -1,8 +1,7 @@
 ﻿using FiroozehGameService.Models;
-using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
-using AuthPayload = FiroozehGameService.Models.GSLive.RT.AuthPayload;
 
 namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 {
@@ -20,7 +19,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
                 null,
                 RT.ActionAuth,
                 JsonConvert.SerializeObject(
-                    new AuthPayload(RealTimeHandler.CurrentRoom?.Id, RealTimeHandler.UserToken),
+                    new AuthPayload(RealTimeHandler.CurrentRoom?.Id, RealTimeHandler.PlayToken),
                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }
             ));
 

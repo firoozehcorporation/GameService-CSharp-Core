@@ -23,7 +23,7 @@ namespace FiroozehGameService.Models.Command
         public override string ToString () {
             return "AuthPayload{" +
                    "GameID='" + GameId + '\'' +
-                   ", Token='" + Token + '\'' +
+                   ", Hash='" + Token + '\'' +
                    '}';
         }
     }

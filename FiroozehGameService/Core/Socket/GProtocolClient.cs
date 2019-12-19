@@ -15,7 +15,6 @@ namespace FiroozehGameService.Core.Socket
         protected internal event EventHandler<ErrorArg> Error;
         #endregion
 
-
         internal abstract void Init();
         internal abstract void StopReceiving();
         internal abstract void Send(byte[] buffer, GProtocolSendType type);

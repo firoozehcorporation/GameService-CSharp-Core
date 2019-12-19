@@ -29,7 +29,7 @@ namespace FiroozehGameService.Models.Command
 
         public override string ToString () {
             return "Packet{" +
-                   "Token='" + Token + '\'' +
+                   "Hash='" + Token + '\'' +
                    ", Action=" + Action +
                    ", Data='" + Data + '\'' +
                    ", Message='" + Message + '\'' +

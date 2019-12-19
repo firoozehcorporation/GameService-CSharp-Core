@@ -9,7 +9,7 @@ namespace FiroozehGameService.Handlers
     public class TurnBasedEventHandlers : CommandEventHandler
     {
         public static EventHandler<JoinEvent> JoinRoom;
-        public static EventHandler<Leave> OnLeaveRoom;
+        public static EventHandler<Member> OnLeaveRoom;
         public static EventHandler<Turn> OnTakeTurn;
         public static EventHandler<Member> OnChooseNext;
         public static EventHandler<Finish> Finished;

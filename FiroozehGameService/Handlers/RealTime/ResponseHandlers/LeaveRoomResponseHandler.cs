@@ -1,7 +1,7 @@
-﻿using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Consts;
+﻿using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
@@ -12,7 +12,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
-           TurnBasedEventHandlers.OnLeaveRoom?.Invoke(this,JsonConvert.DeserializeObject<Leave>(packet.Data));
+           RealTimeEventHandlers.LeftRoom?.Invoke(this,JsonConvert.DeserializeObject<Member>(packet.Payload));
         }
       
     }

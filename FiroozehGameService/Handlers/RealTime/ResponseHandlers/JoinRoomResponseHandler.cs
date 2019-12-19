@@ -4,6 +4,7 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using Newtonsoft.Json;
+using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {
@@ -13,8 +14,8 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet,GProtocolSendType type)
         {
-           var joinData = JsonConvert.DeserializeObject<JoinData>(packet.Data);
-           TurnBasedEventHandlers.JoinRoom?.Invoke(this, new JoinEvent
+           var joinData = JsonConvert.DeserializeObject<JoinData>(packet.Payload);
+           RealTimeEventHandlers.JoinedRoom?.Invoke(this, new JoinEvent
             {
                 Type = GSLiveType.TurnBased,
                 JoinData = joinData

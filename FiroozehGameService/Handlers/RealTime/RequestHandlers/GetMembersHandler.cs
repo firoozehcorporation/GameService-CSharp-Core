@@ -1,6 +1,6 @@
 ﻿using FiroozehGameService.Models;
-using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.GSLive.RT;
 
 namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 {

@@ -2,6 +2,7 @@
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
+using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {
@@ -14,8 +15,8 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         {
             CoreEventHandlers.Error?.Invoke(this,new ErrorEvent
             {
-                Type = GSLiveType.TurnBased,
-                Error = packet.Message
+                Type = GSLiveType.RealTime,
+                Error = packet.Payload
             });
         }
     }

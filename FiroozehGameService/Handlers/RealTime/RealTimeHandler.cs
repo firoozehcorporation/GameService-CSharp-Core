@@ -15,6 +15,7 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
+using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
 {
@@ -27,7 +28,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
         public static string PlayerHash { private set; get; }
-        public static string UserToken => GameService.UserToken;
+        public static string PlayToken => GameService.PlayToken;
         public static bool IsAvailable => _udpClient?.IsAvailable ?? false;
         
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
@@ -49,12 +50,19 @@ namespace FiroozehGameService.Handlers.RealTime
             
             // Set Internal Event Handlers
             CoreEventHandlers.Authorized += OnAuth;
+            CoreEventHandlers.GProtocolConnected += OnConnected;
             
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
         }
 
-        
+        private void OnConnected(object sender, EventArgs e)
+        {
+            // Send Auth When Connected
+            Request(AuthorizationHandler.Signature,GProtocolSendType.Reliable);
+        }
+
+
         private static void OnAuth(object sender, string playerHash)
         {
             if (sender.GetType() == typeof(AuthResponseHandler))
@@ -95,10 +103,9 @@ namespace FiroozehGameService.Handlers.RealTime
             => Send(_requestHandlers[handlerName]?.HandleAction(payload),type);
         
        
-        internal void Init()
+        internal static void Init()
         {
             _udpClient.Init();
-            Request(AuthorizationHandler.Signature,GProtocolSendType.Reliable);
         }
         
         

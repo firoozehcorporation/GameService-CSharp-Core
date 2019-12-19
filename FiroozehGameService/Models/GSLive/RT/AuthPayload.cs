@@ -22,7 +22,7 @@ namespace FiroozehGameService.Models.GSLive.RT
         public override string ToString () {
             return "AuthPayload{" +
                    "RoomID='" + RoomId + '\'' +
-                   ", Token='" + Token + '\'' +
+                   ", Hash='" + Token + '\'' +
                    '}';
         }
     }

@@ -1,6 +1,6 @@
-﻿using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Consts;
+﻿using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.GSLive.RT;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {
@@ -11,7 +11,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet,GProtocolSendType type)
         {
-            CoreEventHandlers.Authorized?.Invoke(this,packet.Token);
+            CoreEventHandlers.Authorized?.Invoke(this,packet.Hash);
         }
     }
 }

@@ -5,13 +5,13 @@ namespace FiroozehGameService.Models.Consts
 
       
         // Packet Actions
-        public const int ActionAuth = 0;
-        public const int ActionData = 1;
-        public const int ActionPublicMessage = 2;
-        public const int ActionPrivateMessage = 3;
-        public const int ActionJoin = 4;
-        public const int ActionMembersDetail = 5;
-        public const int ActionLeave = 6;        
+        public const int ActionAuth = 1;
+        public const int ActionData = 2;
+        public const int ActionPublicMessage = 3;
+        public const int ActionPrivateMessage = 4;
+        public const int ActionJoin = 5;
+        public const int ActionMembersDetail = 6;
+        public const int ActionLeave = 7;        
         public const int Error = 100;
 
         // Limit Checker

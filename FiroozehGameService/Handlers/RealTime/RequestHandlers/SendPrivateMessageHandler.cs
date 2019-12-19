@@ -1,5 +1,4 @@
 ﻿using FiroozehGameService.Models;
-using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
@@ -19,7 +18,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
                     new DataPayload(
                         receiverId:payload.ReceiverId,
                         payload:payload.Payload)
-                ));        
+                ,new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));        
         
         protected override Packet DoAction(object payload)
         { 

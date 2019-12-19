@@ -1,10 +1,10 @@
-﻿using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Consts;
+﻿using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive.RT;
+using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
-using Message = FiroozehGameService.Models.GSLive.Message;
+using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {
@@ -14,10 +14,11 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet,GProtocolSendType type)
         {
-           var dataPayload = JsonConvert.DeserializeObject<DataPayload>(packet.Data);
+           var dataPayload = JsonConvert.DeserializeObject<DataPayload>(packet.Payload);
            RealTimeEventHandlers.NewMessageReceived?.Invoke(this, new MessageReceiveEvent
             {
                 MessageType = MessageType.Private,
+                SendType = type,
                 Message = new Message
                 {
                     Data = dataPayload.Payload,
@@ -26,6 +27,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
                 }
             });
         }
-      
+
+        
     }
 }

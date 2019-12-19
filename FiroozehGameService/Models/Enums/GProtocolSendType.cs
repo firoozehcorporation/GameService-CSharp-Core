@@ -22,10 +22,10 @@ namespace FiroozehGameService.Models.Enums
 {
     /// <summary>
     /// Represents GProtocolSendType Of Game Service RealTime
+    /// if is Reliable , the Packet Loss is Minimized.
     /// </summary>
     public enum GProtocolSendType
     {
-        Reliable
-        ,UnReliable
+        Reliable,UnReliable
     }
 }
