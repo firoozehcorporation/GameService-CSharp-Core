@@ -15,6 +15,7 @@ namespace FiroozehGameService.Models.GSLive.RT
         [JsonProperty("3")]
         public string Hash { get; set; }
 
+        
         public Packet(string hash, int action, string payload = null)
         {
             Hash = hash;

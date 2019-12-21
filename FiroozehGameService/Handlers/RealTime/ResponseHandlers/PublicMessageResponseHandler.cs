@@ -13,13 +13,16 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet,GProtocolSendType type)
         {
-           RealTimeEventHandlers.NewMessageReceived?.Invoke(this, new MessageReceiveEvent
+            var dataPayload = JsonConvert.DeserializeObject<DataPayload>(packet.Payload);
+            RealTimeEventHandlers.NewMessageReceived?.Invoke(this, new MessageReceiveEvent
             {
                 MessageType = MessageType.Public,
                 SendType = type,
                 Message = new Message
                 {
-                    Data = packet.Payload
+                    Data = dataPayload.Payload,
+                    ReceiverId = dataPayload.ReceiverId,
+                    SenderId = dataPayload.SenderId
                 }
             });
         }
