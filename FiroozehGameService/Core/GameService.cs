@@ -296,7 +296,7 @@ namespace FiroozehGameService.Core
         /// Normal Login (InFirstOnly) To Game Service
         /// It May Throw Exception
         /// </summary>
-        /// <value> return PlayToken if Login Successfully </value>
+        /// <value> return UserToken if Login Successfully </value>
         public static async Task<string> Login(string email , string password)
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
@@ -315,7 +315,7 @@ namespace FiroozehGameService.Core
         }
         
         /// <summary>
-        /// Normal Login With PlayToken To Game Service
+        /// Normal Login With UserToken To Game Service
         /// It May Throw Exception
         /// </summary>
         public static async Task Login(string userToken)
@@ -355,8 +355,8 @@ namespace FiroozehGameService.Core
         /// Normal SignUp To Game Service
         /// It May Throw Exception
         /// </summary>
-        /// <value> return PlayToken if SignUp Successfully </value>
-        public static async Task<string> SignUp(string nickName,string email , string password)
+        /// <value> return UserToken if SignUp Successfully </value>
+        public static async Task<string> SignUp(string nickName,string email,string password)
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
