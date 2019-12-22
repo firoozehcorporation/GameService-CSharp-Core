@@ -14,7 +14,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         protected override Packet DoAction(object payload)
         { 
             if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
-            return new Packet(RealTimeHandler.PlayerHash, TB.GetUsers);
+            return new Packet(RealTimeHandler.PlayerHash, RT.ActionMembersDetail);
         }
 
         protected override bool CheckAction(object payload)
