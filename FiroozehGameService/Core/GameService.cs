@@ -44,7 +44,6 @@ namespace FiroozehGameService.Core
         private const string Tag = "FiroozehGameService";
         private static bool _isAvailable;
         public static event EventHandler<Notification> NotificationReceived;
-        public static DownloadManager DownloadManager;
         
         internal static string UserToken;
         internal static string PlayToken;
@@ -52,7 +51,8 @@ namespace FiroozehGameService.Core
         internal static long StartPlaying;
 
         public static GSLive.GSLive GSLive { get; private set; }
-        internal static GameServiceClientConfiguration Configuration { get; private set; }
+        private static GameServiceClientConfiguration Configuration { get; set; }
+        private static DownloadManager _downloadManager;
         #endregion
         
         /// <summary>
@@ -61,9 +61,9 @@ namespace FiroozehGameService.Core
         /// <param name="configuration">(Not NULL)configuration For Initialize Game Service</param>
         public static void ConfigurationInstance(GameServiceClientConfiguration configuration)
         {
-            if(IsAuthenticated()) throw new GameServiceException("Must Logout First To ReConfigurationInstance");
+            if(IsAuthenticated()) throw new GameServiceException("Must Logout First To ReConfiguration");
             Configuration = configuration;   
-            DownloadManager = new DownloadManager(Configuration);
+            _downloadManager = new DownloadManager(Configuration);
             GSLive = new GSLive.GSLive();
         }
 
@@ -271,12 +271,11 @@ namespace FiroozehGameService.Core
         /// Set DownloadManager Event Handlers To Get Download Status 
         /// </summary>
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
-        /// <param name="path">(Not NULL)Specifies the Download File Path </param>
-        /// <value> return true if Download Successfully </value>
-        public static async Task DownloadAsset(string tag,string path)
+        /// <param name="dirPath">(Not NULL)Specifies the Download File Directory Path </param>
+        public static async Task DownloadAsset(string tag,string dirPath)
         {
             if (!_isAvailable) throw new GameServiceException("GameService Not Available");
-            await DownloadManager.StartDownload(tag, path);
+            await _downloadManager.StartDownload(tag, dirPath);
         }
         
         
@@ -285,11 +284,10 @@ namespace FiroozehGameService.Core
         /// Set DownloadManager Event Handlers To Get Download Status 
         /// </summary>
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
-        /// <value> return File Buffer if Download Successfully </value>
-        public static async Task<byte[]> DownloadAsset(string tag)
+        public static async Task DownloadAsset(string tag)
         {
             if (!_isAvailable) throw new GameServiceException("GameService Not Available");
-            return await DownloadManager.StartDownload(tag);
+            await _downloadManager.StartDownload(tag);
         }
 
         
@@ -393,7 +391,7 @@ namespace FiroozehGameService.Core
             UserToken = null;
             CurrentGame = null;
             PlayToken = null;
-            DownloadManager = null; 
+            _downloadManager = null; 
             _isAvailable = false;
         }
 

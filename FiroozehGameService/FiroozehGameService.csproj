@@ -200,6 +200,7 @@
     <Compile Include="Models\Enums\GsWebRequestMethod.cs" />
     <Compile Include="Models\Enums\LoginType.cs" />
     <Compile Include="Models\EventArgs\CommandResponseArgs.cs" />
+      <Compile Include="Models\EventArgs\DownloadCompleteArgs.cs"/>
     <Compile Include="Models\EventArgs\SocketDataReceived.cs" />
     <Compile Include="Models\EventArgs\DownloadProgressArgs.cs" />
     <Compile Include="Models\EventArgs\ErrorArg.cs" />

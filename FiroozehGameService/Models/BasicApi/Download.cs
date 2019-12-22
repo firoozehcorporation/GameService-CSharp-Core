@@ -6,12 +6,16 @@ namespace FiroozehGameService.Models.BasicApi
     {
         [JsonProperty("size")]
         public long Size { get; set; }
-        [JsonProperty("url")]
-        public string Url { get; set; }
+        
+        [JsonProperty("downloadLink")]
+        public string Link { get; set; }
     }
 
     public class Download
     {
+        [JsonProperty("status")]
+        public bool Status { set; get; }
+        
         [JsonProperty("data")]
         public Data Data { set; get; }
     }
