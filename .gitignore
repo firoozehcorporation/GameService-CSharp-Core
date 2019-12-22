@@ -1,6 +1,4 @@
 *.json
-*.dll
-*.pdb
 ipch/
 obj/*
 FiroozehGameService/obj/*
