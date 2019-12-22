@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Models.BasicApi
+namespace FiroozehGameService.Models.Internal
 {
-    public class Data
+    internal class Data
     {
         [JsonProperty("size")]
         public long Size { get; set; }
@@ -11,7 +11,7 @@ namespace FiroozehGameService.Models.BasicApi
         public string Link { get; set; }
     }
 
-    public class Download
+    internal class Download
     {
         [JsonProperty("status")]
         public bool Status { set; get; }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,16 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<HttpResponseMessage> Delete(string url,Dictionary<string,string> headers = null)
         {
             return await DoRequest(url, GsWebRequestMethod.Delete, null, headers);
+        }
+
+        internal static async Task<HttpResponseMessage> DoMultiPartPost(string url,byte[]data,Dictionary<string,string> headers = null)
+        {
+            var httpClient = Init(headers);
+            var dataContent = new MultipartFormDataContent
+            {
+                { new ByteArrayContent(data), "file", "file" }
+            };
+            return await httpClient.PostAsync(url,dataContent);
         }
 
         private static HttpClient Init(Dictionary<string,string> headers = null)
@@ -63,5 +74,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                         throw new GameServiceException();
                 }
         }
+        
+        
     }
 }

@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using FiroozehGameService.Models.Internal;
+using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
 
 namespace FiroozehGameService.Core.ApiWebRequest
 {
@@ -139,6 +141,33 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 }
 
         }
+        
+        internal static async Task<User> EditCurrentPlayer(EditUserProfile editUserProfile)
+        {
+
+            if (editUserProfile.Logo != null)
+              await ImageUtil.UploadProfileImage(editUserProfile.Logo);
+            
+            var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
+            {
+                NickName = editUserProfile.NickName,
+                AllowAutoAddToGame = editUserProfile.AllowAutoAddToGame,
+                ShowGroupActivity = editUserProfile.ShowGroupActivity,
+                ShowPublicActivity = editUserProfile.ShowPublicActivity
+            });
+            
+            var response = await GsWebRequest.Put(Models.Consts.Api.UserProfile,body,CreateUserTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if(response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<TEditUser>(await reader.ReadToEndAsync())
+                        .User;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
+            }
+
+        }
+
 
         internal static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId)
         {
@@ -318,7 +347,24 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 }
         }
+        
+        internal static async Task<ImageUploadResult> UploadUserProfileLogo(byte[] imageBuffer)
+        {
+           
+            const string url = Models.Consts.Api.UserProfileLogo;
 
+            var response = await GsWebRequest.DoMultiPartPost(url,imageBuffer,CreateUserTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                var data = await reader.ReadToEndAsync();
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<ImageUploadResult>(data);
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(data).Message);
+            }
+        }
+
+       
 
     private static Dictionary<string, object> CreateLoginDictionary(string email, string password, string nickname)
         {
@@ -382,6 +428,14 @@ namespace FiroozehGameService.Core.ApiWebRequest
             return new Dictionary<string, string>
             {
                 {"x-access-token", Pt}
+            };
+        }
+        
+        private static Dictionary<string, string> CreateUserTokenHeader()
+        {
+            return new Dictionary<string, string>
+            {
+                {"x-access-token", Ut}
             };
         }
     }

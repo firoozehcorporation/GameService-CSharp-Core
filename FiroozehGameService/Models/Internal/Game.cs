@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using FiroozehGameService.Models.BasicApi;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Models.BasicApi
+namespace FiroozehGameService.Models.Internal
 {
     [Serializable]
     internal class Game

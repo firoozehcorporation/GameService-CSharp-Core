@@ -1,3 +1,4 @@
+using FiroozehGameService.Models.Internal;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi

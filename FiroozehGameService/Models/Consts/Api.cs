@@ -8,6 +8,12 @@ namespace FiroozehGameService.Models.Consts
         public const string LoginUser = BaseUrl + "/Auth/app/login";
         public const string Start = BaseUrl + "/Auth/start";
         public const string UserData = BaseUrl + "/Api/v1";
+        
+        
+        public const string UserProfileLogo = BaseUrl + "/Application/image";
+        public const string UserProfile = BaseUrl + "/Application";
+
+
 
 
         public const string DeleteLastSave = BaseUrl + "/Api/v1/savegame/delete";

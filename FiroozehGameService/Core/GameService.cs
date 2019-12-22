@@ -29,7 +29,9 @@ using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
+using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
 
 namespace FiroozehGameService.Core
 {
@@ -169,11 +171,21 @@ namespace FiroozehGameService.Core
         /// <summary>
         /// With this command you can get information about the current player is playing
         /// </summary>
-        /// <value> return GetCurrentPlayer </value>
+        /// <value> return CurrentPlayer Data </value>
         public static async Task<User> GetCurrentPlayer()
         {
             if (!_isAvailable) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetCurrentPlayer();
+        }
+        
+        /// <summary>
+        /// With this command you can Edit information about the current player is playing
+        /// </summary>
+        /// <value> return CurrentPlayer Data </value>
+        public static async Task<User> EditCurrentPlayerProfile(EditUserProfile profile)
+        {
+            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            return await ApiRequest.EditCurrentPlayer(profile);
         }
 
 
