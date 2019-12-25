@@ -153,6 +153,16 @@ namespace FiroozehGameService.Core.GSLive
            if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.RequestAsync(GetMemberHandler.Signature);     
         }
+       
+       
+       /// <summary>
+       /// Get Current Turn Member Details 
+       /// </summary>
+       public async Task GetCurrentTurnMember()
+       {
+          if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
+          await GSLive.Handler.TurnBasedHandler.RequestAsync(CurrentTurnHandler.Signature);     
+       }
         
         
         /// <summary>

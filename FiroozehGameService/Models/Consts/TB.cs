@@ -12,6 +12,8 @@ namespace FiroozehGameService.Models.Consts
         public const int OnComplete = 8;
         public const int GetUsers = 9;
         public const int OnJoin = 11;
+        public const int OnCurrentTurnDetail = 12;
+
 
 
 

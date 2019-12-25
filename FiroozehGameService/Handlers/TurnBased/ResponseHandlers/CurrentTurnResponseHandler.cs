@@ -2,17 +2,18 @@
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.TB;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 {
-    internal class LeaveRoomResponseHandler : BaseResponseHandler
+    internal class CurrentTurnResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand => TB.OnLeave;
+        public static int ActionCommand => TB.OnCurrentTurnDetail;
 
         protected override void HandleResponse(Packet packet)
         {
-           TurnBasedEventHandlers.LeftRoom?.Invoke(this,JsonConvert.DeserializeObject<Member>(packet.Data));
+           TurnBasedEventHandlers.CurrentTurnMember?.Invoke(this,JsonConvert.DeserializeObject<Member>(packet.Data));
         }
       
     }

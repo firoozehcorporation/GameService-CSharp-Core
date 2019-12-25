@@ -129,6 +129,7 @@
     <Compile Include="Handlers\TurnBased\RequestHandlers\BaseRequestHandler.cs" />
     <Compile Include="Handlers\TurnBased\RequestHandlers\ChooseNextHandler.cs" />
     <Compile Include="Handlers\TurnBased\RequestHandlers\CompleteHandler.cs" />
+      <Compile Include="Handlers\TurnBased\RequestHandlers\CurrentTurnHandler.cs"/>
     <Compile Include="Handlers\TurnBased\RequestHandlers\FinishHandler.cs" />
     <Compile Include="Handlers\TurnBased\RequestHandlers\GetMembersHandler.cs" />
     <Compile Include="Handlers\TurnBased\RequestHandlers\LeaveRoomHandler.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Handlers\TurnBased\ResponseHandlers\BaseResponseHandler.cs" />
     <Compile Include="Handlers\TurnBased\ResponseHandlers\ChooseNextResponseHandler.cs" />
     <Compile Include="Handlers\TurnBased\ResponseHandlers\CompleteResponseHandler.cs" />
+      <Compile Include="Handlers\TurnBased\ResponseHandlers\CurrentTurnResponseHandler.cs"/>
     <Compile Include="Handlers\TurnBased\ResponseHandlers\ErrorResponseHandler.cs" />
     <Compile Include="Handlers\TurnBased\ResponseHandlers\FinishResponseHandler.cs" />
     <Compile Include="Handlers\TurnBased\ResponseHandlers\IResponseHandler.cs" />

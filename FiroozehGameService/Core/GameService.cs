@@ -395,7 +395,7 @@ namespace FiroozehGameService.Core
 
         
         /// <summary>
-        /// Logout To Game Service
+        /// Logout From Game Service
         /// </summary>
         public static void Logout()
         {

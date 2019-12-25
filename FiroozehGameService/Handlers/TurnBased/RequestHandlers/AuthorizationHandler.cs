@@ -1,4 +1,5 @@
 ﻿using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.Consts;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
@@ -13,9 +14,9 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         protected override Packet DoAction(object payload)
             => new Packet(
                 null,
-                Models.Consts.Command.ActionAuth,
+                TB.ActionAuth,
                 JsonConvert.SerializeObject(
-                    new AuthPayload(TurnBasedHandler.CurrentRoom?.Id, TurnBasedHandler.UserToken),
+                    new AuthPayload(TurnBasedHandler.CurrentRoom?.Id, TurnBasedHandler.PlayToken),
                     new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
 
 

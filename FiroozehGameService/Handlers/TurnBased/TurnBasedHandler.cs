@@ -27,7 +27,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         private readonly CancellationTokenSource _cancellationToken;
         
         public static string PlayerHash { private set; get; }
-        public static string UserToken => GameService.UserToken;
+        public static string PlayToken => GameService.PlayToken;
         public static bool IsAvailable => _tcpClient?.IsAvailable ?? false;
         
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =

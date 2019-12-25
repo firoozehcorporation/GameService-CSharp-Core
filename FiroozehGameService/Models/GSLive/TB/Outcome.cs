@@ -34,7 +34,7 @@ namespace FiroozehGameService.Models.GSLive.TB
         /// </summary>
         /// <value>the Placement of Outcome</value>
         [JsonProperty("0")]
-        public int Placement { get; set; }
+        public int Placement { set; get; }
         
         
         /// <summary>
@@ -42,7 +42,14 @@ namespace FiroozehGameService.Models.GSLive.TB
         /// </summary>
         /// <value>the Result of Outcome</value>
         [JsonProperty("1")]
-        public string Result { get; set; }
-        
+        public string Result { set; get; }
+
+
+        public override bool Equals(object other)
+        {
+            if (other == null) return false;
+            return other is Outcome outcome && Placement == outcome.Placement && string.Equals(Result, outcome.Result);
+        }
+      
     }
 }
