@@ -4,7 +4,7 @@ using System.Net.NetworkInformation;
 
 namespace FiroozehGameService.Utils
 {
-    internal class NetworkUtil
+    internal static class NetworkUtil
     {
         
         internal static bool IsConnected()
