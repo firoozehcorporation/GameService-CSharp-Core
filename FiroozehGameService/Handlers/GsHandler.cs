@@ -67,9 +67,8 @@ namespace FiroozehGameService.Handlers
                     RealTimeHandler = null;
                 }
 
-                payload.Area.Port = 3010;
-                RealTimeHandler = new RealTimeHandler(payload);
-                RealTimeHandler.Init();            
+            RealTimeHandler = new RealTimeHandler(payload);
+            RealTimeHandler.Init();            
         }
 
         private async Task ConnectToTbServer(StartPayload payload)
@@ -80,6 +79,7 @@ namespace FiroozehGameService.Handlers
                 TurnBasedHandler.Dispose();
                 TurnBasedHandler = null;
             }
+            
             TurnBasedHandler = new TurnBasedHandler(payload);
             await TurnBasedHandler.Init();
         }
