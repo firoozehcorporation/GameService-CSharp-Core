@@ -91,7 +91,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="data">(NULLABLE)Room's Role </param>
         /// <param name="whoIsNext">(NULLABLE) Next Player's ID </param>
-        public async Task TakeTurn(string data , string whoIsNext)
+        public async Task TakeTurn(string data = null , string whoIsNext = null)
         {
             if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
             await GSLive.Handler.TurnBasedHandler.RequestAsync(TakeTurnHandler.Signature,new DataPayload{Data = data,NextId = whoIsNext});     
@@ -104,7 +104,7 @@ namespace FiroozehGameService.Core.GSLive
         /// if whoIsNext Set Null , Server Automatically Selects Next Turn 
         /// </summary>
         /// <param name="whoIsNext">(NULLABLE)Next Player's ID </param>
-        public async Task ChooseNext(string whoIsNext)
+        public async Task ChooseNext(string whoIsNext = null)
         {
             if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
             await GSLive.Handler.TurnBasedHandler.RequestAsync(ChooseNextHandler.Signature,new DataPayload{NextId = whoIsNext});     
@@ -115,7 +115,7 @@ namespace FiroozehGameService.Core.GSLive
         /// Leave The Current Room , if whoIsNext Set Null , Server Automatically Selects Next Turn 
         /// </summary>
         /// <param name="whoIsNext">(NULLABLE)(Type : Member's ID) Player's id You Want To Select Next Turn</param>
-        public async Task LeaveRoom(string whoIsNext)
+        public async Task LeaveRoom(string whoIsNext = null)
         {
            if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.RequestAsync(LeaveRoomHandler.Signature,new DataPayload{NextId = whoIsNext});     
