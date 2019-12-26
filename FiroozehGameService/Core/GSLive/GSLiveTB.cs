@@ -141,7 +141,7 @@ namespace FiroozehGameService.Core.GSLive
         public async Task Complete(string memberId)
         {           
            if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
-           await GSLive.Handler.TurnBasedHandler.RequestAsync(FinishHandler.Signature,new DataPayload{Id = memberId});     
+           await GSLive.Handler.TurnBasedHandler.RequestAsync(CompleteHandler.Signature,new DataPayload{Id = memberId});     
         }
         
         

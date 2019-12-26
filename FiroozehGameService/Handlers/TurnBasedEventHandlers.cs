@@ -15,6 +15,6 @@ namespace FiroozehGameService.Handlers
         public static EventHandler<Finish> Finished;
         public static EventHandler<Complete> Completed;
         public static EventHandler<List<Member>> RoomMembersDetailReceived;
-        public static EventHandler<Member> CurrentTurnMember;
+        public static EventHandler<Member> CurrentTurnMemberReceived;
     }
 }
