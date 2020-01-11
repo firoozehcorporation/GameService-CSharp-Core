@@ -239,6 +239,7 @@
     <Compile Include="Utils\GSLiveSystemObserver.cs" />
       <Compile Include="Utils\ImageUtil.cs"/>
     <Compile Include="Utils\NetworkUtil.cs" />
+      <Compile Include="Utils\ThreadManager.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
