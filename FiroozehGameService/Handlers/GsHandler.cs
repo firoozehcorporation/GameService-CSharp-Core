@@ -31,9 +31,7 @@ namespace FiroozehGameService.Handlers
         
         private void OnDispose(object sender, EventArgs e)
         {
-            if (sender.GetType() == typeof(CommandHandler))
-                CommandHandler = null;
-            else if (sender.GetType() == typeof(RealTimeHandler))
+            if (sender.GetType() == typeof(RealTimeHandler))
                 RealTimeHandler = null;
             else if (sender.GetType() == typeof(TurnBasedHandler))
                 TurnBasedHandler = null;
