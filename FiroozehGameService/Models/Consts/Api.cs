@@ -24,7 +24,7 @@ namespace FiroozehGameService.Models.Consts
         public const string EarnAchievement = BaseUrl + "/Api/v1/Achievement/unlock/";
 
         public const string SubmitScore = BaseUrl + "/Api/v1/Leaderboard/submitscore/";
-        public const string GetLeaderboard = BaseUrl + "/Api/v1/Leaderboard";
+        public const string GetLeaderboard = BaseUrl + "/Api/v1/Leaderboard/";
 
         public const string Bucket = BaseUrl + "/Api/v1/bucket/";
     }
