@@ -27,7 +27,6 @@ namespace FiroozehGameService.Handlers.RealTime
         
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
-        private SynchronizationContext _synchronizationContext;
         
         public static string PlayerHash { private set; get; }
         public static string PlayToken => GameService.PlayToken;
@@ -48,8 +47,6 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
-            _synchronizationContext = SynchronizationContext.Current;
-
             
             // Set Internal Event Handlers
             CoreEventHandlers.Authorized += OnAuth;
@@ -129,11 +126,10 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-           // if(ThreadManager.IsMainThread) _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet,e.Type);          
-           // else 
-                _synchronizationContext?.Send(delegate {
-                _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet,e.Type);           
-              }, null);
+          
+            GameService.SynchronizationContext?.Send(delegate {
+                _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet,e.Type);
+            }, null);
         }
         
         public void Dispose()
@@ -141,7 +137,6 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
-            _synchronizationContext = null;
             CoreEventHandlers.Dispose?.Invoke(this,null);
         }
         

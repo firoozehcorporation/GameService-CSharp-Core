@@ -42,6 +42,9 @@ namespace FiroozehGameService.Models.Internal
         [JsonProperty("OperatingSystem")]
         public string OperatingSystem { internal get; set; }
         
+        [JsonProperty("NetworkType")]
+        public string NetworkType { internal get; set; }
+        
         [JsonProperty("ProcessorType")]
         public string ProcessorType  { internal get; set; }
         
@@ -59,6 +62,6 @@ namespace FiroozehGameService.Models.Internal
         
         [JsonProperty("GraphicsMemorySize")]
         public int GraphicsMemorySize  { internal get; set; }
-
+        
     }
 }

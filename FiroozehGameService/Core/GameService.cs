@@ -52,6 +52,7 @@ namespace FiroozehGameService.Core
         internal static string PlayToken;
         internal static Game CurrentGame;
         internal static long StartPlaying;
+        internal static SynchronizationContext SynchronizationContext;
 
         public static GSLive.GSLive GSLive { get; private set; }
         private static GameServiceClientConfiguration Configuration { get; set; }
@@ -64,6 +65,10 @@ namespace FiroozehGameService.Core
         /// <param name="configuration">(Not NULL)configuration For Initialize Game Service</param>
         public static void ConfigurationInstance(GameServiceClientConfiguration configuration)
         {
+            if(SynchronizationContext.Current == null)
+                SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            SynchronizationContext = SynchronizationContext.Current;
+
             if(IsAuthenticated()) throw new GameServiceException("Must Logout First To ReConfiguration");
             Configuration = configuration;   
             _downloadManager = new DownloadManager(Configuration);

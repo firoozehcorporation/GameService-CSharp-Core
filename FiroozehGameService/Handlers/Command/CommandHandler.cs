@@ -24,7 +24,6 @@ namespace FiroozehGameService.Handlers.Command
         private static GsTcpClient _tcpClient;
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
-        private readonly SynchronizationContext _synchronizationContext;
         
         public static string PlayerHash { private set; get; }
         
@@ -45,9 +44,7 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
-            _observer = new GsLiveSystemObserver(GSLiveType.Core);
-            _synchronizationContext = SynchronizationContext.Current;
-            
+            _observer = new GsLiveSystemObserver(GSLiveType.Core);            
             
             // Set Internal Event Handlers
             CoreEventHandlers.Ping += OnPing;
@@ -146,12 +143,9 @@ namespace FiroozehGameService.Handlers.Command
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
 
-            if(_synchronizationContext != null)
-            _synchronizationContext.Send(delegate {
+            GameService.SynchronizationContext?.Send(delegate {
                   _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
                }, null);
-            else
-                _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
             
         }
 
