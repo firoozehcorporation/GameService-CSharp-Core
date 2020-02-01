@@ -24,6 +24,9 @@
 
 namespace FiroozehGameService.Models.Enums.Command
 {
+    /// <summary>
+    /// Represents MarketType Model In Notification
+    /// </summary>
     public enum MarketType
     {
         NotSet,

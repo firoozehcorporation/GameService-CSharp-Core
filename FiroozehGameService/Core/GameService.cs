@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
@@ -81,7 +82,7 @@ namespace FiroozehGameService.Core
         /// <value> GetLeaderBoards List </value>
         public static async Task<List<LeaderBoard>> GetLeaderBoards()
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetLeaderBoard();
         }
         
@@ -92,7 +93,7 @@ namespace FiroozehGameService.Core
         /// <value> GetAchievements List </value>
         public static async Task<List<Achievement>> GetAchievements()
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetAchievements();
         }
 
@@ -110,7 +111,7 @@ namespace FiroozehGameService.Core
             , string saveGameDescription
             , object saveGameObj)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.SaveGame(saveGameName,saveGameDescription,saveGameObj);
         }
 
@@ -125,7 +126,7 @@ namespace FiroozehGameService.Core
         public static async Task<SubmitScoreResponse> SubmitScore(
             string leaderBoardId,int scoreValue)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.SubmitScore(leaderBoardId,scoreValue);
         }
 
@@ -138,7 +139,7 @@ namespace FiroozehGameService.Core
         /// <value> return unlocked Achievement </value>
         public static async Task<Achievement> UnlockAchievement(string achievementId)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.UnlockAchievement(achievementId);
         }
 
@@ -149,7 +150,7 @@ namespace FiroozehGameService.Core
         /// <value> return Player Last Save </value>
         public static async Task<T> GetSaveGame<T>()
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetSaveGame<T>();
         }
 
@@ -163,7 +164,7 @@ namespace FiroozehGameService.Core
         /// <value> return LeaderBoardDetails </value>
         public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetLeaderBoardDetails(leaderBoardId);
         }
 
@@ -174,7 +175,7 @@ namespace FiroozehGameService.Core
         /// <value> return CurrentPlayer Data </value>
         public static async Task<User> GetCurrentPlayer()
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetCurrentPlayer();
         }
         
@@ -184,7 +185,7 @@ namespace FiroozehGameService.Core
         /// <value> return CurrentPlayer Data </value>
         public static async Task<User> EditCurrentPlayerProfile(EditUserProfile profile)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.EditCurrentPlayer(profile);
         }
 
@@ -195,7 +196,7 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> RemoveLastSave()
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.RemoveLastSave();
         }
 
@@ -207,7 +208,7 @@ namespace FiroozehGameService.Core
         /// <value> return List of all Bucket Items</value>
         public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetBucketItems<TBucket>(bucketId);
         }
 
@@ -220,7 +221,7 @@ namespace FiroozehGameService.Core
         /// <value> return a Bucket Item</value>
         public static async Task<Bucket<TBucket>> GetBucketItem<TBucket>(string bucketId, string itemId)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetBucketItem<TBucket>(bucketId,itemId);
         }
 
@@ -235,7 +236,7 @@ namespace FiroozehGameService.Core
         /// <value> return Edited Bucket Item</value>
         public static async Task<Bucket<TBucket>> UpdateBucketItem<TBucket>(string bucketId, string itemId, TBucket editedBucket)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.UpdateBucketItem(bucketId,itemId,editedBucket);
         }
 
@@ -247,7 +248,7 @@ namespace FiroozehGameService.Core
         /// <value> return Added Bucket Item</value>
         public static async Task<Bucket<TBucket>> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.AddBucketItem(bucketId,newBucket);
         }
 
@@ -260,7 +261,7 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> DeleteBucketItems(string bucketId)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.DeleteBucketItems(bucketId);
         }
 
@@ -273,7 +274,7 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> DeleteBucketItem(string bucketId, string itemId)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.DeleteBucketItem(bucketId,itemId);
         }
         
@@ -286,7 +287,7 @@ namespace FiroozehGameService.Core
         /// <param name="dirPath">(Not NULL)Specifies the Download File Directory Path </param>
         public static async Task DownloadAsset(string tag,string dirPath)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
             await _downloadManager.StartDownload(tag, dirPath);
         }
         
@@ -298,7 +299,7 @@ namespace FiroozehGameService.Core
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
         public static async Task DownloadAsset(string tag)
         {
-            if (!_isAvailable) throw new GameServiceException("GameService Not Available");
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
             await _downloadManager.StartDownload(tag);
         }
 
@@ -312,8 +313,8 @@ namespace FiroozehGameService.Core
         public static async Task<string> Login(string email , string password)
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
-            if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
-            if(_isAvailable) Logout();
+            if(Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(IsAuthenticated()) Logout();
             
             var login = await ApiRequest.Login(email, password);
             UserToken = login.Token;
@@ -333,8 +334,8 @@ namespace FiroozehGameService.Core
         public static async Task Login(string userToken)
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
-            if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
-            if(_isAvailable) Logout();
+            if(Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(IsAuthenticated()) Logout();
             
             UserToken = userToken;
             var auth = await ApiRequest.Authorize(Configuration, false);
@@ -352,8 +353,8 @@ namespace FiroozehGameService.Core
         public static async Task Login()
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
-            if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
-            if(_isAvailable) Logout();
+            if(Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(IsAuthenticated()) Logout();
            
             var auth = await ApiRequest.Authorize(Configuration, true);
             PlayToken = auth.Token;
@@ -371,8 +372,8 @@ namespace FiroozehGameService.Core
         public static async Task<string> SignUp(string nickName,string email,string password)
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
-            if(Configuration == null) throw new GameServiceException("Configuration Must Not be NULL");
-            if(_isAvailable) Logout();
+            if(Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(IsAuthenticated()) Logout();
            
             var login = await ApiRequest.SignUp(nickName,email,password);
             UserToken = login.Token;

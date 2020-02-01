@@ -268,7 +268,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         {
             
                 var url = Models.Consts.Api.Bucket + bucketId + '/' + itemId;
-                var body = JsonConvert.SerializeObject(editedBucket);
+                var body = JsonConvert.SerializeObject(editedBucket,new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
 
                 var response = await GsWebRequest.Put(url, body, CreatePlayTokenHeader());
 
@@ -285,7 +288,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         {
            
                 var url = Models.Consts.Api.Bucket + bucketId;
-                var body = JsonConvert.SerializeObject(newBucket);
+                var body = JsonConvert.SerializeObject(newBucket,new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
 
                 var response = await GsWebRequest.Post(url, body, CreatePlayTokenHeader());
 

@@ -179,7 +179,7 @@
     <Compile Include="Models\Command\JoinEvent.cs" />
     <Compile Include="Models\Command\Message.cs" />
     <Compile Include="Models\Command\Notification.cs" />
-    <Compile Include="Models\Command\NotificationTapAction.cs" />
+      <Compile Include="Models\Command\NotificationActionData.cs"/>
     <Compile Include="Models\Command\Packet.cs" />
     <Compile Include="Models\Command\RoomDetail.cs" />
     <Compile Include="Models\Command\StartPayload.cs" />

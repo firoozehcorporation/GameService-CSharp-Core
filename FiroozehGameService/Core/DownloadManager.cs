@@ -46,7 +46,6 @@ namespace FiroozehGameService.Core
             try
             {
                 var download = await ApiRequest.GetDataPackInfo(_configuration.ClientId, tag);
-                
                 // Set Events
                 _client.DownloadProgressChanged += (s, progress) =>
                     {

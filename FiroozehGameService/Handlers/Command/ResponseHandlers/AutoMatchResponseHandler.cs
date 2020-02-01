@@ -2,6 +2,7 @@
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.GSLive;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers
@@ -18,7 +19,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
                 CommandEventHandler.AutoMatchUpdated?.Invoke(null,new AutoMatchEvent
                 {
                     Status = AutoMatchStatus.OnWaiting,
-                    Players = new List<User>()
+                    Players = new List<Member>()
                 });
             }
             else
@@ -26,7 +27,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
                 CommandEventHandler.AutoMatchUpdated?.Invoke(null,new AutoMatchEvent
                 {
                     Status = AutoMatchStatus.OnUserJoined,
-                    Players = JsonConvert.DeserializeObject<List<User>>(packet.Data)
+                    Players = JsonConvert.DeserializeObject<List<Member>>(packet.Data)
                 });
             }
         }

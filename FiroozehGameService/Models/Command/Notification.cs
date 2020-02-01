@@ -14,34 +14,70 @@
 //    limitations under the License.
 // </copyright>
 
-
+using System;
+using FiroozehGameService.Models.Enums.Command;
+using Newtonsoft.Json;
 
 
 /**
 * @author Alireza Ghodrati
 */
 
-using FiroozehGameService.Models.Enums.Command;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.Command
 {
-    public class Notification : System.EventArgs
+    /// <summary>
+    /// Represents Notification Model In Game Service Command
+    /// </summary>
+    [Serializable]
+    public class Notification
     {
+        /// <summary>
+        /// Gets the Notification Title
+        /// </summary>
+        /// <value>the Notification Title</value>
         [JsonProperty("1")]
-        public string Title;
+        public string Title { get; internal set; }
 
+        
+        /// <summary>
+        /// Gets the Notification Description
+        /// </summary>
+        /// <value>the Notification Description</value>
         [JsonProperty("2")]
-        public string Description;
+        public string Description { get; internal set; }
 
+        /// <summary>
+        /// Gets the Notification Action Type
+        /// </summary>
+        /// <value>the Notification Action Type</value>
         [JsonProperty("4")]
         public TapActionType TapActionType = TapActionType.CloseNotification;
 
-        [JsonProperty("5")]
-        public NotificationTapAction TapAction;
         
+        /// <summary>
+        /// Gets the Notification Action Data
+        /// </summary>
+        /// <value>the Notification Action Data</value>
+        [JsonProperty("5")]
+        public NotificationActionData ActionData { get; internal set; }
+        
+        
+        /// <summary>
+        /// Gets the Notification Json Data
+        /// </summary>
+        /// <value>the Notification Json Data</value>
         [JsonProperty("6")]
-        public string JsonData;
+        public string JsonData { get; internal set; }
 
+        
+        public override string ToString()
+        {
+            return "Title : " + Title +
+                   ", Description : " + Description +
+                   ", TapActionType : " + TapActionType +
+                   ", ActionData : " + ActionData +
+                   ", JsonData : " + JsonData;
+        }
     }
 }

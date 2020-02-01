@@ -24,7 +24,7 @@ namespace FiroozehGameService.Handlers.Command
         private static GsTcpClient _tcpClient;
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
-        private SynchronizationContext _synchronizationContext;
+        private readonly SynchronizationContext _synchronizationContext;
         
         public static string PlayerHash { private set; get; }
         
@@ -47,7 +47,8 @@ namespace FiroozehGameService.Handlers.Command
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.Core);
             _synchronizationContext = SynchronizationContext.Current;
-                        
+            
+            
             // Set Internal Event Handlers
             CoreEventHandlers.Ping += OnPing;
             CoreEventHandlers.Authorized += OnAuth;
@@ -58,7 +59,7 @@ namespace FiroozehGameService.Handlers.Command
 
         private static void OnAuth(object sender, string playerHash)
         {
-            if (sender.GetType() != typeof(AuthResponseHandler)) return;
+           if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null,null);
         }
@@ -144,11 +145,14 @@ namespace FiroozehGameService.Handlers.Command
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-            //if(ThreadManager.IsMainThread) _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
-            //else
-               _synchronizationContext?.Send(delegate {
+
+            if(_synchronizationContext != null)
+            _synchronizationContext.Send(delegate {
                   _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
                }, null);
+            else
+                _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
+            
         }
 
         public void Dispose()
@@ -156,8 +160,6 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
-            _synchronizationContext = null;
-            CoreEventHandlers.Dispose?.Invoke(this,null);
          }
     }
 }

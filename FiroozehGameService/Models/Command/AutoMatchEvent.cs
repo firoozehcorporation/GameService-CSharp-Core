@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.GSLive;
 
 namespace FiroozehGameService.Models.Command
 {
@@ -37,6 +38,6 @@ namespace FiroozehGameService.Models.Command
         /// Gets the AutoMatch Players Queue
         /// </summary>
         /// <value>the AutoMatch Players Queue</value>
-        public List<User> Players { get; internal set; }
+        public List<Member> Players { get; internal set; }
     }
 }
