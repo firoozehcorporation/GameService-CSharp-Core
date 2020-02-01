@@ -1,4 +1,4 @@
-// <copyright file="OwnershipOptionData.cs" company="Firoozeh Technology LTD">
+// <copyright file="Ownership.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,13 +28,13 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
     /// Represents OwnershipOptionData Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public class OwnershipOptionData : BucketOption
+    public class Ownership : BucketOption
     {
         private string OwnerId { get; }
         private BucketOwnershipTypes OwnershipTypes { get; }
 
 
-        public OwnershipOptionData(BucketOwnershipTypes ownershipTypes,string ownerId = null)
+        public Ownership(BucketOwnershipTypes ownershipTypes,string ownerId = null)
         {
             OwnerId = ownershipTypes == BucketOwnershipTypes.Another && string.IsNullOrEmpty(ownerId)
                 ? throw new GameServiceException("OwnerId Cant Be EmptyOrNull When OwnershipType is Another") : OwnerId = ownerId;

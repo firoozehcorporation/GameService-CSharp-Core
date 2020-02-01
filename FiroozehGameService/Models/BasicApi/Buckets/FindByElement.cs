@@ -1,4 +1,4 @@
-// <copyright file="SortByOptionData.cs" company="Firoozeh Technology LTD">
+// <copyright file="FindByElement.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,34 +14,33 @@
 //    limitations under the License.
 // </copyright>
 
-
 using System;
-using FiroozehGameService.Models.Enums;
 
 /**
 * @author Alireza Ghodrati
 */
 
+
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents SortByOptionData Model In Game Service Basic API
+    /// Represents ElementOptionData Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public class SortByOptionData : BucketOption
+    public class FindByElement<T> : BucketOption
     {
-        private string ElementName { get; }
-        private BucketSortOrder SortOrder { get; }
+        private string Name { get; }
+        private T Value { get; }
 
-        public SortByOptionData(string elementName, BucketSortOrder sortOrder)
+        public FindByElement(string name, T value)
         {
-            ElementName = string.IsNullOrEmpty(elementName) ? throw new GameServiceException("ElementName Cant Be EmptyOrNull") : ElementName = elementName;
-            SortOrder = sortOrder;
+            Name = string.IsNullOrEmpty(name) ? throw new GameServiceException("Name Cant Be EmptyOrNull") : Name = name;
+            Value = value == null ? throw new GameServiceException("Value Cant Be Null") : Value = value;
         }
-        
+
         internal override string GetParsedData()
         {
-            return "&sortby=" + ElementName + "&sort=" + (int)SortOrder;
+            return "&conditionProperty=" + Name + "&conditionValue=" + Value;
         }
     }
 }

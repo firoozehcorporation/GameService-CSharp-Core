@@ -1,4 +1,4 @@
-// <copyright file="ConstraintOptionData.cs" company="Firoozeh Technology LTD">
+// <copyright file="SortByElement.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,7 @@
 
 
 using System;
+using FiroozehGameService.Models.Enums;
 
 /**
 * @author Alireza Ghodrati
@@ -24,23 +25,23 @@ using System;
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents ConstraintOptionData Model In Game Service Basic API
+    /// Represents SortByOptionData Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public class ConstraintOptionData : BucketOption
+    public class SortByElement : BucketOption
     {
-        private int Skip { get; }
-        private int Limit { get; }
+        private string ElementName { get; }
+        private BucketSortOrder SortOrder { get; }
 
-        public ConstraintOptionData(int skip, int limit)
+        public SortByElement(string elementName, BucketSortOrder sortOrder)
         {
-            Skip = skip < 0 ? throw new GameServiceException("Invalid Skip Value") : Skip = skip;
-            Limit = limit <= 0 || limit > 200 ? throw new GameServiceException("Invalid Limit Value") : Limit = limit;
+            ElementName = string.IsNullOrEmpty(elementName) ? throw new GameServiceException("ElementName Cant Be EmptyOrNull") : ElementName = elementName;
+            SortOrder = sortOrder;
         }
         
         internal override string GetParsedData()
         {
-            return "&skip=" + Skip + "&limit=" + Limit;
+            return "&sortby=" + ElementName + "&sort=" + (int)SortOrder;
         }
     }
 }

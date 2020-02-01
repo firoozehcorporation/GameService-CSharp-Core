@@ -1,4 +1,4 @@
-// <copyright file="ElementOptionData.cs" company="Firoozeh Technology LTD">
+// <copyright file="Constraint.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,33 +14,33 @@
 //    limitations under the License.
 // </copyright>
 
+
 using System;
 
 /**
 * @author Alireza Ghodrati
 */
 
-
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents ElementOptionData Model In Game Service Basic API
+    /// Represents ConstraintOptionData Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public class ElementOptionData<T> : BucketOption
+    public class Constraint : BucketOption
     {
-        private string Name { get; }
-        private T Value { get; }
+        private int Skip { get; }
+        private int Limit { get; }
 
-        public ElementOptionData(string name, T value)
+        public Constraint(int skip, int limit)
         {
-            Name = string.IsNullOrEmpty(name) ? throw new GameServiceException("Name Cant Be EmptyOrNull") : Name = name;
-            Value = value == null ? throw new GameServiceException("Value Cant Be Null") : Value = value;
+            Skip = skip < 0 ? throw new GameServiceException("Invalid Skip Value") : Skip = skip;
+            Limit = limit <= 0 || limit > 200 ? throw new GameServiceException("Invalid Limit Value") : Limit = limit;
         }
-
+        
         internal override string GetParsedData()
         {
-            return "&conditionProperty=" + Name + "&conditionValue=" + Value;
+            return "&skip=" + Skip + "&limit=" + Limit;
         }
     }
 }
