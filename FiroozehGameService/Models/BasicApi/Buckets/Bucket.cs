@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameService.Models.BasicApi
+namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
     /// Represents Bucket Data Model In Game Service Basic API

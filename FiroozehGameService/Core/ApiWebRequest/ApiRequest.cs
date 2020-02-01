@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using FiroozehGameService.Models.BasicApi.Buckets;
 using FiroozehGameService.Models.Internal;
 using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
 
@@ -169,10 +170,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId)
+        internal static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId,BucketOption[] options)
         {
-            
-           var url = Models.Consts.Api.Bucket + bucketId;
+           var url = UrlUtil.ParseBucketUrl(bucketId, options);
            var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))

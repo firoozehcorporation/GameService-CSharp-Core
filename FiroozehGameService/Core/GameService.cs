@@ -29,6 +29,7 @@ using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
+using FiroozehGameService.Models.BasicApi.Buckets;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
@@ -210,11 +211,12 @@ namespace FiroozehGameService.Core
         /// This command will return all information about the bucket with a specific ID
         /// </summary>
         /// <param name="bucketId">The ID of Bucket you Want To get Detail</param>
+        /// <param name="options">(Optional)The Bucket Options</param>
         /// <value> return List of all Bucket Items</value>
-        public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId)
+        public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId,BucketOption[] options = null)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
-            return await ApiRequest.GetBucketItems<TBucket>(bucketId);
+            return await ApiRequest.GetBucketItems<TBucket>(bucketId,options);
         }
 
 

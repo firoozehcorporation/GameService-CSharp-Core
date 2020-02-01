@@ -149,7 +149,12 @@
     <Compile Include="Handlers\TurnBased\ResponseHandlers\TakeTurnResponseHandler.cs" />
     <Compile Include="Handlers\TurnBased\TurnBasedHandler.cs" />
     <Compile Include="Models\BasicApi\Achievement.cs" />
-    <Compile Include="Models\BasicApi\Bucket.cs" />
+      <Compile Include="Models\BasicApi\Buckets\Bucket.cs"/>
+      <Compile Include="Models\BasicApi\Buckets\BucketOption.cs"/>
+      <Compile Include="Models\BasicApi\Buckets\ConstraintOptionData.cs"/>
+      <Compile Include="Models\BasicApi\Buckets\ElementOptionData.cs"/>
+      <Compile Include="Models\BasicApi\Buckets\OwnershipOptionData.cs"/>
+      <Compile Include="Models\BasicApi\Buckets\SortByOptionData.cs"/>
       <Compile Include="Models\BasicApi\EditUserProfile.cs"/>
     <Compile Include="Models\BasicApi\Error.cs" />
     <Compile Include="Models\BasicApi\LeaderBoard.cs" />
@@ -186,6 +191,8 @@
     <Compile Include="Models\Consts\Command.cs" />
     <Compile Include="Models\Consts\RT.cs" />
     <Compile Include="Models\Consts\TB.cs" />
+      <Compile Include="Models\Enums\BucketOwnershipTypes.cs"/>
+      <Compile Include="Models\Enums\BucketSortOrder.cs"/>
     <Compile Include="Models\Enums\Command\MarketType.cs" />
     <Compile Include="Models\Enums\Command\TapActionType.cs" />
     <Compile Include="Models\Enums\GameServiceType.cs" />
@@ -239,6 +246,7 @@
       <Compile Include="Utils\ImageUtil.cs"/>
     <Compile Include="Utils\NetworkUtil.cs" />
       <Compile Include="Utils\ThreadManager.cs"/>
+      <Compile Include="Utils\URLUtil.cs"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
