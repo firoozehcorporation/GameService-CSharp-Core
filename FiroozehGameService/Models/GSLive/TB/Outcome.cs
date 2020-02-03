@@ -50,6 +50,6 @@ namespace FiroozehGameService.Models.GSLive.TB
             if (other == null) return false;
             return other is Outcome outcome && Placement == outcome.Placement && string.Equals(Result, outcome.Result);
         }
-      
+
     }
 }

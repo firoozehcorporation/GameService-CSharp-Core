@@ -40,13 +40,14 @@ namespace FiroozehGameService.Core.GSLive
     {
         private const string Tag = "GSLive-TurnBased";
         
-        public GSLiveTB(){}
+        internal GSLiveTB(){}
         /// <summary>
         /// Create Room With Option Like : Name , Min , Max , Role , IsPrivate
         /// </summary>
         /// <param name="option">(NOTNULL)Create Room Option</param>
         public async Task CreateRoom(GSLiveOption.CreateRoomOption option)
         {
+           if(option == null) throw new GameServiceException("option Cant Be Null");
            option.GsLiveType = GSLiveType.TurnBased;
            await GSLive.Handler.CommandHandler.RequestAsync(CreateRoomHandler.Signature,option);     
         }
@@ -58,6 +59,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
         public async Task AutoMatch(GSLiveOption.AutoMatchOption option)
         {
+           if(option == null) throw new GameServiceException("option Cant Be Null");
            option.GsLiveType = GSLiveType.TurnBased;
            await GSLive.Handler.CommandHandler.RequestAsync(AutoMatchHandler.Signature,option);     
         }
@@ -69,6 +71,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
         public async Task JoinRoom(string roomId)
         {
+           if(string.IsNullOrEmpty(roomId)) throw new GameServiceException("roomId Cant Be EmptyOrNull");
            await GSLive.Handler.CommandHandler.RequestAsync(JoinRoomHandler.Signature,new RoomDetail{Id = roomId});     
         }
         
@@ -79,6 +82,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="role">(NOTNULL)Room's Role </param>
         public async Task GetAvailableRooms(string role)
         {
+           if(string.IsNullOrEmpty(role)) throw new GameServiceException("role Cant Be EmptyOrNull");
            await GSLive.Handler.CommandHandler.RequestAsync(GetRoomsHandler.Signature,new RoomDetail{Role = role , GsLiveType = (int) GSLiveType.TurnBased});     
         }
 
@@ -129,6 +133,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="outcomes">(NOTNULL) A set of players and their results</param>
         public async Task Finish(Dictionary <string,Outcome> outcomes)
         {
+           if(outcomes == null) throw new GameServiceException("outcomes Cant Be Null");
            if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.RequestAsync(FinishHandler.Signature,new DataPayload{Outcomes = outcomes});     
         }
@@ -140,6 +145,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="memberId">(NOTNULL)The Specific player ID</param>
         public async Task Complete(string memberId)
         {           
+           if(string.IsNullOrEmpty(memberId)) throw new GameServiceException("memberId Cant Be EmptyOrNull");
            if(GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First");
            await GSLive.Handler.TurnBasedHandler.RequestAsync(CompleteHandler.Signature,new DataPayload{Id = memberId});     
         }
@@ -181,6 +187,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
         public async Task InviteUser(string roomId,string userId)
         {
+           if(string.IsNullOrEmpty(roomId) && string.IsNullOrEmpty(userId)) throw new GameServiceException("roomId Or userId Cant Be EmptyOrNull");
            await GSLive.Handler.CommandHandler.RequestAsync(InviteUserHandler.Signature,new RoomDetail{User = userId , Id = roomId , GsLiveType = (int) GSLiveType.TurnBased});     
         }
         
@@ -192,6 +199,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
         public async Task AcceptInvite(string inviteId)
         {
+           if(string.IsNullOrEmpty(inviteId)) throw new GameServiceException("inviteId Cant Be EmptyOrNull");
            await GSLive.Handler.CommandHandler.RequestAsync(AcceptInviteHandler.Signature,new RoomDetail{Invite = inviteId , GsLiveType = (int) GSLiveType.TurnBased});     
         }
         
@@ -203,6 +211,8 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="limit">(Max = 15) The Result Limits</param>
         public async Task FindUser(string query,int limit)
         {
+           if(string.IsNullOrEmpty(query)) throw new GameServiceException("query Cant Be EmptyOrNull");
+           if(limit < 0 || limit > 15) throw new GameServiceException("invalid Limit Value");
            await GSLive.Handler.CommandHandler.RequestAsync(FindUserHandler.Signature,new RoomDetail{Max = limit , User = query});     
         }
    

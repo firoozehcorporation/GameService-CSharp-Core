@@ -22,6 +22,7 @@
 using System;
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Models;
 
 namespace FiroozehGameService.Core.GSLive
 {
@@ -38,6 +39,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Subscribe</param>
         public async Task SubscribeChannel(string channelName)
         {
+           if(string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
            await GSLive.Handler.CommandHandler.RequestAsync(SubscribeChannelHandler.Signature,channelName);     
         }
         
@@ -47,6 +49,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="channelName">(NOTNULL)Name of Channel You want To UnSubscribe</param>
         public async Task UnSubscribeChannel(string channelName)
         {
+            if(string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
             await GSLive.Handler.CommandHandler.RequestAsync(UnsubscribeChannelHandler.Signature,channelName);     
         }
         
@@ -58,6 +61,7 @@ namespace FiroozehGameService.Core.GSLive
 
         public async Task SendChannelMessage(string channelName,string message)
         {
+           if(string.IsNullOrEmpty(channelName) && string.IsNullOrEmpty(message)) throw new GameServiceException("channelName Or message Cant Be EmptyOrNull");
            await GSLive.Handler.CommandHandler.RequestAsync(SendChannelMessageHandler.Signature,Tuple.Create(channelName,message));     
         }
     }
