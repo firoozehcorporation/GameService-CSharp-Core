@@ -30,20 +30,20 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
     [Serializable]
     public class Ownership : BucketOption
     {
-        private string OwnerId { get; }
+        private string OwnerUserId { get; }
         private BucketOwnershipTypes OwnershipTypes { get; }
 
 
-        public Ownership(BucketOwnershipTypes ownershipTypes,string ownerId = null)
+        public Ownership(BucketOwnershipTypes ownershipTypes,string ownerUserId = null)
         {
-            OwnerId = ownershipTypes == BucketOwnershipTypes.Another && string.IsNullOrEmpty(ownerId)
-                ? throw new GameServiceException("OwnerId Cant Be EmptyOrNull When OwnershipType is Another") : OwnerId = ownerId;
+            OwnerUserId = ownershipTypes == BucketOwnershipTypes.Another && string.IsNullOrEmpty(ownerUserId)
+                ? throw new GameServiceException("OwnerUserId Cant Be EmptyOrNull When OwnershipType is Another") : OwnerUserId = ownerUserId;
             OwnershipTypes = ownershipTypes;
         }
         
         internal override string GetParsedData()
         {
-            var owner = OwnershipTypes == BucketOwnershipTypes.Me ? "me" : OwnerId;
+            var owner = OwnershipTypes == BucketOwnershipTypes.Me ? "me" : OwnerUserId;
             return "&owner=" + owner;
         }
     }
