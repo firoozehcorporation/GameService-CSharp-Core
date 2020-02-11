@@ -25,6 +25,7 @@ namespace FiroozehGameService.Handlers.Command
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
         private bool _isDisposed;
+        private bool _isFirstInit;
         
         public static string PlayerHash { private set; get; }
         
@@ -47,6 +48,7 @@ namespace FiroozehGameService.Handlers.Command
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.Core);
             _isDisposed = false;
+            _isFirstInit = false;
             
             // Set Internal Event Handlers
             CoreEventHandlers.Ping += OnPing;
@@ -58,12 +60,16 @@ namespace FiroozehGameService.Handlers.Command
             LogUtil.Log(this,"CommandHandler Initialized");
         }
 
-        private static void OnAuth(object sender, string playerHash)
+        private void OnAuth(object sender, string playerHash)
         {
            if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
-            CoreEventHandlers.SuccessfullyLogined?.Invoke(null,null);
             LogUtil.Log(null,"CommandHandler OnAuth");
+
+            if (_isFirstInit) return;
+            CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
+            _isFirstInit = true;
+
         }
 
         private async void OnPing(object sender, EventArgs e)
