@@ -48,21 +48,16 @@ namespace FiroozehGameService.Core.Socket
 
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     BufferReceivedBytes = 0;
-                    
+
                     var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
-                    foreach (var packet in packets)                        
-                        OnDataReceived(new SocketDataReceived {Data = packet}); 
+                    foreach (var packet in packets)
+                        OnDataReceived(new SocketDataReceived {Data = packet});
                 }
-                catch (OperationCanceledException e)
+                catch (Exception e)
                 {
+                    if (!(e is OperationCanceledException || e is ObjectDisposedException))
+                        OnClosed(new ErrorArg {Error = e.Message});
                     IsAvailable = false;
-                    OnClosed(new ErrorArg {Error = e.Message});
-                    break;
-                }
-                catch (ObjectDisposedException e)
-                {
-                    IsAvailable = false;
-                    OnClosed(new ErrorArg {Error = e.Message});
                     break;
                 }
             }

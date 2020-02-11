@@ -25,6 +25,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         public static Room CurrentRoom;
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
+        private bool _isDisposed;
         
         public static string PlayerHash { private set; get; }
         public static string PlayToken => GameService.PlayToken;
@@ -45,6 +46,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             _tcpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
+            _isDisposed = false;
             
             // Set Internal Event Handlers
             CoreEventHandlers.Ping += OnPing;
@@ -134,9 +136,10 @@ namespace FiroozehGameService.Handlers.TurnBased
         }
         
         
-        private static void OnError(object sender, ErrorArg e)
+        private async void OnError(object sender, ErrorArg e)
         {
-            // TODO Connect Again??
+           if(_isDisposed) return;
+            await Init();
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)
@@ -151,6 +154,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         
         public void Dispose()
         {
+            _isDisposed = true;
             _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);

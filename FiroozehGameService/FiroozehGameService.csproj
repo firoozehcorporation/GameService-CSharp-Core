@@ -244,6 +244,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\GSLiveSystemObserver.cs" />
       <Compile Include="Utils\ImageUtil.cs"/>
+      <Compile Include="Utils\LogUtil.cs"/>
     <Compile Include="Utils\NetworkUtil.cs" />
       <Compile Include="Utils\ThreadManager.cs"/>
       <Compile Include="Utils\URLUtil.cs"/>

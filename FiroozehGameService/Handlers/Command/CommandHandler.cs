@@ -24,6 +24,7 @@ namespace FiroozehGameService.Handlers.Command
         private static GsTcpClient _tcpClient;
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
+        private bool _isDisposed;
         
         public static string PlayerHash { private set; get; }
         
@@ -44,7 +45,8 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
-            _observer = new GsLiveSystemObserver(GSLiveType.Core);            
+            _observer = new GsLiveSystemObserver(GSLiveType.Core);
+            _isDisposed = false;
             
             // Set Internal Event Handlers
             CoreEventHandlers.Ping += OnPing;
@@ -52,6 +54,8 @@ namespace FiroozehGameService.Handlers.Command
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
+            
+            LogUtil.Log(this,"CommandHandler Initialized");
         }
 
         private static void OnAuth(object sender, string playerHash)
@@ -59,12 +63,14 @@ namespace FiroozehGameService.Handlers.Command
            if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null,null);
+            LogUtil.Log(null,"CommandHandler OnAuth");
         }
 
         private async void OnPing(object sender, EventArgs e)
         {
-            if (sender.GetType() == typeof(PingResponseHandler))
-                await RequestAsync(PingPongHandler.Signature);
+            if (sender.GetType() != typeof(PingResponseHandler)) return;
+            await RequestAsync(PingPongHandler.Signature);
+            LogUtil.Log(this,"CommandHandler OnPing");
         }
 
         
@@ -104,6 +110,7 @@ namespace FiroozehGameService.Handlers.Command
             await _tcpClient.Init();
             Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
             await RequestAsync(AuthorizationHandler.Signature);
+            LogUtil.Log(this,"CommandHandler Init");
         }
 
         
@@ -128,14 +135,17 @@ namespace FiroozehGameService.Handlers.Command
         {
             if (!_observer.Increase()) return;
             var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+          
+            LogUtil.Log(this,"CommandHandler SendAsync > " + json);
+            
             var data = Encoding.UTF8.GetBytes(json);
             await _tcpClient.SendAsync(data);
         }
 
         private async void OnError(object sender, ErrorArg e)
         {
-            // Must Connect Again ...
-            Dispose();
+            LogUtil.LogError(this,"CommandHandler OnError > " + e.Error + ", isDisposed : " + _isDisposed);
+            if(_isDisposed) return;
             await Init();
         }
 
@@ -144,6 +154,7 @@ namespace FiroozehGameService.Handlers.Command
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
 
             GameService.SynchronizationContext?.Send(delegate {
+                  LogUtil.Log(this,"CommandHandler OnDataReceived < " + e.Data);
                   _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
                }, null);
             
@@ -151,9 +162,11 @@ namespace FiroozehGameService.Handlers.Command
 
         public void Dispose()
         {
+            _isDisposed = true;
             _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(true);
+            LogUtil.Log(this,"CommandHandler Dispose");
          }
     }
 }

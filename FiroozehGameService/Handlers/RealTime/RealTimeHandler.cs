@@ -27,6 +27,8 @@ namespace FiroozehGameService.Handlers.RealTime
         
         private readonly GsLiveSystemObserver _observer;
         private readonly CancellationTokenSource _cancellationToken;
+        private bool _isDisposed;
+
         
         public static string PlayerHash { private set; get; }
         public static string PlayToken => GameService.PlayToken;
@@ -47,6 +49,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.Error += OnError;
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
+            _isDisposed = false;
             
             // Set Internal Event Handlers
             CoreEventHandlers.Authorized += OnAuth;
@@ -118,9 +121,10 @@ namespace FiroozehGameService.Handlers.RealTime
         }
         
               
-        private static void OnError(object sender, ErrorArg e)
+        private void OnError(object sender, ErrorArg e)
         {
-            // TODO Connect Again??
+           if(_isDisposed) return;
+           Init();
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)
