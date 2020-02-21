@@ -5,7 +5,7 @@ namespace FiroozehGameService.Models.Consts
     internal class Command
     {
         public static readonly Area CommandArea 
-            = new Area { Ip = "command.gamesservice.ir" , Port = 3003 ,Protocol = "tcp"};
+            = new Area { Ip = "command.gamesservice.ir" , Port = 4003 ,Protocol = "tcp"};
        
         // For Send
         public const int ActionAuth = 0;

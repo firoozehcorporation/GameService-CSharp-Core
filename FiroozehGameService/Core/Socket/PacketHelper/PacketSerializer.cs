@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using FiroozehGameService.Models.Command;
 using FiroozehGameService.Utils;
 using GameServiceHelper.Utils;
@@ -13,8 +14,9 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             try
             {
                 var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                LogUtil.Log(this,"PacketSerializer > " + json);
-                return Serializer.Serialize(json,pwd);
+                var s = Serializer.Serialize(json,pwd);
+                LogUtil.Log(this,"PacketSerializer > JSON : " + json +"\r\nSerialized : " + s + "\r\nPWD : " + pwd);
+                return s;
             }
             catch (Exception e)
             {

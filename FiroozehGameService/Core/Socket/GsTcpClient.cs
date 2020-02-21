@@ -49,18 +49,19 @@ namespace FiroozehGameService.Core.Socket
                         Buffer.Length - BufferOffset,
                         OperationCancellationToken.Token);
                  
-                    BufferReceivedBytes = 0;
-
                     var receivedData = PacketDeserializer.Deserialize(Buffer, BufferOffset, BufferReceivedBytes,_pwd);
                     var packets = PacketValidator.ValidateDataAndReturn(receivedData);
                     foreach (var packet in packets)
                         OnDataReceived(new SocketDataReceived {Data = packet});
+                   
+                    BufferReceivedBytes = 0;
                 }
                 catch (Exception e)
                 {
+                    IsAvailable = false;
+                    _pwd = null;
                     if (!(e is OperationCanceledException || e is ObjectDisposedException))
                         OnClosed(new ErrorArg {Error = e.Message});
-                    IsAvailable = false;
                     break;
                 }
             }
