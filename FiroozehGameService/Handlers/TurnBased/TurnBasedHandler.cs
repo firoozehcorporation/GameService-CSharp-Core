@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core;
@@ -59,8 +58,9 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private static void OnAuth(object sender, string playerHash)
         {
-            if (sender.GetType() == typeof(AuthResponseHandler))
-                PlayerHash = playerHash;
+            if (sender.GetType() != typeof(AuthResponseHandler)) return;
+            PlayerHash = playerHash;
+            _tcpClient.UpdatePwd(playerHash);
         }
 
         private async void OnPing(object sender, EventArgs e)
@@ -122,17 +122,13 @@ namespace FiroozehGameService.Handlers.TurnBased
         private void Send(Packet packet)
         {
             if (!_observer.Increase()) return;
-            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            var data = Encoding.UTF8.GetBytes(json);
-            _tcpClient.Send(data);
+            _tcpClient.Send(packet);
         }
         
         private async Task SendAsync(Packet packet)
         {
             if (!_observer.Increase()) return;
-            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            var data = Encoding.UTF8.GetBytes(json);
-            await _tcpClient.SendAsync(data);
+            await _tcpClient.SendAsync(packet);
         }
         
         

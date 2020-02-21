@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core;
@@ -64,6 +62,7 @@ namespace FiroozehGameService.Handlers.Command
         {
            if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
+            _tcpClient.UpdatePwd(playerHash);
             LogUtil.Log(null,"CommandHandler OnAuth");
 
             if (_isFirstInit) return;
@@ -132,20 +131,13 @@ namespace FiroozehGameService.Handlers.Command
         private void Send(Packet packet)
         {
             if (!_observer.Increase()) return;
-            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            var data = Encoding.UTF8.GetBytes(json);
-            _tcpClient.Send(data);
+            _tcpClient.Send(packet);
         }
         
         private async Task SendAsync(Packet packet)
         {
             if (!_observer.Increase()) return;
-            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-          
-            LogUtil.Log(this,"CommandHandler SendAsync > " + json);
-            
-            var data = Encoding.UTF8.GetBytes(json);
-            await _tcpClient.SendAsync(data);
+            await _tcpClient.SendAsync(packet);
         }
 
         private async void OnError(object sender, ErrorArg e)

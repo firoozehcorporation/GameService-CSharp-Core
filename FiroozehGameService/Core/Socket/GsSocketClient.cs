@@ -1,10 +1,10 @@
-﻿using FiroozehGameService.Core.Socket.PacketValidators;
-using FiroozehGameService.Models.Command;
+﻿using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.EventArgs;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using FiroozehGameService.Core.Socket.PacketHelper;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -15,13 +15,12 @@ namespace FiroozehGameService.Core.Socket
         protected Area Endpoint;
         protected CancellationTokenSource OperationCancellationToken;
 
-        //TODO replace string to byteArrayStream
-        protected StringBuilder DataBuilder = new StringBuilder();
-
-        protected byte[] Buffer = new byte[BufferCapacity];
+        protected readonly byte[] Buffer = new byte[BufferCapacity];
         protected const int BufferOffset = 0;
         protected int BufferReceivedBytes = 0;
         protected readonly IValidator PacketValidator = new JsonDataValidator();
+        protected readonly IDeserializer PacketDeserializer = new PacketDeserializer();
+        protected readonly ISerializer PacketSerializer = new PacketSerializer();
         #endregion
 
         public event EventHandler<SocketDataReceived> DataReceived;
@@ -40,9 +39,11 @@ namespace FiroozehGameService.Core.Socket
 
         internal abstract Task Init();
 
-        internal abstract void Send(byte[] buffer);
+        internal abstract void UpdatePwd(string newPwd);
+
+        internal abstract void Send(Packet packet);
         
-        internal abstract Task SendAsync(byte[] buffer);
+        internal abstract Task SendAsync(Packet packet);
 
         internal abstract Task StartReceiving();
 

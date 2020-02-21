@@ -38,6 +38,9 @@
       <HintPath>..\packages\Crc32.NET.1.2.0\lib\net20\Crc32.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
+      <Reference Include="GameServiceHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\GameServiceHelper\GameServiceHelper.dll</HintPath>
+      </Reference>
     <Reference Include="GProtocol, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
     </Reference>
@@ -64,8 +67,12 @@
     <Compile Include="Core\Socket\GsSocketClient.cs" />
     <Compile Include="Core\Socket\GsTcpClient.cs" />
     <Compile Include="Core\Socket\GsUdpClient.cs" />
-    <Compile Include="Core\Socket\PacketValidators\IValidator.cs" />
-    <Compile Include="Core\Socket\PacketValidators\JsonDataValidator.cs" />
+      <Compile Include="Core\Socket\PacketHelper\IDeserializer.cs"/>
+      <Compile Include="Core\Socket\PacketHelper\ISerializer.cs"/>
+      <Compile Include="Core\Socket\PacketHelper\IValidator.cs"/>
+      <Compile Include="Core\Socket\PacketHelper\JsonDataValidator.cs"/>
+      <Compile Include="Core\Socket\PacketHelper\PacketDeserializer.cs"/>
+      <Compile Include="Core\Socket\PacketHelper\PacketSerializer.cs"/>
     <Compile Include="DictionaryHelper.cs" />
     <Compile Include="Handlers\ChatEventHandlers.cs" />
     <Compile Include="Handlers\Command\CommandHandler.cs" />
