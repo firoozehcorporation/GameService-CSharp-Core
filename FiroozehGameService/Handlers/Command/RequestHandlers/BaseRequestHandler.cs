@@ -1,5 +1,5 @@
 ﻿using System;
-using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {

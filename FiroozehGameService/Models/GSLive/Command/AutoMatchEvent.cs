@@ -1,4 +1,4 @@
-// <copyright file="ErrorEvent.cs" company="Firoozeh Technology LTD">
+// <copyright file="AutoMatchEvent.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +14,28 @@
 //    limitations under the License.
 // </copyright>
 
-
+using System;
+using System.Collections.Generic;
 using FiroozehGameService.Models.Enums.GSLive;
 
-/**
-* @author Alireza Ghodrati
-*/
-
-
-namespace FiroozehGameService.Models.Command
+namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
-    /// Represents ErrorEvent When Error Happened in GSLive
+    /// Represents AutoMatchEvent When AutoMatch Update Status in GSLive
     /// </summary>
-    public class ErrorEvent
+    [Serializable]
+    public class AutoMatchEvent
     {
         /// <summary>
-        /// Gets the Error Happened Type
+        /// Gets the AutoMatchStatus
         /// </summary>
-        /// <value>Error Happened Type</value>
-        public GSLiveType Type { internal set; get; }
+        /// <value>the AutoMatchStatus</value>
+        public AutoMatchStatus Status { get; internal set; }
         
         /// <summary>
-        /// Gets the Error Text
+        /// Gets the AutoMatch Players Queue
         /// </summary>
-        /// <value>the Error Text</value>
-        public string Error { internal set; get; }
+        /// <value>the AutoMatch Players Queue</value>
+        public List<Member> Players { get; internal set; }
     }
 }

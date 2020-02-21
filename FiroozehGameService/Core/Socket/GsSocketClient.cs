@@ -1,10 +1,10 @@
-﻿using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.EventArgs;
+﻿using FiroozehGameService.Models.EventArgs;
 using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.PacketHelper;
+using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -13,6 +13,7 @@ namespace FiroozehGameService.Core.Socket
         #region Fields
         private const int BufferCapacity = 1024 * 128;
         protected Area Endpoint;
+        protected string Pwd;
         protected CancellationTokenSource OperationCancellationToken;
 
         protected readonly byte[] Buffer = new byte[BufferCapacity];

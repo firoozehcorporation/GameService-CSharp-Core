@@ -1,9 +1,9 @@
-﻿using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.EventArgs;
+﻿using FiroozehGameService.Models.EventArgs;
 using System;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -11,7 +11,6 @@ namespace FiroozehGameService.Core.Socket
     {
         private TcpClient _client;
         private NetworkStream _clientStream;
-        private string _pwd;
         public bool IsAvailable { get; private set; }
 
         public GsTcpClient(Area area)
@@ -33,7 +32,7 @@ namespace FiroozehGameService.Core.Socket
 
         internal override void UpdatePwd(string newPwd)
         {
-            _pwd = newPwd;
+            Pwd = newPwd;
         }
 
 
@@ -49,7 +48,7 @@ namespace FiroozehGameService.Core.Socket
                         Buffer.Length - BufferOffset,
                         OperationCancellationToken.Token);
                  
-                    var receivedData = PacketDeserializer.Deserialize(Buffer, BufferOffset, BufferReceivedBytes,_pwd);
+                    var receivedData = PacketDeserializer.Deserialize(Buffer, BufferOffset, BufferReceivedBytes,Pwd);
                     var packets = PacketValidator.ValidateDataAndReturn(receivedData);
                     foreach (var packet in packets)
                         OnDataReceived(new SocketDataReceived {Data = packet});
@@ -59,7 +58,7 @@ namespace FiroozehGameService.Core.Socket
                 catch (Exception e)
                 {
                     IsAvailable = false;
-                    _pwd = null;
+                    Pwd = null;
                     if (!(e is OperationCanceledException || e is ObjectDisposedException))
                         OnClosed(new ErrorArg {Error = e.Message});
                     break;
@@ -71,14 +70,14 @@ namespace FiroozehGameService.Core.Socket
         internal override void Send(Packet packet)
             => Task.Run(() =>
             {
-                 var buffer = PacketSerializer.Serialize(packet,_pwd);
+                 var buffer = PacketSerializer.Serialize(packet,Pwd);
                 _clientStream?.Write(buffer, 0, buffer.Length);
             },OperationCancellationToken.Token);
 
 
         internal override async Task SendAsync(Packet packet)
         {
-            var buffer = PacketSerializer.Serialize(packet,_pwd);
+            var buffer = PacketSerializer.Serialize(packet,Pwd);
             await _clientStream.WriteAsync(buffer, 0, buffer.Length);
         }
         
@@ -92,7 +91,7 @@ namespace FiroozehGameService.Core.Socket
                 OperationCancellationToken?.Dispose();
                 _client?.Close();
                 IsAvailable = false;
-                _pwd = null;
+                Pwd = null;
             }
             catch
             {

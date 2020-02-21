@@ -24,7 +24,7 @@ using Newtonsoft.Json;
 */
 
 
-namespace FiroozehGameService.Models.Command
+namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
     /// Represents Notification Model In Game Service Command

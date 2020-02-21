@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using FiroozehGameService.Models.BasicApi;
-using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.GSLive.Command;
 using Invite = FiroozehGameService.Models.GSLive.Invite;
 
 namespace FiroozehGameService.Handlers

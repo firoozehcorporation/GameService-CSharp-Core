@@ -26,9 +26,9 @@ using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
-using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.RT;
 
 namespace FiroozehGameService.Core.GSLive

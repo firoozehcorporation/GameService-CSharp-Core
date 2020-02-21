@@ -1,6 +1,6 @@
 ﻿using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Models;
-using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers

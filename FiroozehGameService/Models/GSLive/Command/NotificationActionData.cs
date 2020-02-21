@@ -23,7 +23,7 @@ using Newtonsoft.Json;
 */
 
 
-namespace FiroozehGameService.Models.Command
+namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
     /// Represents NotificationActionData Model In Game Service Command

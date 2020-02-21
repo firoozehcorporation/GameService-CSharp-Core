@@ -2,7 +2,7 @@ using System;
 using FiroozehGameService.Models.BasicApi;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Models.Command
+namespace FiroozehGameService.Models.GSLive.Command
 {
     [Serializable]
     internal class Chat

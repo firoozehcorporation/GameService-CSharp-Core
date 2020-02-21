@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 using Invite = FiroozehGameService.Models.GSLive.Invite;
 

@@ -8,9 +8,9 @@ using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.Command.ResponseHandlers;
-using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 

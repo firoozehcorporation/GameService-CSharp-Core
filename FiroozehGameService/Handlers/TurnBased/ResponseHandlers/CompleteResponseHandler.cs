@@ -1,7 +1,6 @@
-﻿
-using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Consts;
+﻿using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.TB;
 using Newtonsoft.Json;
 

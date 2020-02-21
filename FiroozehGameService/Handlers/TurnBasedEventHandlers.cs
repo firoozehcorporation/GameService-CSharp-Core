@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.TB;
 
 namespace FiroozehGameService.Handlers

@@ -1,6 +1,5 @@
-﻿
-using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Consts;
+﻿using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 {

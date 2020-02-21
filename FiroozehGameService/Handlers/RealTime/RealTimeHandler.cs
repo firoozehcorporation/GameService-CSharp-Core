@@ -8,11 +8,11 @@ using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.ResponseHandlers;
-using FiroozehGameService.Models.Command;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
@@ -115,9 +115,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private void Send(Packet packet,GProtocolSendType type)
         {
             if (!_observer.Increase()) return;
-            var json = JsonConvert.SerializeObject(packet , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            var data = Encoding.UTF8.GetBytes(json);          
-            _udpClient.Send(data,type);
+            _udpClient.Send(packet,type);
         }
         
               

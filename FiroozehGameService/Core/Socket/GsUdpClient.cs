@@ -1,11 +1,11 @@
-﻿using FiroozehGameService.Models.Command;
-using System;
-using System.Text;
+﻿using System;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
+using FiroozehGameService.Models.GSLive.Command;
 using GProtocol;
 using GProtocol.Core;
+using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -37,18 +37,20 @@ namespace FiroozehGameService.Core.Socket
         private void ServerDisconnect(Connection conn, byte[] data)
         {
             IsAvailable = false;
+            Pwd = null;
             OnClosed(new ErrorArg {Error = "ServerDisconnect"});
         }
 
         private void ServerTimeout(Connection conn, byte[] data)
         {
             IsAvailable = false;
+            Pwd = null;
             OnClosed(new ErrorArg {Error = "ServerTimeout"});
         }
 
         private void HandleClientPacket(Connection conn, byte[] data, Connection.Channel channel)
         {
-            OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(data) 
+            OnDataReceived(new SocketDataReceived { Data = PacketDeserializer.Deserialize(data,Pwd)
                 , Type =
                     channel == Connection.Channel.Reliable ? GProtocolSendType.Reliable : GProtocolSendType.UnReliable});
         }
@@ -59,8 +61,9 @@ namespace FiroozehGameService.Core.Socket
         }
 
 
-        internal override void Send(byte[] buffer,GProtocolSendType type)
+        internal override void Send(Packet packet,GProtocolSendType type)
         {
+            var buffer = PacketSerializable.Serialize(packet, Pwd);
             switch (type)
             {
                 case GProtocolSendType.Reliable:
@@ -73,16 +76,22 @@ namespace FiroozehGameService.Core.Socket
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
-        
+
+        internal override void UpdatePwd(string newPwd)
+        {
+            Pwd = newPwd;
+        }
+
         internal override void StopReceiving()
         {
+            Connection = null;
+            Client = null;
+            Pwd = null;
+            IsAvailable = false;
             try
             {
                 Connection?.Disconnect(null);
                 Client?.Disconnect();
-                Connection = null;
-                Client = null;
-                IsAvailable = false;
             }
             catch (Exception)
             {

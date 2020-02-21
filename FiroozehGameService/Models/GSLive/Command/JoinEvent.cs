@@ -15,13 +15,12 @@
 // </copyright>
 
 using FiroozehGameService.Models.Enums.GSLive;
-using FiroozehGameService.Models.GSLive;
 
 /**
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameService.Models.Command
+namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
     /// Represents JoinEvent

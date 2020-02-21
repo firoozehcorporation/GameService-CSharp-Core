@@ -1,10 +1,10 @@
 using System;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Models.Command
+namespace FiroozehGameService.Models.GSLive.Command
 {
     [Serializable]
-    internal class Packet
+    internal class Packet : APacket
     {
         
         [JsonProperty("0")]

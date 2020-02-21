@@ -1,8 +1,7 @@
-﻿
-using FiroozehGameService.Models.Command;
-using FiroozehGameService.Models.Consts;
+﻿using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers

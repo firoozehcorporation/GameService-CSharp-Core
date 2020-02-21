@@ -1,9 +1,9 @@
-using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.GSLive;
 
 namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal interface ISerializer
     {
-        byte[] Serialize(Packet packet,string pwd);
+        byte[] Serialize(APacket packet,string pwd);
     }
 }

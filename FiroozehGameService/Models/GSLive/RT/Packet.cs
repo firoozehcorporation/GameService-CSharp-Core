@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.RT
 {
     [Serializable]
-    internal class Packet
+    internal class Packet : APacket
     {
         [JsonProperty("1")]
         public int Action { get; set; }

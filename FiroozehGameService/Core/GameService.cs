@@ -30,7 +30,7 @@ using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
-using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;

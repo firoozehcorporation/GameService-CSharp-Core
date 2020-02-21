@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using FiroozehGameService.Core;
-using FiroozehGameService.Models.Command;
 using System.Threading.Tasks;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Handlers.Command;
@@ -10,6 +9,7 @@ using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers
 {

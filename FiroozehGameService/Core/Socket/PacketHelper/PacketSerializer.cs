@@ -1,6 +1,7 @@
 using System;
 using System.Text;
-using FiroozehGameService.Models.Command;
+using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
 using GameServiceHelper.Utils;
 using Newtonsoft.Json;
@@ -9,7 +10,7 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal class PacketSerializer : ISerializer
     {
-        public byte[] Serialize(Packet packet,string pwd)
+        public byte[] Serialize(APacket packet,string pwd)
         {
             try
             {
