@@ -6,7 +6,8 @@ namespace FiroozehGameService.Models.Consts
     {
         public static readonly Area CommandArea 
             = new Area { Ip = "command.gamesservice.ir" , Port = 4003 ,Protocol = "tcp"};
-       
+
+        internal const string Pwd = "C4B7416A4C427A278537C158CAA75A44";
         // For Send
         public const int ActionAuth = 0;
         public const int ActionAutoMatch = 1;

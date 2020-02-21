@@ -8,6 +8,7 @@ using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.ResponseHandlers;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
@@ -43,6 +44,9 @@ namespace FiroozehGameService.Handlers.TurnBased
             _tcpClient = new GsTcpClient(payload.Area);
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
+            _tcpClient.UpdatePwd(TB.Pwd);
+            
+            
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
             _isDisposed = false;

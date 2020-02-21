@@ -45,7 +45,7 @@ namespace FiroozehGameService.Models.GSLive
         
         /// <summary>
         /// Gets the Room Name.
-        /// it Set in GSLiveOption <see cref="FiroozehGameServiceAndroid.Core.GSLive.GSLiveOption"/>
+        /// it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption"/>
         /// </summary>
         /// <value>the Room Name</value>
         [JsonProperty("name")]
@@ -77,7 +77,7 @@ namespace FiroozehGameService.Models.GSLive
         
         /// <summary>
         /// Gets the Room Minimum Member Value To Accept.
-        /// it Set in GSLiveOption <see cref="FiroozehGameServiceAndroid.Core.GSLive.GSLiveOption"/>
+        /// it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption"/>
         /// </summary>
         /// <value>the Room Minimum Member Value To Accept</value>
         [JsonProperty("min")]
@@ -86,7 +86,7 @@ namespace FiroozehGameService.Models.GSLive
         
         /// <summary>
         /// Gets the Room Minimum Member Value To Accept.
-        /// it Set in GSLiveOption <see cref="FiroozehGameServiceAndroid.Core.GSLive.GSLiveOption"/>
+        /// it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption"/>
         /// </summary>
         /// <value>the Room Maximum Member Value To Accept</value>
         [JsonProperty("max")]
@@ -95,7 +95,7 @@ namespace FiroozehGameService.Models.GSLive
         
         /// <summary>
         /// Gets the Room Role Value.
-        /// it Set in GSLiveOption <see cref="FiroozehGameServiceAndroid.Core.GSLive.GSLiveOption"/>
+        /// it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption"/>
         /// </summary>
         /// <value>the Room Role Value</value>
         [JsonProperty("role")]
@@ -112,7 +112,7 @@ namespace FiroozehGameService.Models.GSLive
         
         /// <summary>
         /// Gets the Room Privacy Value.
-        /// it Set in GSLiveOption <see cref="FiroozehGameServiceAndroid.Core.GSLive.GSLiveOption"/>
+        /// it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption"/>
         /// </summary>
         /// <value>the Room Privacy Value</value>
         [JsonProperty("private")]

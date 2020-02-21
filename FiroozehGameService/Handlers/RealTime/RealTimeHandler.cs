@@ -8,6 +8,7 @@ using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.ResponseHandlers;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
@@ -47,6 +48,9 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient = new GsUdpClient(payload.Area);
             _udpClient.DataReceived += OnDataReceived;
             _udpClient.Error += OnError;
+            _udpClient.UpdatePwd(RT.Pwd);
+            
+            
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
             _isDisposed = false;

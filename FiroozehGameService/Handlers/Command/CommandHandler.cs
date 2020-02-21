@@ -43,6 +43,8 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient = new GsTcpClient(Models.Consts.Command.CommandArea);
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
+            _tcpClient.UpdatePwd(Models.Consts.Command.Pwd);
+            
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.Core);
             _isDisposed = false;
