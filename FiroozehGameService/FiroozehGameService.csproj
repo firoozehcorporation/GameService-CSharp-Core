@@ -180,6 +180,7 @@
     <Compile Include="Models\BasicApi\User.cs" />
     <Compile Include="Models\Consts\Api.cs" />
     <Compile Include="Models\Consts\Command.cs" />
+      <Compile Include="Models\Consts\GameServiceErrors.cs"/>
     <Compile Include="Models\Consts\RT.cs" />
     <Compile Include="Models\Consts\TB.cs" />
       <Compile Include="Models\Enums\BucketOwnershipTypes.cs"/>

@@ -11,9 +11,10 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
         {
             try
             {
-                LogUtil.Log(this,"PacketDeserializer Rec :" + receivedBytes +" Bytes");
                 var seg = new ArraySegment<byte>(buffer,offset,receivedBytes);
-                return Serializer.Deserialize(seg.ToArray(), pwd);
+                var deserialize = Serializer.Deserialize(seg.ToArray(), pwd);
+                LogUtil.Log(this,"PacketDeserializer : " + deserialize);
+                return deserialize;
             }
             catch (Exception e)
             {
