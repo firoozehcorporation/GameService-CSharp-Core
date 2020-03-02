@@ -18,6 +18,7 @@
 
 using FiroozehGameService.Core;
 using FiroozehGameService.Handlers;
+using FiroozehGameService.Models.BasicApi;
 
 /**
 * @author Alireza Ghodrati
@@ -93,7 +94,7 @@ namespace FiroozehGameService.Models.Consts
             /// <summary>
             /// Represents GameService Save HTTP Errors
             /// Errors that occur in the following Functions :
-            /// <see cref="GameService.SaveGame(string,string,object)"/>
+            /// <see cref="GameService.SaveGame(string,object)"/>
             /// <see cref="GameService.GetSaveGame{T}()"/>
             /// </summary>
             public class Save : Internal
@@ -164,6 +165,20 @@ namespace FiroozehGameService.Models.Consts
                 public const string PlanLimit = "plan_limit";
                 public const string AccountNotfound = "account_notfound";
                 public const string InvalidStructure = "invalid_structure";
+            }
+            
+            
+            
+            
+            /// <summary>
+            /// Represents GameService EditCurrentPlayer HTTP Errors
+            /// Errors that occur in the following Functions:
+            /// <see cref="GameService.EditCurrentPlayerProfile(EditUserProfile)"/>
+            /// </summary>
+            public class EditCurrentPlayer
+            {
+                public const string UserNotFound = "user_notfound";
+                public const string InvalidInput = "invalid_input";
             }
             
         }

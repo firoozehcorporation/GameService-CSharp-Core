@@ -1,4 +1,4 @@
-// <copyright file="Bucket.cs" company="Firoozeh Technology LTD">
+// <copyright file="BucketCore.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,33 +24,38 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents Bucket Data Model In Game Service Basic API
+    /// Represents BucketCore Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public class Bucket<TBucket>
-    {
-        /// <summary>
-        /// Gets the Bucket ID.
-        /// </summary>
-        /// <value>the Bucket ID</value>
-        [JsonProperty("bucket")]
-        public string BucketId { set; get; }
-        
+    public class BucketCore
+    {        
         /// <summary>
         /// Gets the Bucket Object ID.
         /// </summary>
         /// <value>the Bucket Object ID</value>
-        [JsonProperty("_id")]
+        [JsonProperty("id")]
         public string Id { set; get; }
-
-        [JsonProperty("data")]
-        private object _rawBucket;
-
+        
         
         /// <summary>
-        /// Gets the Bucket Object.
+        /// Gets the Bucket Owner User ID.
         /// </summary>
-        /// <value>the Bucket Object</value>
-        public TBucket BucketData => JsonConvert.DeserializeObject<TBucket>(JsonConvert.SerializeObject(_rawBucket));
-    }
+        /// <value>the Bucket Object ID</value>
+        [JsonProperty("owner")]
+        public string OwnerId { set; get; }
+        
+        
+        
+        /// <summary>
+        /// To Prevent Serialize Id Property
+        /// </summary>
+        public bool ShouldSerializeId() => false;
+
+
+        /// <summary>
+        /// To Prevent Serialize OwnerId Property
+        /// </summary>
+        public bool ShouldSerializeOwnerId() => false;
+       
+     }
 }

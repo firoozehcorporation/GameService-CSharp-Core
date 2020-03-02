@@ -2,30 +2,21 @@ namespace FiroozehGameService.Models.Consts
 {
     internal sealed class Api
     {
-        public const string BaseUrl = "https://gamesservice.ir";
-        public const string Wsuri = "wss://gamesservice.ir";
+        public const string BaseUrl1 = "https://gamesservice.ir";
+        private const string BaseUrl2 = "https://api.gamesservice.ir";
 
-        public const string LoginUser = BaseUrl + "/Auth/app/login";
-        public const string Start = BaseUrl + "/Auth/start";
-        public const string UserData = BaseUrl + "/Api/v1";
+        public const string LoginUser = BaseUrl2 + "/auth/app/login";
+        public const string Start = BaseUrl2 + "/auth/start";
+        public const string UserData = BaseUrl2 + "/v1";
+             
+        public const string SaveGame = BaseUrl2 + "/v1/savegame/";
+        public const string Achievements = BaseUrl2 + "/v1/achievement/";
+        public const string Leaderboard = BaseUrl2 + "/v1/leaderboard/";
+        public const string Bucket = BaseUrl2 + "/v1/bucket/";
         
         
-        public const string UserProfileLogo = BaseUrl + "/Application/image";
-        public const string UserProfile = BaseUrl + "/Application";
-
-
-
-
-        public const string DeleteLastSave = BaseUrl + "/Api/v1/savegame/delete";
-        public const string SetSavegame = BaseUrl + "/Api/v1/savegame/save";
-        public const string GetSavegame = BaseUrl + "/Api/v1/savegame";
-
-        public const string GetAchievements = BaseUrl + "/Api/v1/Achievement";
-        public const string EarnAchievement = BaseUrl + "/Api/v1/Achievement/unlock/";
-
-        public const string SubmitScore = BaseUrl + "/Api/v1/Leaderboard/submitscore/";
-        public const string GetLeaderboard = BaseUrl + "/Api/v1/Leaderboard/";
-
-        public const string Bucket = BaseUrl + "/Api/v1/bucket/";
+        public const string UserProfileLogo = BaseUrl1 + "/Application/image";
+        public const string UserProfile = BaseUrl1 + "/Application";
+        
     }
 }

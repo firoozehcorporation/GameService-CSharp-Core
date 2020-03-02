@@ -2,12 +2,12 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi.TResponse
 {
-    internal class TSubmitScore
+    internal class BucketT<TBucket>
     {
         [JsonProperty("status")]
         public bool Status { set; get; }
-        
-        [JsonProperty("leaderboard")]
-        public SubmitScoreResponse SubmitScoreResponse { set; get; }
+               
+        [JsonProperty("data")]
+        public TBucket BucketData { set; get; }
     }
 }

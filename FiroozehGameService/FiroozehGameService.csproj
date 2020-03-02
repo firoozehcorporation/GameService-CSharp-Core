@@ -156,7 +156,7 @@
     <Compile Include="Handlers\TurnBased\ResponseHandlers\TakeTurnResponseHandler.cs" />
     <Compile Include="Handlers\TurnBased\TurnBasedHandler.cs" />
     <Compile Include="Models\BasicApi\Achievement.cs" />
-      <Compile Include="Models\BasicApi\Buckets\Bucket.cs"/>
+      <Compile Include="Models\BasicApi\Buckets\BucketCore.cs"/>
       <Compile Include="Models\BasicApi\Buckets\BucketOption.cs"/>
       <Compile Include="Models\BasicApi\Buckets\Constraint.cs"/>
       <Compile Include="Models\BasicApi\Buckets\FindByElement.cs"/>
@@ -171,6 +171,7 @@
     <Compile Include="Models\BasicApi\Score.cs" />
     <Compile Include="Models\BasicApi\SubmitScoreResponse.cs" />
     <Compile Include="Models\BasicApi\TResponse\TAchievement.cs" />
+      <Compile Include="Models\BasicApi\TResponse\BucketT.cs"/>
       <Compile Include="Models\BasicApi\TResponse\TEditUser.cs"/>
     <Compile Include="Models\BasicApi\TResponse\TLeaderBoard.cs" />
     <Compile Include="Models\BasicApi\TResponse\TSave.cs" />

@@ -4,7 +4,6 @@ using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.TResponse;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,12 +18,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         
         private static string Pt => GameService.PlayToken;
         private static string Ut => GameService.UserToken;
-        private static long Sp => GameService.StartPlaying;
-
 
         internal static async Task<Download> GetDataPackInfo(string gameId, string tag)
         {
-                var url = Models.Consts.Api.BaseUrl + "/game/" + gameId + "/datapack/?tag=" + tag;
+                var url = Models.Consts.Api.BaseUrl1 + "/game/" + gameId + "/datapack/?tag=" + tag;
                 var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -84,7 +81,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<List<LeaderBoard>> GetLeaderBoard()
         {
-                var response = await GsWebRequest.Get(Models.Consts.Api.GetLeaderboard, CreatePlayTokenHeader());
+                var response = await GsWebRequest.Get(Models.Consts.Api.Leaderboard, CreatePlayTokenHeader());
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                 {
@@ -100,7 +97,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<List<Achievement>> GetAchievements()
         {
             
-           var response = await GsWebRequest.Get(Models.Consts.Api.GetAchievements, CreatePlayTokenHeader());
+           var response = await GsWebRequest.Get(Models.Consts.Api.Achievements, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -115,7 +112,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<T> GetSaveGame<T>()
         {
-            const string url = Models.Consts.Api.GetSavegame;
+            const string url = Models.Consts.Api.SaveGame;
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -184,7 +181,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<Bucket<TBucket>> GetBucketItem<TBucket>(string bucketId, string itemId)
+        internal static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId)
         {
             
                 var url = Models.Consts.Api.Bucket + bucketId + '/' + itemId;
@@ -193,15 +190,15 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                 {
                     if(response.IsSuccessStatusCode)
-                        return JsonConvert.DeserializeObject<Bucket<TBucket>>(await reader.ReadToEndAsync());
+                        return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
                     throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
                 }
         }
 
 
-        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId)
+        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey)
         {
-               var url = Models.Consts.Api.GetLeaderboard + leaderBoardId;
+               var url = Models.Consts.Api.Leaderboard + leaderBoardKey;
                var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -213,13 +210,13 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<SaveDetails> SaveGame(string saveGameName, string saveGameDescription, object saveGameObject)
+        internal static async Task<SaveDetails> SaveGame(string saveGameName, object saveGameObject)
         {
             
-                var body = JsonConvert.SerializeObject(CreateSaveGameDictionary(saveGameName, saveGameDescription
-                    , JsonConvert.SerializeObject(saveGameObject)));
+                var body = JsonConvert.SerializeObject(CreateSaveGameDictionary(saveGameName
+                    , JsonConvert.SerializeObject(saveGameObject,new JsonSerializerSettings{ NullValueHandling = NullValueHandling.Ignore})));
 
-                var response = await GsWebRequest.Post(Models.Consts.Api.SetSavegame, body, CreatePlayTokenHeader());
+                var response = await GsWebRequest.Post(Models.Consts.Api.SaveGame, body, CreatePlayTokenHeader());
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                 {
@@ -231,9 +228,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<SubmitScoreResponse> SubmitScore(string leaderBoardId, int scoreValue)
+        internal static async Task<SubmitScoreResponse> SubmitScore(string leaderBoardKey, int scoreValue)
         {
-                var url = Models.Consts.Api.SubmitScore + leaderBoardId;
+                var url = Models.Consts.Api.Leaderboard + leaderBoardKey;
                 var body = JsonConvert.SerializeObject(CreateSubmitScoreDictionary(scoreValue));
 
                 var response = await GsWebRequest.Post(url, body, CreatePlayTokenHeader());
@@ -249,9 +246,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<Achievement> UnlockAchievement(string achievementId)
+        internal static async Task<Achievement> UnlockAchievement(string achievementKey)
         {
-                var url = Models.Consts.Api.EarnAchievement + achievementId;
+                var url = Models.Consts.Api.Achievements + achievementKey;
                 var response = await GsWebRequest.Post(url, headers: CreatePlayTokenHeader());
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -264,7 +261,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<Bucket<TBucket>> UpdateBucketItem<TBucket>(string bucketId, string itemId, TBucket editedBucket)
+        internal static async Task<TBucket> UpdateBucketItem<TBucket>(string bucketId, string itemId, TBucket editedBucket)
         {
             
                 var url = Models.Consts.Api.Bucket + bucketId + '/' + itemId;
@@ -278,13 +275,13 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                 {
                     if(response.IsSuccessStatusCode)
-                        return JsonConvert.DeserializeObject<Bucket<TBucket>>(await reader.ReadToEndAsync());
+                        return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
                     throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
                 }
 
         }
 
-        internal static async Task<Bucket<TBucket>> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
+        internal static async Task<TBucket> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
         {
            
                 var url = Models.Consts.Api.Bucket + bucketId;
@@ -298,7 +295,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                 {
                     if(response.IsSuccessStatusCode)
-                        return JsonConvert.DeserializeObject<Bucket<TBucket>>(await reader.ReadToEndAsync());
+                        return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
                     throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
                 }
             
@@ -307,7 +304,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> RemoveLastSave()
         {
-              var response = await GsWebRequest.Delete(Models.Consts.Api.DeleteLastSave, CreatePlayTokenHeader());
+              var response = await GsWebRequest.Delete(Models.Consts.Api.SaveGame, CreatePlayTokenHeader());
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                 {
@@ -410,14 +407,12 @@ namespace FiroozehGameService.Core.ApiWebRequest
             return param;
         }
 
-        private static Dictionary<string, object> CreateSaveGameDictionary(string name, string desc, string data)
+        private static Dictionary<string, object> CreateSaveGameDictionary(string name, string data)
         {
             return new Dictionary<string, object>
             {
                 {"name" , name},
-                {"desc" , desc},
-                {"data" , data},
-                {"playedtime" , Math.Abs((long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds - Sp)}
+                {"data" , data}
             };
         }
 

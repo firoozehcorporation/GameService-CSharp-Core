@@ -27,6 +27,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
+using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
@@ -109,16 +110,12 @@ namespace FiroozehGameService.Core
         /// With this command you can save your Current Status in Game
         /// </summary>
         /// <param name="saveGameName">saveGameName</param>
-        /// <param name="saveGameDescription">saveGameDescription</param>
         /// <param name="saveGameObj">the Object that you Want To Save it</param>
         /// <value> return SaveDetails </value>
-        public static async Task<SaveDetails> SaveGame(
-            string saveGameName
-            , string saveGameDescription
-            , object saveGameObj)
+        public static async Task<SaveDetails> SaveGame(string saveGameName, object saveGameObj)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
-            return await ApiRequest.SaveGame(saveGameName,saveGameDescription,saveGameObj);
+            return await ApiRequest.SaveGame(saveGameName,saveGameObj);
         }
 
         
@@ -226,7 +223,7 @@ namespace FiroozehGameService.Core
         /// <param name="bucketId">The ID of Bucket you Want To get Detail</param>
         /// <param name="itemId">The ID of BucketItem you Want To get Detail</param>
         /// <value> return a Bucket Item</value>
-        public static async Task<Bucket<TBucket>> GetBucketItem<TBucket>(string bucketId, string itemId)
+        public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetBucketItem<TBucket>(bucketId,itemId);
@@ -241,7 +238,7 @@ namespace FiroozehGameService.Core
         /// <param name="itemId">The ID of BucketItem you Want To Edit Details</param>
         /// <param name="editedBucket">The Object of BucketItem you Want To Edit Detail</param>
         /// <value> return Edited Bucket Item</value>
-        public static async Task<Bucket<TBucket>> UpdateBucketItem<TBucket>(string bucketId, string itemId, TBucket editedBucket)
+        public static async Task<TBucket> UpdateBucketItem<TBucket>(string bucketId, string itemId, TBucket editedBucket)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.UpdateBucketItem(bucketId,itemId,editedBucket);
@@ -253,7 +250,7 @@ namespace FiroozehGameService.Core
         /// <param name="bucketId">The ID of Bucket you Want To Add Item</param>
         /// <param name="newBucket">The Object of BucketItem you Want To Add</param>
         /// <value> return Added Bucket Item</value>
-        public static async Task<Bucket<TBucket>> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
+        public static async Task<TBucket> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.AddBucketItem(bucketId,newBucket);
@@ -330,7 +327,8 @@ namespace FiroozehGameService.Core
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
-            await Core.GSLive.GSLive.Init();
+            //await Core.GSLive.GSLive.Init();
+            CoreEventHandlers.SuccessfullyLogined?.Invoke(null,null);
             return UserToken;
         }
         
@@ -350,7 +348,8 @@ namespace FiroozehGameService.Core
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
-            await Core.GSLive.GSLive.Init();
+            CoreEventHandlers.SuccessfullyLogined?.Invoke(null,null);
+            //await Core.GSLive.GSLive.Init();
         }
         
         /// <summary>
