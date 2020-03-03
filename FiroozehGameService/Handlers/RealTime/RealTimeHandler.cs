@@ -48,7 +48,6 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient = new GsUdpClient(payload.Area);
             _udpClient.DataReceived += OnDataReceived;
             _udpClient.Error += OnError;
-            _udpClient.UpdatePwd(RT.Pwd);
             
             
             _cancellationToken = new CancellationTokenSource();
@@ -61,6 +60,9 @@ namespace FiroozehGameService.Handlers.RealTime
             
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
+            
+            LogUtil.Log(this,"RealTime init");
+
         }
 
         private void OnConnected(object sender, EventArgs e)
@@ -72,8 +74,10 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private static void OnAuth(object sender, string playerHash)
         {
-            if (sender.GetType() == typeof(AuthResponseHandler))
+            if (sender.GetType() != typeof(AuthResponseHandler)) return;
                 PlayerHash = playerHash;
+                _udpClient.UpdatePwd(playerHash);
+            LogUtil.Log(null,"RealTime OnAuth");
         }
 
         private void InitRequestMessageHandlers()
@@ -125,6 +129,7 @@ namespace FiroozehGameService.Handlers.RealTime
               
         private void OnError(object sender, ErrorArg e)
         {
+            LogUtil.Log(this,"RealTime Error");
            if(_isDisposed) return;
            Init();
         }
@@ -144,6 +149,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _observer.Dispose();
             _cancellationToken.Cancel(true);
             CoreEventHandlers.Dispose?.Invoke(this,null);
+            LogUtil.Log(this,"RealTime Dispose");
         }
         
     }

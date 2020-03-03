@@ -42,10 +42,9 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             CurrentRoom = payload.Room;
             _tcpClient = new GsTcpClient(payload.Area);
+            _tcpClient.SetType(GSLiveType.TurnBased);
             _tcpClient.DataReceived += OnDataReceived;
-            _tcpClient.Error += OnError;
-            _tcpClient.UpdatePwd(TB.Pwd);
-            
+            _tcpClient.Error += OnError;            
             
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
@@ -58,6 +57,9 @@ namespace FiroozehGameService.Handlers.TurnBased
             
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
+            
+            LogUtil.Log(this,"TurnBased Initialized");
+
         }
 
         private static void OnAuth(object sender, string playerHash)
@@ -65,12 +67,14 @@ namespace FiroozehGameService.Handlers.TurnBased
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
             _tcpClient.UpdatePwd(playerHash);
+            LogUtil.Log(null,"TurnBased OnAuth");
         }
 
         private async void OnPing(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
                 await RequestAsync(PingPongHandler.Signature);
+            LogUtil.Log(null,"TurnBased OnPing");
         }
         
         private void InitRequestMessageHandlers()
@@ -138,6 +142,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         
         private async void OnError(object sender, ErrorArg e)
         {
+            LogUtil.LogError(this,"TurnBased : " + e.Error);
            if(_isDisposed) return;
             await Init();
         }
@@ -159,6 +164,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             _observer.Dispose();
             _cancellationToken.Cancel(true);
             CoreEventHandlers.Dispose?.Invoke(this,null);
+            LogUtil.Log(this,"TurnBased Dispose");
         }
 
 

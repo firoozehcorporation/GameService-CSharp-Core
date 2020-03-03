@@ -327,8 +327,7 @@ namespace FiroozehGameService.Core
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
-            //await Core.GSLive.GSLive.Init();
-            CoreEventHandlers.SuccessfullyLogined?.Invoke(null,null);
+            await Core.GSLive.GSLive.Init();
             return UserToken;
         }
         
@@ -348,8 +347,7 @@ namespace FiroozehGameService.Core
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
-            CoreEventHandlers.SuccessfullyLogined?.Invoke(null,null);
-            //await Core.GSLive.GSLive.Init();
+            await Core.GSLive.GSLive.Init();
         }
         
         /// <summary>
@@ -399,6 +397,14 @@ namespace FiroozehGameService.Core
         /// <value> return True if Current User Authenticated Before </value>
         public static bool IsAuthenticated()
             => _isAvailable;
+        
+        
+        
+        /// <summary>
+        /// Get The Current GameService Version
+        /// </summary>
+        /// <value> return The Current GameService Version </value>
+        public static string Version() => "2.0.0";
 
         
         /// <summary>

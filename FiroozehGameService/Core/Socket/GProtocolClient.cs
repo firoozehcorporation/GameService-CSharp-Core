@@ -1,6 +1,7 @@
 using System;
 using FiroozehGameService.Core.Socket.PacketHelper;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.RT;
 using GProtocol;
@@ -14,6 +15,7 @@ namespace FiroozehGameService.Core.Socket
         protected Client Client;
         protected Connection Connection;
         protected string Pwd;
+        protected GSLiveType Type = GSLiveType.RealTime;
         protected readonly ISerializer PacketSerializable = new PacketSerializer();
         protected readonly IDeserializer PacketDeserializer = new PacketDeserializer();
         

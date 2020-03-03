@@ -3,6 +3,7 @@ using System;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Core.Socket
@@ -35,6 +36,11 @@ namespace FiroozehGameService.Core.Socket
             Pwd = newPwd;
         }
 
+        internal override void SetType(GSLiveType type)
+        {
+            Type = type;
+        }
+
 
         internal override async Task StartReceiving()
         {
@@ -48,7 +54,7 @@ namespace FiroozehGameService.Core.Socket
                         Buffer.Length - BufferOffset,
                         OperationCancellationToken.Token);
                  
-                    var receivedData = PacketDeserializer.Deserialize(Buffer, BufferOffset, BufferReceivedBytes,Pwd);
+                    var receivedData = PacketDeserializer.Deserialize(Buffer, BufferOffset, BufferReceivedBytes,Pwd,Type);
                     var packets = PacketValidator.ValidateDataAndReturn(receivedData);
                     foreach (var packet in packets)
                         OnDataReceived(new SocketDataReceived {Data = packet});
@@ -70,14 +76,14 @@ namespace FiroozehGameService.Core.Socket
         internal override void Send(Packet packet)
             => Task.Run(() =>
             {
-                 var buffer = PacketSerializer.Serialize(packet,Pwd);
+                 var buffer = PacketSerializer.Serialize(packet,Pwd,Type);
                 _clientStream?.Write(buffer, 0, buffer.Length);
             },OperationCancellationToken.Token);
 
 
         internal override async Task SendAsync(Packet packet)
         {
-            var buffer = PacketSerializer.Serialize(packet,Pwd);
+            var buffer = PacketSerializer.Serialize(packet,Pwd,Type);
             await _clientStream.WriteAsync(buffer, 0, buffer.Length);
         }
         

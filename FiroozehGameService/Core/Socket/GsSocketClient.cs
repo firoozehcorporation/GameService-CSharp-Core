@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.PacketHelper;
+using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Core.Socket
@@ -14,6 +16,7 @@ namespace FiroozehGameService.Core.Socket
         private const int BufferCapacity = 1024 * 128;
         protected Area Endpoint;
         protected string Pwd;
+        protected GSLiveType Type;
         protected CancellationTokenSource OperationCancellationToken;
 
         protected readonly byte[] Buffer = new byte[BufferCapacity];
@@ -41,6 +44,8 @@ namespace FiroozehGameService.Core.Socket
         internal abstract Task Init();
 
         internal abstract void UpdatePwd(string newPwd);
+        
+        internal abstract void SetType(GSLiveType type);
 
         internal abstract void Send(Packet packet);
         

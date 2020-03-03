@@ -1,5 +1,6 @@
 ﻿using System;
 using FiroozehGameService.Handlers;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
@@ -50,7 +51,7 @@ namespace FiroozehGameService.Core.Socket
 
         private void HandleClientPacket(Connection conn, byte[] data, Connection.Channel channel)
         {
-            OnDataReceived(new SocketDataReceived { Data = PacketDeserializer.Deserialize(data,Pwd)
+            OnDataReceived(new SocketDataReceived { Data = PacketDeserializer.Deserialize(data,Pwd,Type)
                 , Type =
                     channel == Connection.Channel.Reliable ? GProtocolSendType.Reliable : GProtocolSendType.UnReliable});
         }
@@ -63,7 +64,7 @@ namespace FiroozehGameService.Core.Socket
 
         internal override void Send(Packet packet,GProtocolSendType type)
         {
-            var buffer = PacketSerializable.Serialize(packet, Pwd);
+            var buffer = PacketSerializable.Serialize(packet,Pwd,Type);
             switch (type)
             {
                 case GProtocolSendType.Reliable:
