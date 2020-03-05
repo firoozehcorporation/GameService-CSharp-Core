@@ -30,6 +30,9 @@ namespace FiroozehGameService.Models.Internal
     [Serializable]
     public class SystemInfo
     {
+        [JsonProperty("DeviceId")]
+        public string DeviceUniqueId { internal get; set; }
+      
         [JsonProperty("DeviceName")]
         public string DeviceName { internal get; set; }
         

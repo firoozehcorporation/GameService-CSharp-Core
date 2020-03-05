@@ -36,11 +36,12 @@ namespace FiroozehGameService.Builder
         internal readonly string ClientSecret;
         internal readonly SystemInfo SystemInfo;
 
-        public GameServiceClientConfiguration(string clientId = null, string clientSecret = null,SystemInfo systemInfo = null)
+        public GameServiceClientConfiguration(string clientId, string clientSecret,SystemInfo systemInfo)
         {
             ClientId = string.IsNullOrEmpty(clientId) ? throw new GameServiceException("ClientId Cant Be Empty") : ClientId = clientId;
             ClientSecret = string.IsNullOrEmpty(clientSecret) ? throw new GameServiceException("ClientSecret Cant Be Empty") : ClientSecret = clientSecret;
             SystemInfo = systemInfo == null ? throw new GameServiceException("SystemInfo Cant Be NULL") : SystemInfo = systemInfo;
+            if (systemInfo.DeviceUniqueId == null) throw new GameServiceException("DeviceUniqueId In SystemInfo Cant Be NULL");
         }
     }
 }

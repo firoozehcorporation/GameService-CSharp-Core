@@ -18,6 +18,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         
         private static string Pt => GameService.PlayToken;
         private static string Ut => GameService.UserToken;
+        private static GameServiceClientConfiguration Configuration => GameService.Configuration;
 
         internal static async Task<Download> GetDataPackInfo(string gameId, string tag)
         {
@@ -33,10 +34,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<Login> Authorize(GameServiceClientConfiguration configuration, bool isGuest)
+        internal static async Task<Login> Authorize(bool isGuest)
         {
             
-                var body = JsonConvert.SerializeObject(CreateAuthorizationDictionary(configuration, Ut, isGuest));
+                var body = JsonConvert.SerializeObject(CreateAuthorizationDictionary(Ut, isGuest));
                 var response = await GsWebRequest.Post(Models.Consts.Api.Start, body);
                 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -65,8 +66,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
         
         internal static async Task<Login> LoginWithGoogle(string idToken)
         {
-            
             var body = JsonConvert.SerializeObject(CreateGoogleLoginDictionary(idToken));
+            LogUtil.Log(null,body);
             var response = await GsWebRequest.Post(Models.Consts.Api.LoginWithGoogle, body);
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -404,16 +405,16 @@ namespace FiroozehGameService.Core.ApiWebRequest
         
         private static Dictionary<string, object> CreateGoogleLoginDictionary(string idToken)
         {
-            return new Dictionary<string, object> {{"token", idToken}, {"device_id", NetworkUtil.GetMacAddress()}};
+            return new Dictionary<string, object> {{"token", idToken}, {"device_id", Configuration.SystemInfo.DeviceUniqueId}};
         }
 
-        private static Dictionary<string, object> CreateAuthorizationDictionary(GameServiceClientConfiguration configuration, string userToken, bool isGuest)
+        private static Dictionary<string, object> CreateAuthorizationDictionary(string userToken, bool isGuest)
         {
             var param = new Dictionary<string, object>();
 
             if (isGuest)
             {
-                param.Add("token", NetworkUtil.GetMacAddress());
+                param.Add("token", Configuration.SystemInfo.DeviceUniqueId);
                 param.Add("mode", "guest");
             }
             else
@@ -422,9 +423,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 param.Add("mode", "normal");
             }
 
-            param.Add("game", configuration.ClientId);
-            param.Add("secret", configuration.ClientSecret);
-            param.Add("system_info",JsonConvert.SerializeObject(configuration.SystemInfo));
+            param.Add("game", Configuration.ClientId);
+            param.Add("secret", Configuration.ClientSecret);
+            param.Add("system_info",JsonConvert.SerializeObject(Configuration.SystemInfo));
             return param;
         }
 

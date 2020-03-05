@@ -55,9 +55,9 @@ namespace FiroozehGameService.Core
         internal static Game CurrentGame;
         internal static long StartPlaying;
         internal static SynchronizationContext SynchronizationContext;
+        internal static GameServiceClientConfiguration Configuration { get; private set; }
 
         public static GSLive.GSLive GSLive { get; private set; }
-        private static GameServiceClientConfiguration Configuration { get; set; }
         private static DownloadManager _downloadManager;
         #endregion
         
@@ -173,7 +173,7 @@ namespace FiroozehGameService.Core
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             if(string.IsNullOrEmpty(leaderBoardId)) throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull");
-            if(scoreLimit < 10 || scoreLimit > 50) throw new GameServiceException("invalid Limit Value");
+            if(scoreLimit < 10 || scoreLimit > 50) throw new GameServiceException("Invalid Limit Value");
             return await ApiRequest.GetLeaderBoardDetails(leaderBoardId,scoreLimit);
         }
 
@@ -345,7 +345,7 @@ namespace FiroozehGameService.Core
             
             var login = await ApiRequest.Login(email, password);
             UserToken = login.Token;
-            var auth = await ApiRequest.Authorize(Configuration, false);
+            var auth = await ApiRequest.Authorize(false);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -366,7 +366,7 @@ namespace FiroozehGameService.Core
             if(IsAuthenticated()) Logout();
             
             UserToken = userToken;
-            var auth = await ApiRequest.Authorize(Configuration, false);
+            var auth = await ApiRequest.Authorize(false);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -390,12 +390,12 @@ namespace FiroozehGameService.Core
             
             var login = await ApiRequest.LoginWithGoogle(idToken);
             UserToken = login.Token;
-            var auth = await ApiRequest.Authorize(Configuration, false);
+            var auth = await ApiRequest.Authorize(false);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
-            await Core.GSLive.GSLive.Init();
+           // await Core.GSLive.GSLive.Init();
             return UserToken;
         }
         
@@ -409,7 +409,7 @@ namespace FiroozehGameService.Core
             if(Configuration == null) throw new GameServiceException("You Must Configuration First");
             if(IsAuthenticated()) Logout();
            
-            var auth = await ApiRequest.Authorize(Configuration, true);
+            var auth = await ApiRequest.Authorize(true);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
@@ -433,7 +433,7 @@ namespace FiroozehGameService.Core
            
             var login = await ApiRequest.SignUp(nickName,email,password);
             UserToken = login.Token;
-            var auth = await ApiRequest.Authorize(Configuration, false);
+            var auth = await ApiRequest.Authorize(false);
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             StartPlaying = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;

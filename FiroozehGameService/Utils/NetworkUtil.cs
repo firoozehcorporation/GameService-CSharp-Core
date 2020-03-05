@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Text;
 
 namespace FiroozehGameService.Utils
 {
@@ -21,7 +23,7 @@ namespace FiroozehGameService.Utils
             }
         }
      
-        internal static string GetMacAddress()
+       /* internal static string GetMacAddress()
         {
            return NetworkInterface
                 .GetAllNetworkInterfaces()
@@ -29,5 +31,8 @@ namespace FiroozehGameService.Utils
                 .Select( nic => nic.GetPhysicalAddress().ToString() )
                 .FirstOrDefault();
         }
+        */
+                
+        
     }
 }
