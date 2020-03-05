@@ -61,6 +61,21 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
                 }
         }
+        
+        
+        internal static async Task<Login> LoginWithGoogle(string idToken)
+        {
+            
+            var body = JsonConvert.SerializeObject(CreateGoogleLoginDictionary(idToken));
+            var response = await GsWebRequest.Post(Models.Consts.Api.LoginWithGoogle, body);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if(response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
+            }
+        }
 
 
         internal static async Task<Login> SignUp(string nickName, string email, string password)
@@ -196,9 +211,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey)
+        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey,int scoreLimit = 10)
         {
-               var url = Models.Consts.Api.Leaderboard + leaderBoardKey;
+               var url = Models.Consts.Api.Leaderboard + leaderBoardKey + "&limit=" + scoreLimit;
                var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -384,6 +399,12 @@ namespace FiroozehGameService.Core.ApiWebRequest
             param.Add("email", email);
             param.Add("password", password);
             return param;
+        }
+        
+        
+        private static Dictionary<string, object> CreateGoogleLoginDictionary(string idToken)
+        {
+            return new Dictionary<string, object> {{"token", idToken}, {"device_id", NetworkUtil.GetMacAddress()}};
         }
 
         private static Dictionary<string, object> CreateAuthorizationDictionary(GameServiceClientConfiguration configuration, string userToken, bool isGuest)

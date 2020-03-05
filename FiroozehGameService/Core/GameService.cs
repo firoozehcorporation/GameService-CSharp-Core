@@ -67,6 +67,7 @@ namespace FiroozehGameService.Core
         /// <param name="configuration">(Not NULL)configuration For Initialize Game Service</param>
         public static void ConfigurationInstance(GameServiceClientConfiguration configuration)
         {
+            if(configuration == null) throw new GameServiceException("Configuration Cant Be Null");
             if(SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             SynchronizationContext = SynchronizationContext.Current;
@@ -123,13 +124,15 @@ namespace FiroozehGameService.Core
         /// This command allows you to Submit Player Score with the ID of the leaderBoard
         /// you have Registered in the Developer panel
         /// </summary>
-        /// <param name="leaderBoardId">leaderBoardId</param>
+        /// <param name="leaderBoardId">(Not NULL)leaderBoardId</param>
         /// <param name="scoreValue">scoreValue(The value must not exceed the maximum value Registered in the Developer Panel)</param>
         /// <value> return SaveDetails </value>
         public static async Task<SubmitScoreResponse> SubmitScore(
             string leaderBoardId,int scoreValue)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(string.IsNullOrEmpty(leaderBoardId)) throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull");
+            if(scoreValue <= 0) throw new GameServiceException("Invalid ScoreValue");
             return await ApiRequest.SubmitScore(leaderBoardId,scoreValue);
         }
 
@@ -138,11 +141,12 @@ namespace FiroozehGameService.Core
         /// With this command you can Unlock achievement with the achievement ID
         /// you registered in the Developer panel.
         /// </summary>
-        /// <param name="achievementId">The ID of Achievement you Want To Unlock it</param>
+        /// <param name="achievementId">(Not NULL)The ID of Achievement you Want To Unlock it</param>
         /// <value> return unlocked Achievement </value>
         public static async Task<Achievement> UnlockAchievement(string achievementId)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(string.IsNullOrEmpty(achievementId)) throw new GameServiceException("AchievementId Cant Be EmptyOrNull");
             return await ApiRequest.UnlockAchievement(achievementId);
         }
 
@@ -158,17 +162,19 @@ namespace FiroozehGameService.Core
         }
 
 
-
         /// <summary>
         /// With this command you can get a LeaderBoardDetails with the ID of the LeaderBoard list
         /// you registered in the Developer panel.
         /// </summary>
-        /// <param name="leaderBoardId">The ID of leaderBoard you Want To get Detail</param>
+        /// <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Detail</param>
+        /// <param name="scoreLimit">(Min = 10,Max = 50) The Score List Limits</param>
         /// <value> return LeaderBoardDetails </value>
-        public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId)
+        public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId,int scoreLimit = 10)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
-            return await ApiRequest.GetLeaderBoardDetails(leaderBoardId);
+            if(string.IsNullOrEmpty(leaderBoardId)) throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull");
+            if(scoreLimit < 10 || scoreLimit > 50) throw new GameServiceException("invalid Limit Value");
+            return await ApiRequest.GetLeaderBoardDetails(leaderBoardId,scoreLimit);
         }
 
 
@@ -189,6 +195,7 @@ namespace FiroozehGameService.Core
         public static async Task<User> EditCurrentPlayerProfile(EditUserProfile profile)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(profile == null) throw new GameServiceException("EditUserProfile Cant Be Null");
             return await ApiRequest.EditCurrentPlayer(profile);
         }
 
@@ -207,12 +214,13 @@ namespace FiroozehGameService.Core
         /// <summary>
         /// This command will return all information about the bucket with a specific ID
         /// </summary>
-        /// <param name="bucketId">The ID of Bucket you Want To get Detail</param>
+        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To get Detail</param>
         /// <param name="options">(Optional)The Bucket Options</param>
         /// <value> return List of all Bucket Items</value>
         public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId,BucketOption[] options = null)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
             return await ApiRequest.GetBucketItems<TBucket>(bucketId,options);
         }
 
@@ -220,12 +228,14 @@ namespace FiroozehGameService.Core
         /// <summary>
         /// This command returns one of the Specific bucket information with a specific ID
         /// </summary>
-        /// <param name="bucketId">The ID of Bucket you Want To get Detail</param>
-        /// <param name="itemId">The ID of BucketItem you Want To get Detail</param>
+        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To get Detail</param>
+        /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To get Detail</param>
         /// <value> return a Bucket Item</value>
         public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
+            if(string.IsNullOrEmpty(itemId)) throw new GameServiceException("BucketItemId Cant Be EmptyOrNull");
             return await ApiRequest.GetBucketItem<TBucket>(bucketId,itemId);
         }
 
@@ -234,25 +244,30 @@ namespace FiroozehGameService.Core
         /// <summary>
         /// This command will edit one of the bucket information with a specific ID
         /// </summary>
-        /// <param name="bucketId">The ID of Bucket you Want To Edit Details</param>
-        /// <param name="itemId">The ID of BucketItem you Want To Edit Details</param>
-        /// <param name="editedBucket">The Object of BucketItem you Want To Edit Detail</param>
+        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To Edit Details</param>
+        /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To Edit Details</param>
+        /// <param name="editedBucket">(Not NULL)The Object of BucketItem you Want To Edit Detail</param>
         /// <value> return Edited Bucket Item</value>
         public static async Task<TBucket> UpdateBucketItem<TBucket>(string bucketId, string itemId, TBucket editedBucket)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
+            if(string.IsNullOrEmpty(itemId)) throw new GameServiceException("BucketItemId Cant Be EmptyOrNull");
+            if(editedBucket == null) throw new GameServiceException("EditedBucket Cant Be Null");
             return await ApiRequest.UpdateBucketItem(bucketId,itemId,editedBucket);
         }
 
         /// <summary>
         /// This command will Add new bucket information with a specific ID
         /// </summary>
-        /// <param name="bucketId">The ID of Bucket you Want To Add Item</param>
-        /// <param name="newBucket">The Object of BucketItem you Want To Add</param>
+        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To Add Item</param>
+        /// <param name="newBucket">(Not NULL)The Object of BucketItem you Want To Add</param>
         /// <value> return Added Bucket Item</value>
         public static async Task<TBucket> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
+            if(newBucket == null) throw new GameServiceException("NewBucket Cant Be Null");
             return await ApiRequest.AddBucketItem(bucketId,newBucket);
         }
 
@@ -261,11 +276,12 @@ namespace FiroozehGameService.Core
         /// <summary>
         /// This command will delete All of the bucket Items information with a specific ID
         /// </summary>
-        /// <param name="bucketId">The ID of Bucket you Want To Delete All Items</param>
+        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To Delete All Items</param>
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> DeleteBucketItems(string bucketId)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
             return await ApiRequest.DeleteBucketItems(bucketId);
         }
 
@@ -273,12 +289,14 @@ namespace FiroozehGameService.Core
         /// <summary>
         /// This command will delete one of the bucket information with a specific ID
         /// </summary>
-        /// <param name="bucketId">The ID of Bucket you Want To Delete one of Items</param>
-        /// <param name="itemId">The ID of BucketItem you Want To Delete it</param>
+        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To Delete one of Items</param>
+        /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To Delete it</param>
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> DeleteBucketItem(string bucketId, string itemId)
         {
             if(!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if(string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
+            if(string.IsNullOrEmpty(itemId)) throw new GameServiceException("BucketItemId Cant Be EmptyOrNull");
             return await ApiRequest.DeleteBucketItem(bucketId,itemId);
         }
         
@@ -292,6 +310,8 @@ namespace FiroozehGameService.Core
         public static async Task DownloadAsset(string tag,string dirPath)
         {
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(string.IsNullOrEmpty(tag)) throw new GameServiceException("DownloadTag Cant Be EmptyOrNull");
+            if(string.IsNullOrEmpty(dirPath)) throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull");
             await _downloadManager.StartDownload(tag, dirPath);
         }
         
@@ -304,6 +324,7 @@ namespace FiroozehGameService.Core
         public static async Task DownloadAsset(string tag)
         {
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(string.IsNullOrEmpty(tag)) throw new GameServiceException("DownloadTag Cant Be EmptyOrNull"); 
             await _downloadManager.StartDownload(tag);
         }
 
@@ -318,6 +339,8 @@ namespace FiroozehGameService.Core
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(string.IsNullOrEmpty(email)) throw new GameServiceException("Email Cant Be EmptyOrNull");
+            if(string.IsNullOrEmpty(password)) throw new GameServiceException("Password Cant Be EmptyOrNull");
             if(IsAuthenticated()) Logout();
             
             var login = await ApiRequest.Login(email, password);
@@ -339,6 +362,7 @@ namespace FiroozehGameService.Core
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(string.IsNullOrEmpty(userToken)) throw new GameServiceException("UserToken Cant Be EmptyOrNull");
             if(IsAuthenticated()) Logout();
             
             UserToken = userToken;
@@ -348,6 +372,31 @@ namespace FiroozehGameService.Core
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
             await Core.GSLive.GSLive.Init();
+        }
+        
+        
+        /// <summary>
+        /// Normal Login With GoogleSignInUser To Game Service
+        /// It May Throw Exception
+        /// <param name="idToken">(Not NULL)Specifies the idToken From GoogleSignInUser Class.</param>
+        /// </summary>
+        /// <value> return UserToken if Login Successfully </value>
+        public static async Task<string> LoginWithGoogle(string idToken)
+        {
+            if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
+            if(Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(string.IsNullOrEmpty(idToken)) throw new GameServiceException("IdToken Cant Be EmptyOrNull");
+            if(IsAuthenticated()) Logout();
+            
+            var login = await ApiRequest.LoginWithGoogle(idToken);
+            UserToken = login.Token;
+            var auth = await ApiRequest.Authorize(Configuration, false);
+            PlayToken = auth.Token;
+            CurrentGame = auth.Game;
+            StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            _isAvailable = true;
+            await Core.GSLive.GSLive.Init();
+            return UserToken;
         }
         
         /// <summary>
@@ -377,6 +426,9 @@ namespace FiroozehGameService.Core
         {
             if(!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if(Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if(string.IsNullOrEmpty(nickName)) throw new GameServiceException("NickName Cant Be EmptyOrNull");
+            if(string.IsNullOrEmpty(email)) throw new GameServiceException("Email Cant Be EmptyOrNull");
+            if(string.IsNullOrEmpty(password)) throw new GameServiceException("Password Cant Be EmptyOrNull");
             if(IsAuthenticated()) Logout();
            
             var login = await ApiRequest.SignUp(nickName,email,password);

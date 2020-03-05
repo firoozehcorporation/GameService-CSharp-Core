@@ -10,7 +10,7 @@ namespace FiroozehGameService.Models.BasicApi
         
         [JsonProperty("token")]
         public string Token { get; set; }
-        
+                
         [JsonProperty("game")]
         public Game Game { get; set; }
     }
