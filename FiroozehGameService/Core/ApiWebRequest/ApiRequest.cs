@@ -2,13 +2,13 @@ using FiroozehGameService.Builder;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.TResponse;
-using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using FiroozehGameService.Models.BasicApi.Buckets;
 using FiroozehGameService.Models.Internal;
+using FiroozehGameService.Utils;
 using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
 
 namespace FiroozehGameService.Core.ApiWebRequest
@@ -67,7 +67,6 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<Login> LoginWithGoogle(string idToken)
         {
             var body = JsonConvert.SerializeObject(CreateGoogleLoginDictionary(idToken));
-            LogUtil.Log(null,body);
             var response = await GsWebRequest.Post(Models.Consts.Api.LoginWithGoogle, body);
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
