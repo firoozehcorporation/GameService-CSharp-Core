@@ -327,6 +327,15 @@ namespace FiroozehGameService.Core
             if(string.IsNullOrEmpty(tag)) throw new GameServiceException("DownloadTag Cant Be EmptyOrNull"); 
             await _downloadManager.StartDownload(tag);
         }
+        
+        
+        /// <summary>
+        /// Stop All Current Download Assets
+        /// </summary>
+        public static void StopAllDownloadAsset()
+        {
+            _downloadManager.StopAllDownloads();
+        }
 
         
         

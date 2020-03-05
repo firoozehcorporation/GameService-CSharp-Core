@@ -112,7 +112,7 @@ namespace FiroozehGameService.Core
         }
 
 
-        internal void StopDownload()
+        internal void StopAllDownloads()
         {
             _client.CancelAsync();
         }
