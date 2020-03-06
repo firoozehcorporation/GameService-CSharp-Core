@@ -124,7 +124,7 @@ namespace FiroozehGameService.Models.Consts
             /// Represents GameService Leaderboard HTTP Errors
             /// Errors that occur in the following Functions :
             /// <see cref="GameService.GetLeaderBoards()"/>
-            /// <see cref="GameService.GetLeaderBoardDetails(string)"/>
+            /// <see cref="GameService.GetLeaderBoardDetails(string,int)"/>
             /// </summary>
             public class Leaderboard : Internal
             {
@@ -182,30 +182,6 @@ namespace FiroozehGameService.Models.Consts
             }
             
         }
-        
-        
-        /// <summary>
-        /// Represents All GameService Errors in GsLive
-        /// </summary>
-        public static class GSLive
-        {
-            public class Command
-            {
-                public const string PlanLimit = "plan_limit";
-                public const string DbError = "DB_ERROR";
-                public const string JwtError = "JWT_ERROR";
-                public const string InvalidInput = "invalid_input";
-                public const string ObjectNotFound = "OBJECT_NOTFOUND";
-                public const string InvalidId = "INVALID_ID";
-                public const string InvalidRoom = "INVALID_ROOM";
-                public const string RoomFull = "room_full";
-                public const string PermissionDenied = "permission_denied";
-            }
-            public class Chat
-            {
-                public const string AlreadySubscribed = "already_subscribed";
-                public const string NotMemberBefore = "not_member_before";
-            }
-        }
+           
     }
 }

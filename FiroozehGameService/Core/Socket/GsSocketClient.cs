@@ -17,6 +17,7 @@ namespace FiroozehGameService.Core.Socket
         protected Area Endpoint;
         protected string Pwd;
         protected GSLiveType Type;
+        protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected CancellationTokenSource OperationCancellationToken;
 
         protected readonly byte[] Buffer = new byte[BufferCapacity];

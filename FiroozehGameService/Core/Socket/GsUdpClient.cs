@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
@@ -51,7 +52,7 @@ namespace FiroozehGameService.Core.Socket
 
         private void HandleClientPacket(Connection conn, byte[] data, Connection.Channel channel)
         {
-            OnDataReceived(new SocketDataReceived { Data = PacketDeserializer.Deserialize(data,Pwd,Type)
+            OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(data) 
                 , Type =
                     channel == Connection.Channel.Reliable ? GProtocolSendType.Reliable : GProtocolSendType.UnReliable});
         }

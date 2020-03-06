@@ -15,7 +15,7 @@ namespace FiroozehGameService.Core.Socket
         protected Client Client;
         protected Connection Connection;
         protected string Pwd;
-        protected GSLiveType Type = GSLiveType.RealTime;
+        protected const GSLiveType Type = GSLiveType.RealTime;
         protected readonly ISerializer PacketSerializable = new PacketSerializer();
         protected readonly IDeserializer PacketDeserializer = new PacketDeserializer();
         

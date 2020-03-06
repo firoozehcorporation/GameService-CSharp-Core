@@ -404,7 +404,7 @@ namespace FiroozehGameService.Core
             CurrentGame = auth.Game;
             StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
-           // await Core.GSLive.GSLive.Init();
+            await Core.GSLive.GSLive.Init();
             return UserToken;
         }
         

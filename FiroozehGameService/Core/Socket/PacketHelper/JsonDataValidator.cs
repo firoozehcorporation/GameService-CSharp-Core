@@ -10,7 +10,7 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
         private const char OpenedBracket = '{';
         private const char ClosedBracket = '}';
 
-        public IEnumerable<string> ValidateDataAndReturn(string inputData)
+        public IEnumerable<string> ValidateDataAndReturn(StringBuilder inputData)
         {
             var scopeLevel = 0;
             var offset = 0;
@@ -26,7 +26,7 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
                         scopeLevel--;
                         if (scopeLevel == 0)
                         {
-                            yield return inputData.Substring(offset, i - offset + 1);
+                            yield return inputData.ToString(offset, i - offset + 1);
                             offset = i + 1;
                         }
 

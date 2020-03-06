@@ -15,6 +15,7 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
                 var seg = new ArraySegment<byte>(buffer,offset,receivedBytes);
                 var deserialize = Serializer.Deserialize(seg.ToArray(), KeyTypeUtil.GetPwd(pwd,type));
                
+                LogUtil.Log(this,"PacketDeserializer Key: " + KeyTypeUtil.GetPwd(pwd,type));
                 LogUtil.Log(this,"PacketDeserializer : " + deserialize);
                 return deserialize;
             }
@@ -38,6 +39,6 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
                 LogUtil.LogError(this,"PacketDeserializer Err : " + e.Message);
                 return null;
             }
-        }
+        }        
     }
 }

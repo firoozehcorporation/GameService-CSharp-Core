@@ -1,6 +1,7 @@
 ﻿using FiroozehGameService.Models.EventArgs;
 using System;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Models.Enums.GSLive;
@@ -54,8 +55,9 @@ namespace FiroozehGameService.Core.Socket
                         Buffer.Length - BufferOffset,
                         OperationCancellationToken.Token);
                  
-                    var receivedData = PacketDeserializer.Deserialize(Buffer, BufferOffset, BufferReceivedBytes,Pwd,Type);
-                    var packets = PacketValidator.ValidateDataAndReturn(receivedData);
+                    //var receivedData = PacketDeserializer.Deserialize(Buffer, BufferOffset, BufferReceivedBytes,Pwd,Type);
+                    DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
+                    var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
                     foreach (var packet in packets)
                         OnDataReceived(new SocketDataReceived {Data = packet});
                    
@@ -96,6 +98,7 @@ namespace FiroozehGameService.Core.Socket
                 OperationCancellationToken?.Cancel(true);
                 OperationCancellationToken?.Dispose();
                 _client?.Close();
+                DataBuilder?.Clear();
                 IsAvailable = false;
                 Pwd = null;
             }
