@@ -34,10 +34,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<Login> Authorize(bool isGuest)
+        internal static async Task<Login> Authorize()
         {
             
-                var body = JsonConvert.SerializeObject(CreateAuthorizationDictionary(Ut, isGuest));
+                var body = JsonConvert.SerializeObject(CreateAuthorizationDictionary(Ut));
                 var response = await GsWebRequest.Post(Models.Consts.Api.Start, body);
                 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -49,10 +49,24 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
+        internal static async Task<Login> LoginAsGuest()
+        {
+            var body = JsonConvert.SerializeObject(CreateLoginDictionary(null, null, null,true));
+            var response = await GsWebRequest.Post(Models.Consts.Api.LoginUser, body);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if(response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
+            }
+        }
+        
+        
         internal static async Task<Login> Login(string email, string password)
         {
             
-                var body = JsonConvert.SerializeObject(CreateLoginDictionary(email, password, null));
+                var body = JsonConvert.SerializeObject(CreateLoginDictionary(email, password, null,false));
                 var response = await GsWebRequest.Post(Models.Consts.Api.LoginUser, body);
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -81,7 +95,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<Login> SignUp(string nickName, string email, string password)
         {
             
-                var body = JsonConvert.SerializeObject(CreateLoginDictionary(email, password, nickName));
+                var body = JsonConvert.SerializeObject(CreateLoginDictionary(email, password, nickName,false));
                 var response = await GsWebRequest.Post(Models.Consts.Api.LoginUser, body);
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -213,7 +227,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey,int scoreLimit = 10)
         {
-               var url = Models.Consts.Api.Leaderboard + leaderBoardKey + "&limit=" + scoreLimit;
+               var url = Models.Consts.Api.Leaderboard + leaderBoardKey + "?limit=" + scoreLimit;
                var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -235,9 +249,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
                 {
-                    if(response.IsSuccessStatusCode)
-                        return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
-                            .SaveDetails;
+                    if (response.IsSuccessStatusCode)
+                        return JsonConvert.DeserializeObject<TSave>( await reader.ReadToEndAsync()).SaveDetails;
                     throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
                 }
         }
@@ -384,20 +397,27 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
        
 
-    private static Dictionary<string, object> CreateLoginDictionary(string email, string password, string nickname)
+    private static Dictionary<string, object> CreateLoginDictionary(string email, string password, string nickname,bool isGuest)
         {
             var param = new Dictionary<string, object>();
 
-            if (nickname == null)
+            if (isGuest)
+                param.Add("mode", "guest");
+            else if (nickname == null)
+            {
                 param.Add("mode", "login");
+                param.Add("email", email);
+                param.Add("password", password);
+            }
             else
             {
                 param.Add("name", nickname);
+                param.Add("email", email);
+                param.Add("password", password);
                 param.Add("mode", "register");
             }
 
-            param.Add("email", email);
-            param.Add("password", password);
+            param.Add("device_id", Configuration.SystemInfo.DeviceUniqueId);
             return param;
         }
         
@@ -407,24 +427,17 @@ namespace FiroozehGameService.Core.ApiWebRequest
             return new Dictionary<string, object> {{"token", idToken}, {"device_id", Configuration.SystemInfo.DeviceUniqueId}};
         }
 
-        private static Dictionary<string, object> CreateAuthorizationDictionary(string userToken, bool isGuest)
+        private static Dictionary<string, object> CreateAuthorizationDictionary(string userToken)
         {
-            var param = new Dictionary<string, object>();
-
-            if (isGuest)
+            var param = new Dictionary<string, object>
             {
-                param.Add("token", Configuration.SystemInfo.DeviceUniqueId);
-                param.Add("mode", "guest");
-            }
-            else
-            {
-                param.Add("token", userToken);
-                param.Add("mode", "normal");
-            }
+                {"token", userToken},
+                {"game", Configuration.ClientId},
+                {"secret", Configuration.ClientSecret},
+                {"system_info", JsonConvert.SerializeObject(Configuration.SystemInfo)}
+            };
 
-            param.Add("game", Configuration.ClientId);
-            param.Add("secret", Configuration.ClientSecret);
-            param.Add("system_info",JsonConvert.SerializeObject(Configuration.SystemInfo));
+
             return param;
         }
 

@@ -69,14 +69,7 @@ namespace FiroozehGameService.Models.BasicApi
         [JsonProperty("tries")]
         public int Tries { set; get; }
     
-        
-        /// <summary>
-        /// if this is Score Submit By You or Not
-        /// </summary>
-        /// <value>this Score Submit By You or Not</value>
-        [JsonProperty("me")]
-        public bool IsMe { set; get; }
-    
+            
 
         public override string ToString()
         {

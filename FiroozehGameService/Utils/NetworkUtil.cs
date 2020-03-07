@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
+using FiroozehGameService.Models.Consts;
 
 namespace FiroozehGameService.Utils
 {
@@ -14,7 +15,7 @@ namespace FiroozehGameService.Utils
             try
             {
                 using (var client = new WebClient())
-                using (client.OpenRead("http://google.com/generate_204")) 
+                using (client.OpenRead(Api.BaseUrl1))
                     return true; 
             }
             catch

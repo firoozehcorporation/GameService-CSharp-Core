@@ -20,6 +20,7 @@
 */
 
 using System;
+using FiroozehGameService.Core;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
@@ -68,6 +69,15 @@ namespace FiroozehGameService.Models.BasicApi
         /// <value>this User Is Yours or Not</value>
         [JsonProperty("isMe")]
         public bool IsMe;
+        
+        
+        /// <summary>
+        /// get this User Is Guest or Not.
+        /// (Note : Only Works on <see cref="GameService.GetCurrentPlayer"/>)
+        /// </summary>
+        /// <value>this User Is Guest or Not</value>
+        [JsonProperty("guest")]
+        public bool IsGuest;
    
     }
 }
