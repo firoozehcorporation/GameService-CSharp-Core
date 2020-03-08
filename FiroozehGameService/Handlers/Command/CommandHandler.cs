@@ -21,7 +21,7 @@ namespace FiroozehGameService.Handlers.Command
         #region Fields
         private static GsTcpClient _tcpClient;
         private readonly GsLiveSystemObserver _observer;
-        private readonly CancellationTokenSource _cancellationToken;
+        private CancellationTokenSource _cancellationToken;
         private bool _isDisposed;
         private bool _isFirstInit;
         
@@ -68,9 +68,8 @@ namespace FiroozehGameService.Handlers.Command
             LogUtil.Log(null,"CommandHandler OnAuth");
 
             if (_isFirstInit) return;
-            CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
             _isFirstInit = true;
-
+            CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }
 
         private async void OnPing(object sender, EventArgs e)
@@ -114,6 +113,7 @@ namespace FiroozehGameService.Handlers.Command
 
         public async Task Init()
         {
+            _cancellationToken = new CancellationTokenSource();
             await _tcpClient.Init();
             Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
             await RequestAsync(AuthorizationHandler.Signature);
@@ -149,6 +149,7 @@ namespace FiroozehGameService.Handlers.Command
             await Init();
         }
 
+        
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
@@ -163,9 +164,10 @@ namespace FiroozehGameService.Handlers.Command
         public void Dispose()
         {
             _isDisposed = true;
+            _isFirstInit = false;
             _tcpClient?.StopReceiving();
             _observer.Dispose();
-            _cancellationToken.Cancel(true);
+            _cancellationToken.Cancel(false);
             LogUtil.Log(this,"CommandHandler Dispose");
          }
     }

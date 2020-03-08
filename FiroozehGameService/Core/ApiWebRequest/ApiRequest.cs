@@ -394,6 +394,18 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(data).Message);
             }
         }
+        
+        internal static async Task<string> GetCurrentServerTime()
+        {
+            var response = await GsWebRequest.Get(Models.Consts.Api.CurrentTime);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return await reader.ReadToEndAsync();
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Message);
+            }
+        }
 
        
 

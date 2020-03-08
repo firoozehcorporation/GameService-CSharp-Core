@@ -1,11 +1,13 @@
 ﻿using FiroozehGameService.Models.EventArgs;
 using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -30,6 +32,7 @@ namespace FiroozehGameService.Core.Socket
             await _client.ConnectAsync(Endpoint.Ip, Endpoint.Port);
             _clientStream = _client.GetStream();
             IsAvailable = true;
+            LogUtil.Log(this,"GsTcpClient -> Init");
         }
 
         internal override void UpdatePwd(string newPwd)
@@ -45,7 +48,8 @@ namespace FiroozehGameService.Core.Socket
 
         internal override async Task StartReceiving()
         {
-            while (true)
+            LogUtil.Log(this,"GsTcpClient -> StartReceiving");
+            while (IsAvailable)
             {
                 try
                 {
@@ -67,8 +71,9 @@ namespace FiroozehGameService.Core.Socket
                 {
                     IsAvailable = false;
                     Pwd = null;
-                    if (!(e is OperationCanceledException || e is ObjectDisposedException))
-                        OnClosed(new ErrorArg {Error = e.Message});
+                    DataBuilder?.Clear();
+                    if (!(e is OperationCanceledException || e is ObjectDisposedException || e is ArgumentOutOfRangeException))
+                        OnClosed(new ErrorArg {Error = e.ToString()});
                     break;
                 }
             }
@@ -95,16 +100,22 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                OperationCancellationToken?.Cancel(true);
-                OperationCancellationToken?.Dispose();
-                _client?.Close();
                 DataBuilder?.Clear();
                 IsAvailable = false;
                 Pwd = null;
+                
+                _client?.GetStream().Close();
+                _client?.Close();
+                _client = null;
+                
+                OperationCancellationToken?.Cancel(false);
+                OperationCancellationToken?.Dispose();
+                OperationCancellationToken = null;
+                LogUtil.Log(this,"GsTcpClient -> StopReceiving");
             }
-            catch
+            catch(Exception e)
             {
-                // ignored
+               LogUtil.LogError(this,e.ToString());
             }
         }
     }

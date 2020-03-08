@@ -27,7 +27,6 @@ namespace FiroozehGameService.Handlers.RealTime
         public static Room CurrentRoom;
         
         private readonly GsLiveSystemObserver _observer;
-        private readonly CancellationTokenSource _cancellationToken;
         private bool _isDisposed;
 
         
@@ -50,7 +49,6 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.Error += OnError;
             
             
-            _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
             _isDisposed = false;
             
@@ -136,8 +134,9 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
+            if(_isDisposed) return;
+            
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-          
             GameService.SynchronizationContext?.Send(delegate {
                 _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet,e.Type);
             }, null);
@@ -147,9 +146,8 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             _udpClient?.StopReceiving();
             _observer.Dispose();
-            _cancellationToken.Cancel(true);
-            CoreEventHandlers.Dispose?.Invoke(this,null);
             LogUtil.Log(this,"RealTime Dispose");
+            CoreEventHandlers.Dispose?.Invoke(this,null);
         }
         
     }

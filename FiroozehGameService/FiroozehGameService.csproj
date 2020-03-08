@@ -246,6 +246,7 @@
       <Compile Include="Models\Internal\Download.cs"/>
       <Compile Include="Models\Internal\EditUserProfile.cs"/>
       <Compile Include="Models\Internal\Game.cs"/>
+      <Compile Include="Models\Internal\GSTime.cs"/>
       <Compile Include="Models\Internal\ImageUploadResult.cs"/>
       <Compile Include="Models\Internal\Platform.cs"/>
       <Compile Include="Models\Internal\Publisher.cs"/>
@@ -257,6 +258,7 @@
       <Compile Include="Utils\LogUtil.cs"/>
     <Compile Include="Utils\NetworkUtil.cs" />
       <Compile Include="Utils\ThreadManager.cs"/>
+      <Compile Include="Utils\TimeUtil.cs"/>
       <Compile Include="Utils\URLUtil.cs"/>
   </ItemGroup>
   <ItemGroup>

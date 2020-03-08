@@ -337,8 +337,17 @@ namespace FiroozehGameService.Core
         {
             _downloadManager.StopAllDownloads();
         }
-
         
+        
+        /// <summary>
+        /// This command Gets The Current Times
+        /// </summary>
+        /// <value> return The Current Times</value>
+        public static async Task<GSTime> GetCurrentTime()
+        {
+            return await TimeUtil.GetCurrentTime();
+        }
+
         
         /// <summary>
         /// Normal Login (InFirstOnly) To Game Service
@@ -473,7 +482,7 @@ namespace FiroozehGameService.Core
         /// Get The Current GameService Version
         /// </summary>
         /// <value> return The Current GameService Version </value>
-        public static string Version() => "2.0.1";
+        public static string Version() => "2.0.2";
 
         
         /// <summary>
@@ -481,12 +490,12 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static void Logout()
         {
-            GSLive?.Dispose();
             UserToken = null;
             CurrentGame = null;
             PlayToken = null;
             _isAvailable = false;
             IsGuest = false;
+            GSLive?.Dispose();
         }
 
     }  

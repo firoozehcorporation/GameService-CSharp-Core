@@ -24,7 +24,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         private static GsTcpClient _tcpClient;
         public static Room CurrentRoom;
         private readonly GsLiveSystemObserver _observer;
-        private readonly CancellationTokenSource _cancellationToken;
+        private CancellationTokenSource _cancellationToken;
         private bool _isDisposed;
         
         public static string PlayerHash { private set; get; }
@@ -119,6 +119,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         
         public async Task Init()
         {
+            _cancellationToken = new CancellationTokenSource();
             await _tcpClient.Init();
             Task.Run(async() => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
             await RequestAsync(AuthorizationHandler.Signature);
@@ -150,7 +151,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-           
             GameService.SynchronizationContext?.Send(delegate {
                 _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
             }, null);

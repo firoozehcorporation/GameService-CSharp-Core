@@ -44,11 +44,10 @@ namespace FiroozehGameService.Models.GSLive.TB
         [JsonProperty("1")]
         public string Result { set; get; }
 
-
-        public override bool Equals(object other)
+      
+        protected bool Equals(Outcome other)
         {
-            if (other == null) return false;
-            return other is Outcome outcome && Placement == outcome.Placement && string.Equals(Result, outcome.Result);
+            return Placement == other.Placement && string.Equals(Result, other.Result);
         }
 
     }
