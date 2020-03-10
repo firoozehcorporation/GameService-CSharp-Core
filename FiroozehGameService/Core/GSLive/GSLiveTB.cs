@@ -65,6 +65,16 @@ namespace FiroozehGameService.Core.GSLive
            option.GsLiveType = GSLiveType.TurnBased;
            await GSLive.Handler.CommandHandler.RequestAsync(AutoMatchHandler.Signature,option);     
         }
+       
+       
+       /// <summary>
+       /// Cancel Current AutoMatch
+       /// </summary>
+       public async Task CancelAutoMatch()
+       {
+          if(GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+          await GSLive.Handler.CommandHandler.RequestAsync(CancelAutoMatchHandler.Signature);     
+       }
         
         
         /// <summary>

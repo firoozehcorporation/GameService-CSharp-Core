@@ -67,6 +67,16 @@ namespace FiroozehGameService.Core.GSLive
         }
         
         
+         
+       /// <summary>
+       /// Cancel Current AutoMatch
+       /// </summary>
+       public async Task CancelAutoMatch()
+       {
+          if(GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+          await GSLive.Handler.CommandHandler.RequestAsync(CancelAutoMatchHandler.Signature);     
+       }
+        
         /// <summary>
         /// Join In Room With RoomID
         /// </summary>

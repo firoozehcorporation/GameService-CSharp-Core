@@ -15,7 +15,7 @@
 // </copyright>
 
 using System;
-using FiroozehGameService.Models.Enums.Command;
+using FiroozehGameService.Models.Enums.GSLive.Command;
 using Newtonsoft.Json;
 
 /**

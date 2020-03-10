@@ -25,6 +25,7 @@ namespace FiroozehGameService.Models.Consts
         public const int ActionChat = 13;
         public const int ActionUnSubscribe = 14;
         public const int ActionOnInvite = 15;
+        public const int ActionCancelAutoMatch = 16;
 
         public const int Error = 100;
     }

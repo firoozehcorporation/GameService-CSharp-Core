@@ -22,7 +22,7 @@
 */
 
 
-namespace FiroozehGameService.Models.Enums.Command
+namespace FiroozehGameService.Models.Enums.GSLive.Command
 {
     /// <summary>
     /// Represents MarketType Model In Notification

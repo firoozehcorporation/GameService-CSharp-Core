@@ -29,6 +29,9 @@ using FiroozehGameService.Models.EventArgs;
 
 namespace FiroozehGameService.Core
 {
+    /// <summary>
+    /// Represents Game Service DownloadManager
+    /// </summary>
     public class DownloadManager
     {
         #region DownloadRegion

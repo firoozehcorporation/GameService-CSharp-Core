@@ -32,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+      <DocumentationFile>bin\Release\FiroozehGameService.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Crc32.NET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99">
@@ -73,13 +74,13 @@
       <Compile Include="Core\Socket\PacketHelper\JsonDataValidator.cs"/>
       <Compile Include="Core\Socket\PacketHelper\PacketDeserializer.cs"/>
       <Compile Include="Core\Socket\PacketHelper\PacketSerializer.cs"/>
-    <Compile Include="DictionaryHelper.cs" />
     <Compile Include="Handlers\ChatEventHandlers.cs" />
     <Compile Include="Handlers\Command\CommandHandler.cs" />
     <Compile Include="Handlers\Command\RequestHandlers\AcceptInviteHandler.cs" />
     <Compile Include="Handlers\Command\RequestHandlers\AuthorizationHandler.cs" />
     <Compile Include="Handlers\Command\RequestHandlers\AutoMatchHandler.cs" />
     <Compile Include="Handlers\Command\RequestHandlers\BaseRequestHandler.cs" />
+      <Compile Include="Handlers\Command\RequestHandlers\CancelAutoMatchHandler.cs"/>
     <Compile Include="Handlers\Command\RequestHandlers\CreateRoomHandler.cs" />
     <Compile Include="Handlers\Command\RequestHandlers\FindUserHandler.cs" />
     <Compile Include="Handlers\Command\RequestHandlers\GetRoomsHandler.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Handlers\Command\ResponseHandlers\AuthResponseHandler.cs" />
     <Compile Include="Handlers\Command\ResponseHandlers\AutoMatchResponseHandler.cs" />
     <Compile Include="Handlers\Command\ResponseHandlers\BaseResponseHandler.cs" />
+      <Compile Include="Handlers\Command\ResponseHandlers\CancelAutoMatchResponseHandler.cs"/>
     <Compile Include="Handlers\Command\ResponseHandlers\ChatResponseHandler.cs" />
     <Compile Include="Handlers\Command\ResponseHandlers\ErrorResponseHandler.cs" />
     <Compile Include="Handlers\Command\ResponseHandlers\FindUserResponseHandler.cs" />
@@ -186,10 +188,11 @@
     <Compile Include="Models\Consts\TB.cs" />
       <Compile Include="Models\Enums\BucketOwnershipTypes.cs"/>
       <Compile Include="Models\Enums\BucketSortOrder.cs"/>
-    <Compile Include="Models\Enums\Command\MarketType.cs" />
-    <Compile Include="Models\Enums\Command\TapActionType.cs" />
       <Compile Include="Models\Enums\GProtocolSendType.cs"/>
     <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs" />
+      <Compile Include="Models\Enums\GSLive\Command\AutoMatchCancel.cs"/>
+      <Compile Include="Models\Enums\GSLive\Command\MarketType.cs"/>
+      <Compile Include="Models\Enums\GSLive\Command\TapActionType.cs"/>
     <Compile Include="Models\Enums\GSLive\GSLiveType.cs" />
     <Compile Include="Models\Enums\GSLive\JoinType.cs" />
     <Compile Include="Models\Enums\GSLive\RT\EventType.cs" />
@@ -252,6 +255,7 @@
       <Compile Include="Models\Internal\Publisher.cs"/>
     <Compile Include="Models\Internal\SystemInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+      <Compile Include="Utils\DictionaryUtil.cs"/>
     <Compile Include="Utils\GSLiveSystemObserver.cs" />
       <Compile Include="Utils\ImageUtil.cs"/>
       <Compile Include="Utils\KeyTypeUtil.cs"/>
