@@ -26,27 +26,26 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.TB
 {
     /// <summary>
-    /// Represents Finish Data Model In GameService TurnBased MultiPlayer System
+    ///     Represents Finish Data Model In GameService TurnBased MultiPlayer System
     /// </summary>
     [Serializable]
     public class Finish
     {
         /// <summary>
-        /// Gets Member Data of Has Announced The End Of The Game.
+        ///     Gets Member Data of Has Announced The End Of The Game.
         /// </summary>
         /// <value>Member Data of Has Announced The End Of The Game</value>
         [JsonProperty("0")]
         public Member MemberFinish { set; get; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Outcomes sent from the player.
-        /// Call From Other Player With this Function <see cref="GSLiveTB.Finish"/>
-        /// (Type : Dictionary(MemberID,Outcome))
+        ///     Gets the Outcomes sent from the player.
+        ///     Call From Other Player With this Function <see cref="Finish" />
+        ///     (Type : Dictionary(MemberID,Outcome))
         /// </summary>
         /// <value>the Outcomes sent from the player</value>
         [JsonProperty("1")]
-        public Dictionary<string,Outcome> Outcomes { set; get; }
-        
+        public Dictionary<string, Outcome> Outcomes { set; get; }
     }
 }

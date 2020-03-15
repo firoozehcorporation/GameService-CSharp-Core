@@ -24,38 +24,42 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents BucketCore Data Model In Game Service Basic API
+    ///     Represents BucketCore Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class BucketCore
-    {        
+    {
         /// <summary>
-        /// Gets the Bucket Object ID.
+        ///     Gets the Bucket Object ID.
         /// </summary>
         /// <value>the Bucket Object ID</value>
         [JsonProperty("id")]
         public string Id { set; get; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Bucket Owner User ID.
+        ///     Gets the Bucket Owner User ID.
         /// </summary>
-        /// <value>the Bucket Object ID</value>
+        /// <value>the Bucket Owner ID</value>
         [JsonProperty("owner")]
         public string OwnerId { set; get; }
-        
-        
-        
-        /// <summary>
-        /// To Prevent Serialize Id Property
-        /// </summary>
-        public bool ShouldSerializeId() => false;
 
 
         /// <summary>
-        /// To Prevent Serialize OwnerId Property
+        ///     To Prevent Serialize Id Property
         /// </summary>
-        public bool ShouldSerializeOwnerId() => false;
-       
-     }
+        public bool ShouldSerializeId()
+        {
+            return false;
+        }
+
+
+        /// <summary>
+        ///     To Prevent Serialize OwnerId Property
+        /// </summary>
+        public bool ShouldSerializeOwnerId()
+        {
+            return false;
+        }
+    }
 }

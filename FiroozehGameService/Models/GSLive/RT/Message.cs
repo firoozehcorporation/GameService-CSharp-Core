@@ -23,41 +23,40 @@ using Newtonsoft.Json;
 */
 
 
-namespace FiroozehGameService.Models.GSLive
+namespace FiroozehGameService.Models.GSLive.RT
 {
     /// <summary>
-    /// Represents Message Data Model In GameService RealTime MultiPlayer System
+    ///     Represents Message Data Model In GameService RealTime MultiPlayer System
     /// </summary>
     [Serializable]
     public class Message
     {
-        
         /// <summary>
-        /// Gets the RoomId Receive This Message.
+        ///     Gets the RoomId Receive This Message.
         /// </summary>
         /// <value>the RoomId Receive This Message</value>
         [JsonProperty("1")]
         public string RoomId { set; get; }
-         
-        
+
+
         /// <summary>
-        /// Gets the Sender Id.
+        ///     Gets the Sender Id.
         /// </summary>
         /// <value>the Sender Id</value>
         [JsonProperty("2")]
         public string SenderId { set; get; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Receiver Id.
+        ///     Gets the Receiver Id.
         /// </summary>
         /// <value>the Receiver Id</value>
         [JsonProperty("3")]
         public string ReceiverId { set; get; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Message Data
+        ///     Gets the Message Data
         /// </summary>
         /// <value>the Message Data</value>
         [JsonProperty("4")]
