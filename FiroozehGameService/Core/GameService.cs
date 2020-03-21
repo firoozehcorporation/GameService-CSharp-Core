@@ -41,6 +41,27 @@ namespace FiroozehGameService.Core
     /// </summary>
     public sealed class GameService
     {
+        
+        #region GameServiceRegion
+
+        private const string Tag = "FiroozehGameService";
+        private static bool _isAvailable;
+        public static event EventHandler<Notification> NotificationReceived;
+
+        internal static string UserToken;
+        internal static string PlayToken;
+        internal static Game CurrentGame;
+        internal static long StartPlaying;
+        internal static bool IsGuest;
+        internal static SynchronizationContext SynchronizationContext;
+        internal static GameServiceClientConfiguration Configuration { get; private set; }
+
+        public static GSLive.GSLive GSLive { get; private set; }
+        private static DownloadManager _downloadManager;
+
+        #endregion
+        
+        
         /// <summary>
         ///     Set configuration For Initialize Game Service.
         /// </summary>
@@ -292,6 +313,20 @@ namespace FiroozehGameService.Core
             return await TimeUtil.GetCurrentTime();
         }
 
+        
+        
+        /// <summary>
+        ///    Gets Asset Info With AssetTag
+        /// </summary>
+        /// <param name="assetTag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
+        public static async Task<AssetInfo> GetAssetInfo(string assetTag)
+        {
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (string.IsNullOrEmpty(assetTag)) throw new GameServiceException("assetTag Cant Be EmptyOrNull");
+            return await ApiRequest.GetAssetInfo(Configuration.ClientId, assetTag);
+        }
+        
+        
 
         /// <summary>
         ///     Download Asset With Tag
@@ -318,6 +353,35 @@ namespace FiroozehGameService.Core
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
             if (string.IsNullOrEmpty(tag)) throw new GameServiceException("DownloadTag Cant Be EmptyOrNull");
             await _downloadManager.StartDownload(tag);
+        }
+        
+        
+        
+        /// <summary>
+        ///     Download Asset With AssetInfo
+        ///     Set DownloadManager Event Handlers To Get Download Status
+        /// </summary>
+        /// <param name="info">(Not NULL)Specifies the Asset info</param>
+        /// <param name="dirPath">(Not NULL)Specifies the Download File Directory Path </param>
+        public static void DownloadAsset(AssetInfo info, string dirPath)
+        {
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (info == null) throw new GameServiceException("AssetInfo Cant Be Null");
+            if (string.IsNullOrEmpty(dirPath)) throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull");
+             _downloadManager.StartDownloadWithInfo(info, dirPath);
+        }
+
+
+        /// <summary>
+        ///     Download Asset With AssetInfo
+        ///     Set DownloadManager Event Handlers To Get Download Status
+        /// </summary>
+        /// <param name="info">(Not NULL)Specifies the Asset Info</param>
+        public static async Task DownloadAsset(AssetInfo info)
+        {
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (info == null) throw new GameServiceException("AssetInfo Cant Be Null");
+            await _downloadManager.StartDownloadWithInfo(info);
         }
 
 
@@ -482,24 +546,6 @@ namespace FiroozehGameService.Core
             IsGuest = false;
             GSLive?.Dispose();
         }
-
-        #region GameServiceRegion
-
-        private const string Tag = "FiroozehGameService";
-        private static bool _isAvailable;
-        public static event EventHandler<Notification> NotificationReceived;
-
-        internal static string UserToken;
-        internal static string PlayToken;
-        internal static Game CurrentGame;
-        internal static long StartPlaying;
-        internal static bool IsGuest;
-        internal static SynchronizationContext SynchronizationContext;
-        internal static GameServiceClientConfiguration Configuration { get; private set; }
-
-        public static GSLive.GSLive GSLive { get; private set; }
-        private static DownloadManager _downloadManager;
-
-        #endregion
+        
     }
 }

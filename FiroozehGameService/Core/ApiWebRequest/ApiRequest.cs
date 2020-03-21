@@ -20,17 +20,19 @@ namespace FiroozehGameService.Core.ApiWebRequest
         private static string Ut => GameService.UserToken;
         private static GameServiceClientConfiguration Configuration => GameService.Configuration;
 
-        internal static async Task<Download> GetDataPackInfo(string gameId, string tag)
+        internal static async Task<AssetInfo> GetAssetInfo(string gameId, string tag)
         {
             var url = Api.BaseUrl1 + "/game/" + gameId + "/datapack/?tag=" + tag;
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
-                if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<Download>(await reader.ReadToEndAsync());
-                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                if (!response.IsSuccessStatusCode)
+                    throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                        .Message);
+                var info =  JsonConvert.DeserializeObject<AssetInfo>(await reader.ReadToEndAsync());
+                info.AssetInfoData.Name = tag;
+                return info;
             }
         }
 

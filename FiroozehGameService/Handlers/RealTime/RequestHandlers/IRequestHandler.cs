@@ -1,7 +1,7 @@
 ﻿
 using FiroozehGameService.Models.GSLive.RT;
 
-namespace FiroozehGameService.Handlers.RealTime
+namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 {
     internal interface IRequestHandler
     {

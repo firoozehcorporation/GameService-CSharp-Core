@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.EventArgs;
+using FiroozehGameService.Models.Internal;
 
 /**
 * @author Alireza Ghodrati
@@ -32,14 +33,14 @@ namespace FiroozehGameService.Core
     /// <summary>
     /// Represents Game Service DownloadManager
     /// </summary>
-    public class DownloadManager
+    internal class DownloadManager
     {
         #region DownloadRegion
         private readonly Builder.GameServiceClientConfiguration _configuration;
         private readonly WebClient _client = new WebClient();
         #endregion
        
-        public DownloadManager(Builder.GameServiceClientConfiguration config)
+        internal DownloadManager(Builder.GameServiceClientConfiguration config)
         {
             _configuration = config;
         }
@@ -48,7 +49,7 @@ namespace FiroozehGameService.Core
         {
             try
             {
-                var download = await ApiRequest.GetDataPackInfo(_configuration.ClientId, tag);
+                var download = await ApiRequest.GetAssetInfo(_configuration.ClientId, tag);
                 // Set Events
                 _client.DownloadProgressChanged += (s, progress) =>
                     {
@@ -68,7 +69,7 @@ namespace FiroozehGameService.Core
                         });
                     }; 
                 
-                await _client.DownloadDataTaskAsync(download.Data.Link);
+                await _client.DownloadDataTaskAsync(download.AssetInfoData.Link);
                 
             }
             catch (Exception e)
@@ -85,7 +86,7 @@ namespace FiroozehGameService.Core
             var completeAddress = path + '/' + tag;
             try
             {
-                var download = await ApiRequest.GetDataPackInfo(_configuration.ClientId, tag);
+                var download = await ApiRequest.GetAssetInfo(_configuration.ClientId, tag);
                     // Set Events
                 _client.DownloadProgressChanged += (s, progress) =>
                         DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
@@ -103,7 +104,7 @@ namespace FiroozehGameService.Core
                             DownloadedAssetPath = completeAddress
                         });
 
-                _client.DownloadFileAsync(new Uri(download.Data.Link),completeAddress);
+                _client.DownloadFileAsync(new Uri(download.AssetInfoData.Link),completeAddress);
             }
             catch (Exception e)
             {
@@ -113,7 +114,76 @@ namespace FiroozehGameService.Core
                 });
             }
         }
+        
+        
+        internal async Task StartDownloadWithInfo(AssetInfo info)
+        {
+            try
+            {
+                // Set Events
+                _client.DownloadProgressChanged += (s, progress) =>
+                    {
+                        DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
+                        {
+                            FileTag = info.AssetInfoData.Name,
+                            BytesReceived = progress.BytesReceived,
+                            TotalBytesToReceive = progress.TotalBytesToReceive,
+                            ProgressPercentage = progress.ProgressPercentage
+                        });
+                    };
+                _client.DownloadDataCompleted += (sender, args) =>
+                    {
+                        DownloadEventHandlers.DownloadCompleted?.Invoke(this,new DownloadCompleteArgs
+                        {
+                            DownloadedAssetAsBytes = args.Result
+                        });
+                    }; 
+                
+                await _client.DownloadDataTaskAsync(info.AssetInfoData.Link);
+                
+            }
+            catch (Exception e)
+            {
+                DownloadEventHandlers.DownloadError?.Invoke(this,new ErrorArg
+                {
+                    Error = e.Message
+                });
+            }
+        }
+       
+        internal void StartDownloadWithInfo(AssetInfo info,string path)
+        {
+            var completeAddress = path + '/' + info.AssetInfoData.Name;
+            try
+            {
+                    // Set Events
+                _client.DownloadProgressChanged += (s, progress) =>
+                        DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
+                        {
+                            FileTag = info.AssetInfoData.Name,
+                            BytesReceived = progress.BytesReceived,
+                            TotalBytesToReceive = progress.TotalBytesToReceive,
+                            ProgressPercentage = progress.ProgressPercentage
+                        });
+                    
 
+                _client.DownloadFileCompleted += (s, e) =>
+                        DownloadEventHandlers.DownloadCompleted?.Invoke(this,new DownloadCompleteArgs
+                        {
+                            DownloadedAssetPath = completeAddress
+                        });
+
+                 _client.DownloadFileAsync(new Uri(info.AssetInfoData.Link),completeAddress);
+            }
+            catch (Exception e)
+            {
+                DownloadEventHandlers.DownloadError?.Invoke(this,new ErrorArg
+                {
+                    Error = e.Message
+                });
+            }
+        }
+        
 
         internal void StopAllDownloads()
         {
