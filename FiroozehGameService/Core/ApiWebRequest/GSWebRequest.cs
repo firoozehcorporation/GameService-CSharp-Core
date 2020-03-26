@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,70 +10,76 @@ namespace FiroozehGameService.Core.ApiWebRequest
     internal class GsWebRequest
     {
         private static readonly HttpClient Client = new HttpClient();
-       
-        internal static async Task<HttpResponseMessage> Get(string url,Dictionary<string,string> headers = null)
+        private static readonly string UserAgent = "Unity_SDK_V_" + GameService.Version();
+
+
+        internal static async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers = null)
         {
-            return await DoRequest(url,GsWebRequestMethod.Get,null,headers);
+            return await DoRequest(url, GsWebRequestMethod.Get, null, headers);
         }
-        
-        internal static async Task<HttpResponseMessage> Put(string url,string body,Dictionary<string,string> headers = null)
+
+        internal static async Task<HttpResponseMessage> Put(string url, string body,
+            Dictionary<string, string> headers = null)
         {
-            return await DoRequest(url,GsWebRequestMethod.Put, body, headers);
+            return await DoRequest(url, GsWebRequestMethod.Put, body, headers);
         }
-        
-        internal static async Task<HttpResponseMessage> Post(string url,string body = null,Dictionary<string,string> headers = null)
+
+        internal static async Task<HttpResponseMessage> Post(string url, string body = null,
+            Dictionary<string, string> headers = null)
         {
             return await DoRequest(url, GsWebRequestMethod.Post, body, headers);
         }
-        
-        internal static async Task<HttpResponseMessage> Delete(string url,Dictionary<string,string> headers = null)
+
+        internal static async Task<HttpResponseMessage> Delete(string url, Dictionary<string, string> headers = null)
         {
             return await DoRequest(url, GsWebRequestMethod.Delete, null, headers);
         }
 
-        internal static async Task<HttpResponseMessage> DoMultiPartPost(string url,byte[]data,Dictionary<string,string> headers = null)
+        internal static async Task<HttpResponseMessage> DoMultiPartPost(string url, byte[] data,
+            Dictionary<string, string> headers = null)
         {
             var httpClient = Init(headers);
             var dataContent = new MultipartFormDataContent
             {
-                { new ByteArrayContent(data), "file", "file" }
+                {new ByteArrayContent(data), "file", "file"}
             };
-            return await httpClient.PostAsync(url,dataContent);
+            return await httpClient.PostAsync(url, dataContent);
         }
 
-        private static HttpClient Init(Dictionary<string,string> headers = null)
+        private static HttpClient Init(Dictionary<string, string> headers = null)
         {
             if (headers == null) return Client;
             Client.DefaultRequestHeaders.Clear();
             foreach (var header in headers)
                 Client.DefaultRequestHeaders.Add(header.Key, header.Value);
+
+            Client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
             return Client;
         }
 
-              
-        private static async Task<HttpResponseMessage> DoRequest(string url, GsWebRequestMethod method= GsWebRequestMethod.Get, string body = null,
+
+        private static async Task<HttpResponseMessage> DoRequest(string url,
+            GsWebRequestMethod method = GsWebRequestMethod.Get, string body = null,
             Dictionary<string, string> headers = null)
         {
             var httpClient = Init(headers);
 
             StringContent content = null;
-            if(body != null) content = new StringContent(body, Encoding.UTF8, "application/json");
-          
+            if (body != null) content = new StringContent(body, Encoding.UTF8, "application/json");
+
             switch (method)
-                {
-                    case GsWebRequestMethod.Get:
-                        return await httpClient.GetAsync(url);
-                    case GsWebRequestMethod.Post:
-                        return await httpClient.PostAsync(url,content);
-                    case GsWebRequestMethod.Put:
-                        return await httpClient.PutAsync(url,content);
-                    case GsWebRequestMethod.Delete:
-                        return await httpClient.DeleteAsync(url);
-                    default:
-                        throw new GameServiceException();
-                }
+            {
+                case GsWebRequestMethod.Get:
+                    return await httpClient.GetAsync(url);
+                case GsWebRequestMethod.Post:
+                    return await httpClient.PostAsync(url, content);
+                case GsWebRequestMethod.Put:
+                    return await httpClient.PutAsync(url, content);
+                case GsWebRequestMethod.Delete:
+                    return await httpClient.DeleteAsync(url);
+                default:
+                    throw new GameServiceException();
+            }
         }
-        
-        
     }
 }

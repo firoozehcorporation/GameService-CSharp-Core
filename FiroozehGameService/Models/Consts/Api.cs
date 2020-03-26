@@ -9,18 +9,16 @@ namespace FiroozehGameService.Models.Consts
         public const string LoginWithGoogle = BaseUrl2 + "/auth/g/callback";
         public const string Start = BaseUrl2 + "/auth/start";
         public const string UserData = BaseUrl2 + "/v1";
-             
+
         public const string SaveGame = BaseUrl2 + "/v1/savegame/";
         public const string Achievements = BaseUrl2 + "/v1/achievement/";
         public const string Leaderboard = BaseUrl2 + "/v1/leaderboard/";
         public const string Bucket = BaseUrl2 + "/v1/bucket/";
-        
+
         public const string CurrentTime = BaseUrl2 + "/syncedtime";
 
-        
-        
+
         public const string UserProfileLogo = BaseUrl1 + "/Application/image";
         public const string UserProfile = BaseUrl1 + "/Application";
-        
     }
 }

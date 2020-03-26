@@ -41,27 +41,6 @@ namespace FiroozehGameService.Core
     /// </summary>
     public sealed class GameService
     {
-        
-        #region GameServiceRegion
-
-        private const string Tag = "FiroozehGameService";
-        private static bool _isAvailable;
-        public static event EventHandler<Notification> NotificationReceived;
-
-        internal static string UserToken;
-        internal static string PlayToken;
-        internal static Game CurrentGame;
-        internal static long StartPlaying;
-        internal static bool IsGuest;
-        internal static SynchronizationContext SynchronizationContext;
-        internal static GameServiceClientConfiguration Configuration { get; private set; }
-
-        public static GSLive.GSLive GSLive { get; private set; }
-        private static DownloadManager _downloadManager;
-
-        #endregion
-        
-        
         /// <summary>
         ///     Set configuration For Initialize Game Service.
         /// </summary>
@@ -222,6 +201,7 @@ namespace FiroozehGameService.Core
         /// <param name="options">(Optional)The Bucket Options</param>
         /// <value> return List of all Bucket Items</value>
         public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId, BucketOption[] options = null)
+            where TBucket : BucketCore
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
@@ -236,6 +216,7 @@ namespace FiroozehGameService.Core
         /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To get Detail</param>
         /// <value> return a Bucket Item</value>
         public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId)
+            where TBucket : BucketCore
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
@@ -252,7 +233,7 @@ namespace FiroozehGameService.Core
         /// <param name="editedBucket">(Not NULL)The Object of BucketItem you Want To Edit Detail</param>
         /// <value> return Edited Bucket Item</value>
         public static async Task<TBucket> UpdateBucketItem<TBucket>(string bucketId, string itemId,
-            TBucket editedBucket)
+            TBucket editedBucket) where TBucket : BucketCore
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
@@ -268,6 +249,7 @@ namespace FiroozehGameService.Core
         /// <param name="newBucket">(Not NULL)The Object of BucketItem you Want To Add</param>
         /// <value> return Added Bucket Item</value>
         public static async Task<TBucket> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
+            where TBucket : BucketCore
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull");
@@ -313,10 +295,9 @@ namespace FiroozehGameService.Core
             return await TimeUtil.GetCurrentTime();
         }
 
-        
-        
+
         /// <summary>
-        ///    Gets Asset Info With AssetTag
+        ///     Gets Asset Info With AssetTag
         /// </summary>
         /// <param name="assetTag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
         public static async Task<AssetInfo> GetAssetInfo(string assetTag)
@@ -325,8 +306,7 @@ namespace FiroozehGameService.Core
             if (string.IsNullOrEmpty(assetTag)) throw new GameServiceException("assetTag Cant Be EmptyOrNull");
             return await ApiRequest.GetAssetInfo(Configuration.ClientId, assetTag);
         }
-        
-        
+
 
         /// <summary>
         ///     Download Asset With Tag
@@ -354,9 +334,8 @@ namespace FiroozehGameService.Core
             if (string.IsNullOrEmpty(tag)) throw new GameServiceException("DownloadTag Cant Be EmptyOrNull");
             await _downloadManager.StartDownload(tag);
         }
-        
-        
-        
+
+
         /// <summary>
         ///     Download Asset With AssetInfo
         ///     Set DownloadManager Event Handlers To Get Download Status
@@ -368,7 +347,7 @@ namespace FiroozehGameService.Core
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
             if (info == null) throw new GameServiceException("AssetInfo Cant Be Null");
             if (string.IsNullOrEmpty(dirPath)) throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull");
-             _downloadManager.StartDownloadWithInfo(info, dirPath);
+            _downloadManager.StartDownloadWithInfo(info, dirPath);
         }
 
 
@@ -530,7 +509,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "2.0.3";
+            return "2.0.4";
         }
 
 
@@ -546,6 +525,24 @@ namespace FiroozehGameService.Core
             IsGuest = false;
             GSLive?.Dispose();
         }
-        
+
+        #region GameServiceRegion
+
+        private const string Tag = "FiroozehGameService";
+        private static bool _isAvailable;
+        public static event EventHandler<Notification> NotificationReceived;
+
+        internal static string UserToken;
+        internal static string PlayToken;
+        internal static Game CurrentGame;
+        internal static long StartPlaying;
+        internal static bool IsGuest;
+        internal static SynchronizationContext SynchronizationContext;
+        internal static GameServiceClientConfiguration Configuration { get; private set; }
+
+        public static GSLive.GSLive GSLive { get; private set; }
+        private static DownloadManager _downloadManager;
+
+        #endregion
     }
 }
