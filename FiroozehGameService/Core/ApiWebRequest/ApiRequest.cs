@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Models;
@@ -409,21 +410,25 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
 
         internal static async Task<string> ExecuteCloudFunction<TFunction>(string functionId,
-            TFunction functionParameters)
+            TFunction functionParameters, bool isPublic)
         {
             var body = JsonConvert.SerializeObject(functionParameters, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
-            var response = await GsWebRequest.Post(Api.FaaS + functionId, body, CreatePlayTokenHeader());
+
+            HttpResponseMessage response;
+            if (isPublic)
+                response = await GsWebRequest.Post(Api.FaaS + functionId, body);
+            else
+                response = await GsWebRequest.Post(Api.FaaS + functionId, body, CreatePlayTokenHeader());
+
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
                     return await reader.ReadToEndAsync();
-                //throw new GameServiceException(await reader.ReadToEndAsync());
-                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                throw new GameServiceException(await reader.ReadToEndAsync());
             }
         }
 

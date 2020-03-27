@@ -375,16 +375,19 @@ namespace FiroozehGameService.Core
 
         /// <summary>
         ///     Execute Cloud Function
+        ///     note : if Function is public , You Can Call it without Login first
         /// </summary>
         /// <param name="functionId">(NOTNULL)Specifies the Function Id that Set in Developers Panel</param>
         /// <param name="functionParameters">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
+        /// <param name="isPublic">Specifies the Function Visibility Type that Set in Developers Panel</param>
         /// <value> return Result in String </value>
         public static async Task<string> ExecuteCloudFunction<TFunction>(string functionId,
-            TFunction functionParameters)
+            TFunction functionParameters, bool isPublic = false)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (!isPublic && string.IsNullOrEmpty(PlayToken))
+                throw new GameServiceException("You Login First In Private Mode");
             if (string.IsNullOrEmpty(functionId)) throw new GameServiceException("functionId Cant Be NullOrEmpty");
-            return await ApiRequest.ExecuteCloudFunction(functionId, functionParameters);
+            return await ApiRequest.ExecuteCloudFunction(functionId, functionParameters, isPublic);
         }
 
         /// <summary>
