@@ -10,7 +10,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
     internal class GsWebRequest
     {
         private static readonly HttpClient Client = new HttpClient();
-        private static readonly string UserAgent = "Unity_SDK_V_" + GameService.Version();
+        private static readonly string UserAgent = "UnitySDK " + GameService.Version();
 
 
         internal static async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers = null)
