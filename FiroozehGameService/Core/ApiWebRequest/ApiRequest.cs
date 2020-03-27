@@ -30,7 +30,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (!response.IsSuccessStatusCode)
                     throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                         .Message);
-                var info =  JsonConvert.DeserializeObject<AssetInfo>(await reader.ReadToEndAsync());
+                var info = JsonConvert.DeserializeObject<AssetInfo>(await reader.ReadToEndAsync());
                 info.AssetInfoData.Name = tag;
                 return info;
             }
@@ -402,6 +402,26 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 if (response.IsSuccessStatusCode)
                     return await reader.ReadToEndAsync();
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
+            }
+        }
+
+
+        internal static async Task<string> ExecuteCloudFunction<TFunction>(string functionId,
+            TFunction functionParameters)
+        {
+            var body = JsonConvert.SerializeObject(functionParameters, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+            var response = await GsWebRequest.Post(Api.FaaS + functionId, body, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return await reader.ReadToEndAsync();
+                //throw new GameServiceException(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message);
             }

@@ -374,6 +374,20 @@ namespace FiroozehGameService.Core
 
 
         /// <summary>
+        ///     Execute Cloud Function
+        /// </summary>
+        /// <param name="functionId">(NOTNULL)Specifies the Function Id that Set in Developers Panel</param>
+        /// <param name="functionParameters">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
+        /// <value> return Result in String </value>
+        public static async Task<string> ExecuteCloudFunction<TFunction>(string functionId,
+            TFunction functionParameters)
+        {
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (string.IsNullOrEmpty(functionId)) throw new GameServiceException("functionId Cant Be NullOrEmpty");
+            return await ApiRequest.ExecuteCloudFunction(functionId, functionParameters);
+        }
+
+        /// <summary>
         ///     Normal Login (InFirstOnly) To Game Service
         ///     It May Throw Exception
         /// </summary>
@@ -509,7 +523,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "2.0.4";
+            return "2.1.0";
         }
 
 
