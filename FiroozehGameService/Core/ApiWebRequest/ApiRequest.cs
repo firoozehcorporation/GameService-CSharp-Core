@@ -300,7 +300,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
             var url = Api.Bucket + bucketId + '/' + itemId;
             var body = JsonConvert.SerializeObject(editedBucket, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
             });
 
             var response = await GsWebRequest.Put(url, body, CreatePlayTokenHeader());

@@ -375,7 +375,7 @@ namespace FiroozehGameService.Core
 
         /// <summary>
         ///     Execute Cloud Function
-        ///     note : if Function is public , You Can Call it without Login first
+        ///     note : if Function is public , You Can Call it without Login
         /// </summary>
         /// <param name="functionId">(NOTNULL)Specifies the Function Id that Set in Developers Panel</param>
         /// <param name="functionParameters">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
@@ -384,8 +384,8 @@ namespace FiroozehGameService.Core
         public static async Task<string> ExecuteCloudFunction<TFunction>(string functionId,
             TFunction functionParameters, bool isPublic = false)
         {
-            if (!isPublic && string.IsNullOrEmpty(PlayToken))
-                throw new GameServiceException("You Login First In Private Mode");
+            if (!isPublic && !IsAuthenticated())
+                throw new GameServiceException("You Must Login First In Private Mode");
             if (string.IsNullOrEmpty(functionId)) throw new GameServiceException("functionId Cant Be NullOrEmpty");
             return await ApiRequest.ExecuteCloudFunction(functionId, functionParameters, isPublic);
         }
@@ -408,7 +408,6 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
-            StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -430,7 +429,6 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
-            StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -455,7 +453,6 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
-            StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -477,7 +474,6 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
-            StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
             IsGuest = true;
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
@@ -502,7 +498,6 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
-            StartPlaying = (long) DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -552,7 +547,6 @@ namespace FiroozehGameService.Core
         internal static string UserToken;
         internal static string PlayToken;
         internal static Game CurrentGame;
-        internal static long StartPlaying;
         internal static bool IsGuest;
         internal static SynchronizationContext SynchronizationContext;
         internal static GameServiceClientConfiguration Configuration { get; private set; }
