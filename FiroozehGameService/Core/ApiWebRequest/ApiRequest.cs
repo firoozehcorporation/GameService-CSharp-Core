@@ -410,12 +410,13 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<string> ExecuteCloudFunction<TFunction>(string functionId,
-            TFunction functionParameters, bool isPublic)
+        internal static async Task<string> ExecuteCloudFunction(string functionId,
+            object functionParameters, bool isPublic)
         {
             var body = JsonConvert.SerializeObject(functionParameters, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
             });
 
             HttpResponseMessage response;
@@ -429,7 +430,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 if (response.IsSuccessStatusCode)
                     return await reader.ReadToEndAsync();
-                throw new GameServiceException(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
             }
         }
 

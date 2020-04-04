@@ -15,7 +15,6 @@
 // </copyright>
 
 
-
 using FiroozehGameService.Core;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.BasicApi;
@@ -28,17 +27,17 @@ using FiroozehGameService.Models.BasicApi;
 namespace FiroozehGameService.Models.Consts
 {
     /// <summary>
-    /// Represents All GameService Errors
+    ///     Represents All GameService Errors
     /// </summary>
     public static class GameServiceErrors
     {
         /// <summary>
-        /// Represents All GameService Errors in HTTP Requests
+        ///     Represents All GameService Errors in HTTP Requests
         /// </summary>
         public static class Http
         {
             /// <summary>
-            /// Represents GameService HTTP Internal Errors
+            ///     Represents GameService HTTP Internal Errors
             /// </summary>
             public class Internal
             {
@@ -46,16 +45,16 @@ namespace FiroozehGameService.Models.Consts
                 public const string InvalidInput = "invalid_input";
                 public const string Limited = "Limited";
             }
-            
-            
+
+
             /// <inheritdoc />
             /// <summary>
-            /// Represents GameService Authorize HTTP Errors
-            /// Errors that occur in the following Functions :
-            /// <see cref="GameService.Login()"/>
-            /// <see cref="GameService.Login(string)"/>
-            /// <see cref="GameService.Login(string,string)"/>
-            /// <see cref="GameService.SignUp(string,string,string)"/>
+            ///     Represents GameService Authorize HTTP Errors
+            ///     Errors that occur in the following Functions :
+            ///     <see cref="GameService.Login()" />
+            ///     <see cref="GameService.Login(string)" />
+            ///     <see cref="GameService.Login(string,string)" />
+            ///     <see cref="GameService.SignUp(string,string,string)" />
             /// </summary>
             public class Authorize : Internal
             {
@@ -64,99 +63,96 @@ namespace FiroozehGameService.Models.Consts
                 public const string MemberNotfound = "member_notfound";
                 public const string UserBanned = "user_banned";
                 public const string PlanLimit = "plan_limit";
-                
-                
+
+
                 /// <summary>
-                /// These errors may never happen!
+                ///     These errors may never happen!
                 /// </summary>
                 public const string TokenRequired = "token_required";
+
                 public const string TokenExpired = "token_expired";
             }
-            
-            
+
+
             /// <inheritdoc />
             /// <summary>
-            /// Represents GameService LoginOrSignUp HTTP Errors
-            /// Errors that occur in the following Functions :
-            /// <see cref="GameService.Login()"/>
-            /// <see cref="GameService.Login(string)"/>
-            /// <see cref="GameService.Login(string,string)"/>
-            /// <see cref="GameService.SignUp(string,string,string)"/>
+            ///     Represents GameService LoginOrSignUp HTTP Errors
+            ///     Errors that occur in the following Functions :
+            ///     <see cref="GameService.Login()" />
+            ///     <see cref="GameService.Login(string)" />
+            ///     <see cref="GameService.Login(string,string)" />
+            ///     <see cref="GameService.SignUp(string,string,string)" />
             /// </summary>
             public class LoginOrSignUp : Authorize
             {
                 public const string WrongPassword = "wrong_password";
                 public const string UsedEmail = "used_email";
             }
-            
-            
+
+
             /// <inheritdoc />
             /// <summary>
-            /// Represents GameService Save HTTP Errors
-            /// Errors that occur in the following Functions :
-            /// <see cref="GameService.SaveGame(string,object)"/>
-            /// <see cref="GameService.GetSaveGame{T}()"/>
+            ///     Represents GameService Save HTTP Errors
+            ///     Errors that occur in the following Functions :
+            ///     <see cref="GameService.SaveGame(string,object)" />
+            ///     <see cref="GameService.GetSaveGame{T}()" />
             /// </summary>
             public class Save : Internal
             {
                 public const string SaveNotfound = "save_notfound";
             }
-            
-            
-            
+
+
             /// <inheritdoc />
             /// <summary>
-            /// Represents GameService Achievement HTTP Errors
-            /// Errors that occur in the following Functions :
-            /// <see cref="GameService.GetAchievements()"/>
-            /// <see cref="GameService.UnlockAchievement(string)"/>
+            ///     Represents GameService Achievement HTTP Errors
+            ///     Errors that occur in the following Functions :
+            ///     <see cref="GameService.GetAchievements()" />
+            ///     <see cref="GameService.UnlockAchievement(string)" />
             /// </summary>
             public class Achievement : Internal
             {
                 public const string UnlockedBefore = "has_been_unlocked";
                 public const string AchievementNotfound = "achievement_notfound";
             }
-            
-            
-            
+
+
             /// <inheritdoc />
             /// <summary>
-            /// Represents GameService Leaderboard HTTP Errors
-            /// Errors that occur in the following Functions :
-            /// <see cref="GameService.GetLeaderBoards()"/>
-            /// <see cref="GameService.GetLeaderBoardDetails(string,int)"/>
+            ///     Represents GameService Leaderboard HTTP Errors
+            ///     Errors that occur in the following Functions :
+            ///     <see cref="GameService.GetLeaderBoards()" />
+            ///     <see cref="GameService.GetLeaderBoardDetails(string,int)" />
             /// </summary>
             public class Leaderboard : Internal
             {
                 public const string LeaderboardNotfound = "leaderboard_notfound";
                 public const string ScoreNotfound = "score_notfound";
             }
-            
-            
-            
+
+
             /// <summary>
-            /// Represents GameService DownloadAssets HTTP Errors
-            /// Errors that occur in the following Functions:
-            /// <see cref="GameService.DownloadAsset(string,string)"/>
-            /// <see cref="GameService.DownloadAsset(string)"/>
-            /// And You Can Handle Them in <see cref="DownloadEventHandlers.DownloadError"/>
+            ///     Represents GameService DownloadAssets HTTP Errors
+            ///     Errors that occur in the following Functions:
+            ///     <see cref="GameService.DownloadAsset(string,string)" />
+            ///     <see cref="GameService.DownloadAsset(string)" />
+            ///     And You Can Handle Them in <see cref="DownloadEventHandlers.DownloadError" />
             /// </summary>
             public class DownloadAssets
             {
                 public const string DatapackNotfound = "datapack_notfound";
             }
-            
-            
-            
+
+
             /// <summary>
-            /// Represents GameService Bucket HTTP Errors
-            /// Errors that occur in the following Functions:
-            /// <see cref="GameService.AddBucketItem{TBucket}"/>
-            /// <see cref="GameService.GetBucketItem{TBucket}"/>
-            /// <see cref="GameService.GetBucketItems{TBucket}"/>
-            /// <see cref="GameService.DeleteBucketItem"/>
-            /// <see cref="GameService.DeleteBucketItems"/>
-            /// <see cref="GameService.UpdateBucketItem{TBucket}"/>
+            ///     Represents GameService Bucket HTTP Errors
+            ///     Errors that occur in the following Functions:
+            ///     <see cref="GameService.AddBucketItem{TBucket}" />
+            ///     <see cref="GameService.GetBucketItem{TBucket}" />
+            ///     <see cref="GameService.GetBucketItems{TBucket}" />
+            ///     <see cref="GameService.DeleteBucketItem" />
+            ///     <see cref="GameService.DeleteBucketItems" />
+            ///     <see cref="GameService.UpdateBucketItem{TBucket}" />
             /// </summary>
             public class Bucket : Internal
             {
@@ -166,22 +162,18 @@ namespace FiroozehGameService.Models.Consts
                 public const string AccountNotfound = "account_notfound";
                 public const string InvalidStructure = "invalid_structure";
             }
-            
-            
-            
-            
+
+
             /// <summary>
-            /// Represents GameService EditCurrentPlayer HTTP Errors
-            /// Errors that occur in the following Functions:
-            /// <see cref="GameService.EditCurrentPlayerProfile(EditUserProfile)"/>
+            ///     Represents GameService EditCurrentPlayer HTTP Errors
+            ///     Errors that occur in the following Functions:
+            ///     <see cref="GameService.EditCurrentPlayerProfile(EditUserProfile)" />
             /// </summary>
             public class EditCurrentPlayer
             {
                 public const string UserNotFound = "user_notfound";
                 public const string InvalidInput = "invalid_input";
             }
-            
         }
-           
     }
 }

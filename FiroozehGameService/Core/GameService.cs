@@ -381,8 +381,8 @@ namespace FiroozehGameService.Core
         /// <param name="functionParameters">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
         /// <param name="isPublic">Specifies the Function Visibility Type that Set in Developers Panel</param>
         /// <value> return Result in String </value>
-        public static async Task<string> ExecuteCloudFunction<TFunction>(string functionId,
-            TFunction functionParameters, bool isPublic = false)
+        public static async Task<string> ExecuteCloudFunction(string functionId,
+            object functionParameters = null, bool isPublic = false)
         {
             if (!isPublic && !IsAuthenticated())
                 throw new GameServiceException("You Must Login First In Private Mode");
