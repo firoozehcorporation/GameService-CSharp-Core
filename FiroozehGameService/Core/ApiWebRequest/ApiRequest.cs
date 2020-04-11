@@ -160,13 +160,27 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<User> GetCurrentPlayer()
         {
-            var response = await GsWebRequest.Get(Api.UserData, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.CurrentUserData, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<TUser>(await reader.ReadToEndAsync())
                         .User;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
+            }
+        }
+
+
+        internal static async Task<User> GetUserData(string userId)
+        {
+            var response = await GsWebRequest.Get(Api.GetUserData + userId, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<User>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message);
             }
@@ -460,6 +474,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
 
             param.Add("device_id", Configuration.SystemInfo.DeviceUniqueId);
+            param.Add("client_id", Configuration.ClientId);
             return param;
         }
 

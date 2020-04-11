@@ -39,7 +39,7 @@ namespace FiroozehGameService.Core
     /// <summary>
     ///     Represents Game Service Main Initializer
     /// </summary>
-    public sealed class GameService
+    public static class GameService
     {
         /// <summary>
         ///     Set configuration For Initialize Game Service.
@@ -170,6 +170,21 @@ namespace FiroozehGameService.Core
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetCurrentPlayer();
         }
+
+
+        /// <summary>
+        ///     With this command you can get a User Data with the User ID
+        /// </summary>
+        /// <param name="userId">(Not NULL)The ID of User you Want To get Detail</param>
+        /// <value> return User Data </value>
+        public static async Task<User> GetUserData(string userId)
+        {
+            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if (string.IsNullOrEmpty(userId))
+                throw new GameServiceException("userId Cant Be EmptyOrNull");
+            return await ApiRequest.GetUserData(userId);
+        }
+
 
         /// <summary>
         ///     With this command you can Edit information about the current player is playing
