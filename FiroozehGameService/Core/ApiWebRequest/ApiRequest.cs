@@ -115,7 +115,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<List<LeaderBoard>> GetLeaderBoard()
         {
-            var response = await GsWebRequest.Get(Api.Leaderboard, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.LeaderBoard, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -244,7 +244,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey, int scoreLimit = 10)
         {
-            var url = Api.Leaderboard + leaderBoardKey + "?limit=" + scoreLimit;
+            var url = Api.LeaderBoard + leaderBoardKey + "?limit=" + scoreLimit;
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -276,7 +276,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<SubmitScoreResponse> SubmitScore(string leaderBoardKey, int scoreValue)
         {
-            var url = Api.Leaderboard + leaderBoardKey;
+            var url = Api.LeaderBoard + leaderBoardKey;
             var body = JsonConvert.SerializeObject(CreateSubmitScoreDictionary(scoreValue));
 
             var response = await GsWebRequest.Post(url, body, CreatePlayTokenHeader());
@@ -528,7 +528,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         {
             return new Dictionary<string, string>
             {
-                {"x-access-token", Ut}
+                {"x-access-token", Ut}, {"client_id", Configuration.ClientId}
             };
         }
     }

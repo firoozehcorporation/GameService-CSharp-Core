@@ -7,11 +7,10 @@ using FiroozehGameService.Models.Enums;
 
 namespace FiroozehGameService.Core.ApiWebRequest
 {
-    internal class GsWebRequest
+    internal static class GsWebRequest
     {
         private static readonly HttpClient Client = new HttpClient();
         private static readonly string UserAgent = "UnitySDK " + GameService.Version();
-
 
         internal static async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers = null)
         {
