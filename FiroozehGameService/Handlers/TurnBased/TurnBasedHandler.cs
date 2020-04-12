@@ -8,7 +8,7 @@ using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.ResponseHandlers;
-using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
@@ -20,46 +20,37 @@ namespace FiroozehGameService.Handlers.TurnBased
 {
     internal class TurnBasedHandler : IDisposable
     {
-        #region TBHandlerRegion
-        private static GsTcpClient _tcpClient;
-        public static Room CurrentRoom;
-        private readonly GsLiveSystemObserver _observer;
-        private CancellationTokenSource _cancellationToken;
-        private bool _isDisposed;
-        
-        public static string PlayerHash { private set; get; }
-        public static string PlayToken => GameService.PlayToken;
-        public static bool IsAvailable => _tcpClient?.IsAvailable ?? false;
-        
-        private readonly Dictionary<int, IResponseHandler> _responseHandlers =
-            new Dictionary<int, IResponseHandler>();
-        private readonly Dictionary<string, IRequestHandler> _requestHandlers =
-            new Dictionary<string, IRequestHandler>();
-
-        #endregion
-
         public TurnBasedHandler(StartPayload payload)
         {
             CurrentRoom = payload.Room;
             _tcpClient = new GsTcpClient(payload.Area);
             _tcpClient.SetType(GSLiveType.TurnBased);
             _tcpClient.DataReceived += OnDataReceived;
-            _tcpClient.Error += OnError;            
-            
+            _tcpClient.Error += OnError;
+
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
             _isDisposed = false;
-            
+
             // Set Internal Event Handlers
             CoreEventHandlers.Ping += OnPing;
             CoreEventHandlers.Authorized += OnAuth;
 
-            
+
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
-            
-            LogUtil.Log(this,"TurnBased Initialized");
 
+            LogUtil.Log(this, "TurnBased Initialized");
+        }
+
+        public void Dispose()
+        {
+            _isDisposed = true;
+            _tcpClient?.StopReceiving();
+            _observer.Dispose();
+            _cancellationToken.Cancel(true);
+            CoreEventHandlers.Dispose?.Invoke(this, null);
+            LogUtil.Log(this, "TurnBased Dispose");
         }
 
         private static void OnAuth(object sender, string playerHash)
@@ -67,16 +58,16 @@ namespace FiroozehGameService.Handlers.TurnBased
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
             _tcpClient.UpdatePwd(playerHash);
-            LogUtil.Log(null,"TurnBased OnAuth");
+            LogUtil.Log(null, "TurnBased OnAuth");
         }
 
         private async void OnPing(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
                 await RequestAsync(PingPongHandler.Signature);
-            LogUtil.Log(null,"TurnBased OnPing");
+            LogUtil.Log(null, "TurnBased OnPing");
         }
-        
+
         private void InitRequestMessageHandlers()
         {
             var baseInterface = typeof(IRequestHandler);
@@ -87,10 +78,12 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             foreach (var type in subclassTypes)
             {
-                var p = (string)type.GetProperty("Signature", BindingFlags.Public | BindingFlags.Static).GetValue(null);
-                _requestHandlers.Add(p, (IRequestHandler)Activator.CreateInstance(type));
+                var p = (string) type.GetProperty("Signature", BindingFlags.Public | BindingFlags.Static)
+                    .GetValue(null);
+                _requestHandlers.Add(p, (IRequestHandler) Activator.CreateInstance(type));
             }
         }
+
         private void InitResponseMessageHandlers()
         {
             var baseInterface = typeof(IResponseHandler);
@@ -101,72 +94,86 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             foreach (var type in subclassTypes)
             {
-                var p = (int)type.GetProperty("ActionCommand", BindingFlags.Public | BindingFlags.Static).GetValue(null);
-                _responseHandlers.Add(p, (IResponseHandler)Activator.CreateInstance(type));
+                var p = (int) type.GetProperty("ActionCommand", BindingFlags.Public | BindingFlags.Static)
+                    .GetValue(null);
+                _responseHandlers.Add(p, (IResponseHandler) Activator.CreateInstance(type));
             }
         }
-     
-        
+
+
         public void Request(string handlerName, object payload = null)
-            => Send(_requestHandlers[handlerName]?.HandleAction(payload));
+        {
+            Send(_requestHandlers[handlerName]?.HandleAction(payload));
+        }
 
         public async Task RequestAsync(string handlerName, object payload = null)
-            => await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
+        {
+            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
+        }
 
 
-        
-        
-        
         public async Task Init()
         {
             _cancellationToken = new CancellationTokenSource();
-            await _tcpClient.Init();
-            Task.Run(async() => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
-            await RequestAsync(AuthorizationHandler.Signature);
+            if (_tcpClient.Init())
+            {
+                Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+                await RequestAsync(AuthorizationHandler.Signature);
+                LogUtil.Log(this, "TurnBasedHandler Init done");
+            }
+            else
+            {
+                LogUtil.Log(this, "TurnBasedHandler Init With TimeOut");
+            }
         }
-             
-               
-        
-        
+
+
         private void Send(Packet packet)
         {
             if (!_observer.Increase()) return;
             _tcpClient.Send(packet);
         }
-        
+
         private async Task SendAsync(Packet packet)
         {
             if (!_observer.Increase()) return;
-            await _tcpClient.SendAsync(packet);
+            if (IsAvailable) await _tcpClient.SendAsync(packet);
+            else throw new GameServiceException("GameService Not Available");
         }
-        
-        
+
+
         private async void OnError(object sender, ErrorArg e)
         {
-            LogUtil.LogError(this,"TurnBased : " + e.Error);
-           if(_isDisposed) return;
+            LogUtil.LogError(this, "TurnBased : " + e.Error);
+            if (_isDisposed) return;
             await Init();
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-            GameService.SynchronizationContext?.Send(delegate {
-                _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
-            }, null);
-            
-        }
-        
-        public void Dispose()
-        {
-            _isDisposed = true;
-            _tcpClient?.StopReceiving();
-            _observer.Dispose();
-            _cancellationToken.Cancel(true);
-            CoreEventHandlers.Dispose?.Invoke(this,null);
-            LogUtil.Log(this,"TurnBased Dispose");
+            GameService.SynchronizationContext?.Send(
+                delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet); }, null);
         }
 
+        #region TBHandlerRegion
 
+        private static GsTcpClient _tcpClient;
+        public static Room CurrentRoom;
+        private readonly GsLiveSystemObserver _observer;
+        private CancellationTokenSource _cancellationToken;
+        private bool _isDisposed;
+
+        public static string PlayerHash { private set; get; }
+        public static string PlayToken => GameService.PlayToken;
+        public static bool IsAvailable => _tcpClient?.IsAvailable ?? false;
+
+        private readonly Dictionary<int, IResponseHandler> _responseHandlers =
+            new Dictionary<int, IResponseHandler>();
+
+        private readonly Dictionary<string, IRequestHandler> _requestHandlers =
+            new Dictionary<string, IRequestHandler>();
+
+        #endregion
     }
 }

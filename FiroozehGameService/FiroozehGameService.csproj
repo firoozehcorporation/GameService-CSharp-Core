@@ -63,6 +63,7 @@
         <Compile Include="Core\GSLive\GSLiveOption.cs"/>
         <Compile Include="Core\GSLive\GSLiveRT.cs"/>
         <Compile Include="Core\GSLive\GSLiveTB.cs"/>
+        <Compile Include="Core\Socket\ClientHelper\TcpClientWithTimeout.cs"/>
         <Compile Include="Core\Socket\GProtocolClient.cs"/>
         <Compile Include="Core\Socket\GsSocketClient.cs"/>
         <Compile Include="Core\Socket\GsTcpClient.cs"/>

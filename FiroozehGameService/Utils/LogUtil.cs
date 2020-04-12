@@ -4,7 +4,8 @@ namespace FiroozehGameService.Utils
 {
     public enum LogType
     {
-       Normal , Error
+        Normal,
+        Error
     }
 
     public class Log
@@ -18,22 +19,25 @@ namespace FiroozehGameService.Utils
         public LogType Type { get; }
         public string Txt { get; }
     }
-        
+
     public class LogUtil
     {
-        private const bool IsDebug = false;
+        private const bool IsDebug = true;
         public static EventHandler<Log> LogEventHandler;
 
 
-        internal static void Log(object where,string txt)
+        internal static void Log(object where, string txt)
         {
-           if(IsDebug)
-           LogEventHandler?.Invoke(where,new Log(LogType.Normal,DateTime.Now.ToString("h:mm:ss tt")+ "--" + txt));
+            if (IsDebug)
+                LogEventHandler?.Invoke(where,
+                    new Log(LogType.Normal, DateTime.Now.ToString("h:mm:ss tt") + "--" + txt));
         }
-        internal static void LogError(object where,string err)
+
+        internal static void LogError(object where, string err)
         {
-            if(IsDebug)
-            LogEventHandler?.Invoke(where,new Log(LogType.Error,DateTime.Now.ToString("h:mm:ss tt")+ "--" + err));
+            if (IsDebug)
+                LogEventHandler?.Invoke(where,
+                    new Log(LogType.Error, DateTime.Now.ToString("h:mm:ss tt") + "--" + err));
         }
     }
 }
