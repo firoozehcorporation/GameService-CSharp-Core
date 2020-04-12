@@ -10,7 +10,7 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
     ///     Use it like this:
     ///     TcpClient connection = new TcpClientWithTimeout('127.0.0.1',80,1000).Connect();
     /// </summary>
-    public class TcpClientWithTimeout
+    internal class TcpClientWithTimeout
     {
         private readonly string _hostname;
         private readonly int _port;
@@ -19,14 +19,14 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
         private TcpClient _connection;
         private Exception _exception;
 
-        public TcpClientWithTimeout(string hostname, int port, int timeoutMilliseconds)
+        internal TcpClientWithTimeout(string hostname, int port, int timeoutMilliseconds)
         {
             _hostname = hostname;
             _port = port;
             _timeoutMilliseconds = timeoutMilliseconds;
         }
 
-        public TcpClient Connect()
+        internal TcpClient Connect()
         {
             // kick off the thread that tries to connect
             _connected = false;

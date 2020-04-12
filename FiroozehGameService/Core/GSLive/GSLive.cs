@@ -22,26 +22,21 @@
 
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
+using FiroozehGameService.Handlers.Command;
 using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.TurnBased;
 
 namespace FiroozehGameService.Core.GSLive
 {
-    
     /// <summary>
-    /// Represents Game Service MultiPlayer System (GSLive)
+    ///     Represents Game Service MultiPlayer System (GSLive)
     /// </summary>
     public class GSLive
     {
-        
         private const string Tag = "GSLive";
         internal static GsHandler Handler;
-        
-        public GSLiveRT RealTime { get; }
-        public GSLiveTB TurnBased { get; }
-        public GSLiveChat Chat { get; }
 
-        
+
         public GSLive()
         {
             Handler = new GsHandler();
@@ -50,25 +45,48 @@ namespace FiroozehGameService.Core.GSLive
             TurnBased = new GSLiveTB();
         }
 
+        public GSLiveRT RealTime { get; }
+        public GSLiveTB TurnBased { get; }
+        public GSLiveChat Chat { get; }
+
+
         public static async Task Init()
         {
             await Handler.Init();
         }
 
+        /// <summary>
+        ///     check if Command Services are Available
+        /// </summary>
+        /// <returns>returns true if Command Services are Available</returns>
+        public bool IsCommandAvailable()
+        {
+            return CommandHandler.IsAvailable;
+        }
+
+        /// <summary>
+        ///     check if Realtime Services are Available
+        /// </summary>
+        /// <returns>returns true if Realtime Services are Available</returns>
         public bool IsRealTimeAvailable()
         {
             return RealTimeHandler.IsAvailable;
         }
-        
+
+
+        /// <summary>
+        ///     check if TurnBased Services are Available
+        /// </summary>
+        /// <returns>returns true if TurnBased Services are Available</returns>
         public bool IsTurnBasedAvailable()
         {
             return TurnBasedHandler.IsAvailable;
         }
 
+
         internal void Dispose()
         {
             Handler?.Dispose();
         }
-      
     }
 }

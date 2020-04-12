@@ -13,7 +13,7 @@ namespace FiroozehGameService.Core.Socket
 {
     internal class GsTcpClient : GsSocketClient
     {
-        private const short TimeOut = 7000;
+        private const short TimeOut = 5000;
         private TcpClient _client;
         private NetworkStream _clientStream;
 
