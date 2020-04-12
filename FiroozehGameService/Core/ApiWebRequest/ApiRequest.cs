@@ -189,7 +189,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<User> EditCurrentPlayer(EditUserProfile editUserProfile)
         {
             if (editUserProfile.Logo != null)
-                await ImageUtil.UploadProfileImage(editUserProfile.Logo);
+            {
+                var result = await ImageUtil.UploadProfileImage(editUserProfile.Logo);
+                LogUtil.Log(null,result.Url);
+            }
 
             var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
             {
@@ -528,7 +531,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         {
             return new Dictionary<string, string>
             {
-                {"x-access-token", Ut}, {"client_id", Configuration.ClientId}
+                {"x-access-token", Ut}, {"client-id", Configuration.ClientId}
             };
         }
     }
