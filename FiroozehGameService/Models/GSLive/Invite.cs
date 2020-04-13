@@ -15,7 +15,6 @@
 // </copyright>
 
 using System;
-using FiroozehGameService.Models.BasicApi;
 using Newtonsoft.Json;
 
 /**
@@ -26,51 +25,46 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive
 {
     /// <summary>
-    /// Represents Invite Data Model In GameService MultiPlayer System (GSLive)
+    ///     Represents Invite Data Model In GameService MultiPlayer System (GSLive)
     /// </summary>
     [Serializable]
     public class Invite
     {
-        
         /// <summary>
-        /// Gets the Invite id.
-        /// You Can Use It in Accept Invite
+        ///     Gets The Game Which You Are Invited.
+        /// </summary>
+        /// <value>The Game Where You Are Invited</value>
+        [JsonProperty("game")] public Game Game;
+
+
+        /// <summary>
+        ///     Gets The Room Where You Are Invited.
+        /// </summary>
+        /// <value>The Room Where You Are Invited</value>
+        [JsonProperty("room")] public Room Room;
+
+        /// <summary>
+        ///     Gets the Invite id.
+        ///     You Can Use It in Accept Invite
         /// </summary>
         /// <value>the Invite id</value>
         [JsonProperty("_id")]
         public string Id { get; set; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Inviter User.
+        ///     Gets the Inviter Member.
         /// </summary>
-        /// <value>the Inviter User</value>
+        /// <value>the Inviter Member</value>
         [JsonProperty("inviter")]
-        public User Inviter { get; set; }
-        
-        
+        public Member Inviter { get; set; }
+
+
         /// <summary>
-        /// Gets the Invited User Id.
+        ///     Gets the Invited User Id.
         /// </summary>
         /// <value>the Invited User Id</value>
         [JsonProperty("invited")]
         public string Invited { get; set; }
-
-        
-        /// <summary>
-        /// Gets The Room Where You Are Invited.
-        /// </summary>
-        /// <value>The Room Where You Are Invited</value>
-        [JsonProperty("room")]
-        public Room Room;
-            
-        
-        /// <summary>
-        /// Gets The Game Which You Are Invited.
-        /// </summary>
-        /// <value>The Game Where You Are Invited</value>
-        [JsonProperty("game")]
-        public Game Game;
-                
     }
 }

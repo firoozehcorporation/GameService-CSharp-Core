@@ -40,7 +40,7 @@ namespace FiroozehGameService.Models.GSLive.RT
 
 
         /// <summary>
-        ///     Gets the Sender Id.
+        ///     Gets the Sender Member Id.
         /// </summary>
         /// <value>the Sender Id</value>
         [JsonProperty("2")]
@@ -48,7 +48,7 @@ namespace FiroozehGameService.Models.GSLive.RT
 
 
         /// <summary>
-        ///     Gets the Receiver Id.
+        ///     Gets the Receiver Member Id.
         /// </summary>
         /// <value>the Receiver Id</value>
         [JsonProperty("3")]

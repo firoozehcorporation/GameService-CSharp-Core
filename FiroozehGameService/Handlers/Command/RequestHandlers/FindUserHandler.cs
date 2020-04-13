@@ -1,30 +1,33 @@
-﻿using FiroozehGameService.Models.GSLive.Command;
+﻿using System;
+using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
-    internal class FindUserHandler : BaseRequestHandler
+    internal class FindMemberHandler : BaseRequestHandler
     {
         public static string Signature
-            => "FIND_USER";
-
-        public FindUserHandler(){}
+            => "FIND_MEMBER";
 
         private static Packet DoAction(RoomDetail options)
-            => new Packet(
+        {
+            return new Packet(
                 CommandHandler.PlayerHash,
-                Models.Consts.Command.ActionFindUser,
-                JsonConvert.SerializeObject(options, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
-                );
+                Models.Consts.Command.ActionFindMember,
+                JsonConvert.SerializeObject(options,
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore})
+            );
+        }
 
         protected override bool CheckAction(object payload)
-            => payload.GetType() == typeof(RoomDetail);
+        {
+            return payload.GetType() == typeof(RoomDetail);
+        }
 
         protected override Packet DoAction(object payload)
         {
-            if (!CheckAction(payload)) throw new System.ArgumentException();
+            if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction(payload as RoomDetail);
         }
-
     }
 }

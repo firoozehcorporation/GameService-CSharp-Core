@@ -19,50 +19,49 @@
 * @author Alireza Ghodrati
 */
 
-using FiroozehGameService.Models.BasicApi;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.GSLive.Chat
 {
     /// <summary>
-    /// Represents Chat Data Model In GameService Command System
+    ///     Represents Chat Data Model In GameService Command System
     /// </summary>
     public class Chat
     {
         /// <summary>
-        /// Gets the Chat Privacy.
+        ///     Gets the Chat Privacy.
         /// </summary>
         /// <value>the Chat Privacy</value>
-        [JsonProperty("0")]                  
-        public bool IsPrivate { set; get; }   
-        
+        [JsonProperty("0")]
+        public bool IsPrivate { set; get; }
+
         /// <summary>
-        /// Gets the Chat Receiver Id.
+        ///     Gets the Chat Receiver Id.
         /// </summary>
         /// <value>the Chat Receiver Id</value>
         [JsonProperty("1")]
         public string ReceiverId { set; get; }
-        
+
         /// <summary>
-        /// Gets the Chat Sender User.
+        ///     Gets the Chat Sender Member.
         /// </summary>
-        /// <value>the Chat Sender User</value>
-        [JsonProperty("2")]                      
-        public User Sender { set; get; }
-        
+        /// <value>the Chat Sender Member</value>
+        [JsonProperty("2")]
+        public Member Sender { set; get; }
+
         /// <summary>
-        /// Gets the Chat Message Data
+        ///     Gets the Chat Message Data
         /// </summary>
         /// <value>the Chat Message Data</value>
-        [JsonProperty("3")]                      
+        [JsonProperty("3")]
         public string Message { set; get; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Chat Message Send Time in Unix Time
+        ///     Gets the Chat Message Send Time in Unix Time
         /// </summary>
         /// <value>the Chat Message Send Time in Unix Time</value>
-        [JsonProperty("4")]                      
+        [JsonProperty("4")]
         public long SendTime { set; get; }
     }
 }

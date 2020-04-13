@@ -26,26 +26,40 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive
 {
     /// <summary>
-    /// Represents Member Data Model In GameService MultiPlayer System (GSLive)
+    ///     Represents Member Data Model In GameService MultiPlayer System (GSLive)
     /// </summary>
     [Serializable]
     public class Member
     {
         /// <summary>
-        /// Gets the Member ID
-        /// You Can Use it In MultiPlayer Functions that Needs Member id
+        ///     Gets the Member ID
+        ///     You Can Use it In MultiPlayer Functions that Needs Member id
         /// </summary>
         /// <value>the Member ID</value>
         [JsonProperty("_id")]
         public string Id { set; get; }
-         
-        
+
+
         /// <summary>
-        /// Gets the Member User Data
+        ///     Gets the Member Name.
+        /// </summary>
+        /// <value>the Member Name</value>
+        [JsonProperty("name")]
+        public string Name { set; get; }
+
+        /// <summary>
+        ///     Gets the Member Logo URL.
+        /// </summary>
+        /// <value>the Member Logo URL</value>
+        [JsonProperty("logo")]
+        public string Logo { set; get; }
+
+
+        /// <summary>
+        ///     Gets the Member User Data
         /// </summary>
         /// <value>the Member User Data</value>
         [JsonProperty("user")]
         public User User { set; get; }
-        
     }
 }

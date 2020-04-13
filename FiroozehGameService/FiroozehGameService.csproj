@@ -98,7 +98,7 @@
         <Compile Include="Handlers\Command\ResponseHandlers\CancelAutoMatchResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\ChatResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\ErrorResponseHandler.cs"/>
-        <Compile Include="Handlers\Command\ResponseHandlers\FindUserResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\FindMemberResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\GetInviteInboxResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\GetRoomResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\InviteReceivedResponseHandler.cs"/>

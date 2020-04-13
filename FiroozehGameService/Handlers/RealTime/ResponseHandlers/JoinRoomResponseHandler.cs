@@ -12,15 +12,14 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
     {
         public static int ActionCommand => RT.ActionJoin;
 
-        protected override void HandleResponse(Packet packet,GProtocolSendType type)
+        protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
-           var joinData = JsonConvert.DeserializeObject<JoinData>(packet.Payload);
-           RealTimeEventHandlers.JoinedRoom?.Invoke(this, new JoinEvent
+            var joinData = JsonConvert.DeserializeObject<JoinData>(packet.Payload);
+            RealTimeEventHandlers.JoinedRoom?.Invoke(this, new JoinEvent
             {
-                Type = GSLiveType.TurnBased,
+                Type = GSLiveType.RealTime,
                 JoinData = joinData
             });
         }
-      
     }
 }

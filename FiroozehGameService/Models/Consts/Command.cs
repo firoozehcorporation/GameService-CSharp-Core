@@ -17,7 +17,7 @@ namespace FiroozehGameService.Models.Consts
         public const int ActionKickUser = 7;
         public const int ActionGetInviteList = 8;
         public const int ActionAcceptInvite = 9;
-        public const int ActionFindUser = 10;
+        public const int ActionFindMember = 10;
         public const int ActionNotification = 11;
         public const int ActionSubscribe = 12;
         public const int ActionChat = 13;

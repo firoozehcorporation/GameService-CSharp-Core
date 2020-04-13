@@ -9,15 +9,15 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "GET_MEMBERS";
 
-        public GetMemberHandler() {}
-
         protected override Packet DoAction(object payload)
-        { 
+        {
             if (!TurnBasedHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
-            return new Packet(TurnBasedHandler.PlayerHash, TB.GetUsers);
+            return new Packet(TurnBasedHandler.PlayerHash, TB.GetMembers);
         }
 
         protected override bool CheckAction(object payload)
-            => true;
+        {
+            return true;
+        }
     }
 }
