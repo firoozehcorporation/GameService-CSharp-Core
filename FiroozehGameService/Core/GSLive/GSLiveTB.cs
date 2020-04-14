@@ -250,7 +250,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="query">(NOTNULL) Query </param>
         /// <param name="limit">(Max = 15) The Result Limits</param>
-        public async Task FindMember(string query, int limit)
+        public async Task FindMember(string query, int limit = 10)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (string.IsNullOrEmpty(query)) throw new GameServiceException("query Cant Be EmptyOrNull");

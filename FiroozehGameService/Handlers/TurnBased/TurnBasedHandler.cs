@@ -153,7 +153,11 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
             GameService.SynchronizationContext?.Send(
-                delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet); }, null);
+                delegate
+                {
+                    LogUtil.Log(this, "TurnBasedHandler OnDataReceived < " + e.Data);
+                    _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
+                }, null);
         }
 
         #region TBHandlerRegion

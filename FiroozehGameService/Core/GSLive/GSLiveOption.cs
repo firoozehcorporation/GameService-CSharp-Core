@@ -21,52 +21,76 @@
 
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive;
+
 namespace FiroozehGameService.Core.GSLive
 {
     /// <summary>
-    /// Represents GSLive GSLiveOption
+    ///     Represents GSLive GSLiveOption
     /// </summary>
     public class GSLiveOption
     {
         /// <summary>
-        /// Represents GSLive AutoMatchOption
+        ///     Represents GSLive AutoMatchOption
         /// </summary>
         public class AutoMatchOption
         {
+            /// <summary>
+            ///     Specifies the AutoMatch Options
+            /// </summary>
+            /// <param name="role">(Not NULL)Specifies the Room Role</param>
+            /// <param name="minPlayer">Specifies the Room min player limit (MIN=2)</param>
+            /// <param name="maxPlayer">Specifies the Room max player limit (MAX=8)</param>
+            /// <param name="isPersist">Specifies the Room Persistence</param>
+            public AutoMatchOption(string role, int minPlayer = 2, int maxPlayer = 2, bool isPersist = false)
+            {
+                MinPlayer = minPlayer < 2 || minPlayer > 8
+                    ? throw new GameServiceException("Invalid MinPlayer Value")
+                    : MinPlayer = minPlayer;
+                MaxPlayer = maxPlayer < 2 || maxPlayer > 8
+                    ? throw new GameServiceException("Invalid MaxPlayer Value")
+                    : MinPlayer = minPlayer;
+                Role = string.IsNullOrEmpty(role)
+                    ? throw new GameServiceException("Role Cant Be EmptyOrNull")
+                    : Role = role;
+                IsPersist = isPersist;
+
+                if (maxPlayer < minPlayer) throw new GameServiceException("MaxPlayer Cant Smaller Than MinPlayer");
+            }
+
             internal int MinPlayer { get; }
             internal int MaxPlayer { get; }
             internal string Role { get; }
             internal bool IsPersist { get; }
             internal GSLiveType GsLiveType { set; get; }
-
-            public AutoMatchOption(string role , int minPlayer, int maxPlayer, bool isPersist = false)
-            {
-                MinPlayer = minPlayer < 2 || minPlayer > 8 ? throw new GameServiceException("Invalid MinPlayer Value") : MinPlayer = minPlayer;
-                MaxPlayer = maxPlayer < 2 || maxPlayer > 8 ? throw new GameServiceException("Invalid MaxPlayer Value") : MinPlayer = minPlayer;
-                Role =  string.IsNullOrEmpty(role) ? throw new GameServiceException("Role Cant Be EmptyOrNull") : Role = role;
-                IsPersist = isPersist;
-                
-                if (maxPlayer < minPlayer) throw new GameServiceException("MaxPlayer Cant Smaller Than MinPlayer");
-            }
         }
 
         /// <inheritdoc />
         /// <summary>
-        /// Represents GSLive CreateRoomOption
+        ///     Represents GSLive CreateRoomOption
         /// </summary>
         public class CreateRoomOption : AutoMatchOption
         {
-            internal string RoomName { get; }   
-            internal bool IsPrivate { get; }
-
-            public CreateRoomOption(string roomName,string role, int minPlayer, int maxPlayer , bool isPrivate = false ,bool isPersist = false)
+            /// <summary>
+            ///     Specifies the CreateRoom Options
+            /// </summary>
+            /// <param name="roomName">(Not NULL)Specifies the Room Name</param>
+            /// <param name="role">(Not NULL)Specifies the Room Role</param>
+            /// <param name="minPlayer">Specifies the Room min player limit (MIN=2)</param>
+            /// <param name="maxPlayer">Specifies the Room max player limit (MAX=8)</param>
+            /// <param name="isPrivate">Specifies the Room Privacy</param>
+            /// <param name="isPersist">Specifies the Room Persistence</param>
+            public CreateRoomOption(string roomName, string role, int minPlayer = 2, int maxPlayer = 2,
+                bool isPrivate = false, bool isPersist = false)
                 : base(role, minPlayer, maxPlayer, isPersist)
             {
-                RoomName =  string.IsNullOrEmpty(roomName) ? throw new GameServiceException("RoomName Cant Be EmptyOrNull") : RoomName = roomName;
+                RoomName = string.IsNullOrEmpty(roomName)
+                    ? throw new GameServiceException("RoomName Cant Be EmptyOrNull")
+                    : RoomName = roomName;
                 IsPrivate = isPrivate;
             }
+
+            internal string RoomName { get; }
+            internal bool IsPrivate { get; }
         }
-
-
     }
 }
