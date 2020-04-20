@@ -35,6 +35,15 @@ namespace FiroozehGameService.Models.GSLive.Chat
         [JsonProperty("0")]
         public bool IsPrivate { set; get; }
 
+
+        /// <summary>
+        ///     Gets the Chat Channel Name
+        /// </summary>
+        /// <value>the Chat Channel Name</value>
+        [JsonProperty("5")]
+        public string ChannelName { set; get; }
+
+
         /// <summary>
         ///     Gets the Chat Receiver Id.
         /// </summary>
