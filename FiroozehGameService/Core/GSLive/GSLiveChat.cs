@@ -27,45 +27,56 @@ using FiroozehGameService.Models;
 namespace FiroozehGameService.Core.GSLive
 {
     /// <summary>
-    /// Represents Game Service Chat System
+    ///     Represents Game Service Chat System
     /// </summary>
     public class GSLiveChat
     {
         private const string Tag = "GSLiveChat";
-                
+
         /// <summary>
-        /// Subscribe In Channel With channelName.
+        ///     Subscribe In Channel With channelName.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Subscribe</param>
         public async Task SubscribeChannel(string channelName)
         {
-           if(GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-           if(string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
-           await GSLive.Handler.CommandHandler.RequestAsync(SubscribeChannelHandler.Signature,channelName);     
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
+            await GSLive.Handler.CommandHandler.RequestAsync(SubscribeChannelHandler.Signature, channelName);
         }
-        
+
         /// <summary>
-        /// UnSubscribeChannel With channelName.
+        ///     UnSubscribeChannel With channelName.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To UnSubscribe</param>
         public async Task UnSubscribeChannel(string channelName)
         {
-            if(GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if(string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
-            await GSLive.Handler.CommandHandler.RequestAsync(UnsubscribeChannelHandler.Signature,channelName);     
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
+            await GSLive.Handler.CommandHandler.RequestAsync(UnsubscribeChannelHandler.Signature, channelName);
         }
-        
+
         /// <summary>
-        /// Send Message In SubscribedChannel.
+        ///     Send Message In SubscribedChannel.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
-
-        public async Task SendChannelMessage(string channelName,string message)
+        public async Task SendChannelMessage(string channelName, string message)
         {
-            if(GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-           if(string.IsNullOrEmpty(channelName) && string.IsNullOrEmpty(message)) throw new GameServiceException("channelName Or message Cant Be EmptyOrNull");
-           await GSLive.Handler.CommandHandler.RequestAsync(SendChannelMessageHandler.Signature,Tuple.Create(channelName,message));     
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (string.IsNullOrEmpty(channelName) && string.IsNullOrEmpty(message))
+                throw new GameServiceException("channelName Or message Cant Be EmptyOrNull");
+            await GSLive.Handler.CommandHandler.RequestAsync(SendChannelMessageHandler.Signature,
+                Tuple.Create(channelName, message));
+        }
+
+
+        /// <summary>
+        ///     Get Channels Subscribe List
+        /// </summary>
+        public async Task ChannelsSubscribed()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            await GSLive.Handler.CommandHandler.RequestAsync(GetChannelsSubscribed.Signature);
         }
     }
 }

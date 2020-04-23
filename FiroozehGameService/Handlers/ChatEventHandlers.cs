@@ -15,6 +15,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Models.GSLive.Chat;
 
@@ -25,29 +26,37 @@ using FiroozehGameService.Models.GSLive.Chat;
 namespace FiroozehGameService.Handlers
 {
     /// <summary>
-    /// Represents ChatEventHandlers
+    ///     Represents ChatEventHandlers
     /// </summary>
     public class ChatEventHandlers
     {
         /// <summary>
-        /// Calls When New Chat Received
-        /// <see cref="GSLiveChat.SendChannelMessage"/>
+        ///     Calls When New Chat Received
+        ///     <see cref="GSLiveChat.SendChannelMessage" />
         /// </summary>
         public static EventHandler<Chat> OnChatReceived;
-        
+
         /// <summary>
-        /// Calls When Current Player Subscribe Channel
-        /// This Event Handler Called By Following Function :
-        /// <see cref="GSLiveChat.SubscribeChannel"/>
+        ///     Calls When Current Player Subscribe Channel
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveChat.SubscribeChannel" />
         /// </summary>
         public static EventHandler<string> OnSubscribeChannel;
-        
-        
+
+
         /// <summary>
-        /// Calls When Current Player UnSubscribe Channel
-        /// This Event Handler Called By Following Function :
-        /// <see cref="GSLiveChat.UnSubscribeChannel"/>
+        ///     Calls When Current Player UnSubscribe Channel
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveChat.UnSubscribeChannel" />
         /// </summary>
         public static EventHandler<string> OnUnSubscribeChannel;
+
+
+        /// <summary>
+        ///     Calls When Current Player Get Channels Subscribed List
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveChat.ChannelsSubscribed" />
+        /// </summary>
+        public static EventHandler<List<string>> ChannelsSubscribed;
     }
 }

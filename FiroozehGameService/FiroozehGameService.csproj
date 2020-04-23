@@ -83,6 +83,7 @@
         <Compile Include="Handlers\Command\RequestHandlers\CancelAutoMatchHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\CreateRoomHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\FindUserHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\GetChannelsSubscribed.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\GetRoomsHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\InviteListHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\InviteUserHandler.cs"/>
@@ -96,6 +97,7 @@
         <Compile Include="Handlers\Command\ResponseHandlers\AutoMatchResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\BaseResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\CancelAutoMatchResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\ChannelsSubscribedResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\ChatResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\ErrorResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\FindMemberResponseHandler.cs"/>
