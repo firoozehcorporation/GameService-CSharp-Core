@@ -22,6 +22,9 @@ namespace FiroozehGameService.Core.Socket
 
         protected void OnClosed(ErrorArg errorArg)
         {
+            IsAvailable = false;
+            Pwd = null;
+            DataBuilder?.Clear();
             Error?.Invoke(this, errorArg);
         }
 
@@ -47,6 +50,7 @@ namespace FiroozehGameService.Core.Socket
         protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected CancellationTokenSource OperationCancellationToken;
+        public bool IsAvailable;
 
 
         protected readonly byte[] Buffer = new byte[BufferCapacity];

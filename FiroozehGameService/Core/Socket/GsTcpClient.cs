@@ -25,7 +25,6 @@ namespace FiroozehGameService.Core.Socket
             Endpoint = area;
         }
 
-        public bool IsAvailable { get; private set; }
 
         internal override bool Init()
         {
@@ -78,9 +77,7 @@ namespace FiroozehGameService.Core.Socket
                 }
                 catch (Exception e)
                 {
-                    IsAvailable = false;
-                    Pwd = null;
-                    DataBuilder?.Clear();
+                    LogUtil.LogError(this, "StartReceiving : " + e);
                     if (!(e is OperationCanceledException || e is ObjectDisposedException ||
                           e is ArgumentOutOfRangeException))
                         OnClosed(new ErrorArg {Error = e.ToString()});
@@ -101,8 +98,16 @@ namespace FiroozehGameService.Core.Socket
 
         internal override async Task SendAsync(Packet packet)
         {
-            var buffer = PacketSerializer.Serialize(packet, Pwd, Type);
-            if (_clientStream != null) await _clientStream.WriteAsync(buffer, 0, buffer.Length);
+            try
+            {
+                var buffer = PacketSerializer.Serialize(packet, Pwd, Type);
+                if (_clientStream != null) await _clientStream.WriteAsync(buffer, 0, buffer.Length);
+            }
+            catch (Exception e)
+            {
+                LogUtil.LogError(this, "Send -> " + e);
+                OnClosed(new ErrorArg {Error = e.ToString()});
+            }
         }
 
 

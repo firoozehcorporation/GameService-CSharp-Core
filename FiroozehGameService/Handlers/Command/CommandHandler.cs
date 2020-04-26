@@ -154,12 +154,13 @@ namespace FiroozehGameService.Handlers.Command
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+            LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Data);
 
-            GameService.SynchronizationContext?.Send(delegate
-            {
-                LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Data);
+            if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.Core))
                 _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
-            }, null);
+            else
+                GameService.SynchronizationContext?.Send(
+                    delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet); }, null);
         }
 
         #region Fields
