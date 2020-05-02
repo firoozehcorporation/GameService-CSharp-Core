@@ -2,21 +2,21 @@
 using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Handlers.Command.RequestHandlers
+namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
 {
-    internal class SendChannelPrivateMessageHandler : BaseRequestHandler
+    internal class SendChannelPublicMessageHandler : BaseRequestHandler
     {
         public static string Signature
-            => "SEND_PRIVATE_MESSAGE";
+            => "SEND_PUBLIC_MESSAGE";
 
         private static Packet DoAction(Tuple<string, string> channelMessage)
         {
             return new Packet(
                 CommandHandler.PlayerHash,
-                Models.Consts.Command.ActionPrivateChat,
+                Models.Consts.Command.ActionPublicChat,
                 JsonConvert.SerializeObject(
                     new Message(
-                        true,
+                        false,
                         channelMessage.Item1,
                         null,
                         channelMessage.Item2),

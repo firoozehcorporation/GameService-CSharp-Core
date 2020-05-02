@@ -21,8 +21,9 @@
 
 using System;
 using System.Threading.Tasks;
-using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Handlers.Command.RequestHandlers.Chat;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.GSLive;
 
 namespace FiroozehGameService.Core.GSLive
 {
@@ -57,16 +58,6 @@ namespace FiroozehGameService.Core.GSLive
 
 
         /// <summary>
-        ///     Get Channels Subscribe List
-        /// </summary>
-        public async Task ChannelsSubscribed()
-        {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            await GSLive.Handler.CommandHandler.RequestAsync(GetChannelsSubscribed.Signature);
-        }
-
-
-        /// <summary>
         ///     Send Message In SubscribedChannel.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Send Message</param>
@@ -93,6 +84,56 @@ namespace FiroozehGameService.Core.GSLive
                 throw new GameServiceException("memberId Or message Cant Be EmptyOrNull");
             await GSLive.Handler.CommandHandler.RequestAsync(SendChannelPrivateMessageHandler.Signature,
                 Tuple.Create(memberId, message));
+        }
+
+
+        /// <summary>
+        ///     Get Channels Subscribe List
+        /// </summary>
+        public async Task GetChannelsSubscribed()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            await GSLive.Handler.CommandHandler.RequestAsync(GetChannelsSubscribedRequestHandler.Signature);
+        }
+
+
+        /// <summary>
+        ///     Get Channel last 30 Messages
+        /// </summary>
+        /// <param name="channelName">(NOTNULL)Name of Channel You want To Get last 30 Messages</param>
+        public async Task GetChannelRecentMessages(string channelName)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
+            await GSLive.Handler.CommandHandler.RequestAsync(GetChannelRecentMessagesRequestHandler.Signature,
+                new RoomData {Id = channelName});
+        }
+
+
+        /// <summary>
+        ///     Get Channel Members
+        /// </summary>
+        /// <param name="channelName">(NOTNULL)Name of Channel You want To Get Members</param>
+        /// <param name="skip">The skip value</param>
+        /// <param name="limit">(Max = 15) The Limit value</param>
+        public async Task GetChannelMembers(string channelName, int skip = 0, int limit = 10)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
+            if (limit <= 0 || limit > 15) throw new GameServiceException("invalid Limit Value");
+            if (skip < 0) throw new GameServiceException("invalid Skip Value");
+            await GSLive.Handler.CommandHandler.RequestAsync(GetChannelsMembersRequestHandler.Signature,
+                new RoomData {Id = channelName, Min = skip, Max = limit});
+        }
+
+
+        /// <summary>
+        ///     Get Your Pending Messages
+        /// </summary>
+        public async Task GetPendingMessages()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            await GSLive.Handler.CommandHandler.RequestAsync(GetPendingMessagesRequestHandler.Signature);
         }
     }
 }

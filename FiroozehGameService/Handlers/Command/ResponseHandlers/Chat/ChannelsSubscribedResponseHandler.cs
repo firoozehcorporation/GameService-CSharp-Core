@@ -2,7 +2,7 @@
 using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Handlers.Command.ResponseHandlers
+namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
 {
     internal class ChannelSubscribedResponseHandler : BaseResponseHandler
     {

@@ -1,8 +1,7 @@
-﻿using FiroozehGameService.Models.GSLive.Chat;
-using FiroozehGameService.Models.GSLive.Command;
+﻿using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Handlers.Command.ResponseHandlers
+namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
 {
     internal class PublicChatResponseHandler : BaseResponseHandler
     {
@@ -11,7 +10,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            var chat = JsonConvert.DeserializeObject<Chat>(packet.Data);
+            var chat = JsonConvert.DeserializeObject<Models.GSLive.Chat.Chat>(packet.Data);
             ChatEventHandlers.OnChatReceived?.Invoke(null, chat);
         }
     }

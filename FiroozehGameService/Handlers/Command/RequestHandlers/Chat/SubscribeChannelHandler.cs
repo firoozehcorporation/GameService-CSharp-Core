@@ -1,29 +1,31 @@
 ﻿using System;
 using FiroozehGameService.Models.GSLive.Command;
 
-namespace FiroozehGameService.Handlers.Command.RequestHandlers
+namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
 {
-    internal class GetChannelsSubscribed : BaseRequestHandler
+    internal class SubscribeChannelHandler : BaseRequestHandler
     {
         public static string Signature
-            => "GET_CHANNELS_SUBSCRIBED";
+            => "SUBSCRIBE_CHANNEL";
 
-        private static Packet DoAction()
+        private static Packet DoAction(string channelName)
         {
             return new Packet(
                 CommandHandler.PlayerHash,
-                Models.Consts.Command.ActionGetChannelsSubscribed);
+                Models.Consts.Command.ActionSubscribe,
+                null,
+                channelName);
         }
 
         protected override bool CheckAction(object payload)
         {
-            return true;
+            return payload is string;
         }
 
         protected override Packet DoAction(object payload)
         {
             if (!CheckAction(payload)) throw new ArgumentException();
-            return DoAction();
+            return DoAction(payload as string);
         }
     }
 }
