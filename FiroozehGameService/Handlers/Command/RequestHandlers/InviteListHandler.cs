@@ -1,4 +1,5 @@
-﻿using FiroozehGameService.Models.GSLive.Command;
+﻿using System;
+using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers
@@ -8,20 +9,26 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "INVITE_LIST";
 
-        public InviteListHandler(){}
-
         private static Packet DoAction(RoomDetail inviteOptions)
-            => new Packet(
+        {
+            return new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionGetInviteList,
-                JsonConvert.SerializeObject(inviteOptions, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
-                );
+                JsonConvert.SerializeObject(inviteOptions, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore
+                }));
+        }
+
         protected override bool CheckAction(object payload)
-           => payload.GetType() == typeof(RoomDetail);
+        {
+            return payload.GetType() == typeof(RoomDetail);
+        }
 
         protected override Packet DoAction(object payload)
         {
-            if (!CheckAction(payload)) throw new System.ArgumentException();
+            if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction(payload as RoomDetail);
         }
     }

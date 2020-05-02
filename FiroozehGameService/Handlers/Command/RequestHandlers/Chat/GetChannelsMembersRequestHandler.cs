@@ -15,8 +15,11 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionChatRoomDetails,
                 JsonConvert.SerializeObject(room,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore})
-            );
+                    new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        DefaultValueHandling = DefaultValueHandling.Ignore
+                    }));
         }
 
         protected override bool CheckAction(object payload)

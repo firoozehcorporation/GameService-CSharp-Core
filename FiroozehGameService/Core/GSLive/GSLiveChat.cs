@@ -23,7 +23,7 @@ using System;
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command.RequestHandlers.Chat;
 using FiroozehGameService.Models;
-using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Core.GSLive
 {
@@ -106,7 +106,7 @@ namespace FiroozehGameService.Core.GSLive
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (string.IsNullOrEmpty(channelName)) throw new GameServiceException("channelName Cant Be EmptyOrNull");
             await GSLive.Handler.CommandHandler.RequestAsync(GetChannelRecentMessagesRequestHandler.Signature,
-                new RoomData {Id = channelName});
+                new RoomDetail {Id = channelName});
         }
 
 
@@ -123,7 +123,7 @@ namespace FiroozehGameService.Core.GSLive
             if (limit <= 0 || limit > 15) throw new GameServiceException("invalid Limit Value");
             if (skip < 0) throw new GameServiceException("invalid Skip Value");
             await GSLive.Handler.CommandHandler.RequestAsync(GetChannelsMembersRequestHandler.Signature,
-                new RoomData {Id = channelName, Min = skip, Max = limit});
+                new RoomDetail {Id = channelName, Min = skip, Max = limit});
         }
 
 

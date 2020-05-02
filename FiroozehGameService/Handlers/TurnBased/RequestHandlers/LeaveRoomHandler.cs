@@ -1,4 +1,4 @@
-﻿using FiroozehGameService.Handlers.RealTime;
+﻿using System;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
@@ -12,20 +12,28 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "LEAVE_ROOM";
 
-        public LeaveRoomHandler() {}
-
         private static Packet DoAction(DataPayload payload)
-            => new Packet(TurnBasedHandler.PlayerHash,TB.OnLeave,
-                JsonConvert.SerializeObject(payload, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
-        
+        {
+            return new Packet(TurnBasedHandler.PlayerHash, TB.OnLeave,
+                JsonConvert.SerializeObject(payload
+                    , new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        DefaultValueHandling = DefaultValueHandling.Ignore
+                    })
+            );
+        }
+
         protected override Packet DoAction(object payload)
-        { 
+        {
             if (!TurnBasedHandler.IsAvailable) throw new GameServiceException("GSLiveTurnBased Not Available yet");
-            if (!CheckAction(payload)) throw new System.ArgumentException();
+            if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction(payload as DataPayload);
         }
 
         protected override bool CheckAction(object payload)
-            => payload.GetType() == typeof(DataPayload);
+        {
+            return payload.GetType() == typeof(DataPayload);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FiroozehGameService.Core.GSLive;
+﻿using System;
+using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
@@ -8,9 +9,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
     internal class CreateRoomHandler : BaseRequestHandler
     {
         public static string Signature =>
-          "CREATE_ROOM";
-
-        public CreateRoomHandler() {}
+            "CREATE_ROOM";
 
         private static Packet DoAction(GSLiveOption.CreateRoomOption options)
         {
@@ -27,16 +26,22 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                     IsPrivate = options.IsPrivate,
                     IsPersist = options.IsPersist,
                     Type = Models.Consts.Command.ActionCreateRoom,
-                    GsLiveType = (int)options.GsLiveType
+                    GsLiveType = (int) options.GsLiveType
+                }, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore
                 }));
         }
 
         protected override bool CheckAction(object payload)
-            => payload.GetType() == typeof(GSLiveOption.CreateRoomOption);
+        {
+            return payload.GetType() == typeof(GSLiveOption.CreateRoomOption);
+        }
 
         protected override Packet DoAction(object payload)
         {
-            if (!CheckAction(payload)) throw new System.ArgumentException();
+            if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction(payload as GSLiveOption.CreateRoomOption);
         }
     }

@@ -15,7 +15,11 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionGetLastChats,
                 JsonConvert.SerializeObject(room,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore})
+                    new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        DefaultValueHandling = DefaultValueHandling.Ignore
+                    })
             );
         }
 

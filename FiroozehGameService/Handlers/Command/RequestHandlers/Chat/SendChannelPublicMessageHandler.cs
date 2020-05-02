@@ -20,7 +20,11 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
                         channelMessage.Item1,
                         null,
                         channelMessage.Item2),
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore})
+                    new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        DefaultValueHandling = DefaultValueHandling.Ignore
+                    })
             );
         }
 

@@ -15,7 +15,11 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionFindMember,
                 JsonConvert.SerializeObject(options,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore})
+                    new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore,
+                        DefaultValueHandling = DefaultValueHandling.Ignore
+                    })
             );
         }
 
