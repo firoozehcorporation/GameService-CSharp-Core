@@ -4,32 +4,35 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
-    internal class SendChannelMessageHandler : BaseRequestHandler
+    internal class SendChannelPublicMessageHandler : BaseRequestHandler
     {
         public static string Signature
-            => "SEND_MESSAGE";
-
-        public SendChannelMessageHandler(){}
+            => "SEND_PUBLIC_MESSAGE";
 
         private static Packet DoAction(Tuple<string, string> channelMessage)
-            => new Packet(
+        {
+            return new Packet(
                 CommandHandler.PlayerHash,
-                Models.Consts.Command.ActionChat,
+                Models.Consts.Command.ActionPublicChat,
                 JsonConvert.SerializeObject(
                     new Message(
-                        false, 
+                        false,
                         channelMessage.Item1,
                         null,
-                        channelMessage.Item2), new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })
-                );
+                        channelMessage.Item2),
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore})
+            );
+        }
 
         protected override bool CheckAction(object payload)
-           => payload.GetType() == typeof(Tuple<string,string>);
+        {
+            return payload.GetType() == typeof(Tuple<string, string>);
+        }
 
         protected override Packet DoAction(object payload)
         {
             if (!CheckAction(payload)) throw new ArgumentException();
-            return DoAction(payload as Tuple<string,string>);
+            return DoAction(payload as Tuple<string, string>);
         }
     }
 }

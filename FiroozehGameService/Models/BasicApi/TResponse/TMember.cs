@@ -5,10 +5,10 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi.TResponse
 {
     [Serializable]
-    internal class TEditUser
+    internal class TMember
     {
         [JsonProperty("status")] public bool Status { set; get; }
 
-        [JsonProperty("user")] public Member Member { set; get; }
+        [JsonProperty("data")] public Member Member { set; get; }
     }
 }

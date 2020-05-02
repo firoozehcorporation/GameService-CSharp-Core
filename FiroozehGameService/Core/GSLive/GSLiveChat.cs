@@ -55,6 +55,17 @@ namespace FiroozehGameService.Core.GSLive
             await GSLive.Handler.CommandHandler.RequestAsync(UnsubscribeChannelHandler.Signature, channelName);
         }
 
+
+        /// <summary>
+        ///     Get Channels Subscribe List
+        /// </summary>
+        public async Task ChannelsSubscribed()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            await GSLive.Handler.CommandHandler.RequestAsync(GetChannelsSubscribed.Signature);
+        }
+
+
         /// <summary>
         ///     Send Message In SubscribedChannel.
         /// </summary>
@@ -65,18 +76,23 @@ namespace FiroozehGameService.Core.GSLive
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (string.IsNullOrEmpty(channelName) && string.IsNullOrEmpty(message))
                 throw new GameServiceException("channelName Or message Cant Be EmptyOrNull");
-            await GSLive.Handler.CommandHandler.RequestAsync(SendChannelMessageHandler.Signature,
+            await GSLive.Handler.CommandHandler.RequestAsync(SendChannelPublicMessageHandler.Signature,
                 Tuple.Create(channelName, message));
         }
 
 
         /// <summary>
-        ///     Get Channels Subscribe List
+        ///     Send Message To Member.
         /// </summary>
-        public async Task ChannelsSubscribed()
+        /// <param name="memberId">(NOTNULL)ID of Member You want To Send Message</param>
+        /// <param name="message">(NOTNULL)Message Data</param>
+        public async Task SendPrivateMessage(string memberId, string message)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            await GSLive.Handler.CommandHandler.RequestAsync(GetChannelsSubscribed.Signature);
+            if (string.IsNullOrEmpty(memberId) && string.IsNullOrEmpty(message))
+                throw new GameServiceException("memberId Or message Cant Be EmptyOrNull");
+            await GSLive.Handler.CommandHandler.RequestAsync(SendChannelPrivateMessageHandler.Signature,
+                Tuple.Create(memberId, message));
         }
     }
 }

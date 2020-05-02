@@ -21,64 +21,62 @@
 
 
 using System;
+using FiroozehGameService.Models.GSLive;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
 {
     /// <summary>
-    /// Represents Score Data Model In Game Service Basic API
+    ///     Represents Score Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class Score
     {
-
         /// <summary>
-        /// Gets the Game id.
+        ///     Gets the Game id.
         /// </summary>
         /// <value>the Game id</value>
         [JsonProperty("game")]
         public string Game { set; get; }
 
-        
-        /// <summary>
-        /// Gets the User Submit this Score.
-        /// </summary>
-        /// <value>the User Submit this Score</value>
-        [JsonProperty("user")]
-        public User User { set; get; }
 
         /// <summary>
-        /// Gets the Value of This Score.
+        ///     Gets the Member Submit this Score.
+        /// </summary>
+        /// <value>the Member Submit this Score</value>
+        [JsonProperty("member")]
+        public Member Submitter { set; get; }
+
+        /// <summary>
+        ///     Gets the Value of This Score.
         /// </summary>
         /// <value>the Value of This Score</value>
         [JsonProperty("value")]
         public int Value { set; get; }
-    
-        
+
+
         /// <summary>
-        /// Gets the Rank of This Score.
+        ///     Gets the Rank of This Score.
         /// </summary>
         /// <value>the Rank of This Score</value>
         [JsonProperty("rank")]
         public int Rank { set; get; }
-    
+
         /// <summary>
-        /// Gets the Tries Count of This Score.
+        ///     Gets the Tries Count of This Score.
         /// </summary>
         /// <value>the Tries Count of This Score</value>
         [JsonProperty("tries")]
         public int Tries { set; get; }
-    
-            
+
 
         public override string ToString()
         {
             return "Score{" +
                    "game='" + Game + '\'' +
-                   ", user='" + User + '\'' +
+                   ", Submitter='" + Submitter + '\'' +
                    ", value=" + Value +
                    '}';
         }
     }
 }
-

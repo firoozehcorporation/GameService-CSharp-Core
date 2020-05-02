@@ -1,13 +1,13 @@
-﻿using FiroozehGameService.Models.GSLive.Command;
+﻿using FiroozehGameService.Models.GSLive.Chat;
+using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
-using Chat = FiroozehGameService.Models.GSLive.Chat.Chat;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 {
-    internal class ChatResponseHandler : BaseResponseHandler
+    internal class PublicChatResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand 
-            => Models.Consts.Command.ActionChat;
+        public static int ActionCommand
+            => Models.Consts.Command.ActionPublicChat;
 
         protected override void HandleResponse(Packet packet)
         {

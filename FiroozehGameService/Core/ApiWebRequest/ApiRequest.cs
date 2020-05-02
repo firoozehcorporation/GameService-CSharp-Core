@@ -8,6 +8,7 @@ using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
 using FiroozehGameService.Models.BasicApi.TResponse;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
@@ -158,15 +159,15 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<User> GetCurrentPlayer()
+        internal static async Task<Member> GetCurrentPlayer()
         {
-            var response = await GsWebRequest.Get(Api.CurrentUserData, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.GetMemberData, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<TUser>(await reader.ReadToEndAsync())
-                        .User;
+                    return JsonConvert.DeserializeObject<TMember>(await reader.ReadToEndAsync())
+                        .Member;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message);
             }
@@ -186,12 +187,26 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
-        internal static async Task<User> EditCurrentPlayer(EditUserProfile editUserProfile)
+
+        internal static async Task<Member> GetMemberData(string memberId)
+        {
+            var response = await GsWebRequest.Get(Api.GetMemberData + memberId, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Member>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
+            }
+        }
+
+        internal static async Task<Member> EditCurrentPlayer(EditUserProfile editUserProfile)
         {
             if (editUserProfile.Logo != null)
             {
                 var result = await ImageUtil.UploadProfileImage(editUserProfile.Logo);
-                LogUtil.Log(null,result.Url);
+                LogUtil.Log(null, result.Url);
             }
 
             var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
@@ -208,7 +223,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<TEditUser>(await reader.ReadToEndAsync())
-                        .User;
+                        .Member;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message);
             }

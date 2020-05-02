@@ -20,7 +20,8 @@ namespace FiroozehGameService.Models.Consts
         public const int ActionFindMember = 10;
         public const int ActionNotification = 11;
         public const int ActionSubscribe = 12;
-        public const int ActionChat = 13;
+        public const int ActionPublicChat = 13;
+        public const int ActionPrivateChat = 18;
         public const int ActionUnSubscribe = 14;
         public const int ActionOnInvite = 15;
         public const int ActionCancelAutoMatch = 16;

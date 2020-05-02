@@ -29,10 +29,12 @@ using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
+using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
+using Game = FiroozehGameService.Models.Internal.Game;
 
 namespace FiroozehGameService.Core
 {
@@ -165,7 +167,7 @@ namespace FiroozehGameService.Core
         ///     With this command you can get information about the current player is playing
         /// </summary>
         /// <value> return CurrentPlayer Data </value>
-        public static async Task<User> GetCurrentPlayer()
+        public static async Task<Member> GetCurrentPlayer()
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetCurrentPlayer();
@@ -177,6 +179,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         /// <param name="userId">(Not NULL)The ID of User you Want To get Detail</param>
         /// <value> return User Data </value>
+        [Obsolete("This Method is Deprecated,Use GetMemberData() Instead")]
         public static async Task<User> GetUserData(string userId)
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
@@ -187,10 +190,24 @@ namespace FiroozehGameService.Core
 
 
         /// <summary>
+        ///     With this command you can get a Member Data with the Member ID
+        /// </summary>
+        /// <param name="memberId">(Not NULL)The ID of Member you Want To get Detail</param>
+        /// <value> return Member Data </value>
+        public static async Task<Member> GetMemberData(string memberId)
+        {
+            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if (string.IsNullOrEmpty(memberId))
+                throw new GameServiceException("memberId Cant Be EmptyOrNull");
+            return await ApiRequest.GetMemberData(memberId);
+        }
+
+
+        /// <summary>
         ///     With this command you can Edit information about the current player is playing
         /// </summary>
-        /// <value> return CurrentPlayer Data </value>
-        public static async Task<User> EditCurrentPlayerProfile(EditUserProfile profile)
+        /// <value> return Edited Current Member Data Data </value>
+        public static async Task<Member> EditCurrentPlayerProfile(EditUserProfile profile)
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             if (profile == null) throw new GameServiceException("EditUserProfile Cant Be Null");
@@ -536,7 +553,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "2.2.3";
+            return "2.3.0";
         }
 
 
