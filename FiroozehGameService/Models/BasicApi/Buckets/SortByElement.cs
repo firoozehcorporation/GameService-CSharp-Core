@@ -25,23 +25,30 @@ using FiroozehGameService.Models.Enums;
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents SortByOptionData Model In Game Service Basic API
+    ///     Represents SortByOptionData Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class SortByElement : BucketOption
     {
-        private string ElementName { get; }
-        private BucketSortOrder SortOrder { get; }
+        private string _elementName;
+        private BucketSortOrder _sortOrder;
 
+        /// <summary>
+        ///     the SortByElement BucketOption
+        /// </summary>
+        /// <param name="elementName">the name of Element you want to Sort by it</param>
+        /// <param name="sortOrder">the sortOrder you want to Sort by it</param>
         public SortByElement(string elementName, BucketSortOrder sortOrder)
         {
-            ElementName = string.IsNullOrEmpty(elementName) ? throw new GameServiceException("ElementName Cant Be EmptyOrNull") : ElementName = elementName;
-            SortOrder = sortOrder;
+            _elementName = string.IsNullOrEmpty(elementName)
+                ? throw new GameServiceException("ElementName Cant Be EmptyOrNull")
+                : _elementName = elementName;
+            _sortOrder = sortOrder;
         }
-        
+
         internal override string GetParsedData()
         {
-            return "&sortby=" + ElementName + "&sort=" + (int)SortOrder;
+            return "&sortby=" + _elementName + "&sort=" + (int) _sortOrder;
         }
     }
 }

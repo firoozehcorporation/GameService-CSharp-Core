@@ -26,26 +26,23 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi
 {
     /// <summary>
-    /// Represents LeaderBoardDetails Data Model In Game Service Basic API
+    ///     Represents LeaderBoardDetails Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class LeaderBoardDetails
     {
-
         /// <summary>
-        /// Gets the LeaderBoard.
+        ///     Gets the LeaderBoard.
         /// </summary>
         /// <value>the LeaderBoard</value>
-        [JsonProperty("leaderboard")]
-        public LeaderBoard Leaderboard { set; get; }
+        [JsonProperty("leaderboard")] public LeaderBoard Leaderboard;
 
-        
+
         /// <summary>
-        /// Gets the List Of Scores.
+        ///     Gets the List Of Scores.
         /// </summary>
         /// <value>the List Of Scores</value>
-        [JsonProperty("scores")]
-        public List<Score> Scores { set; get; }
+        [JsonProperty("scores")] public List<Score> Scores;
 
         public override string ToString()
         {
@@ -54,7 +51,5 @@ namespace FiroozehGameService.Models.BasicApi
                    ", scores=" + Scores +
                    '}';
         }
-     
     }
 }
-

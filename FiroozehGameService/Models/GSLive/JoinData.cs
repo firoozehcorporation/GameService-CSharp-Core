@@ -21,34 +21,29 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive
 {
     /// <summary>
-    /// Represents JoinData Data Model In GameService MultiPlayer System (GSLive)
+    ///     Represents JoinData Data Model In GameService MultiPlayer System (GSLive)
     /// </summary>
     [Serializable]
     public class JoinData
     {
-        
         /// <summary>
-        /// Gets the Room Join Type.
-        /// </summary>
-        /// <value>the Room Join Type</value>
-        /// <see cref="Enums.GSLive.JoinType"/>
-        [JsonProperty("1")]
-        public JoinType JoinType { get; set; }
-        
-        
-        /// <summary>
-        /// Gets the Room Join Data.
-        /// </summary>
-        /// <value>the Room Join Data</value>
-        [JsonProperty("2")]
-        public RoomData RoomData { get; set; }
-        
-        
-        /// <summary>
-        /// Gets the Player Member Who Joined To Room.
+        ///     Gets the Player Member Who Joined To Room.
         /// </summary>
         /// <value>the Player Member Who Joined To Room</value>
-        [JsonProperty("3")]
-        public Member JoinedMember { get; set; }
+        [JsonProperty("3")] public Member JoinedMember;
+
+        /// <summary>
+        ///     Gets the Room Join Type.
+        /// </summary>
+        /// <value>the Room Join Type</value>
+        /// <see cref="Enums.GSLive.JoinType" />
+        [JsonProperty("1")] public JoinType JoinType;
+
+
+        /// <summary>
+        ///     Gets the Room Join Data.
+        /// </summary>
+        /// <value>the Room Join Data</value>
+        [JsonProperty("2")] public RoomData RoomData;
     }
 }

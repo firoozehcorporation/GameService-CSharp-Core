@@ -24,23 +24,28 @@ using System;
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents ConstraintOptionData Model In Game Service Basic API
+    ///     Represents ConstraintOptionData Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class Constraint : BucketOption
     {
-        private int Skip { get; }
-        private int Limit { get; }
+        private int _limit;
+        private int _skip;
 
+        /// <summary>
+        ///     Constraint BucketOption
+        /// </summary>
+        /// <param name="skip">Skip Value for Constraint BucketOption</param>
+        /// <param name="limit">Limit Value for Constraint BucketOption</param>
         public Constraint(int skip, int limit)
         {
-            Skip = skip < 0 ? throw new GameServiceException("Invalid Skip Value") : Skip = skip;
-            Limit = limit <= 0 || limit > 200 ? throw new GameServiceException("Invalid Limit Value") : Limit = limit;
+            _skip = skip < 0 ? throw new GameServiceException("Invalid Skip Value") : _skip = skip;
+            _limit = limit <= 0 || limit > 200 ? throw new GameServiceException("Invalid Limit Value") : _limit = limit;
         }
-        
+
         internal override string GetParsedData()
         {
-            return "&skip=" + Skip + "&limit=" + Limit;
+            return "&skip=" + _skip + "&limit=" + _limit;
         }
     }
 }

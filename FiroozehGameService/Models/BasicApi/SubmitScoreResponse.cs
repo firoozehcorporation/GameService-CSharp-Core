@@ -23,38 +23,33 @@ using Newtonsoft.Json;
 */
 
 
-
 namespace FiroozehGameService.Models.BasicApi
 {
     /// <summary>
-    /// Represents SubmitScoreResponse Data Model In Game Service Basic API
+    ///     Represents SubmitScoreResponse Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class SubmitScoreResponse
     {
         /// <summary>
-        /// Gets the LeaderBoard.
+        ///     Gets the LeaderBoard.
         /// </summary>
         /// <value>the LeaderBoard</value>
-        [JsonProperty("leaderboard_r")]
-        public LeaderBoard Leaderboard { set; get; }
+        [JsonProperty("leaderboard_r")] public LeaderBoard Leaderboard;
 
-        
+
         /// <summary>
-        /// Gets the Score Value.
+        ///     Gets the Score Value.
         /// </summary>
         /// <value>the Score Value</value>
-        [JsonProperty("score")]
-        public int Score { set; get; }
-        
-        
+        [JsonProperty("score")] public int Score;
+
+
         /// <summary>
-        /// Gets the Tries Value.
-        /// How Many Tries To Submit Score
+        ///     Gets the Tries Value.
+        ///     How Many Tries To Submit Score
         /// </summary>
         /// <value>the Tries Value</value>
-        [JsonProperty("tries")]
-        public int Tries { set; get; }
-               
+        [JsonProperty("tries")] public int Tries;
     }
 }

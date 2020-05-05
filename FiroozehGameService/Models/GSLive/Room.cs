@@ -34,79 +34,30 @@ namespace FiroozehGameService.Models.GSLive
     public class Room
     {
         /// <summary>
-        ///     Gets the Room id.
-        ///     You Can Use it In MultiPlayer Functions that Needs Room id
-        /// </summary>
-        /// <value>the Room id</value>
-        [JsonProperty("_id")]
-        public string Id { set; get; }
-
-
-        /// <summary>
-        ///     Gets the Room Name.
-        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
-        /// </summary>
-        /// <value>the Room Name</value>
-        [JsonProperty("name")]
-        public string Name { set; get; }
-
-
-        /// <summary>
-        ///     Gets the Room Logo URL.
-        /// </summary>
-        /// <value>the Room Logo URL</value>
-        [JsonProperty("logo")]
-        public string Logo { set; get; }
-
-
-        /// <summary>
         ///     Gets the Room Creator Id.
         /// </summary>
         /// <value>the Room Creator Id</value>
-        [JsonProperty("creator")]
-        public string Creator { set; get; }
-
-        /// <summary>
-        ///     Gets the Room Players Member Id.
-        /// </summary>
-        /// <value>the Room Players Member Id</value>
-        [JsonProperty("members")]
-        public string[] PlayersId { set; get; }
-
-
-        /// <summary>
-        ///     Gets the Room Minimum Member Value To Accept.
-        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
-        /// </summary>
-        /// <value>the Room Minimum Member Value To Accept</value>
-        [JsonProperty("min")]
-        public int Min { set; get; }
-
-
-        /// <summary>
-        ///     Gets the Room Minimum Member Value To Accept.
-        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
-        /// </summary>
-        /// <value>the Room Maximum Member Value To Accept</value>
-        [JsonProperty("max")]
-        public int Max { set; get; }
-
-
-        /// <summary>
-        ///     Gets the Room Role Value.
-        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
-        /// </summary>
-        /// <value>the Room Role Value</value>
-        [JsonProperty("role")]
-        public string Role { set; get; }
+        [JsonProperty("creator")] public string Creator;
 
 
         /// <summary>
         ///     Gets the Game Id
         /// </summary>
         /// <value>the the Game Id</value>
-        [JsonProperty("game")]
-        public string GameId { set; get; }
+        [JsonProperty("game")] public string GameId;
+
+        /// <summary>
+        ///     Gets the Room Type
+        /// </summary>
+        /// <value>the Room Type</value>
+        [JsonProperty("syncMode")] public GSLiveType GsLiveType;
+
+        /// <summary>
+        ///     Gets the Room id.
+        ///     You Can Use it In MultiPlayer Functions that Needs Room id
+        /// </summary>
+        /// <value>the Room id</value>
+        [JsonProperty("_id")] public string Id;
 
 
         /// <summary>
@@ -114,22 +65,58 @@ namespace FiroozehGameService.Models.GSLive
         ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
         /// </summary>
         /// <value>the Room Privacy Value</value>
-        [JsonProperty("private")]
-        public bool IsPrivate { set; get; }
+        [JsonProperty("private")] public bool IsPrivate;
+
+
+        /// <summary>
+        ///     Gets the Room Logo URL.
+        /// </summary>
+        /// <value>the Room Logo URL</value>
+        [JsonProperty("logo")] public string Logo;
+
+
+        /// <summary>
+        ///     Gets the Room Minimum Member Value To Accept.
+        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
+        /// </summary>
+        /// <value>the Room Maximum Member Value To Accept</value>
+        [JsonProperty("max")] public int Max;
+
+
+        /// <summary>
+        ///     Gets the Room Minimum Member Value To Accept.
+        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
+        /// </summary>
+        /// <value>the Room Minimum Member Value To Accept</value>
+        [JsonProperty("min")] public int Min;
+
+
+        /// <summary>
+        ///     Gets the Room Name.
+        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
+        /// </summary>
+        /// <value>the Room Name</value>
+        [JsonProperty("name")] public string Name;
+
+        /// <summary>
+        ///     Gets the Room Players Member Id.
+        /// </summary>
+        /// <value>the Room Players Member Id</value>
+        [JsonProperty("members")] public string[] PlayersId;
+
+
+        /// <summary>
+        ///     Gets the Room Role Value.
+        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
+        /// </summary>
+        /// <value>the Room Role Value</value>
+        [JsonProperty("role")] public string Role;
 
 
         /// <summary>
         ///     Gets the Room Status Value.
         /// </summary>
         /// <value>the Room Status Value</value>
-        [JsonProperty("status")]
-        public int Status { set; get; }
-
-        /// <summary>
-        ///     Gets the Room Type
-        /// </summary>
-        /// <value>the Room Type</value>
-        [JsonProperty("syncMode")]
-        public GSLiveType GsLiveType { set; get; }
+        [JsonProperty("status")] public int Status;
     }
 }

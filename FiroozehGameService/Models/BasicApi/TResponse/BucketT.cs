@@ -1,13 +1,12 @@
+using System;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi.TResponse
 {
+    [Serializable]
     internal class BucketT<TBucket>
     {
-        [JsonProperty("status")]
-        public bool Status { set; get; }
-               
-        [JsonProperty("data")]
-        public TBucket BucketData { set; get; }
+        [JsonProperty("data")] public TBucket BucketData;
+        [JsonProperty("status")] public bool Status;
     }
 }

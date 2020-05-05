@@ -27,50 +27,44 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
-    /// Represents Notification Model In Game Service Command
+    ///     Represents Notification Model In Game Service Command
     /// </summary>
     [Serializable]
     public class Notification
     {
         /// <summary>
-        /// Gets the Notification Title
-        /// </summary>
-        /// <value>the Notification Title</value>
-        [JsonProperty("1")]
-        public string Title { get; internal set; }
-
-        
-        /// <summary>
-        /// Gets the Notification Description
-        /// </summary>
-        /// <value>the Notification Description</value>
-        [JsonProperty("2")]
-        public string Description { get; internal set; }
-
-        /// <summary>
-        /// Gets the Notification Action Type
-        /// </summary>
-        /// <value>the Notification Action Type</value>
-        [JsonProperty("4")]
-        public TapActionType TapActionType = TapActionType.CloseNotification;
-
-        
-        /// <summary>
-        /// Gets the Notification Action Data
+        ///     Gets the Notification Action Data
         /// </summary>
         /// <value>the Notification Action Data</value>
-        [JsonProperty("5")]
-        public NotificationActionData ActionData { get; internal set; }
-        
-        
+        [JsonProperty("5")] public NotificationActionData ActionData;
+
+
         /// <summary>
-        /// Gets the Notification Json Data
+        ///     Gets the Notification Description
+        /// </summary>
+        /// <value>the Notification Description</value>
+        [JsonProperty("2")] public string Description;
+
+
+        /// <summary>
+        ///     Gets the Notification Json Data
         /// </summary>
         /// <value>the Notification Json Data</value>
-        [JsonProperty("6")]
-        public string JsonData { get; internal set; }
+        [JsonProperty("6")] public string JsonData;
 
-        
+        /// <summary>
+        ///     Gets the Notification Action Type
+        /// </summary>
+        /// <value>the Notification Action Type</value>
+        [JsonProperty("4")] public TapActionType TapActionType = TapActionType.CloseNotification;
+
+        /// <summary>
+        ///     Gets the Notification Title
+        /// </summary>
+        /// <value>the Notification Title</value>
+        [JsonProperty("1")] public string Title;
+
+
         public override string ToString()
         {
             return "Title : " + Title +

@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 {
-    internal class FindMemberInboxResponseHandler : BaseResponseHandler
+    internal class FindMemberResponseHandler : BaseResponseHandler
     {
         public static int ActionCommand
             => Models.Consts.Command.ActionFindMember;

@@ -14,6 +14,7 @@
 //    limitations under the License.
 // </copyright>
 
+using System;
 using Newtonsoft.Json;
 
 /**
@@ -24,31 +25,33 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.TB
 {
     /// <summary>
-    /// Represents Outcome Data Model In GameService TurnBased MultiPlayer System
+    ///     Represents Outcome Data Model In GameService TurnBased MultiPlayer System
     /// </summary>
+    [Serializable]
     public class Outcome
     {
-        
         /// <summary>
-        /// Gets the Placement of Outcome.
+        ///     Gets the Placement of Outcome.
         /// </summary>
         /// <value>the Placement of Outcome</value>
-        [JsonProperty("0")]
-        public int Placement { set; get; }
-        
-        
+        [JsonProperty("0")] public int Placement;
+
+
         /// <summary>
-        /// Gets the Result of Outcome.
+        ///     Gets the Result of Outcome.
         /// </summary>
         /// <value>the Result of Outcome</value>
-        [JsonProperty("1")]
-        public string Result { set; get; }
+        [JsonProperty("1")] public string Result;
 
-      
+
+        /// <summary>
+        ///     Equals of Outcomes
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         protected bool Equals(Outcome other)
         {
             return Placement == other.Placement && string.Equals(Result, other.Result);
         }
-
     }
 }

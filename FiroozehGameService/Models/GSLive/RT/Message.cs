@@ -32,34 +32,29 @@ namespace FiroozehGameService.Models.GSLive.RT
     public class Message
     {
         /// <summary>
-        ///     Gets the RoomId Receive This Message.
+        ///     Gets the Message Data
         /// </summary>
-        /// <value>the RoomId Receive This Message</value>
-        [JsonProperty("1")]
-        public string RoomId { set; get; }
-
-
-        /// <summary>
-        ///     Gets the Sender Member Id.
-        /// </summary>
-        /// <value>the Sender Id</value>
-        [JsonProperty("2")]
-        public string SenderId { set; get; }
+        /// <value>the Message Data</value>
+        [JsonProperty("4")] public string Data;
 
 
         /// <summary>
         ///     Gets the Receiver Member Id.
         /// </summary>
         /// <value>the Receiver Id</value>
-        [JsonProperty("3")]
-        public string ReceiverId { set; get; }
+        [JsonProperty("3")] public string ReceiverId;
+
+        /// <summary>
+        ///     Gets the RoomId Receive This Message.
+        /// </summary>
+        /// <value>the RoomId Receive This Message</value>
+        [JsonProperty("1")] public string RoomId;
 
 
         /// <summary>
-        ///     Gets the Message Data
+        ///     Gets the Sender Member Id.
         /// </summary>
-        /// <value>the Message Data</value>
-        [JsonProperty("4")]
-        public string Data { set; get; }
+        /// <value>the Sender Id</value>
+        [JsonProperty("2")] public string SenderId;
     }
 }

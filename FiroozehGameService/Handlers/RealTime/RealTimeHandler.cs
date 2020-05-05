@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
@@ -65,7 +63,9 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void InitRequestMessageHandlers()
         {
-            var baseInterface = typeof(IRequestHandler);
+            // this implementation not working on IL2CPP
+
+            /*var baseInterface = typeof(IRequestHandler);
             var subclassTypes = Assembly
                 .GetAssembly(baseInterface)
                 .GetTypes()
@@ -77,11 +77,20 @@ namespace FiroozehGameService.Handlers.RealTime
                     .GetValue(null);
                 _requestHandlers.Add(p, (IRequestHandler) Activator.CreateInstance(type));
             }
+            */
+
+            _requestHandlers.Add(AuthorizationHandler.Signature, new AuthorizationHandler());
+            _requestHandlers.Add(GetMemberHandler.Signature, new GetMemberHandler());
+            _requestHandlers.Add(LeaveRoomHandler.Signature, new LeaveRoomHandler());
+            _requestHandlers.Add(SendPrivateMessageHandler.Signature, new SendPrivateMessageHandler());
+            _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
         }
 
         private void InitResponseMessageHandlers()
         {
-            var baseInterface = typeof(IResponseHandler);
+            // this implementation not working on IL2CPP
+
+            /*var baseInterface = typeof(IResponseHandler);
             var subclassTypes = Assembly
                 .GetAssembly(baseInterface)
                 .GetTypes()
@@ -93,6 +102,15 @@ namespace FiroozehGameService.Handlers.RealTime
                     .GetValue(null);
                 _responseHandlers.Add(p, (IResponseHandler) Activator.CreateInstance(type));
             }
+            */
+
+            _responseHandlers.Add(AuthResponseHandler.ActionCommand, new AuthResponseHandler());
+            _responseHandlers.Add(ErrorResponseHandler.ActionCommand, new ErrorResponseHandler());
+            _responseHandlers.Add(JoinRoomResponseHandler.ActionCommand, new JoinRoomResponseHandler());
+            _responseHandlers.Add(LeaveRoomResponseHandler.ActionCommand, new LeaveRoomResponseHandler());
+            _responseHandlers.Add(MemberDetailsResponseHandler.ActionCommand, new MemberDetailsResponseHandler());
+            _responseHandlers.Add(PrivateMessageResponseHandler.ActionCommand, new PrivateMessageResponseHandler());
+            _responseHandlers.Add(PublicMessageResponseHandler.ActionCommand, new PublicMessageResponseHandler());
         }
 
 

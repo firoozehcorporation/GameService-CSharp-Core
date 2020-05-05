@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Models.BasicApi;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.Internal
@@ -8,49 +7,33 @@ namespace FiroozehGameService.Models.Internal
     [Serializable]
     internal class Game
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
-        
-        [JsonProperty("_id")]
-        public string _Id { get; set; }
-        
-        [JsonProperty("name")]
-        public string Name { get; set; }
-        
-        [JsonProperty("package")]
-        public string Package { get; set; }
-        
-        [JsonProperty("category")]
-        public string Category { get; set; }
-        
-        [JsonProperty("installed")]
-        public int Installed { get; set; }
-        
-        [JsonProperty("explane")]
-        public string Explane { get; set; }
-        
-        [JsonProperty("created")]
-        public int Created { get; set; }
-        
-        [JsonProperty("link")]
-        public string Link { get; set; }
-        
-        [JsonProperty("status")]
-        public int Status { get; set; }
-        
-        [JsonProperty("logoURL")]
-        public string LogoUrl { get; set; }
-        
-        [JsonProperty("coverURL")]
-        public string CoverUrl { get; set; }
-        
-        [JsonProperty("publisher")]
-        public Publisher Publisher { get; set; }
-        
-        [JsonProperty("pictures")]
-        public List<string> Pictures { get; set; }
-        
-        [JsonProperty("platforms")]
-        public List<Platform> Platforms { get; set; }
+        [JsonProperty("_id")] public string _Id;
+
+        [JsonProperty("category")] public string Category;
+
+        [JsonProperty("coverURL")] public string CoverUrl;
+
+        [JsonProperty("created")] public int Created;
+
+        [JsonProperty("explane")] public string Explane;
+        [JsonProperty("id")] public string Id;
+
+        [JsonProperty("installed")] public int Installed;
+
+        [JsonProperty("link")] public string Link;
+
+        [JsonProperty("logoURL")] public string LogoUrl;
+
+        [JsonProperty("name")] public string Name;
+
+        [JsonProperty("package")] public string Package;
+
+        [JsonProperty("pictures")] public List<string> Pictures;
+
+        [JsonProperty("platforms")] public List<Platform> Platforms;
+
+        [JsonProperty("publisher")] public Publisher Publisher;
+
+        [JsonProperty("status")] public int Status;
     }
 }

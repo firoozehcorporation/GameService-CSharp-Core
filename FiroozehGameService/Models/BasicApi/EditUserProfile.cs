@@ -15,7 +15,6 @@
 // </copyright>
 
 using System;
-using Newtonsoft.Json;
 
 /**
 * @author Alireza Ghodrati
@@ -24,50 +23,57 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi
 {
     /// <summary>
-    /// Represents EditUserProfile In Game Service Basic API
+    ///     Represents EditUserProfile In Game Service Basic API
     /// </summary>
     [Serializable]
     public class EditUserProfile
     {
-        
         /// <summary>
-        /// Set New NickName For CurrentPlayer.
-        /// </summary>
-        /// <value> New NickName For CurrentPlayer</value>
-        public string NickName { get; }
-        
-        /// <summary>
-        /// Set New ProfileLogo(BytesBuffer) For CurrentPlayer.
-        /// </summary>
-        /// <value> New ProfileLogo For CurrentPlayer</value>
-        public byte[] Logo { get; }
-                       
-        /// <summary>
-        /// Set Allow Auto Add To Game For CurrentPlayer.
+        ///     Set Allow Auto Add To Game For CurrentPlayer.
         /// </summary>
         /// <value> Allow Auto Add To Game For CurrentPlayer</value>
-        public bool AllowAutoAddToGame { get; }
-        
+        internal bool AllowAutoAddToGame;
+
         /// <summary>
-        /// Set Show Public Activity For CurrentPlayer.
+        ///     Set New ProfileLogo(BytesBuffer) For CurrentPlayer.
         /// </summary>
-        /// <value> Allow Show Public Activity For CurrentPlayer</value>
-        public bool ShowPublicActivity { get; }
-        
+        /// <value> New ProfileLogo For CurrentPlayer</value>
+        internal byte[] Logo;
+
         /// <summary>
-        /// Set Show Group Activity For CurrentPlayer.
+        ///     Set New NickName For CurrentPlayer.
+        /// </summary>
+        /// <value> New NickName For CurrentPlayer</value>
+        internal string NickName;
+
+        /// <summary>
+        ///     Set Show Group Activity For CurrentPlayer.
         /// </summary>
         /// <value> Allow Show Group Activity For CurrentPlayer</value>
-        public bool ShowGroupActivity { get; }
-        
-        
+        internal bool ShowGroupActivity;
+
+        /// <summary>
+        ///     Set Show Public Activity For CurrentPlayer.
+        /// </summary>
+        /// <value> Allow Show Public Activity For CurrentPlayer</value>
+        internal bool ShowPublicActivity;
+
+
+        /// <summary>
+        ///     EditUserProfile Data Model
+        /// </summary>
+        /// <param name="nickName">the value of nickName you want to update</param>
+        /// <param name="logo">the value of logo you want to update</param>
+        /// <param name="allowAutoAddToGame">the value of allowAutoAddToGame you want to update</param>
+        /// <param name="showPublicActivity">the value of showPublicActivity you want to update</param>
+        /// <param name="showGroupActivity">the value of showGroupActivity you want to update</param>
         public EditUserProfile(
             string nickName = null,
             byte[] logo = null,
             bool allowAutoAddToGame = false,
             bool showPublicActivity = false,
             bool showGroupActivity = false
-          )
+        )
         {
             NickName = nickName;
             Logo = logo;
@@ -75,7 +81,5 @@ namespace FiroozehGameService.Models.BasicApi
             ShowPublicActivity = showPublicActivity;
             ShowGroupActivity = showGroupActivity;
         }
-
-        
     }
 }

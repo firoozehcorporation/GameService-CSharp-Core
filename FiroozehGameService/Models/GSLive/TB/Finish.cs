@@ -35,8 +35,7 @@ namespace FiroozehGameService.Models.GSLive.TB
         ///     Gets Member Data of Has Announced The End Of The Game.
         /// </summary>
         /// <value>Member Data of Has Announced The End Of The Game</value>
-        [JsonProperty("0")]
-        public Member MemberFinish { set; get; }
+        [JsonProperty("0")] public Member MemberFinish;
 
 
         /// <summary>
@@ -45,7 +44,6 @@ namespace FiroozehGameService.Models.GSLive.TB
         ///     (Type : Dictionary(MemberID,Outcome))
         /// </summary>
         /// <value>the Outcomes sent from the player</value>
-        [JsonProperty("1")]
-        public Dictionary<string, Outcome> Outcomes { set; get; }
+        [JsonProperty("1")] public Dictionary<string, Outcome> Outcomes;
     }
 }

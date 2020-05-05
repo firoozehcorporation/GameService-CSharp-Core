@@ -19,6 +19,7 @@
 * @author Alireza Ghodrati
 */
 
+using System;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.GSLive.Chat
@@ -26,51 +27,45 @@ namespace FiroozehGameService.Models.GSLive.Chat
     /// <summary>
     ///     Represents Chat Data Model In GameService Command System
     /// </summary>
+    [Serializable]
     public class Chat
     {
-        /// <summary>
-        ///     Gets the Chat Privacy.
-        /// </summary>
-        /// <value>the Chat Privacy</value>
-        [JsonProperty("0")]
-        public bool IsPrivate { set; get; }
-
-
         /// <summary>
         ///     Gets the Chat Channel Name
         /// </summary>
         /// <value>the Chat Channel Name</value>
-        [JsonProperty("5")]
-        public string ChannelName { set; get; }
+        [JsonProperty("5")] public string ChannelName;
+
+        /// <summary>
+        ///     Gets the Chat Privacy.
+        /// </summary>
+        /// <value>the Chat Privacy</value>
+        [JsonProperty("0")] public bool IsPrivate;
+
+        /// <summary>
+        ///     Gets the Chat Message Data
+        /// </summary>
+        /// <value>the Chat Message Data</value>
+        [JsonProperty("3")] public string Message;
 
 
         /// <summary>
         ///     Gets the Chat Receiver Id.
         /// </summary>
         /// <value>the Chat Receiver Id</value>
-        [JsonProperty("1")]
-        public string ReceiverId { set; get; }
+        [JsonProperty("1")] public string ReceiverId;
 
         /// <summary>
         ///     Gets the Chat Sender Member.
         /// </summary>
         /// <value>the Chat Sender Member</value>
-        [JsonProperty("2")]
-        public Member Sender { set; get; }
-
-        /// <summary>
-        ///     Gets the Chat Message Data
-        /// </summary>
-        /// <value>the Chat Message Data</value>
-        [JsonProperty("3")]
-        public string Message { set; get; }
+        [JsonProperty("2")] public Member Sender;
 
 
         /// <summary>
         ///     Gets the Chat Message Send Time in Unix Time
         /// </summary>
         /// <value>the Chat Message Send Time in Unix Time</value>
-        [JsonProperty("4")]
-        public long SendTime { set; get; }
+        [JsonProperty("4")] public long SendTime;
     }
 }

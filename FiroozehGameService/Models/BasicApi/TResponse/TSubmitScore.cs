@@ -1,13 +1,12 @@
+using System;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi.TResponse
 {
+    [Serializable]
     internal class TSubmitScore
     {
-        [JsonProperty("status")]
-        public bool Status { set; get; }
-        
-        [JsonProperty("leaderboard")]
-        public SubmitScoreResponse SubmitScoreResponse { set; get; }
+        [JsonProperty("status")] public bool Status;
+        [JsonProperty("leaderboard")] public SubmitScoreResponse SubmitScoreResponse;
     }
 }

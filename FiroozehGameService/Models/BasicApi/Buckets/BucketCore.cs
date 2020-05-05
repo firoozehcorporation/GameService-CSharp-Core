@@ -33,16 +33,14 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
         ///     Gets the Bucket Object ID.
         /// </summary>
         /// <value>the Bucket Object ID</value>
-        [JsonProperty("id")]
-        public string Id { set; get; }
+        [JsonProperty("id")] public string Id;
 
 
         /// <summary>
         ///     Gets the Bucket Owner User ID.
         /// </summary>
         /// <value>the Bucket Owner ID</value>
-        [JsonProperty("owner")]
-        public string OwnerId { set; get; }
+        [JsonProperty("owner")] public string OwnerId;
 
 
         /// <summary>

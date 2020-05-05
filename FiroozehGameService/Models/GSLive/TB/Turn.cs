@@ -25,25 +25,21 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.TB
 {
     /// <summary>
-    /// Represents Turn Data Model In GameService TurnBased MultiPlayer System
+    ///     Represents Turn Data Model In GameService TurnBased MultiPlayer System
     /// </summary>
     [Serializable]
     public class Turn
     {
-        
         /// <summary>
-        /// Gets the Data Send In Turn By Other Player.
+        ///     Gets the Data Send In Turn By Other Player.
         /// </summary>
         /// <value>the Data Send In Turn By Other Player</value>
-        [JsonProperty("0")]
-        public string Data { get; set; }
-        
+        [JsonProperty("0")] public string Data;
+
         /// <summary>
-        /// Gets The Player Member who has TakeTurn.
+        ///     Gets The Player Member who has TakeTurn.
         /// </summary>
         /// <value>The Player Member who has TakeTurn</value>
-        [JsonProperty("1")]
-        public Member WhoTakeTurn { get; set; }
-        
+        [JsonProperty("1")] public Member WhoTakeTurn;
     }
 }

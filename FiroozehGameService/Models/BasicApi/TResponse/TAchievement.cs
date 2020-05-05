@@ -7,10 +7,7 @@ namespace FiroozehGameService.Models.BasicApi.TResponse
     [Serializable]
     internal class TAchievement
     {
-        [JsonProperty("status")]
-        public bool Status { set; get; }
-        
-        [JsonProperty("achievement")]
-        public List<Achievement> Achievements { set; get; }
+        [JsonProperty("achievement")] public List<Achievement> Achievements;
+        [JsonProperty("status")] public bool Status;
     }
 }

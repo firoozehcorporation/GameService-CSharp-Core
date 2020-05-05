@@ -26,79 +26,70 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
-    /// Represents NotificationActionData Model In Game Service Command
+    ///     Represents NotificationActionData Model In Game Service Command
     /// </summary>
     [Serializable]
     public class NotificationActionData
     {
         /// <summary>
-        /// Gets the PackageName Data
-        /// this Data may be Null if Not Set in Developer Panel
-        /// </summary>
-        /// <value>the PackageName Data</value>
-        [JsonProperty("1")]
-        public string PackageName { get; internal set; }
-        
-        
-        /// <summary>
-        /// Gets the MarketType Data
-        /// this Data may be Null if Not Set in Developer Panel
-        /// </summary>
-        /// <value>the MarketType Data</value>
-        [JsonProperty("2")]
-        public MarketType MarketType { get; internal set; }
-        
-        
-        /// <summary>
-        /// Gets the LinkAddress Data
-        /// this Data may be Null if Not Set in Developer Panel
-        /// </summary>
-        /// <value>the LinkAddress Data</value>
-        [JsonProperty("3")]
-        public string LinkAddress { get; internal set; }
-        
-        
-        /// <summary>
-        /// Gets the EmailAddress Data
-        /// this Data may be Null if Not Set in Developer Panel
+        ///     Gets the EmailAddress Data
+        ///     this Data may be Null if Not Set in Developer Panel
         /// </summary>
         /// <value>the EmailAddress Data</value>
-        [JsonProperty("4")]
-        public string EmailAddress { get; internal set; }
-        
-        
+        [JsonProperty("4")] public string EmailAddress;
+
+
         /// <summary>
-        /// Gets the EmailTitle Data
-        /// this Data may be Null if Not Set in Developer Panel
-        /// </summary>
-        /// <value>the EmailTitle Data</value>
-        [JsonProperty("5")]
-        public string EmailTitle { get; internal set; }
-        
-        
-        /// <summary>
-        /// Gets the EmailBody Data
-        /// this Data may be Null if Not Set in Developer Panel
+        ///     Gets the EmailBody Data
+        ///     this Data may be Null if Not Set in Developer Panel
         /// </summary>
         /// <value>the EmailBody Data</value>
-        [JsonProperty("6")]
-        public string EmailBody { get; internal set; }
-        
+        [JsonProperty("6")] public string EmailBody;
+
+
         /// <summary>
-        /// Gets the TelegramChannel Data
-        /// this Data may be Null if Not Set in Developer Panel
+        ///     Gets the EmailTitle Data
+        ///     this Data may be Null if Not Set in Developer Panel
         /// </summary>
-        /// <value>the TelegramChannel Data</value>
-        [JsonProperty("7")]
-        public string TelegramChannel { get; internal set; }
-        
+        /// <value>the EmailTitle Data</value>
+        [JsonProperty("5")] public string EmailTitle;
+
         /// <summary>
-        /// Gets the IntentAction Data
-        /// this Data may be Null if Not Set in Developer Panel
+        ///     Gets the IntentAction Data
+        ///     this Data may be Null if Not Set in Developer Panel
         /// </summary>
         /// <value>the IntentAction Data</value>
-        [JsonProperty("8")]
-        public string IntentAction { get; internal set; }
+        [JsonProperty("8")] public string IntentAction;
+
+
+        /// <summary>
+        ///     Gets the LinkAddress Data
+        ///     this Data may be Null if Not Set in Developer Panel
+        /// </summary>
+        /// <value>the LinkAddress Data</value>
+        [JsonProperty("3")] public string LinkAddress;
+
+
+        /// <summary>
+        ///     Gets the MarketType Data
+        ///     this Data may be Null if Not Set in Developer Panel
+        /// </summary>
+        /// <value>the MarketType Data</value>
+        [JsonProperty("2")] public MarketType MarketType;
+
+        /// <summary>
+        ///     Gets the PackageName Data
+        ///     this Data may be Null if Not Set in Developer Panel
+        /// </summary>
+        /// <value>the PackageName Data</value>
+        [JsonProperty("1")] public string PackageName;
+
+        /// <summary>
+        ///     Gets the TelegramChannel Data
+        ///     this Data may be Null if Not Set in Developer Panel
+        /// </summary>
+        /// <value>the TelegramChannel Data</value>
+        [JsonProperty("7")] public string TelegramChannel;
 
         public override string ToString()
         {

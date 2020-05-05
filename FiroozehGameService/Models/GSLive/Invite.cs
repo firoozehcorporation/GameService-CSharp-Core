@@ -36,35 +36,32 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>The Game Where You Are Invited</value>
         [JsonProperty("game")] public Game Game;
 
-
-        /// <summary>
-        ///     Gets The Room Where You Are Invited.
-        /// </summary>
-        /// <value>The Room Where You Are Invited</value>
-        [JsonProperty("room")] public Room Room;
-
         /// <summary>
         ///     Gets the Invite id.
         ///     You Can Use It in Accept Invite
         /// </summary>
         /// <value>the Invite id</value>
-        [JsonProperty("_id")]
-        public string Id { get; set; }
-
-
-        /// <summary>
-        ///     Gets the Inviter Member.
-        /// </summary>
-        /// <value>the Inviter Member</value>
-        [JsonProperty("inviter")]
-        public Member Inviter { get; set; }
+        [JsonProperty("_id")] public string Id;
 
 
         /// <summary>
         ///     Gets the Invited User Id.
         /// </summary>
         /// <value>the Invited User Id</value>
-        [JsonProperty("invited")]
-        public string Invited { get; set; }
+        [JsonProperty("invited")] public string Invited;
+
+
+        /// <summary>
+        ///     Gets the Inviter Member.
+        /// </summary>
+        /// <value>the Inviter Member</value>
+        [JsonProperty("inviter")] public Member Inviter;
+
+
+        /// <summary>
+        ///     Gets The Room Where You Are Invited.
+        /// </summary>
+        /// <value>The Room Where You Are Invited</value>
+        [JsonProperty("room")] public Room Room;
     }
 }

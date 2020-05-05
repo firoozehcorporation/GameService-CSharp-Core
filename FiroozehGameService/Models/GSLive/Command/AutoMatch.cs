@@ -6,20 +6,14 @@ namespace FiroozehGameService.Models.GSLive.Command
     [Serializable]
     internal class AutoMatch
     {
-       
-        [JsonProperty("min")]
-        public int Min { get; set; }
-        
-        [JsonProperty("max")]
-        public int Max { get; set; }
-                
-        [JsonProperty("role")]
-        public string Role { get; set; }
-        
-        [JsonProperty("accept")]
-        public bool Accept { get; set; }
-        
-        public override string ToString () {
+        [JsonProperty("accept")] public bool Accept;
+        [JsonProperty("max")] public int Max;
+
+        [JsonProperty("min")] public int Min;
+        [JsonProperty("role")] public string Role;
+
+        public override string ToString()
+        {
             return "AutoMatch{" +
                    "max=" + Max +
                    ", min=" + Min +

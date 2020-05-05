@@ -25,78 +25,69 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi
 {
     /// <summary>
-    /// Represents LeaderBoard Data Model In Game Service Basic API
+    ///     Represents LeaderBoard Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class LeaderBoard
     {
         /// <summary>
-        /// Gets the LeaderBoard Name.
-        /// </summary>
-        /// <value>the LeaderBoard Name</value>
-        [JsonProperty("name")]
-        public string Name { set; get; }
-
-        
-        /// <summary>
-        /// Gets the LeaderBoard Key.
-        /// You Can Use It To Submit Score in a LeaderBoard
-        /// </summary>
-        /// <value>the LeaderBoard Key</value>
-        [JsonProperty("key")]
-        public string Key { set; get; }
-
-        
-        /// <summary>
-        /// Gets the LeaderBoard status.
-        /// if the status is True You Can Submit Score in LeaderBoard
-        /// </summary>
-        /// <value>the LeaderBoard status</value>
-        [JsonProperty("status")]
-        public bool Status { set; get; }
-
-        
-        /// <summary>
-        /// Gets the LeaderBoard Cover URL.
-        /// </summary>
-        /// <value>the LeaderBoard Cover URL</value>
-        [JsonProperty("image")]
-        public string Image { set; get; }
-
-        
-        /// <summary>
-        /// Gets the LeaderBoard Form Value.
-        /// this Value Sets In GameService Developers Panel.
+        ///     Gets the LeaderBoard Form Value.
+        ///     this Value Sets In GameService Developers Panel.
         /// </summary>
         /// <value>the LeaderBoard From Value</value>
-        [JsonProperty("from")]
-        public int From { set; get; }
+        [JsonProperty("from")] public int From;
 
-        
-        /// <summary>
-        /// Gets the LeaderBoard To Value.
-        /// this Value Sets In GameService Developers Panel.
-        /// </summary>
-        /// <value>the LeaderBoard To Value</value>
-        [JsonProperty("to")]
-        public int To { set; get; }
 
-        
         /// <summary>
-        /// Gets the LeaderBoard Order Type.
-        /// this Type Sets In GameService Developers Panel.
-        /// </summary>
-        /// <value>the LeaderBoard Order Type</value>
-        [JsonProperty("order")]
-        public int Order { set; get; }
-
-        
-        /// <summary>
-        /// Gets the Game id.
+        ///     Gets the Game id.
         /// </summary>
         /// <value>the Game id</value>
-        [JsonProperty("game")]
-        public string Game { set; get; }
+        [JsonProperty("game")] public string Game;
+
+
+        /// <summary>
+        ///     Gets the LeaderBoard Cover URL.
+        /// </summary>
+        /// <value>the LeaderBoard Cover URL</value>
+        [JsonProperty("image")] public string Image;
+
+
+        /// <summary>
+        ///     Gets the LeaderBoard Key.
+        ///     You Can Use It To Submit Score in a LeaderBoard
+        /// </summary>
+        /// <value>the LeaderBoard Key</value>
+        [JsonProperty("key")] public string Key;
+
+        /// <summary>
+        ///     Gets the LeaderBoard Name.
+        /// </summary>
+        /// <value>the LeaderBoard Name</value>
+        [JsonProperty("name")] public string Name;
+
+
+        /// <summary>
+        ///     Gets the LeaderBoard Order Type.
+        ///     this Type Sets In GameService Developers Panel.
+        /// </summary>
+        /// <value>the LeaderBoard Order Type</value>
+        [JsonProperty("order")] public int Order;
+
+
+        /// <summary>
+        ///     Gets the LeaderBoard status.
+        ///     if the status is True You Can Submit Score in LeaderBoard
+        /// </summary>
+        /// <value>the LeaderBoard status</value>
+        [JsonProperty("status")] public bool Status;
+
+
+        /// <summary>
+        ///     Gets the LeaderBoard To Value.
+        ///     this Value Sets In GameService Developers Panel.
+        /// </summary>
+        /// <value>the LeaderBoard To Value</value>
+        [JsonProperty("to")] public int To;
 
 
         public override string ToString()

@@ -6,16 +6,11 @@ namespace FiroozehGameService.Models.GSLive.RT
     [Serializable]
     internal class Packet : APacket
     {
-        [JsonProperty("1")]
-        public int Action { get; set; }
-                
-        [JsonProperty("2")]
-        public string Payload { get; set; }
-        
-        [JsonProperty("3")]
-        public string Hash { get; set; }
+        [JsonProperty("1")] public int Action;
+        [JsonProperty("3")] public string Hash;
+        [JsonProperty("2")] public string Payload;
 
-        
+
         public Packet(string hash, int action, string payload = null)
         {
             Hash = hash;
@@ -23,7 +18,8 @@ namespace FiroozehGameService.Models.GSLive.RT
             Payload = payload;
         }
 
-        public override string ToString () {
+        public override string ToString()
+        {
             return "Packet{" +
                    "Hash='" + Hash + '\'' +
                    ", Action=" + Action +

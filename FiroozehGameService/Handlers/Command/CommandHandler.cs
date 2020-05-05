@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Handlers.Command.RequestHandlers.Chat;
 using FiroozehGameService.Handlers.Command.ResponseHandlers;
+using FiroozehGameService.Handlers.Command.ResponseHandlers.Chat;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
@@ -31,14 +31,17 @@ namespace FiroozehGameService.Handlers.Command
             _isDisposed = false;
             _isFirstInit = false;
 
-            // Set Internal Event Handlers
-            CoreEventHandlers.Ping += OnPing;
-            CoreEventHandlers.Authorized += OnAuth;
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
-            LogUtil.Log(this, "CommandHandler Initialized");
+            // Set Internal Event Handlers
+            CoreEventHandlers.Ping += OnPing;
+            CoreEventHandlers.Authorized += OnAuth;
+
+            LogUtil.Log(this, "CommandHandler Initialized with "
+                              + _requestHandlers.Count + " Request Handlers & "
+                              + _responseHandlers.Count + " Response Handlers");
         }
 
         public void Dispose()
@@ -73,7 +76,9 @@ namespace FiroozehGameService.Handlers.Command
 
         private void InitRequestMessageHandlers()
         {
-            var baseInterface = typeof(IRequestHandler);
+            // this implementation not working on IL2CPP
+
+            /*var baseInterface = typeof(IRequestHandler);
             var subclassTypes = Assembly
                 .GetAssembly(baseInterface)
                 .GetTypes()
@@ -85,11 +90,38 @@ namespace FiroozehGameService.Handlers.Command
                     .GetValue(null);
                 _requestHandlers.Add(p, (IRequestHandler) Activator.CreateInstance(type));
             }
+            */
+
+            _requestHandlers.Add(AcceptInviteHandler.Signature, new AcceptInviteHandler());
+            _requestHandlers.Add(AuthorizationHandler.Signature, new AuthorizationHandler());
+            _requestHandlers.Add(AutoMatchHandler.Signature, new AutoMatchHandler());
+            _requestHandlers.Add(CancelAutoMatchHandler.Signature, new CancelAutoMatchHandler());
+            _requestHandlers.Add(CreateRoomHandler.Signature, new CreateRoomHandler());
+            _requestHandlers.Add(FindMemberHandler.Signature, new FindMemberHandler());
+            _requestHandlers.Add(GetRoomsHandler.Signature, new GetRoomsHandler());
+            _requestHandlers.Add(InviteListHandler.Signature, new InviteListHandler());
+            _requestHandlers.Add(InviteUserHandler.Signature, new InviteUserHandler());
+            _requestHandlers.Add(JoinRoomHandler.Signature, new JoinRoomHandler());
+            _requestHandlers.Add(PingPongHandler.Signature, new PingPongHandler());
+
+
+            _requestHandlers.Add(GetChannelRecentMessagesRequestHandler.Signature,
+                new GetChannelRecentMessagesRequestHandler());
+            _requestHandlers.Add(GetChannelsMembersRequestHandler.Signature, new GetChannelsMembersRequestHandler());
+            _requestHandlers.Add(GetChannelsSubscribedRequestHandler.Signature,
+                new GetChannelsSubscribedRequestHandler());
+            _requestHandlers.Add(GetPendingMessagesRequestHandler.Signature, new GetPendingMessagesRequestHandler());
+            _requestHandlers.Add(SendChannelPrivateMessageHandler.Signature, new SendChannelPrivateMessageHandler());
+            _requestHandlers.Add(SendChannelPublicMessageHandler.Signature, new SendChannelPublicMessageHandler());
+            _requestHandlers.Add(SubscribeChannelHandler.Signature, new SubscribeChannelHandler());
+            _requestHandlers.Add(UnsubscribeChannelHandler.Signature, new UnsubscribeChannelHandler());
         }
 
         private void InitResponseMessageHandlers()
         {
-            var baseInterface = typeof(IResponseHandler);
+            // this implementation not working on IL2CPP
+
+            /*var baseInterface = typeof(IResponseHandler);
             var subclassTypes = Assembly
                 .GetAssembly(baseInterface)
                 .GetTypes()
@@ -101,6 +133,32 @@ namespace FiroozehGameService.Handlers.Command
                     .GetValue(null);
                 _responseHandlers.Add(p, (IResponseHandler) Activator.CreateInstance(type));
             }
+            */
+
+            _responseHandlers.Add(AuthResponseHandler.ActionCommand, new AuthResponseHandler());
+            _responseHandlers.Add(AutoMatchResponseHandler.ActionCommand, new AutoMatchResponseHandler());
+            _responseHandlers.Add(CancelAutoMatchResponseHandler.ActionCommand, new CancelAutoMatchResponseHandler());
+            _responseHandlers.Add(ErrorResponseHandler.ActionCommand, new ErrorResponseHandler());
+            _responseHandlers.Add(FindMemberResponseHandler.ActionCommand, new FindMemberResponseHandler());
+            _responseHandlers.Add(GetInviteInboxResponseHandler.ActionCommand, new GetInviteInboxResponseHandler());
+            _responseHandlers.Add(GetRoomResponseHandler.ActionCommand, new GetRoomResponseHandler());
+            _responseHandlers.Add(InviteReceivedInboxResponseHandler.ActionCommand,
+                new InviteReceivedInboxResponseHandler());
+            _responseHandlers.Add(InviteUserResponseHandler.ActionCommand, new InviteUserResponseHandler());
+            _responseHandlers.Add(JoinRoomResponseHandler.ActionCommand, new JoinRoomResponseHandler());
+            _responseHandlers.Add(NotificationResponseHandler.ActionCommand, new NotificationResponseHandler());
+            _responseHandlers.Add(PingResponseHandler.ActionCommand, new PingResponseHandler());
+
+            _responseHandlers.Add(ChannelsMembersResponseHandler.ActionCommand, new ChannelsMembersResponseHandler());
+            _responseHandlers.Add(ChannelRecentResponseHandler.ActionCommand, new ChannelRecentResponseHandler());
+            _responseHandlers.Add(ChannelSubscribedResponseHandler.ActionCommand,
+                new ChannelSubscribedResponseHandler());
+            _responseHandlers.Add(PendingMessagesResponseHandler.ActionCommand, new PendingMessagesResponseHandler());
+            _responseHandlers.Add(PrivateChatResponseHandler.ActionCommand, new PrivateChatResponseHandler());
+            _responseHandlers.Add(PublicChatResponseHandler.ActionCommand, new PublicChatResponseHandler());
+            _responseHandlers.Add(SubscribeChannelResponseHandler.ActionCommand, new SubscribeChannelResponseHandler());
+            _responseHandlers.Add(UnSubscribeChannelResponseHandler.ActionCommand,
+                new UnSubscribeChannelResponseHandler());
         }
 
         public async Task Init()

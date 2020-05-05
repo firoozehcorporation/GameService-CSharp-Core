@@ -36,21 +36,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Crc32.NET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99">
-      <HintPath>..\packages\Crc32.NET.1.2.0\lib\net20\Crc32.NET.dll</HintPath>
-      <Private>True</Private>
+        <HintPath>..\packages\Crc32.NET.1.2.0\lib\net20\Crc32.NET.dll</HintPath>
+        <Private>True</Private>
     </Reference>
       <Reference Include="GameServiceHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GameServiceHelper\GameServiceHelper.dll</HintPath>
       </Reference>
-    <Reference Include="GProtocol, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
-    </Reference>
-    <Reference Include="mscorlib" />
-      <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-          <HintPath>..\packages\Newtonsoft.Json.12.0.3\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Net.Http" />
+      <Reference Include="GProtocol, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
+      </Reference>
+      <Reference Include="mscorlib"/>
+      <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\AOT\Newtonsoft.Json.dll</HintPath>
+      </Reference>
+      <Reference Include="System"/>
+      <Reference Include="System.Net.Http"/>
   </ItemGroup>
     <ItemGroup>
         <Compile Include="Builder\GameServiceClientConfiguration.cs"/>
@@ -90,7 +90,7 @@
         <Compile Include="Handlers\Command\RequestHandlers\Chat\SubscribeChannelHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\UnsubscribeChannelHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\CreateRoomHandler.cs"/>
-        <Compile Include="Handlers\Command\RequestHandlers\FindUserHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\FindMemberHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\GetRoomsHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\InviteListHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\InviteUserHandler.cs"/>
@@ -208,7 +208,6 @@
         <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
         <Compile Include="Models\Enums\GSLive\RT\MessageType.cs"/>
         <Compile Include="Models\Enums\GsWebRequestMethod.cs"/>
-        <Compile Include="Models\EventArgs\CommandResponseArgs.cs"/>
         <Compile Include="Models\EventArgs\DownloadCompleteArgs.cs"/>
         <Compile Include="Models\EventArgs\SocketDataReceived.cs"/>
         <Compile Include="Models\EventArgs\DownloadProgressArgs.cs"/>

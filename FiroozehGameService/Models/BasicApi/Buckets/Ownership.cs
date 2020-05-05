@@ -25,25 +25,30 @@ using FiroozehGameService.Models.Enums;
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents OwnershipOptionData Model In Game Service Basic API
+    ///     Represents OwnershipOptionData Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class Ownership : BucketOption
     {
-        private string OwnerUserId { get; }
-        private BucketOwnershipTypes OwnershipTypes { get; }
+        private BucketOwnershipTypes _ownershipTypes;
+        private string _ownerUserId;
 
-
-        public Ownership(BucketOwnershipTypes ownershipTypes,string ownerUserId = null)
+        /// <summary>
+        ///     the Ownership BucketOption
+        /// </summary>
+        /// <param name="ownershipTypes">type of ownership</param>
+        /// <param name="ownerUserId">user id of BucketOwnershipTypes.Another type</param>
+        public Ownership(BucketOwnershipTypes ownershipTypes, string ownerUserId = null)
         {
-            OwnerUserId = ownershipTypes == BucketOwnershipTypes.Another && string.IsNullOrEmpty(ownerUserId)
-                ? throw new GameServiceException("OwnerUserId Cant Be EmptyOrNull When OwnershipType is Another") : OwnerUserId = ownerUserId;
-            OwnershipTypes = ownershipTypes;
+            _ownerUserId = ownershipTypes == BucketOwnershipTypes.Another && string.IsNullOrEmpty(ownerUserId)
+                ? throw new GameServiceException("OwnerUserId Cant Be EmptyOrNull When OwnershipType is Another")
+                : _ownerUserId = ownerUserId;
+            _ownershipTypes = ownershipTypes;
         }
-        
+
         internal override string GetParsedData()
         {
-            var owner = OwnershipTypes == BucketOwnershipTypes.Me ? "me" : OwnerUserId;
+            var owner = _ownershipTypes == BucketOwnershipTypes.Me ? "me" : _ownerUserId;
             return "&owner=" + owner;
         }
     }

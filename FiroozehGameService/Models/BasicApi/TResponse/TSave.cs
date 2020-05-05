@@ -6,13 +6,8 @@ namespace FiroozehGameService.Models.BasicApi.TResponse
     [Serializable]
     internal class TSave
     {
-        [JsonProperty("game")]
-        public string Game { set; get; }
-        
-        [JsonProperty("new")]
-        public SaveDetails SaveDetails { set; get; }
-        
-        [JsonProperty("status")]
-        public bool Status { set; get; }
+        [JsonProperty("game")] public string Game;
+        [JsonProperty("new")] public SaveDetails SaveDetails;
+        [JsonProperty("status")] public bool Status;
     }
 }

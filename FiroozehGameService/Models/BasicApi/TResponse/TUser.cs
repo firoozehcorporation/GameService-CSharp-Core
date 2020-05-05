@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi.TResponse
@@ -7,10 +6,7 @@ namespace FiroozehGameService.Models.BasicApi.TResponse
     [Serializable]
     internal class TUser
     {
-        [JsonProperty("status")]
-        public bool Status { set; get; }
-        
-        [JsonProperty("data")]
-        public User User { set; get; }
+        [JsonProperty("status")] public bool Status;
+        [JsonProperty("data")] public User User;
     }
 }

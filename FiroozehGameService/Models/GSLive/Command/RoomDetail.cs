@@ -6,27 +6,17 @@ namespace FiroozehGameService.Models.GSLive.Command
     [Serializable]
     internal class RoomDetail
     {
-        [JsonProperty("0")] public string Id { get; set; }
-
-        [JsonProperty("1")] public string UserOrMemberId { get; set; }
-
-        [JsonProperty("2")] public string Invite { get; set; }
-
-        [JsonProperty("3")] public string Name { get; set; }
-
-        [JsonProperty("4")] public int Type { get; set; }
-
-        [JsonProperty("5")] public int Min { get; set; }
-
-        [JsonProperty("6")] public int Max { get; set; }
-
-        [JsonProperty("7")] public int GsLiveType { get; set; }
-
-        [JsonProperty("8")] public string Role { get; set; }
-
-        [JsonProperty("9")] public bool IsPrivate { get; set; }
-
-        [JsonProperty("10")] public bool IsPersist { get; set; }
+        [JsonProperty("7")] public int GsLiveType;
+        [JsonProperty("0")] public string Id;
+        [JsonProperty("2")] public string Invite;
+        [JsonProperty("10")] public bool IsPersist;
+        [JsonProperty("9")] public bool IsPrivate;
+        [JsonProperty("6")] public int Max;
+        [JsonProperty("5")] public int Min;
+        [JsonProperty("3")] public string Name;
+        [JsonProperty("8")] public string Role;
+        [JsonProperty("4")] public int Type;
+        [JsonProperty("1")] public string UserOrMemberId;
 
         public override string ToString()
         {

@@ -23,79 +23,68 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi
 {
     /// <summary>
-    /// Represents Achievement Data Model In Game Service Basic API
+    ///     Represents Achievement Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class Achievement
     {
-
         /// <summary>
-        /// Gets the Achievement Name.
-        /// </summary>
-        /// <value>the Achievement Name</value>
-        [JsonProperty("name")]
-        public string Name { set; get; }
-        
-        
-        /// <summary>
-        /// Gets the Achievement Key.
-        /// You Can Use It To Unlock Achievement
-        /// </summary>
-        /// <value>the Achievement Key</value>
-        [JsonProperty("key")]
-        public string Key { set; get; }
-        
-        
-        /// <summary>
-        /// Gets the Achievement Description.
+        ///     Gets the Achievement Description.
         /// </summary>
         /// <value>the Achievement Description</value>
-        [JsonProperty("desc")]
-        public string Desc { set; get; }
-        
-        
+        [JsonProperty("desc")] public string Desc;
+
+
         /// <summary>
-        /// Gets the Achievement Point.
-        /// </summary>
-        /// <value>the Achievement Point</value>
-        [JsonProperty("point")]
-        public int Point { set; get; }
-        
-        
-        /// <summary>
-        /// Gets the Achievement Cover URL.
-        /// </summary>
-        /// <value>the Achievement Cover URL</value>
-        [JsonProperty("image")]
-        public string Image { set; get; }
-        
-        
-        /// <summary>
-        /// Gets the Achievement status.
-        /// if the status is True You Can Unlock Achievement
-        /// </summary>
-        /// <value>the Achievement status</value>
-        [JsonProperty("status")]
-        public bool Status { set; get; }
-        
-        
-        /// <summary>
-        /// Gets the Game id.
-        /// </summary>
-        /// <value>the Game id</value>
-        [JsonProperty("game")]
-        public string Game { set; get; }
-        
-        
-        /// <summary>
-        /// Gets the Status of Earned Achievement
-        /// if the status is True You Earned this Achievement Before
+        ///     Gets the Status of Earned Achievement
+        ///     if the status is True You Earned this Achievement Before
         /// </summary>
         /// <value>the Status of Earned Achievement</value>
-        [JsonProperty("earned")]
-        public bool Earned { set; get; }
-        
-        
+        [JsonProperty("earned")] public bool Earned;
+
+
+        /// <summary>
+        ///     Gets the Game id.
+        /// </summary>
+        /// <value>the Game id</value>
+        [JsonProperty("game")] public string Game;
+
+        /// <summary>
+        ///     Gets the Achievement Cover URL.
+        /// </summary>
+        /// <value>the Achievement Cover URL</value>
+        [JsonProperty("image")] public string Image;
+
+
+        /// <summary>
+        ///     Gets the Achievement Key.
+        ///     You Can Use It To Unlock Achievement
+        /// </summary>
+        /// <value>the Achievement Key</value>
+        [JsonProperty("key")] public string Key;
+
+        /// <summary>
+        ///     Gets the Achievement Name.
+        /// </summary>
+        /// <value>the Achievement Name</value>
+        [JsonProperty("name")] public string Name;
+
+
+        /// <summary>
+        ///     Gets the Achievement Point.
+        /// </summary>
+        /// <value>the Achievement Point</value>
+        [JsonProperty("point")] public int Point;
+
+
+        /// <summary>
+        ///     Gets the Achievement status.
+        ///     if the status is True You Can Unlock Achievement
+        /// </summary>
+        /// <value>the Achievement status</value>
+        [JsonProperty("status")] public bool Status;
+
+
         public override string ToString()
         {
             return "Achievement{" +
@@ -111,4 +100,3 @@ namespace FiroozehGameService.Models.BasicApi
         }
     }
 }
-

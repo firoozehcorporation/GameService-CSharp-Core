@@ -25,46 +25,22 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.Internal
 {
     /// <summary>
-    /// Represents System Info In Game Service
+    ///     Represents System Info In Game Service
     /// </summary>
     [Serializable]
     public class SystemInfo
     {
-        [JsonProperty("DeviceId")]
-        public string DeviceUniqueId { internal get; set; }
-      
-        [JsonProperty("DeviceName")]
-        public string DeviceName { internal get; set; }
-        
-        [JsonProperty("DeviceModel")]
-        public string DeviceModel { internal get; set; }
-        
-        [JsonProperty("DeviceType")]
-        public string DeviceType { internal get; set; }
-        
-        [JsonProperty("OperatingSystem")]
-        public string OperatingSystem { internal get; set; }
-        
-        [JsonProperty("NetworkType")]
-        public string NetworkType { internal get; set; }
-        
-        [JsonProperty("ProcessorType")]
-        public string ProcessorType  { internal get; set; }
-        
-        [JsonProperty("ProcessorCount")]
-        public int ProcessorCount  { internal get; set; }
-        
-        [JsonProperty("ProcessorFrequency")]
-        public int ProcessorFrequency  { internal get; set; }
-        
-        [JsonProperty("GraphicsDeviceName")]
-        public string GraphicsDeviceName  { internal get; set; }
-        
-        [JsonProperty("GraphicsDeviceVendor")]
-        public string GraphicsDeviceVendor  { internal get; set; }
-        
-        [JsonProperty("GraphicsMemorySize")]
-        public int GraphicsMemorySize  { internal get; set; }
-        
+        [JsonProperty("DeviceModel")] public string DeviceModel;
+        [JsonProperty("DeviceName")] public string DeviceName;
+        [JsonProperty("DeviceType")] public string DeviceType;
+        [JsonProperty("DeviceId")] public string DeviceUniqueId;
+        [JsonProperty("GraphicsDeviceName")] public string GraphicsDeviceName;
+        [JsonProperty("GraphicsDeviceVendor")] public string GraphicsDeviceVendor;
+        [JsonProperty("GraphicsMemorySize")] public int GraphicsMemorySize;
+        [JsonProperty("NetworkType")] public string NetworkType;
+        [JsonProperty("OperatingSystem")] public string OperatingSystem;
+        [JsonProperty("ProcessorCount")] public int ProcessorCount;
+        [JsonProperty("ProcessorFrequency")] public int ProcessorFrequency;
+        [JsonProperty("ProcessorType")] public string ProcessorType;
     }
 }

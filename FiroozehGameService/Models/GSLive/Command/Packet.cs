@@ -6,18 +6,11 @@ namespace FiroozehGameService.Models.GSLive.Command
     [Serializable]
     internal class Packet : APacket
     {
-        
-        [JsonProperty("0")]
-        public string Token { get; set; }
-        
-        [JsonProperty("1")]
-        public int Action { get; set; }
-                
-        [JsonProperty("2")]
-        public string Data { get; set; }
-        
-        [JsonProperty("3")]
-        public string Message { get; set; }
+        [JsonProperty("1")] public int Action;
+        [JsonProperty("2")] public string Data;
+        [JsonProperty("3")] public string Message;
+
+        [JsonProperty("0")] public string Token;
 
         public Packet(string token, int action, string data = null, string message = null)
         {
@@ -27,7 +20,8 @@ namespace FiroozehGameService.Models.GSLive.Command
             Message = message;
         }
 
-        public override string ToString () {
+        public override string ToString()
+        {
             return "Packet{" +
                    "Hash='" + Token + '\'' +
                    ", Action=" + Action +

@@ -36,38 +36,33 @@ namespace FiroozehGameService.Models.BasicApi
         ///     Gets the Game id.
         /// </summary>
         /// <value>the Game id</value>
-        [JsonProperty("game")]
-        public string Game { set; get; }
-
-
-        /// <summary>
-        ///     Gets the Member Submit this Score.
-        /// </summary>
-        /// <value>the Member Submit this Score</value>
-        [JsonProperty("member")]
-        public Member Submitter { set; get; }
-
-        /// <summary>
-        ///     Gets the Value of This Score.
-        /// </summary>
-        /// <value>the Value of This Score</value>
-        [JsonProperty("value")]
-        public int Value { set; get; }
+        [JsonProperty("game")] public string Game;
 
 
         /// <summary>
         ///     Gets the Rank of This Score.
         /// </summary>
         /// <value>the Rank of This Score</value>
-        [JsonProperty("rank")]
-        public int Rank { set; get; }
+        [JsonProperty("rank")] public int Rank;
+
+
+        /// <summary>
+        ///     Gets the Member Submit this Score.
+        /// </summary>
+        /// <value>the Member Submit this Score</value>
+        [JsonProperty("member")] public Member Submitter;
 
         /// <summary>
         ///     Gets the Tries Count of This Score.
         /// </summary>
         /// <value>the Tries Count of This Score</value>
-        [JsonProperty("tries")]
-        public int Tries { set; get; }
+        [JsonProperty("tries")] public int Tries;
+
+        /// <summary>
+        ///     Gets the Value of This Score.
+        /// </summary>
+        /// <value>the Value of This Score</value>
+        [JsonProperty("value")] public int Value;
 
 
         public override string ToString()

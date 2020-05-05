@@ -24,23 +24,30 @@ using System;
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents ElementOptionData Model In Game Service Basic API
+    ///     Represents ElementOptionData Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class FindByElement<T> : BucketOption
     {
-        private string Name { get; }
-        private T Value { get; }
+        private string _name;
+        private T _value;
 
+        /// <summary>
+        ///     FindByElement BucketOption
+        /// </summary>
+        /// <param name="name">the name of Element you want to find it</param>
+        /// <param name="value">the value of Element you want to find it</param>
         public FindByElement(string name, T value)
         {
-            Name = string.IsNullOrEmpty(name) ? throw new GameServiceException("Name Cant Be EmptyOrNull") : Name = name;
-            Value = value == null ? throw new GameServiceException("Value Cant Be Null") : Value = value;
+            _name = string.IsNullOrEmpty(name)
+                ? throw new GameServiceException("Name Cant Be EmptyOrNull")
+                : _name = name;
+            _value = value == null ? throw new GameServiceException("Value Cant Be Null") : _value = value;
         }
 
         internal override string GetParsedData()
         {
-            return "&conditionProperty=" + Name + "&conditionValue=" + Value;
+            return "&conditionProperty=" + _name + "&conditionValue=" + _value;
         }
     }
 }

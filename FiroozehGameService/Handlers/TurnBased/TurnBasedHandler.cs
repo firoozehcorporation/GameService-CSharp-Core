@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core;
@@ -70,7 +68,9 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private void InitRequestMessageHandlers()
         {
-            var baseInterface = typeof(IRequestHandler);
+            // this implementation not working on IL2CPP
+
+            /*var baseInterface = typeof(IRequestHandler);
             var subclassTypes = Assembly
                 .GetAssembly(baseInterface)
                 .GetTypes()
@@ -82,11 +82,24 @@ namespace FiroozehGameService.Handlers.TurnBased
                     .GetValue(null);
                 _requestHandlers.Add(p, (IRequestHandler) Activator.CreateInstance(type));
             }
+            */
+
+            _requestHandlers.Add(AuthorizationHandler.Signature, new AuthorizationHandler());
+            _requestHandlers.Add(GetMemberHandler.Signature, new GetMemberHandler());
+            _requestHandlers.Add(LeaveRoomHandler.Signature, new LeaveRoomHandler());
+            _requestHandlers.Add(PingPongHandler.Signature, new PingPongHandler());
+            _requestHandlers.Add(ChooseNextHandler.Signature, new ChooseNextHandler());
+            _requestHandlers.Add(CompleteHandler.Signature, new CompleteHandler());
+            _requestHandlers.Add(CurrentTurnHandler.Signature, new CurrentTurnHandler());
+            _requestHandlers.Add(FinishHandler.Signature, new FinishHandler());
+            _requestHandlers.Add(TakeTurnHandler.Signature, new TakeTurnHandler());
         }
 
         private void InitResponseMessageHandlers()
         {
-            var baseInterface = typeof(IResponseHandler);
+            // this implementation not working on IL2CPP
+
+            /*var baseInterface = typeof(IResponseHandler);
             var subclassTypes = Assembly
                 .GetAssembly(baseInterface)
                 .GetTypes()
@@ -98,6 +111,19 @@ namespace FiroozehGameService.Handlers.TurnBased
                     .GetValue(null);
                 _responseHandlers.Add(p, (IResponseHandler) Activator.CreateInstance(type));
             }
+            */
+
+            _responseHandlers.Add(AuthResponseHandler.ActionCommand, new AuthResponseHandler());
+            _responseHandlers.Add(ErrorResponseHandler.ActionCommand, new ErrorResponseHandler());
+            _responseHandlers.Add(JoinRoomResponseHandler.ActionCommand, new JoinRoomResponseHandler());
+            _responseHandlers.Add(LeaveRoomResponseHandler.ActionCommand, new LeaveRoomResponseHandler());
+            _responseHandlers.Add(MemberDetailsResponseHandler.ActionCommand, new MemberDetailsResponseHandler());
+            _responseHandlers.Add(ChooseNextResponseHandler.ActionCommand, new ChooseNextResponseHandler());
+            _responseHandlers.Add(CompleteResponseHandler.ActionCommand, new CompleteResponseHandler());
+            _responseHandlers.Add(CurrentTurnResponseHandler.ActionCommand, new CurrentTurnResponseHandler());
+            _responseHandlers.Add(FinishResponseHandler.ActionCommand, new FinishResponseHandler());
+            _responseHandlers.Add(PingResponseHandler.ActionCommand, new PingResponseHandler());
+            _responseHandlers.Add(TakeTurnResponseHandler.ActionCommand, new TakeTurnResponseHandler());
         }
 
 

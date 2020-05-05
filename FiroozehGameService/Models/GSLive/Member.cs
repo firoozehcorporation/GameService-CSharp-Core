@@ -36,30 +36,26 @@ namespace FiroozehGameService.Models.GSLive
         ///     You Can Use it In MultiPlayer Functions that Needs Member id
         /// </summary>
         /// <value>the Member ID</value>
-        [JsonProperty("_id")]
-        public string Id { set; get; }
+        [JsonProperty("_id")] public string Id;
+
+        /// <summary>
+        ///     Gets the Member Logo URL.
+        /// </summary>
+        /// <value>the Member Logo URL</value>
+        [JsonProperty("logo")] public string Logo;
 
 
         /// <summary>
         ///     Gets the Member Name.
         /// </summary>
         /// <value>the Member Name</value>
-        [JsonProperty("name")]
-        public string Name { set; get; }
-
-        /// <summary>
-        ///     Gets the Member Logo URL.
-        /// </summary>
-        /// <value>the Member Logo URL</value>
-        [JsonProperty("logo")]
-        public string Logo { set; get; }
+        [JsonProperty("name")] public string Name;
 
 
         /// <summary>
         ///     Gets the Member User Data
         /// </summary>
         /// <value>the Member User Data</value>
-        [JsonProperty("user")]
-        public User User { set; get; }
+        [JsonProperty("user")] public User User;
     }
 }
