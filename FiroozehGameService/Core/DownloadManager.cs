@@ -15,10 +15,10 @@
 // </copyright>
 
 
-
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.EventArgs;
@@ -31,16 +31,11 @@ using FiroozehGameService.Models.Internal;
 namespace FiroozehGameService.Core
 {
     /// <summary>
-    /// Represents Game Service DownloadManager
+    ///     Represents Game Service DownloadManager
     /// </summary>
     internal class DownloadManager
     {
-        #region DownloadRegion
-        private readonly Builder.GameServiceClientConfiguration _configuration;
-        private readonly WebClient _client = new WebClient();
-        #endregion
-       
-        internal DownloadManager(Builder.GameServiceClientConfiguration config)
+        internal DownloadManager(GameServiceClientConfiguration config)
         {
             _configuration = config;
         }
@@ -49,145 +44,121 @@ namespace FiroozehGameService.Core
         {
             try
             {
-                var download = await ApiRequest.GetAssetInfo(_configuration.ClientId, tag);
-                // Set Events
-                _client.DownloadProgressChanged += (s, progress) =>
-                    {
-                        DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
-                        {
-                            FileTag = tag,
-                            BytesReceived = progress.BytesReceived,
-                            TotalBytesToReceive = progress.TotalBytesToReceive,
-                            ProgressPercentage = progress.ProgressPercentage
-                        });
-                    };
-                _client.DownloadDataCompleted += (sender, args) =>
-                    {
-                        DownloadEventHandlers.DownloadCompleted?.Invoke(this,new DownloadCompleteArgs
-                        {
-                            DownloadedAssetAsBytes = args.Result
-                        });
-                    }; 
-                
-                await _client.DownloadDataTaskAsync(download.AssetInfoData.Link);
-                
+                var assetInfo = await ApiRequest.GetAssetInfo(_configuration.ClientId, tag);
+                await StartDownloadWithInfo(assetInfo);
             }
             catch (Exception e)
             {
-                DownloadEventHandlers.DownloadError?.Invoke(this,new ErrorArg
+                DownloadEventHandlers.DownloadError?.Invoke(this, new ErrorArg
                 {
                     Error = e.Message
                 });
             }
         }
-       
-        internal async Task StartDownload(string tag,string path)
+
+        internal async Task StartDownload(string tag, string path)
         {
-            var completeAddress = path + '/' + tag;
             try
             {
-                var download = await ApiRequest.GetAssetInfo(_configuration.ClientId, tag);
-                    // Set Events
-                _client.DownloadProgressChanged += (s, progress) =>
-                        DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
-                        {
-                            FileTag = tag,
-                            BytesReceived = progress.BytesReceived,
-                            TotalBytesToReceive = progress.TotalBytesToReceive,
-                            ProgressPercentage = progress.ProgressPercentage
-                        });
-                    
-
-                _client.DownloadFileCompleted += (s, e) =>
-                        DownloadEventHandlers.DownloadCompleted?.Invoke(this,new DownloadCompleteArgs
-                        {
-                            DownloadedAssetPath = completeAddress
-                        });
-
-                _client.DownloadFileAsync(new Uri(download.AssetInfoData.Link),completeAddress);
+                var assetInfo = await ApiRequest.GetAssetInfo(_configuration.ClientId, tag);
+                StartDownloadWithInfo(assetInfo, path);
             }
             catch (Exception e)
             {
-                DownloadEventHandlers.DownloadError?.Invoke(this,new ErrorArg
+                DownloadEventHandlers.DownloadError?.Invoke(this, new ErrorArg
                 {
                     Error = e.Message
                 });
             }
         }
-        
-        
+
+
         internal async Task StartDownloadWithInfo(AssetInfo info)
         {
             try
             {
+                _client = new WebClient();
                 // Set Events
                 _client.DownloadProgressChanged += (s, progress) =>
+                {
+                    DownloadEventHandlers.DownloadProgress?.Invoke(this, new DownloadProgressArgs
                     {
-                        DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
-                        {
-                            FileTag = info.AssetInfoData.Name,
-                            BytesReceived = progress.BytesReceived,
-                            TotalBytesToReceive = progress.TotalBytesToReceive,
-                            ProgressPercentage = progress.ProgressPercentage
-                        });
-                    };
+                        FileTag = info.AssetInfoData.Name,
+                        BytesReceived = progress.BytesReceived,
+                        TotalBytesToReceive = progress.TotalBytesToReceive,
+                        ProgressPercentage = progress.ProgressPercentage
+                    });
+                };
+
                 _client.DownloadDataCompleted += (sender, args) =>
+                {
+                    _client?.Dispose();
+                    DownloadEventHandlers.DownloadCompleted?.Invoke(this, new DownloadCompleteArgs
                     {
-                        DownloadEventHandlers.DownloadCompleted?.Invoke(this,new DownloadCompleteArgs
-                        {
-                            DownloadedAssetAsBytes = args.Result
-                        });
-                    }; 
-                
-                await _client.DownloadDataTaskAsync(info.AssetInfoData.Link);
-                
+                        DownloadedAssetAsBytes = args.Result
+                    });
+                };
+
+                await _client?.DownloadDataTaskAsync(info.AssetInfoData.Link);
             }
             catch (Exception e)
             {
-                DownloadEventHandlers.DownloadError?.Invoke(this,new ErrorArg
+                DownloadEventHandlers.DownloadError?.Invoke(this, new ErrorArg
                 {
                     Error = e.Message
                 });
             }
         }
-       
-        internal void StartDownloadWithInfo(AssetInfo info,string path)
+
+        internal void StartDownloadWithInfo(AssetInfo info, string path)
         {
             var completeAddress = path + '/' + info.AssetInfoData.Name;
             try
             {
-                    // Set Events
+                _client = new WebClient();
+                // Set Events
                 _client.DownloadProgressChanged += (s, progress) =>
-                        DownloadEventHandlers.DownloadProgress?.Invoke(this,new DownloadProgressArgs
-                        {
-                            FileTag = info.AssetInfoData.Name,
-                            BytesReceived = progress.BytesReceived,
-                            TotalBytesToReceive = progress.TotalBytesToReceive,
-                            ProgressPercentage = progress.ProgressPercentage
-                        });
-                    
+                    DownloadEventHandlers.DownloadProgress?.Invoke(this, new DownloadProgressArgs
+                    {
+                        FileTag = info.AssetInfoData.Name,
+                        BytesReceived = progress.BytesReceived,
+                        TotalBytesToReceive = progress.TotalBytesToReceive,
+                        ProgressPercentage = progress.ProgressPercentage
+                    });
+
 
                 _client.DownloadFileCompleted += (s, e) =>
-                        DownloadEventHandlers.DownloadCompleted?.Invoke(this,new DownloadCompleteArgs
-                        {
-                            DownloadedAssetPath = completeAddress
-                        });
+                {
+                    _client?.Dispose();
+                    DownloadEventHandlers.DownloadCompleted?.Invoke(this, new DownloadCompleteArgs
+                    {
+                        DownloadedAssetPath = completeAddress
+                    });
+                };
 
-                 _client.DownloadFileAsync(new Uri(info.AssetInfoData.Link),completeAddress);
+
+                _client?.DownloadFileAsync(new Uri(info.AssetInfoData.Link), completeAddress);
             }
             catch (Exception e)
             {
-                DownloadEventHandlers.DownloadError?.Invoke(this,new ErrorArg
+                DownloadEventHandlers.DownloadError?.Invoke(this, new ErrorArg
                 {
                     Error = e.Message
                 });
             }
         }
-        
+
 
         internal void StopAllDownloads()
         {
             _client.CancelAsync();
         }
+
+        #region DownloadRegion
+
+        private readonly GameServiceClientConfiguration _configuration;
+        private WebClient _client;
+
+        #endregion
     }
 }
