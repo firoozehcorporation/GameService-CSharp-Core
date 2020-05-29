@@ -3,9 +3,9 @@ using FiroozehGameService.Core.Socket.PacketHelper;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
-using FiroozehGameService.Models.GSLive.RT;
-using GProtocol;
-using GProtocol.Core;
+using FiroozehGameService.Models.GSLive.Command;
+using GProtocol.Public;
+using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -13,8 +13,8 @@ namespace FiroozehGameService.Core.Socket
     {
         #region GProtocolClient
         protected Client Client;
-        protected Connection Connection;
         protected string Pwd;
+        protected Area Area;
         protected const GSLiveType Type = GSLiveType.RealTime;
         protected readonly ISerializer PacketSerializable = new PacketSerializer();
         protected readonly IDeserializer PacketDeserializer = new PacketDeserializer();
@@ -24,6 +24,7 @@ namespace FiroozehGameService.Core.Socket
         #endregion
 
         internal abstract void Init();
+        internal abstract void CreateInstance();
         internal abstract void StopReceiving();
         internal abstract void Send(Packet packet, GProtocolSendType type);
         internal abstract void UpdatePwd(string newPwd);

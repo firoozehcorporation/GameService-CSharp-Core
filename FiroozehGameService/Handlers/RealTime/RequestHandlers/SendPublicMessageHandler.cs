@@ -1,5 +1,6 @@
 ﻿using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
 
@@ -13,7 +14,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public SendPublicMessageHandler() {}
 
         private static Packet DoAction(DataPayload payload)
-            => new Packet(RealTimeHandler.PlayerHash,RT.ActionPublicMessage,payload.Payload);        
+            => new Packet(RealTimeHandler.PlayerHash,RT.ActionPublicMessage,GProtocolSendType.UnReliable,payload.Payload);        
         
         protected override Packet DoAction(object payload)
         { 

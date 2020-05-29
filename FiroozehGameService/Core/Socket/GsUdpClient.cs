@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Text;
 using FiroozehGameService.Handlers;
-using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
-using GProtocol;
-using GProtocol.Core;
+using FiroozehGameService.Utils;
+using GProtocol.Public;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Core.Socket
@@ -17,66 +16,94 @@ namespace FiroozehGameService.Core.Socket
 
         public GsUdpClient(Area endpoint)
         {
-            if (endpoint.Protocol.ToUpper() != "UDP")
-                throw new InvalidOperationException("Only UDP Protocol Supported");
-
-            Client = new Client(endpoint.Ip + ':' + endpoint.Port)
-            {
-                ServerConnect = ServerConnect,
-                ServerDisconnect = ServerDisconnect,
-                ServerTimeout = ServerTimeout,
-                PacketHandler = HandleClientPacket
-            };
+            Area = endpoint;
+            CreateInstance();
         }
 
-        private void ServerConnect(Connection conn, byte[] data)
-        {
-            Connection = conn;
-            IsAvailable = true;
-            CoreEventHandlers.GProtocolConnected?.Invoke(null,null);
-        }
-
-        private void ServerDisconnect(Connection conn, byte[] data)
-        {
-            IsAvailable = false;
-            Pwd = null;
-            OnClosed(new ErrorArg {Error = "ServerDisconnect"});
-        }
-
-        private void ServerTimeout(Connection conn, byte[] data)
-        {
-            IsAvailable = false;
-            Pwd = null;
-            OnClosed(new ErrorArg {Error = "ServerTimeout"});
-        }
-
-        private void HandleClientPacket(Connection conn, byte[] data, Connection.Channel channel)
-        {
-            OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(data) 
-                , Type =
-                    channel == Connection.Channel.Reliable ? GProtocolSendType.Reliable : GProtocolSendType.UnReliable});
-        }
 
         internal override void Init()
         {
-            Client?.Connect(null);
+            try
+            {
+                if (Client == null) CreateInstance();
+                Client?.Connect(Convert.FromBase64String(Area.ConnectToken));
+                LogUtil.Log(this,"GsUdpClient Init");
+            }
+            catch (Exception e)
+            {
+                LogUtil.Log(this,"GsUdpClient Err : " + e);
+            }
+        }
+
+        internal sealed override void CreateInstance()
+        {
+            if (Area?.ConnectToken != null)
+            {
+                Client = new Client();
+                
+                Client.OnStateChanged += ClientOnOnStateChanged;
+                Client.OnMessageReceived += ClientOnOnMessageReceived;
+                
+                LogUtil.Log(this, "GsUdpClient Created");
+            }
+            else 
+                LogUtil.LogError(this,"Token Is NULL");
+        }
+
+        
+        private void ClientOnOnMessageReceived(byte[] payload, int payloadsize)
+        {
+            OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(payload,0,payloadsize) });
+        }
+
+
+        private void ClientOnOnStateChanged(ClientState state)
+        {
+            LogUtil.Log(this,"Client_OnStateChanged : " + state);
+
+            switch (state)
+            {
+                case ClientState.Connected:
+                    IsAvailable = true;
+                    CoreEventHandlers.GProtocolConnected?.Invoke(null,null);
+                    break;
+                case ClientState.InvalidConnectToken:
+                case ClientState.ConnectionTimedOut:
+                case ClientState.ChallengeResponseTimedOut:
+                case ClientState.ConnectionRequestTimedOut:
+                case ClientState.ConnectionDenied:
+                    IsAvailable = false;
+                    Pwd = null;
+                    Client?.Disconnect();
+                    Client = null;
+                
+                    OnClosed(new ErrorArg {Error = state.ToString()});
+                    break;
+                case ClientState.ConnectTokenExpired: break;
+                case ClientState.Disconnected: break;
+            }
         }
 
 
         internal override void Send(Packet packet,GProtocolSendType type)
         {
-            var buffer = PacketSerializable.Serialize(packet,Pwd,Type);
-            switch (type)
-            {
-                case GProtocolSendType.Reliable:
-                    Connection?.SendReliable(buffer);
-                    break;
-                case GProtocolSendType.UnReliable:
-                    Connection?.SendUnreliable(buffer);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
-            }
+             if (Client?.State == ClientState.Connected)
+             {
+                 packet.SendType = type;
+                 var buffer = PacketSerializable.Serialize(packet, Pwd, Type);
+                 switch (type)
+                 {
+                     case GProtocolSendType.Reliable:
+                         Client?.Send(buffer,buffer.Length);
+                         break;
+                     case GProtocolSendType.UnReliable:
+                         Client?.Send(buffer,buffer.Length);
+                         break;
+                     default:
+                         throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                 }
+             }
+             else LogUtil.LogError(this,"Client not Connected!");
         }
 
         internal override void UpdatePwd(string newPwd)
@@ -86,19 +113,17 @@ namespace FiroozehGameService.Core.Socket
 
         internal override void StopReceiving()
         {
-            Connection = null;
-            Client = null;
-            Pwd = null;
-            IsAvailable = false;
             try
             {
-                Connection?.Disconnect(null);
                 Client?.Disconnect();
             }
             catch (Exception)
             {
                 // ignored
             }
+            Client = null;
+            Pwd = null;
+            IsAvailable = false;
         }
        
     }

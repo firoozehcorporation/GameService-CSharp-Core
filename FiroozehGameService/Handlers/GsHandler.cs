@@ -16,7 +16,7 @@ namespace FiroozehGameService.Handlers
     internal class GsHandler
     {
         #region GsHandlerRegion
-        public CommandHandler CommandHandler { get; private set; }
+        public CommandHandler CommandHandler { get; }
         public RealTimeHandler RealTimeHandler { get; private set; }
         public TurnBasedHandler TurnBasedHandler { get; private set; }
         #endregion
@@ -65,8 +65,8 @@ namespace FiroozehGameService.Handlers
                     RealTimeHandler = null;
                 }
 
-            RealTimeHandler = new RealTimeHandler(payload);
-            RealTimeHandler.Init();            
+                RealTimeHandler = new RealTimeHandler(payload);
+                RealTimeHandler.Init();            
         }
 
         private async Task ConnectToTbServer(StartPayload payload)

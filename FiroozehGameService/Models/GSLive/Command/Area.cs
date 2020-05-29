@@ -7,8 +7,9 @@ namespace FiroozehGameService.Models.GSLive.Command
     internal class Area
     {
         [JsonProperty("0")] public string Ip;
-        [JsonProperty("2")] public int Port;
         [JsonProperty("1")] public string Protocol;
+        [JsonProperty("2")] public int Port;
+        [JsonProperty("3")] public string ConnectToken;
 
         public override string ToString()
         {
@@ -16,6 +17,7 @@ namespace FiroozehGameService.Models.GSLive.Command
                    "EndPoint='" + Ip + '\'' +
                    ", Protocol='" + Protocol + '\'' +
                    ", Port='" + Port + '\'' +
+                   ", ConnectToken='" + ConnectToken + '\'' +
                    '}';
         }
     }

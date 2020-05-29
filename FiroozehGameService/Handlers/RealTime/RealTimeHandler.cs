@@ -4,6 +4,7 @@ using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.ResponseHandlers;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
@@ -129,7 +130,9 @@ namespace FiroozehGameService.Handlers.RealTime
         private void Send(Packet packet, GProtocolSendType type)
         {
             if (!_observer.Increase()) return;
-            _udpClient.Send(packet, type);
+            if (!PacketUtil.CheckPacketSize(packet)) throw new GameServiceException("this Packet Is Too Big!");
+            if (IsAvailable) _udpClient.Send(packet, type);
+            else throw new GameServiceException("GameService Not Available");
         }
 
 
@@ -142,14 +145,20 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
-            if (_isDisposed) return;
-
-            var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-            GameService.SynchronizationContext?.Send(delegate
+            try
             {
-                LogUtil.Log(this, "RealtimeHandler OnDataReceived < " + e.Data);
-                _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, e.Type);
-            }, null);
+                if (_isDisposed) return;
+                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+                GameService.SynchronizationContext?.Send(delegate
+                {
+                    LogUtil.Log(this, "RealtimeHandler OnDataReceived < " + e.Data);
+                    _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType);
+                }, null);
+            }
+            catch (Exception exception)
+            {
+                LogUtil.LogError(this,"RealtimeHandler OnDataReceived ERR : " + exception);
+            }
         }
 
         #region RTHandlerRegion

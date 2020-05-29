@@ -211,14 +211,22 @@ namespace FiroozehGameService.Handlers.Command
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
-            var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-            LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Data);
+            try
+            {
+                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+                LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Data);
 
-            if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.Core))
-                _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
-            else
-                GameService.SynchronizationContext?.Send(
-                    delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet); }, null);
+                if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.Core))
+                    _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
+                else
+                    GameService.SynchronizationContext?.Send(
+                        delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet); }, null);
+            }
+            catch (Exception exception)
+            {
+                LogUtil.LogError(this,"CommandHandler OnDataReceived ERR : " + exception);
+            }
+           
         }
 
         #region Fields

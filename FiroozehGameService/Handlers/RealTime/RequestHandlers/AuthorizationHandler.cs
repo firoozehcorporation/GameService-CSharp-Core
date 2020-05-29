@@ -1,5 +1,6 @@
 ﻿using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
 using Newtonsoft.Json;
 
@@ -16,7 +17,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
             return new Packet(
                 null,
                 RT.ActionAuth,
-                JsonConvert.SerializeObject(
+                GProtocolSendType.Reliable,JsonConvert.SerializeObject(
                     new AuthPayload(RealTimeHandler.CurrentRoom?.Id, RealTimeHandler.PlayToken)
                     , new JsonSerializerSettings
                     {

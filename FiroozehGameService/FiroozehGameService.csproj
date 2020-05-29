@@ -35,14 +35,13 @@
       <DocumentationFile>bin\Release\FiroozehGameService.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Crc32.NET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dc0b95cf99bf4e99">
-        <HintPath>..\packages\Crc32.NET.1.2.0\lib\net20\Crc32.NET.dll</HintPath>
-        <Private>True</Private>
-    </Reference>
+      <Reference Include="BCCrypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\GProtocol\BCCrypto.dll</HintPath>
+      </Reference>
       <Reference Include="GameServiceHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GameServiceHelper\GameServiceHelper.dll</HintPath>
       </Reference>
-      <Reference Include="GProtocol, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Reference Include="GProtocol, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
       </Reference>
       <Reference Include="mscorlib"/>
@@ -266,6 +265,7 @@
         <Compile Include="Utils\KeyTypeUtil.cs"/>
         <Compile Include="Utils\LogUtil.cs"/>
         <Compile Include="Utils\NetworkUtil.cs"/>
+        <Compile Include="Utils\PacketUtil.cs"/>
         <Compile Include="Utils\ThreadManager.cs"/>
         <Compile Include="Utils\TimeUtil.cs"/>
         <Compile Include="Utils\URLUtil.cs"/>

@@ -177,14 +177,22 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
-            var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-            LogUtil.Log(this, "TurnBasedHandler OnDataReceived < " + e.Data);
+            try
+            {
+                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+                LogUtil.Log(this, "TurnBasedHandler OnDataReceived < " + e.Data);
 
-            if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.TurnBased))
-                _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
-            else
-                GameService.SynchronizationContext?.Send(
-                    delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet); }, null);
+                if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.TurnBased))
+                    _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
+                else
+                    GameService.SynchronizationContext?.Send(
+                        delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet); }, null);
+            }
+            catch (Exception exception)
+            {
+                LogUtil.LogError(this,"TurnBasedHandler OnDataReceived ERR : " + exception);
+            }
+          
         }
 
         #region TBHandlerRegion

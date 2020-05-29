@@ -26,6 +26,6 @@ namespace FiroozehGameService.Models.Enums
     /// </summary>
     public enum GProtocolSendType
     {
-        Reliable,UnReliable
+        UnReliable,Reliable
     }
 }

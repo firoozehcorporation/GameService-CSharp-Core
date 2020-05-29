@@ -18,8 +18,7 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             {
                 var json = JsonConvert.SerializeObject(packet, new JsonSerializerSettings
                 {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    DefaultValueHandling = DefaultValueHandling.Ignore
+                    NullValueHandling = NullValueHandling.Ignore
                 });
                 //var s = Serializer.Serialize(json,KeyTypeUtil.GetPwd(pwd,type));
                 LogUtil.Log(this, "PacketSerializer > JSON : " + json);
