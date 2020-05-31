@@ -5,10 +5,11 @@ namespace FiroozehGameService.Utils
 {
     internal static class PacketUtil
     {
-        
         public static bool CheckPacketSize(Packet packet)
         {
-            return packet?.Payload?.Length <= RT.MaxPacketSize;
+            if (packet.Payload != null)
+                return packet.Payload.Length <= RT.MaxPacketSize;
+            return true;
         }
     }
 }
