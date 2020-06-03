@@ -23,33 +23,32 @@ using System;
 namespace FiroozehGameService.Models.Internal
 {
     /// <summary>
-    /// Represents GameServiceTime Class
+    ///     Represents GameServiceTime Class
     /// </summary>
     [Serializable]
     public class GSTime
     {
         /// <summary>
-        /// Gets the Current Server Time
+        ///     Gets the Current Server Time
         /// </summary>
         /// <value>the Current Server Time</value>
         public DateTimeOffset ServerTime { get; internal set; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Current Device Time
+        ///     Gets the Current Device Time
         /// </summary>
         /// <value>the Current Device Time</value>
         public DateTimeOffset DeviceTime { get; internal set; }
 
 
         /// <summary>
-        /// Check DeviceTimeValid 
+        ///     Check DeviceTimeValid
         /// </summary>
-        /// <value>Returns True if Device Time Is Valid(Same With Server)</value>
+        /// <value>Returns True if Device Time Is Valid(not grater than 2 sec With Server)</value>
         public bool IsDeviceTimeValid()
         {
-            return ServerTime.Millisecond == DeviceTime.Millisecond;
+            return Math.Abs(DeviceTime.Second - ServerTime.Second) < 2;
         }
-         
     }
 }

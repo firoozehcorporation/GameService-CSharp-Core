@@ -25,13 +25,15 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.DataReceived += OnDataReceived;
             _udpClient.Error += OnError;
 
-
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
+            _pingUtil = new PingUtil();
             _isDisposed = false;
 
             // Set Internal Event Handlers
             CoreEventHandlers.Authorized += OnAuth;
             CoreEventHandlers.GProtocolConnected += OnConnected;
+            CoreEventHandlers.Ping += Ping;
+            PingUtil.RequestPing += RequestPing;
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
@@ -42,9 +44,28 @@ namespace FiroozehGameService.Handlers.RealTime
         public void Dispose()
         {
             _udpClient?.StopReceiving();
-            _observer.Dispose();
+            _observer?.Dispose();
+            _pingUtil?.Dispose();
             LogUtil.Log(this, "RealTime Dispose");
             CoreEventHandlers.Dispose?.Invoke(this, null);
+        }
+
+
+        private void RequestPing(object sender, EventArgs e)
+        {
+            Request(GetPingHandler.Signature, GProtocolSendType.Reliable);
+        }
+
+        private void Ping(object sender, APacket packet)
+        {
+            if (sender.GetType() != typeof(PingResponseHandler)) return;
+            var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var sendTime = (packet as Packet)?.ClientSendTime;
+            if (sendTime == null) return;
+
+            var diff = PingUtil.Diff(currentTime, sendTime.Value);
+            PingUtil.SetLastPing(diff);
+            LogUtil.Log(this, "Ping Realtime : " + diff);
         }
 
         private void OnConnected(object sender, EventArgs e)
@@ -83,6 +104,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _requestHandlers.Add(AuthorizationHandler.Signature, new AuthorizationHandler());
             _requestHandlers.Add(GetMemberHandler.Signature, new GetMemberHandler());
             _requestHandlers.Add(LeaveRoomHandler.Signature, new LeaveRoomHandler());
+            _requestHandlers.Add(GetPingHandler.Signature, new GetPingHandler());
             _requestHandlers.Add(SendPrivateMessageHandler.Signature, new SendPrivateMessageHandler());
             _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
         }
@@ -109,6 +131,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _responseHandlers.Add(ErrorResponseHandler.ActionCommand, new ErrorResponseHandler());
             _responseHandlers.Add(JoinRoomResponseHandler.ActionCommand, new JoinRoomResponseHandler());
             _responseHandlers.Add(LeaveRoomResponseHandler.ActionCommand, new LeaveRoomResponseHandler());
+            _responseHandlers.Add(PingResponseHandler.ActionCommand, new PingResponseHandler());
             _responseHandlers.Add(MemberDetailsResponseHandler.ActionCommand, new MemberDetailsResponseHandler());
             _responseHandlers.Add(PrivateMessageResponseHandler.ActionCommand, new PrivateMessageResponseHandler());
             _responseHandlers.Add(PublicMessageResponseHandler.ActionCommand, new PublicMessageResponseHandler());
@@ -143,12 +166,14 @@ namespace FiroozehGameService.Handlers.RealTime
             Init();
         }
 
+
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             try
             {
                 if (_isDisposed) return;
                 var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+                packet.ClientReceiveTime = e.Time;
                 GameService.SynchronizationContext?.Send(delegate
                 {
                     LogUtil.Log(this, "RealtimeHandler OnDataReceived < " + e.Data);
@@ -157,9 +182,10 @@ namespace FiroozehGameService.Handlers.RealTime
             }
             catch (Exception exception)
             {
-                LogUtil.LogError(this,"RealtimeHandler OnDataReceived ERR : " + exception);
+                LogUtil.LogError(this, "RealtimeHandler OnDataReceived ERR : " + exception);
             }
         }
+
 
         #region RTHandlerRegion
 
@@ -167,6 +193,7 @@ namespace FiroozehGameService.Handlers.RealTime
         public static Room CurrentRoom;
 
         private readonly GsLiveSystemObserver _observer;
+        private readonly PingUtil _pingUtil;
         private readonly bool _isDisposed;
 
 

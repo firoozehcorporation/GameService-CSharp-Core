@@ -15,6 +15,7 @@
 // </copyright>
 
 using System;
+using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 
 /**
@@ -23,25 +24,24 @@ using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers
 {
-    
     /// <summary>
-    /// Represents CoreEventHandlers In MultiPlayer System
+    ///     Represents CoreEventHandlers In MultiPlayer System
     /// </summary>
     public class CoreEventHandlers
     {
         internal static EventHandler GProtocolConnected;
         internal static EventHandler<string> Authorized;
         internal static EventHandler<StartPayload> GsLiveSystemStarted;
-        internal static EventHandler Ping;
+        internal static EventHandler<APacket> Ping;
         internal static EventHandler Dispose;
 
         /// <summary>
-        /// Calls When Your Game Successfully Connected To GameService
+        ///     Calls When Your Game Successfully Connected To GameService
         /// </summary>
         public static EventHandler SuccessfullyLogined;
-        
+
         /// <summary>
-        /// Calls When An New Error Received From Server
+        ///     Calls When An New Error Received From Server
         /// </summary>
         public static EventHandler<ErrorEvent> Error;
     }

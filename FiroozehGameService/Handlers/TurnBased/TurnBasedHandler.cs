@@ -59,7 +59,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             LogUtil.Log(null, "TurnBased OnAuth");
         }
 
-        private async void OnPing(object sender, EventArgs e)
+        private async void OnPing(object sender, APacket packet)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
                 await RequestAsync(PingPongHandler.Signature);
@@ -190,9 +190,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             }
             catch (Exception exception)
             {
-                LogUtil.LogError(this,"TurnBasedHandler OnDataReceived ERR : " + exception);
+                LogUtil.LogError(this, "TurnBasedHandler OnDataReceived ERR : " + exception);
             }
-          
         }
 
         #region TBHandlerRegion

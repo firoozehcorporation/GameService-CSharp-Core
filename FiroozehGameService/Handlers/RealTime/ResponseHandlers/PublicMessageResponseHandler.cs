@@ -2,6 +2,7 @@
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive.RT;
 using FiroozehGameService.Models.GSLive.RT;
+using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
@@ -15,8 +16,13 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
             var dataPayload = JsonConvert.DeserializeObject<DataPayload>(packet.Payload);
             RealTimeEventHandlers.NewMessageReceived?.Invoke(this, new MessageReceiveEvent
             {
-                MessageType = MessageType.Public,
-                SendType = type,
+                MessageInfo = new MessageInfo
+                {
+                    MessageType = MessageType.Public,
+                    SendType = type,
+                    ClientReceiveTime = packet.ClientReceiveTime,
+                    RoundTripTime = PingUtil.GetLastPing()
+                },
                 Message = new Message
                 {
                     Data = dataPayload.Payload,

@@ -8,12 +8,15 @@ namespace FiroozehGameService.Models.GSLive.RT
     internal class Packet : APacket
     {
         [JsonProperty("1")] public int Action;
-        [JsonProperty("2")] public string Payload;
+        internal long ClientReceiveTime;
+        [JsonProperty("5")] public long ClientSendTime;
         [JsonProperty("3")] public string Hash;
+        [JsonProperty("2")] public string Payload;
         [JsonProperty("4")] public GProtocolSendType SendType;
 
-        
-        public Packet(string hash, int action,GProtocolSendType sendType = GProtocolSendType.UnReliable,string payload = null)
+
+        public Packet(string hash, int action, GProtocolSendType sendType = GProtocolSendType.UnReliable,
+            string payload = null)
         {
             Hash = hash;
             Action = action;

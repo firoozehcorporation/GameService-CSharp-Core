@@ -15,15 +15,15 @@ namespace FiroozehGameService.Utils
                 return new GSTime
                 {
                     ServerTime = DateTimeOffset.FromUnixTimeSeconds(long.Parse(serverTime)),
-                    DeviceTime = DateTimeOffset.Now
+                    DeviceTime = DateTimeOffset.UtcNow
                 };
             }
             catch (Exception)
             {
                 return new GSTime
                 {
-                    ServerTime = DateTimeOffset.Now,
-                    DeviceTime = DateTimeOffset.Now
+                    ServerTime = DateTimeOffset.UtcNow,
+                    DeviceTime = DateTimeOffset.UtcNow
                 };
             }
         }

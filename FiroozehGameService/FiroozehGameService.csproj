@@ -125,6 +125,7 @@
         <Compile Include="Handlers\RealTime\RequestHandlers\AuthorizationHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\BaseRequestHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\GetMembersHandler.cs"/>
+        <Compile Include="Handlers\RealTime\RequestHandlers\GetPingHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\IRequestHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\SendPrivateMessageHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\SendPublicMessageHandler.cs"/>
@@ -138,6 +139,7 @@
         <Compile Include="Handlers\RealTime\ResponseHandlers\JoinRoomResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\LeaveRoomResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\MemberDetailsResponseHandler.cs"/>
+        <Compile Include="Handlers\RealTime\ResponseHandlers\PingResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PrivateMessageResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PublicMessageResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBasedEventHandlers.cs"/>
@@ -239,6 +241,7 @@
         <Compile Include="Models\GSLive\RT\DataPayload.cs"/>
         <Compile Include="Models\GSLive\RT\Leave.cs"/>
         <Compile Include="Models\GSLive\RT\Message.cs"/>
+        <Compile Include="Models\GSLive\RT\MessageInfo.cs"/>
         <Compile Include="Models\GSLive\RT\MessageReceiveEvent.cs"/>
         <Compile Include="Models\GSLive\RT\Packet.cs"/>
         <Compile Include="Models\GSLive\RT\PingPongPayload.cs"/>
@@ -266,6 +269,7 @@
         <Compile Include="Utils\LogUtil.cs"/>
         <Compile Include="Utils\NetworkUtil.cs"/>
         <Compile Include="Utils\PacketUtil.cs"/>
+        <Compile Include="Utils\PingUtil.cs"/>
         <Compile Include="Utils\ThreadManager.cs"/>
         <Compile Include="Utils\TimeUtil.cs"/>
         <Compile Include="Utils\URLUtil.cs"/>

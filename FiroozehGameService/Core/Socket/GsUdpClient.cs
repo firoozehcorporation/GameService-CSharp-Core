@@ -12,13 +12,13 @@ namespace FiroozehGameService.Core.Socket
 {
     internal class GsUdpClient : GProtocolClient
     {
-        public bool IsAvailable { get; private set; }
-
         public GsUdpClient(Area endpoint)
         {
             Area = endpoint;
             CreateInstance();
         }
+
+        public bool IsAvailable { get; private set; }
 
 
         internal override void Init()
@@ -27,11 +27,11 @@ namespace FiroozehGameService.Core.Socket
             {
                 if (Client == null) CreateInstance();
                 Client?.Connect(Convert.FromBase64String(Area.ConnectToken));
-                LogUtil.Log(this,"GsUdpClient Init");
+                LogUtil.Log(this, "GsUdpClient Init");
             }
             catch (Exception e)
             {
-                LogUtil.Log(this,"GsUdpClient Err : " + e);
+                LogUtil.Log(this, "GsUdpClient Err : " + e);
             }
         }
 
@@ -40,32 +40,38 @@ namespace FiroozehGameService.Core.Socket
             if (Area?.ConnectToken != null)
             {
                 Client = new Client();
-                
+
                 Client.OnStateChanged += ClientOnOnStateChanged;
                 Client.OnMessageReceived += ClientOnOnMessageReceived;
-                
+
                 LogUtil.Log(this, "GsUdpClient Created");
             }
-            else 
-                LogUtil.LogError(this,"Token Is NULL");
+            else
+            {
+                LogUtil.LogError(this, "Token Is NULL");
+            }
         }
 
-        
+
         private void ClientOnOnMessageReceived(byte[] payload, int payloadsize)
         {
-            OnDataReceived(new SocketDataReceived { Data = Encoding.UTF8.GetString(payload,0,payloadsize) });
+            OnDataReceived(new SocketDataReceived
+            {
+                Data = Encoding.UTF8.GetString(payload, 0, payloadsize),
+                Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+            });
         }
 
 
         private void ClientOnOnStateChanged(ClientState state)
         {
-            LogUtil.Log(this,"Client_OnStateChanged : " + state);
+            LogUtil.Log(this, "Client_OnStateChanged : " + state);
 
             switch (state)
             {
                 case ClientState.Connected:
                     IsAvailable = true;
-                    CoreEventHandlers.GProtocolConnected?.Invoke(null,null);
+                    CoreEventHandlers.GProtocolConnected?.Invoke(null, null);
                     break;
                 case ClientState.InvalidConnectToken:
                 case ClientState.ConnectionTimedOut:
@@ -76,7 +82,7 @@ namespace FiroozehGameService.Core.Socket
                     Pwd = null;
                     Client?.Disconnect();
                     Client = null;
-                
+
                     OnClosed(new ErrorArg {Error = state.ToString()});
                     break;
                 case ClientState.ConnectTokenExpired: break;
@@ -85,25 +91,29 @@ namespace FiroozehGameService.Core.Socket
         }
 
 
-        internal override void Send(Packet packet,GProtocolSendType type)
+        internal override void Send(Packet packet, GProtocolSendType type)
         {
-             if (Client?.State == ClientState.Connected)
-             {
-                 packet.SendType = type;
-                 var buffer = PacketSerializable.Serialize(packet, Pwd, Type);
-                 switch (type)
-                 {
-                     case GProtocolSendType.Reliable:
-                         Client?.Send(buffer,buffer.Length);
-                         break;
-                     case GProtocolSendType.UnReliable:
-                         Client?.Send(buffer,buffer.Length);
-                         break;
-                     default:
-                         throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                 }
-             }
-             else LogUtil.LogError(this,"Client not Connected!");
+            if (Client?.State == ClientState.Connected)
+            {
+                packet.SendType = type;
+                packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                var buffer = PacketSerializable.Serialize(packet, Pwd, Type);
+                switch (type)
+                {
+                    case GProtocolSendType.Reliable:
+                        Client?.Send(buffer, buffer.Length);
+                        break;
+                    case GProtocolSendType.UnReliable:
+                        Client?.Send(buffer, buffer.Length);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                }
+            }
+            else
+            {
+                LogUtil.LogError(this, "Client not Connected!");
+            }
         }
 
         internal override void UpdatePwd(string newPwd)
@@ -121,10 +131,10 @@ namespace FiroozehGameService.Core.Socket
             {
                 // ignored
             }
+
             Client = null;
             Pwd = null;
             IsAvailable = false;
         }
-       
     }
 }

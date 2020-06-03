@@ -14,8 +14,6 @@
 //    limitations under the License.
 // </copyright>
 
-using FiroozehGameService.Models.Enums;
-using FiroozehGameService.Models.Enums.GSLive.RT;
 
 /**
 * @author Alireza Ghodrati
@@ -24,28 +22,21 @@ using FiroozehGameService.Models.Enums.GSLive.RT;
 namespace FiroozehGameService.Models.GSLive.RT
 {
     /// <summary>
-    /// Represents MessageReceiveEvent When Message Received in GSLiveRealTime
+    ///     Represents MessageReceiveEvent When Message Received in GSLiveRealTime
     /// </summary>
     public class MessageReceiveEvent
     {
         /// <summary>
-        /// Gets the Received Message 
+        ///     Gets the Received Message
         /// </summary>
         /// <value>the Received Message</value>
         public Message Message { get; internal set; }
-        
+
+
         /// <summary>
-        /// Gets the Type of Received Message 
+        ///     Gets the Received Message Info
         /// </summary>
-        /// <value>Type of Received Message</value>
-        public MessageType MessageType { get; internal set; }
-        
-        
-        /// <summary>
-        /// Gets the Type of Protocol Send Message
-        /// if is Reliable , the Packet Loss is Minimized.
-        /// </summary>
-        /// <value>Gets the Type of Protocol Send Message </value>
-        public GProtocolSendType SendType { get; internal set; }
+        /// <value>the Received Message Info</value>
+        public MessageInfo MessageInfo { get; internal set; }
     }
 }

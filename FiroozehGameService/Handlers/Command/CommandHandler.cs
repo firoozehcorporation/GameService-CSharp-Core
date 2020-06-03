@@ -11,6 +11,7 @@ using FiroozehGameService.Handlers.Command.ResponseHandlers.Chat;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
+using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
@@ -66,7 +67,7 @@ namespace FiroozehGameService.Handlers.Command
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }
 
-        private async void OnPing(object sender, EventArgs e)
+        private async void OnPing(object sender, APacket packet)
         {
             if (sender.GetType() != typeof(PingResponseHandler)) return;
             await RequestAsync(PingPongHandler.Signature);
@@ -224,9 +225,8 @@ namespace FiroozehGameService.Handlers.Command
             }
             catch (Exception exception)
             {
-                LogUtil.LogError(this,"CommandHandler OnDataReceived ERR : " + exception);
+                LogUtil.LogError(this, "CommandHandler OnDataReceived ERR : " + exception);
             }
-           
         }
 
         #region Fields

@@ -1,10 +1,9 @@
 ﻿using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive.RT;
-using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
+using FiroozehGameService.Utils;
 using Newtonsoft.Json;
-using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {
@@ -12,13 +11,18 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
     {
         public static int ActionCommand => RT.ActionPrivateMessage;
 
-        protected override void HandleResponse(Packet packet,GProtocolSendType type)
+        protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
-           var dataPayload = JsonConvert.DeserializeObject<DataPayload>(packet.Payload);
-           RealTimeEventHandlers.NewMessageReceived?.Invoke(this, new MessageReceiveEvent
+            var dataPayload = JsonConvert.DeserializeObject<DataPayload>(packet.Payload);
+            RealTimeEventHandlers.NewMessageReceived?.Invoke(this, new MessageReceiveEvent
             {
-                MessageType = MessageType.Private,
-                SendType = type,
+                MessageInfo = new MessageInfo
+                {
+                    MessageType = MessageType.Private,
+                    SendType = type,
+                    ClientReceiveTime = packet.ClientReceiveTime,
+                    RoundTripTime = PingUtil.GetLastPing()
+                },
                 Message = new Message
                 {
                     Data = dataPayload.Payload,
@@ -27,7 +31,5 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
                 }
             });
         }
-
-        
     }
 }
