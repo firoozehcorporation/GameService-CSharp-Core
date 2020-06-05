@@ -43,18 +43,15 @@ namespace FiroozehGameService.Core.GSLive
             /// <param name="isPersist">Specifies the Room Persistence</param>
             public AutoMatchOption(string role, int minPlayer = 2, int maxPlayer = 2, bool isPersist = false)
             {
-                MinPlayer = minPlayer < 2 || minPlayer > 8
-                    ? throw new GameServiceException("Invalid MinPlayer Value")
-                    : MinPlayer = minPlayer;
-                MaxPlayer = maxPlayer < 2 || maxPlayer > 8
-                    ? throw new GameServiceException("Invalid MaxPlayer Value")
-                    : MinPlayer = minPlayer;
-                Role = string.IsNullOrEmpty(role)
-                    ? throw new GameServiceException("Role Cant Be EmptyOrNull")
-                    : Role = role;
-                IsPersist = isPersist;
-
+                if (minPlayer < 2 || minPlayer > 8) throw new GameServiceException("Invalid MinPlayer Value");
+                if (maxPlayer < 2 || maxPlayer > 8) throw new GameServiceException("Invalid MaxPlayer Value");
                 if (maxPlayer < minPlayer) throw new GameServiceException("MaxPlayer Cant Smaller Than MinPlayer");
+                if (string.IsNullOrEmpty(role)) throw new GameServiceException("Role Cant Be EmptyOrNull");
+
+                MinPlayer = minPlayer;
+                MaxPlayer = maxPlayer;
+                Role = role;
+                IsPersist = isPersist;
             }
 
             internal int MinPlayer { get; }
@@ -83,9 +80,8 @@ namespace FiroozehGameService.Core.GSLive
                 bool isPrivate = false, bool isPersist = false)
                 : base(role, minPlayer, maxPlayer, isPersist)
             {
-                RoomName = string.IsNullOrEmpty(roomName)
-                    ? throw new GameServiceException("RoomName Cant Be EmptyOrNull")
-                    : RoomName = roomName;
+                if (string.IsNullOrEmpty(roomName)) throw new GameServiceException("RoomName Cant Be EmptyOrNull");
+                RoomName = roomName;
                 IsPrivate = isPrivate;
             }
 
