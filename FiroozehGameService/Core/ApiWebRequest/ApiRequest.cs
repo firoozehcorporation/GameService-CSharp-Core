@@ -24,7 +24,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<AssetInfo> GetAssetInfo(string gameId, string tag)
         {
-            var url = Api.BaseUrl1 + "/game/" + gameId + "/datapack/?tag=" + tag;
+            var url = Api.BaseUrl2 + "/game/" + gameId + "/datapack/?tag=" + tag;
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -33,7 +33,6 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                         .Message);
                 var info = JsonConvert.DeserializeObject<AssetInfo>(await reader.ReadToEndAsync());
-                info.AssetInfoData.Name = tag;
                 return info;
             }
         }

@@ -3,7 +3,7 @@ namespace FiroozehGameService.Models.Consts
     internal static class Api
     {
         public const string BaseUrl1 = "https://gamesservice.ir";
-        private const string BaseUrl2 = "https://api.gamesservice.ir";
+        public const string BaseUrl2 = "https://api.gamesservice.ir";
         public const string FaaS = "https://faas.gamesservice.ir/";
 
 

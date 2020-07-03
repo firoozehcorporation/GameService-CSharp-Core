@@ -15,12 +15,11 @@ namespace FiroozehGameService.Models.Internal
         /// <value>the Asset Link for Download</value>
         [JsonProperty("downloadLink")] public string Link;
 
-
         /// <summary>
         ///     Gets the Asset Name
         /// </summary>
         /// <value>the Asset Name</value>
-        [JsonProperty("name")] public string Name;
+        [JsonProperty("tag")] public string Name;
 
         /// <summary>
         ///     Gets the Asset Size in Bytes.
