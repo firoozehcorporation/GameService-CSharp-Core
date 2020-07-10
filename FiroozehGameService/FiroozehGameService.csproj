@@ -257,6 +257,7 @@
         <Compile Include="Models\Internal\Game.cs"/>
         <Compile Include="Models\Internal\GSTime.cs"/>
         <Compile Include="Models\Internal\ImageUploadResult.cs"/>
+        <Compile Include="Models\Internal\PacketBinary.cs"/>
         <Compile Include="Models\Internal\Platform.cs"/>
         <Compile Include="Models\Internal\Publisher.cs"/>
         <Compile Include="Models\Internal\SystemInfo.cs"/>
