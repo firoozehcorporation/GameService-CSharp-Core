@@ -15,12 +15,12 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         private static Packet DoAction(DataPayload payload)
         {
             return new Packet(TurnBasedHandler.PlayerHash, TB.OnChooseNext,
-                JsonConvert.SerializeObject(payload
+                GetBuffer(JsonConvert.SerializeObject(payload
                     , new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
                         DefaultValueHandling = DefaultValueHandling.Ignore
-                    })
+                    }))
             );
         }
 

@@ -3,7 +3,6 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive.RT;
 using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Utils;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {
@@ -13,7 +12,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
-            var dataPayload = JsonConvert.DeserializeObject<DataPayload>(packet.Payload);
+            var dataPayload = new DataPayload(packet.Payload);
             RealTimeEventHandlers.NewMessageReceived?.Invoke(this, new MessageReceiveEvent
             {
                 MessageInfo = new MessageInfo

@@ -14,12 +14,12 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
             return new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionChatRoomDetails,
-                JsonConvert.SerializeObject(room,
+                GetBuffer(JsonConvert.SerializeObject(room,
                     new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
                         DefaultValueHandling = DefaultValueHandling.Ignore
-                    }));
+                    })));
         }
 
         protected override bool CheckAction(object payload)

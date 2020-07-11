@@ -11,7 +11,6 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using Newtonsoft.Json;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
@@ -79,7 +78,6 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
-            _udpClient.UpdatePwd(playerHash);
             LogUtil.Log(null, "RealTime OnAuth");
         }
 
@@ -172,11 +170,11 @@ namespace FiroozehGameService.Handlers.RealTime
             try
             {
                 if (_isDisposed) return;
-                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+                var packet = (Packet) e.Packet;
                 packet.ClientReceiveTime = e.Time;
                 GameService.SynchronizationContext?.Send(delegate
                 {
-                    LogUtil.Log(this, "RealtimeHandler OnDataReceived < " + e.Data);
+                    LogUtil.Log(this, "RealtimeHandler OnDataReceived < " + packet);
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType);
                 }, null);
             }

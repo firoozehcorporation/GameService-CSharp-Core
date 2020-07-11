@@ -14,12 +14,12 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
             return new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionJoinRoom,
-                JsonConvert.SerializeObject(room
+                GetBuffer(JsonConvert.SerializeObject(room
                     , new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
                         DefaultValueHandling = DefaultValueHandling.Ignore
-                    })
+                    }))
             );
         }
 

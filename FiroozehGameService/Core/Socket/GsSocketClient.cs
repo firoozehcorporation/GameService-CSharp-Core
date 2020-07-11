@@ -3,7 +3,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.PacketHelper;
-using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
 
@@ -23,16 +22,11 @@ namespace FiroozehGameService.Core.Socket
         protected void OnClosed(ErrorArg errorArg)
         {
             IsAvailable = false;
-            Pwd = null;
             DataBuilder?.Clear();
             Error?.Invoke(this, errorArg);
         }
 
         internal abstract bool Init();
-
-        internal abstract void UpdatePwd(string newPwd);
-
-        internal abstract void SetType(GSLiveType type);
 
         internal abstract void Send(Packet packet);
 
@@ -46,8 +40,6 @@ namespace FiroozehGameService.Core.Socket
 
         private const int BufferCapacity = 1024 * 128;
         protected Area Endpoint;
-        protected string Pwd;
-        protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected CancellationTokenSource OperationCancellationToken;
         public bool IsAvailable;

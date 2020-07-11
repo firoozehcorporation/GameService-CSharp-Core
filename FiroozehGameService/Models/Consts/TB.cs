@@ -2,8 +2,6 @@ namespace FiroozehGameService.Models.Consts
 {
     internal static class TB
     {
-        internal const string Pwd = "F318EE7D2E7F8AFB595631CB1E52F7DE";
-
         // Packet Actions
         public const int ActionAuth = 1;
         public const int ActionPingPong = 2;

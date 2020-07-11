@@ -17,13 +17,13 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
             return new Packet(
                 null,
                 RT.ActionAuth,
-                GProtocolSendType.Reliable,JsonConvert.SerializeObject(
+                GProtocolSendType.Reliable, GetBuffer(JsonConvert.SerializeObject(
                     new AuthPayload(RealTimeHandler.CurrentRoom?.Id, RealTimeHandler.PlayToken)
                     , new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
                         DefaultValueHandling = DefaultValueHandling.Ignore
-                    })
+                    }))
             );
         }
 

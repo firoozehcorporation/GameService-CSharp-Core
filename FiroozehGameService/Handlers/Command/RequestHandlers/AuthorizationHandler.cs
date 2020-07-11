@@ -8,16 +8,18 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature =>
             "AUTHORIZATION";
 
-        public AuthorizationHandler(){}
-
         protected override Packet DoAction(object payload)
-        => new Packet(
+        {
+            return new Packet(
                 null,
                 Models.Consts.Command.ActionAuth,
-                JsonConvert.SerializeObject(
-                    new AuthPayload(CommandHandler.GameId, CommandHandler.UserToken)));
+                GetBuffer(JsonConvert.SerializeObject(
+                    new AuthPayload(CommandHandler.GameId, CommandHandler.UserToken))));
+        }
 
         protected override bool CheckAction(object payload)
-            => true;
+        {
+            return true;
+        }
     }
 }

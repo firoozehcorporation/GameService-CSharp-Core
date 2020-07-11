@@ -14,7 +14,6 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command
 {
@@ -23,7 +22,6 @@ namespace FiroozehGameService.Handlers.Command
         public CommandHandler()
         {
             _tcpClient = new GsTcpClient(Models.Consts.Command.CommandArea);
-            _tcpClient.SetType(GSLiveType.Core);
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
 
@@ -59,7 +57,6 @@ namespace FiroozehGameService.Handlers.Command
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
-            _tcpClient.UpdatePwd(playerHash);
             LogUtil.Log(null, "CommandHandler OnAuth");
 
             if (_isFirstInit) return;
@@ -214,8 +211,8 @@ namespace FiroozehGameService.Handlers.Command
         {
             try
             {
-                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-                LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Data);
+                var packet = (Packet) e.Packet;
+                LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Packet);
 
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.Core))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);

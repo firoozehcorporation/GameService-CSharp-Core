@@ -17,7 +17,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
             return new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionCreateRoom,
-                JsonConvert.SerializeObject(new RoomDetail
+                GetBuffer(JsonConvert.SerializeObject(new RoomDetail
                 {
                     Name = options.RoomName,
                     Role = options.Role,
@@ -31,7 +31,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                 {
                     NullValueHandling = NullValueHandling.Ignore,
                     DefaultValueHandling = DefaultValueHandling.Ignore
-                }));
+                })));
         }
 
         protected override bool CheckAction(object payload)

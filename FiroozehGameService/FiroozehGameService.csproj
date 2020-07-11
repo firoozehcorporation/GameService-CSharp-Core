@@ -38,9 +38,6 @@
       <Reference Include="BCCrypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GProtocol\BCCrypto.dll</HintPath>
       </Reference>
-      <Reference Include="GameServiceHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\GameServiceHelper\GameServiceHelper.dll</HintPath>
-      </Reference>
       <Reference Include="GProtocol, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
       </Reference>
@@ -266,7 +263,6 @@
         <Compile Include="Utils\DictionaryUtil.cs"/>
         <Compile Include="Utils\GSLiveSystemObserver.cs"/>
         <Compile Include="Utils\ImageUtil.cs"/>
-        <Compile Include="Utils\KeyTypeUtil.cs"/>
         <Compile Include="Utils\LogUtil.cs"/>
         <Compile Include="Utils\NetworkUtil.cs"/>
         <Compile Include="Utils\PacketUtil.cs"/>

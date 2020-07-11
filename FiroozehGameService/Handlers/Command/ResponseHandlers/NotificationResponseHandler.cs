@@ -6,12 +6,12 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 {
     internal class NotificationResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand 
+        public static int ActionCommand
             => Models.Consts.Command.ActionNotification;
 
         protected override void HandleResponse(Packet packet)
         {
-            var notification = JsonConvert.DeserializeObject<Notification>(packet.Data);
+            var notification = JsonConvert.DeserializeObject<Notification>(GetStringFromBuffer(packet.Data));
             GameService.OnNotificationReceived(notification);
         }
     }

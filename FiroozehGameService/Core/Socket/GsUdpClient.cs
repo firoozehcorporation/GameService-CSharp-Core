@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
@@ -57,7 +57,7 @@ namespace FiroozehGameService.Core.Socket
         {
             OnDataReceived(new SocketDataReceived
             {
-                Data = Encoding.UTF8.GetString(payload, 0, payloadsize),
+                Packet = PacketDeserializer.Deserialize(payload, 0, payloadsize, GSLiveType.RealTime),
                 Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             });
         }
@@ -79,7 +79,6 @@ namespace FiroozehGameService.Core.Socket
                 case ClientState.ConnectionRequestTimedOut:
                 case ClientState.ConnectionDenied:
                     IsAvailable = false;
-                    Pwd = null;
                     Client?.Disconnect();
                     Client = null;
 
@@ -97,7 +96,7 @@ namespace FiroozehGameService.Core.Socket
             {
                 packet.SendType = type;
                 packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-                var buffer = PacketSerializable.Serialize(packet, Pwd, Type);
+                var buffer = PacketSerializable.Serialize(packet);
                 switch (type)
                 {
                     case GProtocolSendType.Reliable:
@@ -116,11 +115,6 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-        internal override void UpdatePwd(string newPwd)
-        {
-            Pwd = newPwd;
-        }
-
         internal override void StopReceiving()
         {
             try
@@ -133,7 +127,6 @@ namespace FiroozehGameService.Core.Socket
             }
 
             Client = null;
-            Pwd = null;
             IsAvailable = false;
         }
     }

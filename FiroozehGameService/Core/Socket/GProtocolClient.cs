@@ -11,34 +11,32 @@ namespace FiroozehGameService.Core.Socket
 {
     internal abstract class GProtocolClient
     {
-        #region GProtocolClient
-        protected Client Client;
-        protected string Pwd;
-        protected Area Area;
-        protected const GSLiveType Type = GSLiveType.RealTime;
-        protected readonly ISerializer PacketSerializable = new PacketSerializer();
-        protected readonly IDeserializer PacketDeserializer = new PacketDeserializer();
-        
-        protected internal event EventHandler<SocketDataReceived> DataReceived;
-        protected internal event EventHandler<ErrorArg> Error;
-        #endregion
-
         internal abstract void Init();
         internal abstract void CreateInstance();
         internal abstract void StopReceiving();
         internal abstract void Send(Packet packet, GProtocolSendType type);
-        internal abstract void UpdatePwd(string newPwd);
-
-
 
         protected void OnDataReceived(SocketDataReceived arg)
         {
             DataReceived?.Invoke(this, arg);
         }
-        
+
         protected void OnClosed(ErrorArg errorArg)
         {
-            Error?.Invoke(this,errorArg);
+            Error?.Invoke(this, errorArg);
         }
+
+        #region GProtocolClient
+
+        protected Client Client;
+        protected Area Area;
+        protected const GSLiveType Type = GSLiveType.RealTime;
+        protected readonly ISerializer PacketSerializable = new PacketSerializer();
+        protected readonly IDeserializer PacketDeserializer = new PacketDeserializer();
+
+        protected internal event EventHandler<SocketDataReceived> DataReceived;
+        protected internal event EventHandler<ErrorArg> Error;
+
+        #endregion
     }
 }

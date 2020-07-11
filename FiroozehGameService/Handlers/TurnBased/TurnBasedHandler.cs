@@ -12,7 +12,6 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased
 {
@@ -22,7 +21,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             CurrentRoom = payload.Room;
             _tcpClient = new GsTcpClient(payload.Area);
-            _tcpClient.SetType(GSLiveType.TurnBased);
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
 
@@ -55,7 +53,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
-            _tcpClient.UpdatePwd(playerHash);
             LogUtil.Log(null, "TurnBased OnAuth");
         }
 
@@ -179,8 +176,8 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             try
             {
-                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-                LogUtil.Log(this, "TurnBasedHandler OnDataReceived < " + e.Data);
+                var packet = (Packet) e.Packet;
+                LogUtil.Log(this, "TurnBasedHandler OnDataReceived < " + packet);
 
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.TurnBased))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);

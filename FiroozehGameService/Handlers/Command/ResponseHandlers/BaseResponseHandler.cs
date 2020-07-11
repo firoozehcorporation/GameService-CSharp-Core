@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Text;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers
@@ -12,5 +12,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         }
 
         protected abstract void HandleResponse(Packet packet);
+        
+        protected static string GetStringFromBuffer(byte[] buffer) => Encoding.UTF8.GetString(buffer);
     }
 }
