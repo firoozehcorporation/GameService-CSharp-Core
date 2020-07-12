@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +18,7 @@ namespace FiroozehGameService.Core.Socket
     {
         private const short TimeOut = 5000;
         private TcpClient _client;
-        private NetworkStream _clientStream;
+        private SslStream _clientStream;
 
         public GsTcpClient(Area area = null)
         {
@@ -29,12 +32,33 @@ namespace FiroozehGameService.Core.Socket
             {
                 CommandInfo = info;
                 var ip = CommandInfo == null ? Area.Ip : CommandInfo.Ip;
+                var cert = CommandInfo == null ? Area.Cert : CommandInfo.Cert;
                 var port = CommandInfo?.Port ?? Area.Port;
 
                 LogUtil.Log(this, "GsTcpClient -> Init Started with -> " + CommandInfo + " or " + Area);
                 _client = new TcpClientWithTimeout(ip, port, TimeOut).Connect();
+                LogUtil.Log(this,"GsTcpClient -> Connected,Waiting for Handshakes...");
+               
+                var certificate = new X509Certificate2(Encoding.Default.GetBytes(cert));
+                X509Certificate[] x509Certificates = {certificate};
+                var certsCollection = new X509CertificateCollection(x509Certificates);
+
+                _clientStream = new SslStream(_client.GetStream(), false, ValidateServerCertificate, null);
+                try
+                {
+                    _clientStream.AuthenticateAsClient(ip,certsCollection,SslProtocols.Tls, false);
+                }
+                catch (AuthenticationException e)
+                {
+                    LogUtil.LogError(this,"Exception: " + e.Message);
+                    if (e.InnerException != null)
+                        LogUtil.LogError(this,"Inner exception: " + e.InnerException.Message);
+                    LogUtil.LogError(this,"Authentication failed - closing the connection.");
+                    _client.Close();
+                    return false;
+                }
+                
                 OperationCancellationToken = new CancellationTokenSource();
-                _clientStream = _client.GetStream();
                 IsAvailable = true;
                 LogUtil.Log(this, "GsTcpClient -> Init Done");
                 return true;
@@ -44,6 +68,15 @@ namespace FiroozehGameService.Core.Socket
                 LogUtil.LogError(this, e.ToString());
                 return false;
             }
+        }
+
+        private static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            if (sslPolicyErrors == SslPolicyErrors.None)
+                return true;
+
+            LogUtil.LogError(null,"Certificate error: " + sslPolicyErrors);
+            return false;
         }
 
 

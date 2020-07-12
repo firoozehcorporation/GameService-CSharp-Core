@@ -146,7 +146,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             }
             else
             {
-                LogUtil.Log(this, "TurnBasedHandler Init With TimeOut");
+                LogUtil.Log(this, "TurnBasedHandler Init With TimeOut or Error");
             }
         }
 

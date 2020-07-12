@@ -10,6 +10,7 @@ namespace FiroozehGameService.Models.GSLive.Command
         [JsonProperty("1")] public string Protocol;
         [JsonProperty("2")] public int Port;
         [JsonProperty("3")] public string ConnectToken;
+        [JsonProperty("4")] public string Cert;
 
         public override string ToString()
         {
@@ -18,6 +19,7 @@ namespace FiroozehGameService.Models.GSLive.Command
                    ", Protocol='" + Protocol + '\'' +
                    ", Port='" + Port + '\'' +
                    ", ConnectToken='" + ConnectToken + '\'' +
+                   ", Cert='" + Cert + '\'' +
                    '}';
         }
     }

@@ -1,4 +1,3 @@
-using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Models.Consts
 {
@@ -32,8 +31,5 @@ namespace FiroozehGameService.Models.Consts
 
 
         public const int Error = 100;
-
-        public static readonly Area CommandArea
-            = new Area {Ip = "command.gamesservice.ir", Port = 8003, Protocol = "tcp"};
     }
 }

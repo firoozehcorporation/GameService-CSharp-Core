@@ -170,7 +170,7 @@ namespace FiroozehGameService.Handlers.Command
             }
             else
             {
-                LogUtil.Log(this, "CommandHandler Init done With TimeOut");
+                LogUtil.Log(this, "CommandHandler Init done With TimeOut or Error");
             }
         }
 
