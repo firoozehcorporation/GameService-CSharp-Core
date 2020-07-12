@@ -11,8 +11,6 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
             HandleResponse(packet);
         }
 
-        protected abstract void HandleResponse(Packet packet);
-        
-        protected static string GetStringFromBuffer(byte[] buffer) => Encoding.UTF8.GetString(buffer);
+        protected abstract void HandleResponse(Packet packet); 
     }
 }

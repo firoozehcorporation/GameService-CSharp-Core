@@ -1,31 +1,20 @@
 using System;
 using System.Linq;
-using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
+using Newtonsoft.Json;
 
 namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal class PacketDeserializer : IDeserializer
     {
-        public APacket Deserialize(byte[] buffer, int offset, int receivedBytes,GSLiveType type)
+        public APacket Deserialize(byte[] buffer, int offset, int receivedBytes)
         {
             try
             {
                 var seg = new ArraySegment<byte>(buffer,offset,receivedBytes);
-                switch (type)
-                {
-                    case GSLiveType.Core:
-                    case GSLiveType.TurnBased:
-                        return new Packet(seg.ToArray());
-                    case GSLiveType.RealTime:
-                        return new Models.GSLive.RT.Packet(seg.ToArray());
-                    case GSLiveType.NotSet:
-                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                }
+                return new Models.GSLive.RT.Packet(seg.ToArray());
             }
             catch (Exception e)
             {
@@ -33,6 +22,19 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
                 return null;
             }
            
+        }
+
+        public APacket Deserialize(string buffer)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<Packet>(buffer);
+            }
+            catch (Exception e)
+            {
+                LogUtil.LogError(this,"PacketDeserializer Err : " + e.Message);
+                return null;
+            }
         }
     }
 }

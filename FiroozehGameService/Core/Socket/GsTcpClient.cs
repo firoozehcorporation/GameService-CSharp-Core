@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.ClientHelper;
@@ -57,20 +58,13 @@ namespace FiroozehGameService.Core.Socket
                         Buffer.Length - BufferOffset,
                         OperationCancellationToken.Token);
 
-                    /*DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
+                    DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
                     foreach (var packet in packets)
                         OnDataReceived(new SocketDataReceived
                         {
-                            Packet = PacketDeserializer.Deserialize()
+                            Packet = PacketDeserializer.Deserialize(packet)
                         });
-                    */
-
-                    OnDataReceived(new SocketDataReceived
-                    {
-                        Packet = PacketDeserializer.Deserialize(Buffer, BufferOffset, BufferReceivedBytes,
-                            GSLiveType.Core)
-                    });
                     BufferReceivedBytes = 0;
                 }
                 catch (Exception e)

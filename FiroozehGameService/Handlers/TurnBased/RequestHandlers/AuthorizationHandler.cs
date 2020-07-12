@@ -14,9 +14,9 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
             return new Packet(
                 null,
                 TB.ActionAuth,
-                GetBuffer(JsonConvert.SerializeObject(
+                JsonConvert.SerializeObject(
                     new AuthPayload(TurnBasedHandler.CurrentRoom?.Id, TurnBasedHandler.PlayToken),
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore})));
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
         }
 
 

@@ -11,7 +11,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            var notification = JsonConvert.DeserializeObject<Notification>(GetStringFromBuffer(packet.Data));
+            var notification = JsonConvert.DeserializeObject<Notification>(packet.Data);
             GameService.OnNotificationReceived(notification);
         }
     }

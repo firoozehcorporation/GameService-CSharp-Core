@@ -12,7 +12,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            var joinData = JsonConvert.DeserializeObject<JoinData>(GetStringFromBuffer(packet.Data));
+            var joinData = JsonConvert.DeserializeObject<JoinData>(packet.Data);
             TurnBasedEventHandlers.JoinedRoom?.Invoke(this, new JoinEvent
             {
                 Type = GSLiveType.TurnBased,

@@ -10,7 +10,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            var payload = JsonConvert.DeserializeObject<StartPayload>(GetStringFromBuffer(packet.Data));
+            var payload = JsonConvert.DeserializeObject<StartPayload>(packet.Data);
             CoreEventHandlers.GsLiveSystemStarted?.Invoke(this, payload);
         }
     }

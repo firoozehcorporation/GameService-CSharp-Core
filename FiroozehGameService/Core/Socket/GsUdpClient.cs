@@ -57,7 +57,7 @@ namespace FiroozehGameService.Core.Socket
         {
             OnDataReceived(new SocketDataReceived
             {
-                Packet = PacketDeserializer.Deserialize(payload, 0, payloadsize, GSLiveType.RealTime),
+                Packet = PacketDeserializer.Deserialize(payload, 0, payloadsize),
                 Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             });
         }

@@ -14,7 +14,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
             return new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionPublicChat,
-                GetBuffer(JsonConvert.SerializeObject(
+                JsonConvert.SerializeObject(
                     new Message(
                         false,
                         channelMessage.Item1,
@@ -24,7 +24,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
                     {
                         NullValueHandling = NullValueHandling.Ignore,
                         DefaultValueHandling = DefaultValueHandling.Ignore
-                    }))
+                    })
             );
         }
 

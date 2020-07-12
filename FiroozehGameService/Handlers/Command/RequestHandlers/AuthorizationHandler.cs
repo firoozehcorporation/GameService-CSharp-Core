@@ -13,8 +13,8 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
             return new Packet(
                 null,
                 Models.Consts.Command.ActionAuth,
-                GetBuffer(JsonConvert.SerializeObject(
-                    new AuthPayload(CommandHandler.GameId, CommandHandler.UserToken))));
+                JsonConvert.SerializeObject(
+                    new AuthPayload(CommandHandler.GameId, CommandHandler.UserToken)));
         }
 
         protected override bool CheckAction(object payload)

@@ -12,7 +12,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
 
         protected override void HandleResponse(Packet packet)
         {
-            var members = JsonConvert.DeserializeObject<List<Member>>(GetStringFromBuffer(packet.Data));
+            var members = JsonConvert.DeserializeObject<List<Member>>(packet.Data);
             ChatEventHandlers.ChannelsMembers?.Invoke(this, members);
         }
     }

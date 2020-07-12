@@ -23,7 +23,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
                 CommandEventHandler.AutoMatchUpdated?.Invoke(null, new AutoMatchEvent
                 {
                     Status = AutoMatchStatus.OnUserJoined,
-                    Players = JsonConvert.DeserializeObject<List<Member>>(GetStringFromBuffer(packet.Data))
+                    Players = JsonConvert.DeserializeObject<List<Member>>(packet.Data)
                 });
         }
     }
