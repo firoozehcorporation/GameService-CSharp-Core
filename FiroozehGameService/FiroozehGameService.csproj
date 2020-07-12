@@ -172,6 +172,7 @@
         <Compile Include="Models\BasicApi\Buckets\FindByElement.cs"/>
         <Compile Include="Models\BasicApi\Buckets\Ownership.cs"/>
         <Compile Include="Models\BasicApi\Buckets\SortByElement.cs"/>
+        <Compile Include="Models\BasicApi\CommandInfo.cs"/>
         <Compile Include="Models\BasicApi\EditUserProfile.cs"/>
         <Compile Include="Models\BasicApi\Error.cs"/>
         <Compile Include="Models\BasicApi\LeaderBoard.cs"/>

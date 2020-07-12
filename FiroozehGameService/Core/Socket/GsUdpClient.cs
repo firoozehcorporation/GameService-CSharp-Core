@@ -97,6 +97,7 @@ namespace FiroozehGameService.Core.Socket
                 packet.SendType = type;
                 packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 var buffer = PacketSerializable.Serialize(packet);
+                LogUtil.Log(this,"RealTime Payload Len : " + buffer.Length);
                 switch (type)
                 {
                     case GProtocolSendType.Reliable:

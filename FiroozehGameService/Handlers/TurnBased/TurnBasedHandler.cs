@@ -138,7 +138,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         public async Task Init()
         {
             _cancellationToken = new CancellationTokenSource();
-            if (_tcpClient.Init())
+            if (_tcpClient.Init(null))
             {
                 Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
                 await RequestAsync(AuthorizationHandler.Signature);

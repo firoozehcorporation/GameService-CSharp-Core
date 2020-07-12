@@ -55,7 +55,7 @@ namespace FiroozehGameService.Models.GSLive.RT
             if (ClientSendTime != 0L)
             {
                 haveSendTime = 0x1;
-                prefixLen += sizeof(ushort);
+                prefixLen += sizeof(long);
             }
             
             var packetBuffer = BufferPool.GetBuffer(BufferSize(prefixLen));
@@ -74,7 +74,7 @@ namespace FiroozehGameService.Models.GSLive.RT
                 packetWriter.Write((byte)SendType);
                 if(havePayload == 0x1)  packetWriter.Write(Payload);
                 if(haveToken == 0x1)    packetWriter.Write(ConvertToBytes(Hash));  
-                if(haveSendTime == 0x1) packetWriter.Write((ushort)ClientSendTime);
+                if(haveSendTime == 0x1) packetWriter.Write(ClientSendTime);
             }
             
             return packetBuffer;
@@ -97,7 +97,7 @@ namespace FiroozehGameService.Models.GSLive.RT
                 
                 if(havePayload == 0x1)    Payload = packetWriter.ReadBytes(_payloadLen);
                 if(haveToken == 0x1)      Hash = ConvertToString(packetWriter.ReadBytes(_hashLen));
-                if(haveSendTime == 0x1)   ClientSendTime = packetWriter.ReadUInt16();
+                if(haveSendTime == 0x1)   ClientSendTime = packetWriter.ReadInt64();
             }
         }
 
@@ -111,8 +111,9 @@ namespace FiroozehGameService.Models.GSLive.RT
             return "Packet{" +
                    "Hash='" + Hash + '\'' +
                    ", Action=" + Action +  '\'' +
-                   "type = " + SendType + '\'' +
-                   "payload = " + Encoding.UTF8.GetString(Payload ?? new byte[0]) +
+                   ", type = " + SendType + '\'' +
+                   ", payload = " + Encoding.UTF8.GetString(Payload ?? new byte[0]) + '\'' +
+                   ", SendTime = " + ClientSendTime + '\'' +
                    '}';
         }
 

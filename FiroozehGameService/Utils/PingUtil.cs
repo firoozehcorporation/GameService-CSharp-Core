@@ -1,14 +1,11 @@
 using System;
-using System.Net.NetworkInformation;
 using System.Timers;
-using FiroozehGameService.Models.Consts;
 
 namespace FiroozehGameService.Utils
 {
     internal class PingUtil
     {
-        private const int Interval = 500;
-        private const int Timeout = 1000;
+        private const int Interval = 1000;
         private static long _lastPing = -1;
 
         internal static EventHandler RequestPing;
@@ -36,16 +33,7 @@ namespace FiroozehGameService.Utils
         {
             _lastPing = ping;
         }
-
-        private void GetPing()
-        {
-            var pingSender = new Ping();
-            var reply = pingSender.Send(Command.CommandArea.Ip, Timeout);
-            if (reply != null && reply.Status == IPStatus.Success)
-                _lastPing = reply.RoundtripTime;
-            pingSender.Dispose();
-        }
-
+        
         internal static long Diff(long one, long two)
         {
             return Math.Abs(one - two);

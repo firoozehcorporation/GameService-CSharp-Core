@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.ClientHelper;
-using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
@@ -17,21 +17,22 @@ namespace FiroozehGameService.Core.Socket
         private TcpClient _client;
         private NetworkStream _clientStream;
 
-        public GsTcpClient(Area area)
+        public GsTcpClient(Area area = null)
         {
-            if (area.Protocol.ToUpper() != "TCP")
-                throw new InvalidOperationException("Only TCP Protocol Supported");
-
-            Endpoint = area;
+            Area = area;
         }
 
 
-        internal override bool Init()
+        internal override bool Init(CommandInfo info)
         {
             try
             {
-                LogUtil.Log(this, "GsTcpClient -> Init Started");
-                _client = new TcpClientWithTimeout(Endpoint.Ip, Endpoint.Port, TimeOut).Connect();
+                CommandInfo = info;
+                var ip = CommandInfo == null ? Area.Ip : CommandInfo.Ip;
+                var port = CommandInfo?.Port ?? Area.Port;
+
+                LogUtil.Log(this, "GsTcpClient -> Init Started with -> " + CommandInfo + " or " + Area);
+                _client = new TcpClientWithTimeout(ip, port, TimeOut).Connect();
                 OperationCancellationToken = new CancellationTokenSource();
                 _clientStream = _client.GetStream();
                 IsAvailable = true;

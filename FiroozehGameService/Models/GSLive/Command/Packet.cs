@@ -31,7 +31,10 @@ namespace FiroozehGameService.Models.GSLive.Command
 
         internal override byte[] Serialize()
         {
-            return ConvertToBytes(JsonConvert.SerializeObject(this));
+            return ConvertToBytes(JsonConvert.SerializeObject(this,new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }));
         }
 
         internal override void Deserialize(byte[] buffer)

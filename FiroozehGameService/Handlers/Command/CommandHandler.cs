@@ -21,7 +21,7 @@ namespace FiroozehGameService.Handlers.Command
     {
         public CommandHandler()
         {
-            _tcpClient = new GsTcpClient(Models.Consts.Command.CommandArea);
+            _tcpClient = new GsTcpClient();
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
 
@@ -162,7 +162,7 @@ namespace FiroozehGameService.Handlers.Command
         public async Task Init()
         {
             _cancellationToken = new CancellationTokenSource();
-            if (_tcpClient.Init())
+            if (_tcpClient.Init(GameService.CommandInfo))
             {
                 Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
                 await RequestAsync(AuthorizationHandler.Signature);
