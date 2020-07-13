@@ -15,9 +15,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         {
             try
             {
-                var dataPayload = new DataPayload();
-                dataPayload.Deserialize(packet.Payload);
-
+                var dataPayload = new DataPayload(packet.Payload);
                 RealTimeEventHandlers.NewEventReceived?.Invoke(this,
                     new EventData
                     {
