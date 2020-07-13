@@ -24,6 +24,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
@@ -247,6 +248,32 @@ namespace FiroozehGameService.Core.GSLive
             if (limit <= 0 || limit > 15) throw new GameServiceException("invalid Limit Value");
             await GSLive.Handler.CommandHandler.RequestAsync(FindMemberHandler.Signature,
                 new RoomDetail {Max = limit, UserOrMemberId = query});
+        }
+        
+        /// <summary>
+        ///     Get The Ping
+        /// </summary>
+        public short GetPing()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GSLive.Handler.RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+            return RealTimeHandler.GetPing();
+        }
+        
+        /// <summary>
+        ///     Send An Event To Another Players in Room
+        /// </summary>
+        /// <param name="caller">Caller Info Data </param>
+        /// <param name="data">(NOTNULL) Data To Send By Event </param>
+        public void SendEvent(byte[] caller,byte[] data)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (data == null) throw new GameServiceException("data Cant Be Null");
+            if (GSLive.Handler.RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+            GSLive.Handler.RealTimeHandler.Request(NewEventHandler.Signature, GProtocolSendType.Reliable,
+                new DataPayload {Payload = data , ExtraData = caller});
         }
     }
 }

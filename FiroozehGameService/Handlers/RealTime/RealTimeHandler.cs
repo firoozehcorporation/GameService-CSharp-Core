@@ -11,6 +11,7 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
+using EventHandler = System.EventHandler;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
@@ -53,6 +54,11 @@ namespace FiroozehGameService.Handlers.RealTime
         private void RequestPing(object sender, EventArgs e)
         {
             Request(GetPingHandler.Signature, GProtocolSendType.Reliable);
+        }
+
+        internal static short GetPing()
+        {
+            return (short) PingUtil.GetLastPing();
         }
 
         private void Ping(object sender, APacket packet)
@@ -105,6 +111,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _requestHandlers.Add(GetPingHandler.Signature, new GetPingHandler());
             _requestHandlers.Add(SendPrivateMessageHandler.Signature, new SendPrivateMessageHandler());
             _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
+            _requestHandlers.Add(NewEventHandler.Signature, new NewEventHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -133,6 +140,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _responseHandlers.Add(MemberDetailsResponseHandler.ActionCommand, new MemberDetailsResponseHandler());
             _responseHandlers.Add(PrivateMessageResponseHandler.ActionCommand, new PrivateMessageResponseHandler());
             _responseHandlers.Add(PublicMessageResponseHandler.ActionCommand, new PublicMessageResponseHandler());
+            _responseHandlers.Add(NewEventResponseHandler.ActionCommand, new NewEventResponseHandler());
         }
 
 

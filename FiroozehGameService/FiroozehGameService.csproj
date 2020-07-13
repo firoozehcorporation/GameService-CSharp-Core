@@ -121,6 +121,7 @@
         <Compile Include="Handlers\RealTimeEventHandlers.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\AuthorizationHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\BaseRequestHandler.cs"/>
+        <Compile Include="Handlers\RealTime\RequestHandlers\NewEventHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\GetMembersHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\GetPingHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\IRequestHandler.cs"/>
@@ -136,6 +137,7 @@
         <Compile Include="Handlers\RealTime\ResponseHandlers\JoinRoomResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\LeaveRoomResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\MemberDetailsResponseHandler.cs"/>
+        <Compile Include="Handlers\RealTime\ResponseHandlers\NewEventResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PingResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PrivateMessageResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PublicMessageResponseHandler.cs"/>
@@ -237,6 +239,7 @@
         <Compile Include="Models\GSLive\RoomData.cs"/>
         <Compile Include="Models\GSLive\RT\AuthPayload.cs"/>
         <Compile Include="Models\GSLive\RT\DataPayload.cs"/>
+        <Compile Include="Models\GSLive\RT\EventData.cs"/>
         <Compile Include="Models\GSLive\RT\Leave.cs"/>
         <Compile Include="Models\GSLive\RT\Message.cs"/>
         <Compile Include="Models\GSLive\RT\MessageInfo.cs"/>

@@ -11,6 +11,7 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionMembersDetail = 6;
         internal const int ActionLeave = 7;
         internal const int ActionPing = 10;
+        internal const int ActionEvent = 11;
         internal const int Error = 100;
 
 

@@ -18,7 +18,8 @@ namespace FiroozehGameService.Core.Socket
     {
         private const short TimeOut = 5000;
         private TcpClient _client;
-        private SslStream _clientStream;
+        //private SslStream _clientStream;
+        private NetworkStream _clientStream;
 
         public GsTcpClient(Area area = null)
         {
@@ -39,7 +40,7 @@ namespace FiroozehGameService.Core.Socket
                 _client = new TcpClientWithTimeout(ip, port, TimeOut).Connect();
                 LogUtil.Log(this,"GsTcpClient -> Connected,Waiting for Handshakes...");
                
-                var certificate = new X509Certificate2(Encoding.Default.GetBytes(cert));
+                /*var certificate = new X509Certificate2(Encoding.Default.GetBytes(cert));
                 X509Certificate[] x509Certificates = {certificate};
                 var certsCollection = new X509CertificateCollection(x509Certificates);
 
@@ -57,7 +58,9 @@ namespace FiroozehGameService.Core.Socket
                     _client.Close();
                     return false;
                 }
+                */
                 
+                _clientStream = _client.GetStream();
                 OperationCancellationToken = new CancellationTokenSource();
                 IsAvailable = true;
                 LogUtil.Log(this, "GsTcpClient -> Init Done");
