@@ -266,6 +266,7 @@
         <Compile Include="Utils\ActionUtil.cs"/>
         <Compile Include="Utils\DictionaryUtil.cs"/>
         <Compile Include="Utils\GSLiveSystemObserver.cs"/>
+        <Compile Include="Utils\HttpRequestObserver.cs"/>
         <Compile Include="Utils\ImageUtil.cs"/>
         <Compile Include="Utils\LogUtil.cs"/>
         <Compile Include="Utils\NetworkUtil.cs"/>

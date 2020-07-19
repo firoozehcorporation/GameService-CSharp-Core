@@ -4,11 +4,13 @@ using System.Text;
 using System.Threading.Tasks;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal static class GsWebRequest
     {
+        private static readonly HttpRequestObserver Observer = new HttpRequestObserver();
         private static readonly HttpClient Client = new HttpClient();
         private static readonly string UserAgent = "UnitySDK " + GameService.Version();
 
@@ -61,8 +63,11 @@ namespace FiroozehGameService.Core.ApiWebRequest
             GsWebRequestMethod method = GsWebRequestMethod.Get, string body = null,
             Dictionary<string, string> headers = null)
         {
+            
+            if(!Observer.Increase())
+                throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest + " Requests Per Sec");
+           
             var httpClient = Init(headers);
-
             StringContent content = null;
             if (body != null) content = new StringContent(body, Encoding.UTF8, "application/json");
 
