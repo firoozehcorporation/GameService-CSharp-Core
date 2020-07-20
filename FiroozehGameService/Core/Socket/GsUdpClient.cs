@@ -1,5 +1,6 @@
 ﻿using System;
 using FiroozehGameService.Handlers;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
@@ -95,9 +96,9 @@ namespace FiroozehGameService.Core.Socket
             if (Client?.State == ClientState.Connected)
             {
                 packet.SendType = type;
-                packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                if(packet.Action == RT.ActionPing) packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 var buffer = PacketSerializable.Serialize(packet);
-                LogUtil.Log(this,"RealTime Payload Len : " + buffer.Length);
+                LogUtil.Log(this,"RealTime Send Payload Len : " + buffer.Length);
                 switch (type)
                 {
                     case GProtocolSendType.Reliable:
