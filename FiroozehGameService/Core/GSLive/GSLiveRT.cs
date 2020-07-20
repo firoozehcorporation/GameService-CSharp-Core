@@ -266,13 +266,14 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="caller">(NOTNULL) Caller Info Data </param>
         /// <param name="data">(NOTNULL) Data To Send By Event </param>
-        public void SendEvent(byte[] caller,byte[] data)
+        /// <param name="sendType">Send Type </param>
+        public void SendEvent(byte[] caller,byte[] data,GProtocolSendType sendType)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (caller == null || data == null) throw new GameServiceException("caller or data Cant Be Null");
             if (GSLive.Handler.RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
-            GSLive.Handler.RealTimeHandler.Request(NewEventHandler.Signature, GProtocolSendType.Reliable,
+            GSLive.Handler.RealTimeHandler.Request(NewEventHandler.Signature, sendType,
                 new DataPayload {Payload = data , ExtraData = caller});
         }
     }
