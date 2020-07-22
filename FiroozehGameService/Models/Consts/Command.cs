@@ -31,5 +31,8 @@ namespace FiroozehGameService.Models.Consts
 
 
         public const int Error = 100;
+        
+        // Limit Checker
+        internal const int TimeLimit = 5; // 10 Request per sec
     }
 }

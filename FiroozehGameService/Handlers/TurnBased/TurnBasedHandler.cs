@@ -59,7 +59,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         private async void OnPing(object sender, APacket packet)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
-                await RequestAsync(PingPongHandler.Signature);
+                await RequestAsync(PingPongHandler.Signature,isCritical : true);
             LogUtil.Log(null, "TurnBased OnPing");
         }
 
@@ -124,14 +124,14 @@ namespace FiroozehGameService.Handlers.TurnBased
         }
 
 
-        public void Request(string handlerName, object payload = null)
+        public void Request(string handlerName, object payload = null,bool isCritical = false)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload));
+            Send(_requestHandlers[handlerName]?.HandleAction(payload),isCritical);
         }
 
-        public async Task RequestAsync(string handlerName, object payload = null)
+        public async Task RequestAsync(string handlerName, object payload = null,bool isCritical = false)
         {
-            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
+            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload),isCritical);
         }
 
 
@@ -141,7 +141,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             if (_tcpClient.Init(null))
             {
                 Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
-                await RequestAsync(AuthorizationHandler.Signature);
+                await RequestAsync(AuthorizationHandler.Signature,isCritical : true);
                 LogUtil.Log(this, "TurnBasedHandler Init done");
             }
             else
@@ -151,15 +151,15 @@ namespace FiroozehGameService.Handlers.TurnBased
         }
 
 
-        private void Send(Packet packet)
+        private void Send(Packet packet,bool isCritical = false)
         {
-            if (!_observer.Increase()) return;
+            if (!_observer.Increase(isCritical)) return;
             _tcpClient.Send(packet);
         }
 
-        private async Task SendAsync(Packet packet)
+        private async Task SendAsync(Packet packet,bool isCritical = false)
         {
-            if (!_observer.Increase()) return;
+            if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) await _tcpClient.SendAsync(packet);
             else throw new GameServiceException("GameService Not Available");
         }

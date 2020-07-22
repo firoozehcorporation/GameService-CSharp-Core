@@ -53,7 +53,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void RequestPing(object sender, EventArgs e)
         {
-            Request(GetPingHandler.Signature, GProtocolSendType.Reliable);
+            Request(GetPingHandler.Signature, GProtocolSendType.Reliable,isCritical : true);
         }
 
         internal static short GetPing()
@@ -76,7 +76,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnConnected(object sender, EventArgs e)
         {
             // Send Auth When Connected
-            Request(AuthorizationHandler.Signature, GProtocolSendType.Reliable);
+            Request(AuthorizationHandler.Signature, GProtocolSendType.Reliable,isCritical : true);
         }
 
 
@@ -144,9 +144,9 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        internal void Request(string handlerName, GProtocolSendType type, object payload = null)
+        internal void Request(string handlerName, GProtocolSendType type, object payload = null,bool isCritical = false)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload), type);
+            Send(_requestHandlers[handlerName]?.HandleAction(payload), type,isCritical);
         }
 
 
@@ -156,9 +156,9 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        private void Send(Packet packet, GProtocolSendType type)
+        private void Send(Packet packet, GProtocolSendType type,bool isCritical = false)
         {
-            if (!_observer.Increase()) return;
+            if (!_observer.Increase(isCritical)) return;
             if (!PacketUtil.CheckPacketSize(packet)) throw new GameServiceException("this Packet Is Too Big!");
             if (IsAvailable) _udpClient.Send(packet, type);
             else throw new GameServiceException("GameService Not Available");

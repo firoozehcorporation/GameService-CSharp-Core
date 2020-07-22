@@ -99,17 +99,8 @@ namespace FiroozehGameService.Core.Socket
                 if(packet.Action == RT.ActionPing) packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 var buffer = PacketSerializable.Serialize(packet);
                 LogUtil.Log(this,"RealTime Send Payload Len : " + buffer.Length);
-                switch (type)
-                {
-                    case GProtocolSendType.Reliable:
-                        Client?.Send(buffer, buffer.Length);
-                        break;
-                    case GProtocolSendType.UnReliable:
-                        Client?.Send(buffer, buffer.Length);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                }
+                
+                Client?.Send(buffer, buffer.Length);
             }
             else
             {
