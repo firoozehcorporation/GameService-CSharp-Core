@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Timers;
+using FiroozehGameService.Core;
 
 namespace FiroozehGameService.Utils
 {
@@ -24,7 +25,14 @@ namespace FiroozehGameService.Utils
                 Enabled = false
             };
             
-            Timer.Elapsed += (sender, args) => { EventHandler?.Invoke(this,this); };
+            Timer.Elapsed += (sender, args) =>
+            {
+                GameService.SynchronizationContext?.Send(
+                    delegate
+                    { 
+                        EventHandler?.Invoke(this,this);
+                    }, null);
+            };
             Timer.Start();
         }
 
