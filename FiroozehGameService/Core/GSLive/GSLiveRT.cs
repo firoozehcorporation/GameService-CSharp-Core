@@ -263,6 +263,8 @@ namespace FiroozehGameService.Core.GSLive
         
         /// <summary>
         ///     Send An Event To Another Players in Room
+        ///     NOTE : Do not use this function if you are using Real Time Utility
+        ///            , as critical errors may occur.
         /// </summary>
         /// <param name="caller">(NOTNULL) Caller Info Data </param>
         /// <param name="data">(NOTNULL) Data To Send By Event </param>

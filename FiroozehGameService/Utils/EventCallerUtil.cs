@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Timers;
-using FiroozehGameService.Models;
 
 namespace FiroozehGameService.Utils
 {
@@ -9,21 +8,19 @@ namespace FiroozehGameService.Utils
     public class Event
     {
         internal Timer Timer;
-        internal short Id;
-        internal long Interval;
+        private readonly long _interval;
         public EventHandler<Event> EventHandler;
 
-        internal Event(short id,long interval)
+        internal Event(long interval)
         {
-            Id = id;
-            Interval = interval;
+            _interval = interval;
         }
 
-        internal void Start()
+        public void Start()
         {
             Timer = new Timer
             {
-                Interval = Interval,
+                Interval = _interval,
                 Enabled = false
             };
             
@@ -31,7 +28,7 @@ namespace FiroozehGameService.Utils
             Timer.Start();
         }
 
-        internal void Dispose()
+        public void Dispose()
         {
             Timer?.Stop();
             Timer?.Close();
@@ -42,31 +39,10 @@ namespace FiroozehGameService.Utils
     
     public static class EventCallerUtil
     {
-        private static Dictionary<short,Event> _events;
-        public static EventHandler<Event> OnNewEvent;
-        
-        public static Event AddEvent(short id,long interval)
+        public static Event CreateNewEvent(long interval)
         {
-            if(_events != null && _events.ContainsKey(id))
-                throw new GameServiceException("id Must be unique");
-            
-            var newEvent = new Event(id, interval);
-            if (_events == null) _events = new Dictionary<short, Event>();
-            
-            newEvent.EventHandler += delegate(object sender, Event newE)
-            {
-                OnNewEvent?.Invoke(sender,newE);
-            };
-            
-            _events.Add(id,newEvent);
+            var newEvent = new Event(interval);
             return newEvent;
         }
-
-        public static void RemoveEvent(short id)
-        {
-            if (_events.TryGetValue(id, out var eventObj))
-                eventObj?.Dispose();
-        }
-        
     }
 }

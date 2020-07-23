@@ -66,6 +66,8 @@ namespace FiroozehGameService.Handlers
         /// Calls When SomeOne Send New Event In Current Room
         /// This Event Handler Called By Following Functions :
         /// <see cref="GSLiveRT.SendEvent"/>
+        ///  NOTE : Do not use this EventHandler if you are using Real Time Utility
+        ///            , as critical errors may occur.
         /// </summary>
         public static EventHandler<EventData> NewEventReceived;
         
