@@ -8,21 +8,17 @@ using FiroozehGameService.Utils.Serializer;
 
 namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {
-    internal class NewEventResponseHandler : BaseResponseHandler
+    internal class SnapShotResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand => RT.ActionEvent;
+        public static int ActionCommand => RT.ActionSnapShot;
 
         protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
             try
             {
                 var dataPayload = new DataPayload(packet.Payload);
-                GsSerializer.OnNewEventHandler?.Invoke(this,
-                    new EventData
-                    {
-                        Caller = dataPayload.ExtraData,
-                        Data = dataPayload.Payload
-                    });
+                var shotsFromBuffer = GsSerializer.Object.GetSnapShotsFromBuffer(dataPayload.Payload);
+                GsSerializer.OnNewSnapShotReceived?.Invoke(this,shotsFromBuffer);
             }
             catch (Exception e)
             {

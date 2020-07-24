@@ -269,7 +269,7 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="caller">(NOTNULL) Caller Info Data </param>
         /// <param name="data">(NOTNULL) Data To Send By Event </param>
         /// <param name="sendType">Send Type </param>
-        public void SendEvent(byte[] caller,byte[] data,GProtocolSendType sendType)
+        internal void SendEvent(byte[] caller,byte[] data,GProtocolSendType sendType)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (caller == null || data == null) throw new GameServiceException("caller or data Cant Be Null");

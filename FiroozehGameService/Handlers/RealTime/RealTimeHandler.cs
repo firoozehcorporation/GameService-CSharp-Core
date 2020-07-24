@@ -80,11 +80,14 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        private static void OnAuth(object sender, string playerHash)
+        private void OnAuth(object sender, string playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
             LogUtil.Log(null, "RealTime OnAuth");
+            
+            // Get SnapShot After Auth
+            Request(SnapShotHandler.Signature,GProtocolSendType.Reliable,isCritical : true);
         }
 
         private void InitRequestMessageHandlers()
@@ -112,6 +115,8 @@ namespace FiroozehGameService.Handlers.RealTime
             _requestHandlers.Add(SendPrivateMessageHandler.Signature, new SendPrivateMessageHandler());
             _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
             _requestHandlers.Add(NewEventHandler.Signature, new NewEventHandler());
+            _requestHandlers.Add(SnapShotHandler.Signature, new SnapShotHandler());
+
         }
 
         private void InitResponseMessageHandlers()
@@ -141,6 +146,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _responseHandlers.Add(PrivateMessageResponseHandler.ActionCommand, new PrivateMessageResponseHandler());
             _responseHandlers.Add(PublicMessageResponseHandler.ActionCommand, new PublicMessageResponseHandler());
             _responseHandlers.Add(NewEventResponseHandler.ActionCommand, new NewEventResponseHandler());
+            _responseHandlers.Add(SnapShotResponseHandler.ActionCommand, new SnapShotResponseHandler());
         }
 
 

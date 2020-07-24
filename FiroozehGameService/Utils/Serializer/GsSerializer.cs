@@ -21,10 +21,14 @@
 
 using System;
 using System.Collections.Generic;
+using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Utils.Serializer.Abstracts;
 using FiroozehGameService.Utils.Serializer.Helpers;
 using FiroozehGameService.Utils.Serializer.Interfaces;
+using FiroozehGameService.Utils.Serializer.Models;
 using FiroozehGameService.Utils.Serializer.Utils;
 
 namespace FiroozehGameService.Utils.Serializer
@@ -34,6 +38,27 @@ namespace FiroozehGameService.Utils.Serializer
     /// </summary>
     public static class GsSerializer
     {
+
+        /// <summary>
+        /// Calls When SomeOne Send New Event In Current Room
+        /// This Event Handler Called By Following Functions :
+        /// <see cref="GSLiveRT.SendEvent"/>
+        ///  NOTE : Do not use this EventHandler if you are using Real Time Utility
+        ///            , as critical errors may occur.
+        /// </summary>
+        public static EventHandler<EventData> OnNewEventHandler;
+
+
+        /// <summary>
+        /// Calls When Server Send SnapShot In Current Room
+        /// This Event Handler Called By Following Functions :
+        /// <see cref="GSLiveRT.SendEvent"/>
+        ///  NOTE : Do not use this EventHandler if you are using Real Time Utility
+        ///            , as critical errors may occur.
+        /// </summary>
+        public static EventHandler<List<SnapShotData>> OnNewSnapShotReceived;
+        
+        
         /// <summary>
         /// Represents TypeRegistry In Gs Serializer Class
         /// </summary>
@@ -79,7 +104,7 @@ namespace FiroozehGameService.Utils.Serializer
             {
                 try
                 {
-                    var stream = TypeUtil.GetWriteStreamForParams(data);
+                    var stream = TypeUtil.GetWriteStreamFromParams(data);
                     return SerializerUtil.Serialize(stream);
                 }
                 catch (Exception)
@@ -124,6 +149,23 @@ namespace FiroozehGameService.Utils.Serializer
         {
             /// <summary>
             /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+            /// Send An Object Buffer Data
+            /// </summary>
+            /// <param name="caller"> The caller Data</param>
+            /// <param name="buffer"> The Buffer Data</param>
+            /// <returns></returns>
+            /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
+            public static void SendObject(byte[] caller , byte[] buffer)
+            {
+                if(caller == null || buffer == null)
+                    throw new GameServiceException("GsSerializer Err -> Caller or buffer Cant Be Null");
+            
+                Core.GameService.GSLive.RealTime.SendEvent(caller,buffer,GProtocolSendType.Reliable);
+            }
+            
+            
+            /// <summary>
+            /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
             /// Get Buffer From IGsLiveSerializable
             /// </summary>
             /// <param name="serializable"> The serializable Object</param>
@@ -148,6 +190,12 @@ namespace FiroozehGameService.Utils.Serializer
             public static void CallReadStream(IGsLiveSerializable serializable,byte[] buffer)
             {
                 serializable?.OnGsLiveRead(GetReadStream(buffer));
+            }
+
+            
+            internal static List<SnapShotData> GetSnapShotsFromBuffer(byte[] buffer)
+            {
+                return SerializerUtil.GetSnapShotsFromBuffer(buffer);
             }
             
             

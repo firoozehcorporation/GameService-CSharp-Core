@@ -115,7 +115,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         /// <param name="data">the Objects</param>
         /// <returns></returns>
         /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
-        internal static GsWriteStream GetWriteStreamForParams(params object[] data)
+        internal static GsWriteStream GetWriteStreamFromParams(params object[] data)
         {
             if(data == null)
                 throw new GameServiceException("Params Cant Be Null");

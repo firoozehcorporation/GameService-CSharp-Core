@@ -62,15 +62,6 @@ namespace FiroozehGameService.Handlers
         public static EventHandler<MessageReceiveEvent> NewMessageReceived;
         
         
-        /// <summary>
-        /// Calls When SomeOne Send New Event In Current Room
-        /// This Event Handler Called By Following Functions :
-        /// <see cref="GSLiveRT.SendEvent"/>
-        ///  NOTE : Do not use this EventHandler if you are using Real Time Utility
-        ///            , as critical errors may occur.
-        /// </summary>
-        public static EventHandler<EventData> NewEventReceived;
-        
         
         /// <summary>
         /// Returns Current Room Members Detail  When Call The Following Function :

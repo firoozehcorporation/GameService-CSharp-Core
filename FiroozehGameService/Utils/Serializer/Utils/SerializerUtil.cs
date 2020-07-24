@@ -259,6 +259,23 @@ namespace FiroozehGameService.Utils.Serializer.Utils
             return readStream;
         }
 
+
+        internal static List<SnapShotData> GetSnapShotsFromBuffer(byte[] buffer)
+        {
+            var data = new List<SnapShotData>();
+            using (var packetReader = ByteArrayReaderWriter.Get(buffer))
+            {
+                var count = packetReader.ReadByte();
+                for (var i = 0; i < count; i++)
+                {
+                    var type = (SnapShotType) packetReader.ReadByte();
+                    var payload = packetReader.ReadBytes(packetReader.ReadUInt16());
+                    data.Add(new SnapShotData(type,payload));
+                }
+            }
+
+            return data;
+        }
         
         
         private static byte[] GetBuffer(string data, bool isUtf) 
