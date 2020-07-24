@@ -273,6 +273,17 @@
         <Compile Include="Utils\NetworkUtil.cs"/>
         <Compile Include="Utils\PacketUtil.cs"/>
         <Compile Include="Utils\PingUtil.cs"/>
+        <Compile Include="Utils\Serializer\Abstracts\BaseSerializer.cs"/>
+        <Compile Include="Utils\Serializer\Abstracts\ObjectSerializer.cs"/>
+        <Compile Include="Utils\Serializer\GsSerializer.cs"/>
+        <Compile Include="Utils\Serializer\Helpers\GSReadStream.cs"/>
+        <Compile Include="Utils\Serializer\Helpers\GSWriteStream.cs"/>
+        <Compile Include="Utils\Serializer\Interfaces\IGsLiveSerializable.cs"/>
+        <Compile Include="Utils\Serializer\Models\ObjectInfo.cs"/>
+        <Compile Include="Utils\Serializer\Models\Types.cs"/>
+        <Compile Include="Utils\Serializer\Utils\HashUtil.cs"/>
+        <Compile Include="Utils\Serializer\Utils\SerializerUtil.cs"/>
+        <Compile Include="Utils\Serializer\Utils\TypeUtil.cs"/>
         <Compile Include="Utils\ThreadManager.cs"/>
         <Compile Include="Utils\TimeUtil.cs"/>
         <Compile Include="Utils\URLUtil.cs"/>
