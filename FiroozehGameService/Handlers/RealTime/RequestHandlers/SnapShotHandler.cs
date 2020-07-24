@@ -23,7 +23,6 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
             return DoAction();
         }
 
-        protected override bool CheckAction(object payload)
-            => payload.GetType() == typeof(DataPayload);
+        protected override bool CheckAction(object payload) => true;
     }
 }

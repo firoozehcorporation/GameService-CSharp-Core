@@ -103,6 +103,7 @@ namespace FiroozehGameService.Models.GSLive.RT
                 packetWriter.Write(haveSender);
                 packetWriter.Write(haveReceiver);
                 packetWriter.Write(havePayload);
+                packetWriter.Write(haveExtra);
                 
                 if(haveSender == 0x1)   packetWriter.Write((byte)_senderLen);
                 if(haveReceiver == 0x1) packetWriter.Write((byte)_receiverLen);

@@ -11,7 +11,6 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using EventHandler = System.EventHandler;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
