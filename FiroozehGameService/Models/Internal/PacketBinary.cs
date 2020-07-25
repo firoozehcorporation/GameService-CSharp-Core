@@ -9,8 +9,6 @@ namespace FiroozehGameService.Models.Internal
         internal abstract byte[] Serialize();
         internal abstract void Deserialize(byte[] buffer);
         internal abstract int BufferSize(short prefixLen);
-<<<<<<< HEAD
-=======
 
         internal string ConvertToString(byte[] data)
         {
@@ -21,6 +19,5 @@ namespace FiroozehGameService.Models.Internal
         {
             return Encoding.UTF8.GetBytes(data);
         }
->>>>>>> Development
     }
 }
