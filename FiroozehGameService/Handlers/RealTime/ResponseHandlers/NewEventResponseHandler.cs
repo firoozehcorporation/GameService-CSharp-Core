@@ -21,7 +21,9 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
                     new EventData
                     {
                         Caller = dataPayload.ExtraData,
-                        Data = dataPayload.Payload
+                        Data = dataPayload.Payload,
+                        SenderId = dataPayload.SenderId,
+                        ReceiverId = dataPayload.ReceiverId
                     });
             }
             catch (Exception e)
