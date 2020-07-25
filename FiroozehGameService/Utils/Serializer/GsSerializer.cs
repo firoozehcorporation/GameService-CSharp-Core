@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using FiroozehGameService.Core.GSLive;
+using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
@@ -192,7 +193,17 @@ namespace FiroozehGameService.Utils.Serializer
                 serializable?.OnGsLiveRead(GetReadStream(buffer));
             }
 
-            
+
+            /// <summary>
+            /// Get Current Player MemberId 
+            /// </summary>
+            /// <returns></returns>
+            public static string GetCurrentPlayerMemberId()
+            {
+                return RealTimeHandler.MemberId;
+            }
+
+
             internal static List<SnapShotData> GetSnapShotsFromBuffer(byte[] buffer)
             {
                 return SerializerUtil.GetSnapShotsFromBuffer(buffer);

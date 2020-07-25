@@ -30,6 +30,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
             // Set Internal Event Handlers
             CoreEventHandlers.Authorized += OnAuth;
+            CoreEventHandlers.OnMemberId += OnMemberId;
             CoreEventHandlers.GProtocolConnected += OnConnected;
             CoreEventHandlers.Ping += Ping;
             PingUtil.RequestPing += RequestPing;
@@ -38,6 +39,11 @@ namespace FiroozehGameService.Handlers.RealTime
             InitResponseMessageHandlers();
 
             LogUtil.Log(this, "RealTime init");
+        }
+
+        private static void OnMemberId(object sender, string id)
+        {
+            MemberId = id;
         }
 
         public void Dispose()
@@ -206,8 +212,9 @@ namespace FiroozehGameService.Handlers.RealTime
         private readonly GsLiveSystemObserver _observer;
         private readonly PingUtil _pingUtil;
         private readonly bool _isDisposed;
-
-
+        
+        
+        public static string MemberId { private set; get; }
         public static string PlayerHash { private set; get; }
         public static string PlayToken => GameService.PlayToken;
         public static bool IsAvailable => _udpClient?.IsAvailable ?? false;

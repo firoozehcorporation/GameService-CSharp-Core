@@ -31,6 +31,7 @@ namespace FiroozehGameService.Handlers
     {
         internal static EventHandler GProtocolConnected;
         internal static EventHandler<string> Authorized;
+        internal static EventHandler<string> OnMemberId;
         internal static EventHandler<StartPayload> GsLiveSystemStarted;
         internal static EventHandler<APacket> Ping;
         internal static EventHandler Dispose;

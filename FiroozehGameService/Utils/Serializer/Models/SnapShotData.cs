@@ -54,11 +54,18 @@ namespace FiroozehGameService.Utils.Serializer.Models
         /// Get SnapShot Buffer Data
         /// </summary>
         public byte[] Buffer;
+
+
+        /// <summary>
+        /// The Snapshot OwnerId
+        /// </summary>
+        public string OwnerId;
         
-        internal SnapShotData(SnapShotType type, byte[] buffer)
+        internal SnapShotData(SnapShotType type, string ownerId,byte[] buffer)
         {
             Type = type;
             Buffer = buffer;
+            OwnerId = ownerId;
         }
     }
 }

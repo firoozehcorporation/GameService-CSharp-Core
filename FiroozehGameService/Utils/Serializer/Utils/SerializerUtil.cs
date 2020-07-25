@@ -269,8 +269,9 @@ namespace FiroozehGameService.Utils.Serializer.Utils
                 for (var i = 0; i < count; i++)
                 {
                     var type = (SnapShotType) packetReader.ReadByte();
+                    var ownerId = packetReader.ReadBytes(packetReader.ReadByte());
                     var payload = packetReader.ReadBytes(packetReader.ReadUInt16());
-                    data.Add(new SnapShotData(type,payload));
+                    data.Add(new SnapShotData(type,GetStringFromBuffer(ownerId,true),payload));
                 }
             }
 
