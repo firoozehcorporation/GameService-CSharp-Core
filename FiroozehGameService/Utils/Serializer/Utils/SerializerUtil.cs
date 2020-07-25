@@ -265,7 +265,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
             var data = new List<SnapShotData>();
             using (var packetReader = ByteArrayReaderWriter.Get(buffer))
             {
-                var count = packetReader.ReadByte();
+                var count = packetReader.ReadUInt16();
                 for (var i = 0; i < count; i++)
                 {
                     var type = (SnapShotType) packetReader.ReadByte();
