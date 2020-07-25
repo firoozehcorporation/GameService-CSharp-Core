@@ -33,7 +33,7 @@ namespace FiroozehGameService.Core.Socket
             {
                 CommandInfo = info;
                 var ip = CommandInfo == null ? Area.Ip : CommandInfo.Ip;
-                var cert = CommandInfo == null ? Area.Cert : CommandInfo.Cert;
+                //var cert = CommandInfo == null ? Area.Cert : CommandInfo.Cert;
                 var port = CommandInfo?.Port ?? Area.Port;
 
                 LogUtil.Log(this, "GsTcpClient -> Init Started with -> " + CommandInfo + " or " + Area);
