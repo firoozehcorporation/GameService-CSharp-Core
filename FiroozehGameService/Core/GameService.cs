@@ -438,6 +438,7 @@ namespace FiroozehGameService.Core
             var login = await ApiRequest.Login(email, password);
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize();
+            CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             _isAvailable = true;
@@ -459,6 +460,7 @@ namespace FiroozehGameService.Core
 
             UserToken = userToken;
             var auth = await ApiRequest.Authorize();
+            CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             _isAvailable = true;
@@ -483,6 +485,7 @@ namespace FiroozehGameService.Core
             var login = await ApiRequest.LoginWithGoogle(idToken);
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize();
+            CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             _isAvailable = true;
@@ -528,6 +531,7 @@ namespace FiroozehGameService.Core
             var login = await ApiRequest.SignUp(nickName, email, password);
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize();
+            CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
             CurrentGame = auth.Game;
             _isAvailable = true;
@@ -553,7 +557,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "4.1.2";
+            return "5.0.0";
         }
 
 
@@ -565,6 +569,7 @@ namespace FiroozehGameService.Core
             UserToken = null;
             CurrentGame = null;
             PlayToken = null;
+            CommandInfo = null;
             _isAvailable = false;
             IsGuest = false;
             GSLive?.Dispose();
@@ -579,6 +584,7 @@ namespace FiroozehGameService.Core
         internal static string UserToken;
         internal static string PlayToken;
         internal static Game CurrentGame;
+        internal static CommandInfo CommandInfo;
         internal static bool IsGuest;
         internal static SynchronizationContext SynchronizationContext;
         internal static GameServiceClientConfiguration Configuration { get; private set; }

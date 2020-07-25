@@ -1,23 +1,20 @@
 using System;
 using System.Linq;
-using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using GameServiceHelper.Utils;
+using Newtonsoft.Json;
 
 namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal class PacketDeserializer : IDeserializer
     {
-        public string Deserialize(byte[] buffer, int offset, int receivedBytes,string pwd,GSLiveType type)
+        public APacket Deserialize(byte[] buffer, int offset, int receivedBytes)
         {
             try
             {
                 var seg = new ArraySegment<byte>(buffer,offset,receivedBytes);
-                var deserialize = Serializer.Deserialize(seg.ToArray(), KeyTypeUtil.GetPwd(pwd,type));
-               
-                LogUtil.Log(this,"PacketDeserializer Key: " + KeyTypeUtil.GetPwd(pwd,type));
-                LogUtil.Log(this,"PacketDeserializer : " + deserialize);
-                return deserialize;
+                return new Models.GSLive.RT.Packet(seg.ToArray());
             }
             catch (Exception e)
             {
@@ -27,18 +24,17 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
            
         }
 
-        public string Deserialize(byte[] buffer,string pwd,GSLiveType type)
+        public APacket Deserialize(string buffer)
         {
             try
             {
-                LogUtil.Log(this,"PacketDeserializer Rec :" + buffer.Length +" Bytes");
-                return Serializer.Deserialize(buffer, KeyTypeUtil.GetPwd(pwd,type));
+                return JsonConvert.DeserializeObject<Packet>(buffer);
             }
             catch (Exception e)
             {
                 LogUtil.LogError(this,"PacketDeserializer Err : " + e.Message);
                 return null;
             }
-        }        
+        }
     }
 }

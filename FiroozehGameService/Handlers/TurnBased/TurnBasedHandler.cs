@@ -12,7 +12,6 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased
 {
@@ -22,7 +21,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             CurrentRoom = payload.Room;
             _tcpClient = new GsTcpClient(payload.Area);
-            _tcpClient.SetType(GSLiveType.TurnBased);
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
 
@@ -55,14 +53,13 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
-            _tcpClient.UpdatePwd(playerHash);
             LogUtil.Log(null, "TurnBased OnAuth");
         }
 
         private async void OnPing(object sender, APacket packet)
         {
             if (sender.GetType() == typeof(PingResponseHandler))
-                await RequestAsync(PingPongHandler.Signature);
+                await RequestAsync(PingPongHandler.Signature,isCritical : true);
             LogUtil.Log(null, "TurnBased OnPing");
         }
 
@@ -127,42 +124,42 @@ namespace FiroozehGameService.Handlers.TurnBased
         }
 
 
-        public void Request(string handlerName, object payload = null)
+        public void Request(string handlerName, object payload = null,bool isCritical = false)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload));
+            Send(_requestHandlers[handlerName]?.HandleAction(payload),isCritical);
         }
 
-        public async Task RequestAsync(string handlerName, object payload = null)
+        public async Task RequestAsync(string handlerName, object payload = null,bool isCritical = false)
         {
-            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
+            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload),isCritical);
         }
 
 
         public async Task Init()
         {
             _cancellationToken = new CancellationTokenSource();
-            if (_tcpClient.Init())
+            if (_tcpClient.Init(null))
             {
                 Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
-                await RequestAsync(AuthorizationHandler.Signature);
+                await RequestAsync(AuthorizationHandler.Signature,isCritical : true);
                 LogUtil.Log(this, "TurnBasedHandler Init done");
             }
             else
             {
-                LogUtil.Log(this, "TurnBasedHandler Init With TimeOut");
+                LogUtil.Log(this, "TurnBasedHandler Init With TimeOut or Error");
             }
         }
 
 
-        private void Send(Packet packet)
+        private void Send(Packet packet,bool isCritical = false)
         {
-            if (!_observer.Increase()) return;
+            if (!_observer.Increase(isCritical)) return;
             _tcpClient.Send(packet);
         }
 
-        private async Task SendAsync(Packet packet)
+        private async Task SendAsync(Packet packet,bool isCritical = false)
         {
-            if (!_observer.Increase()) return;
+            if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) await _tcpClient.SendAsync(packet);
             else throw new GameServiceException("GameService Not Available");
         }
@@ -179,8 +176,8 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             try
             {
-                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-                LogUtil.Log(this, "TurnBasedHandler OnDataReceived < " + e.Data);
+                var packet = (Packet) e.Packet;
+                LogUtil.Log(this, "TurnBasedHandler OnDataReceived < " + packet);
 
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.TurnBased))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);

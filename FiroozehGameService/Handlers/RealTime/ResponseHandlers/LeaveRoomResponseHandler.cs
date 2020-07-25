@@ -12,8 +12,8 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
-           RealTimeEventHandlers.LeftRoom?.Invoke(this,JsonConvert.DeserializeObject<Member>(packet.Payload));
+            RealTimeEventHandlers.LeftRoom?.Invoke(this,
+                JsonConvert.DeserializeObject<Member>(GetStringFromBuffer(packet.Payload)));
         }
-      
     }
 }

@@ -6,7 +6,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 {
     internal class NotificationResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand 
+        public static int ActionCommand
             => Models.Consts.Command.ActionNotification;
 
         protected override void HandleResponse(Packet packet)

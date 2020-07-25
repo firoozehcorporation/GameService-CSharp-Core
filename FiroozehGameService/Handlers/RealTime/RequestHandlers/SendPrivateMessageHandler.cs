@@ -3,7 +3,6 @@ using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 {
@@ -14,17 +13,9 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 
         private static Packet DoAction(DataPayload payload)
         {
-            return new Packet(RealTimeHandler.PlayerHash, RT.ActionPrivateMessage
-                ,GProtocolSendType.Reliable,JsonConvert.SerializeObject(
-                    new DataPayload(
-                        receiverId: payload.ReceiverId,
-                        payload: payload.Payload)
-                    , new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        DefaultValueHandling = DefaultValueHandling.Ignore
-                    })
-            );
+            var dataPayload = new DataPayload(receiverId: payload.ReceiverId, payload: payload.Payload);
+            return new Packet(RealTimeHandler.PlayerHash, RT.ActionPrivateMessage, GProtocolSendType.Reliable,
+                dataPayload.Serialize());
         }
 
         protected override Packet DoAction(object payload)

@@ -14,7 +14,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
-            var joinData = JsonConvert.DeserializeObject<JoinData>(packet.Payload);
+            var joinData = JsonConvert.DeserializeObject<JoinData>(GetStringFromBuffer(packet.Payload));
             RealTimeEventHandlers.JoinedRoom?.Invoke(this, new JoinEvent
             {
                 Type = GSLiveType.RealTime,

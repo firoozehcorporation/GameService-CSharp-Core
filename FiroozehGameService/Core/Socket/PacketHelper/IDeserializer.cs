@@ -1,10 +1,10 @@
-using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.GSLive;
 
 namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal interface IDeserializer
     {
-        string Deserialize(byte[] buffer,int offset,int receivedBytes,string pwd,GSLiveType type);
-        string Deserialize(byte[] buffer,string pwd,GSLiveType type);
+        APacket Deserialize(byte[] buffer, int offset, int receivedBytes);
+        APacket Deserialize(string buffer);
     }
 }

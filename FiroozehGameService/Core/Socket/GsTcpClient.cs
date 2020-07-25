@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.ClientHelper;
-using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
@@ -15,25 +18,50 @@ namespace FiroozehGameService.Core.Socket
     {
         private const short TimeOut = 5000;
         private TcpClient _client;
+        //private SslStream _clientStream;
         private NetworkStream _clientStream;
 
-        public GsTcpClient(Area area)
+        public GsTcpClient(Area area = null)
         {
-            if (area.Protocol.ToUpper() != "TCP")
-                throw new InvalidOperationException("Only TCP Protocol Supported");
-
-            Endpoint = area;
+            Area = area;
         }
 
 
-        internal override bool Init()
+        internal override bool Init(CommandInfo info)
         {
             try
             {
-                LogUtil.Log(this, "GsTcpClient -> Init Started");
-                _client = new TcpClientWithTimeout(Endpoint.Ip, Endpoint.Port, TimeOut).Connect();
-                OperationCancellationToken = new CancellationTokenSource();
+                CommandInfo = info;
+                var ip = CommandInfo == null ? Area.Ip : CommandInfo.Ip;
+                //var cert = CommandInfo == null ? Area.Cert : CommandInfo.Cert;
+                var port = CommandInfo?.Port ?? Area.Port;
+
+                LogUtil.Log(this, "GsTcpClient -> Init Started with -> " + CommandInfo + " or " + Area);
+                _client = new TcpClientWithTimeout(ip, port, TimeOut).Connect();
+                LogUtil.Log(this,"GsTcpClient -> Connected,Waiting for Handshakes...");
+               
+                /*var certificate = new X509Certificate2(Encoding.Default.GetBytes(cert));
+                X509Certificate[] x509Certificates = {certificate};
+                var certsCollection = new X509CertificateCollection(x509Certificates);
+
+                _clientStream = new SslStream(_client.GetStream(), false, ValidateServerCertificate, null);
+                try
+                {
+                    _clientStream.AuthenticateAsClient(ip,certsCollection,SslProtocols.Tls, false);
+                }
+                catch (AuthenticationException e)
+                {
+                    LogUtil.LogError(this,"Exception: " + e.Message);
+                    if (e.InnerException != null)
+                        LogUtil.LogError(this,"Inner exception: " + e.InnerException.Message);
+                    LogUtil.LogError(this,"Authentication failed - closing the connection.");
+                    _client.Close();
+                    return false;
+                }
+                */
+                
                 _clientStream = _client.GetStream();
+                OperationCancellationToken = new CancellationTokenSource();
                 IsAvailable = true;
                 LogUtil.Log(this, "GsTcpClient -> Init Done");
                 return true;
@@ -45,14 +73,13 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-        internal override void UpdatePwd(string newPwd)
+        private static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            Pwd = newPwd;
-        }
+            if (sslPolicyErrors == SslPolicyErrors.None)
+                return true;
 
-        internal override void SetType(GSLiveType type)
-        {
-            Type = type;
+            LogUtil.LogError(null,"Certificate error: " + sslPolicyErrors);
+            return false;
         }
 
 
@@ -71,8 +98,10 @@ namespace FiroozehGameService.Core.Socket
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
                     foreach (var packet in packets)
-                        OnDataReceived(new SocketDataReceived {Data = packet});
-
+                        OnDataReceived(new SocketDataReceived
+                        {
+                            Packet = PacketDeserializer.Deserialize(packet)
+                        });
                     BufferReceivedBytes = 0;
                 }
                 catch (Exception e)
@@ -90,7 +119,7 @@ namespace FiroozehGameService.Core.Socket
         {
             Task.Run(() =>
             {
-                var buffer = PacketSerializer.Serialize(packet, Pwd, Type);
+                var buffer = PacketSerializer.Serialize(packet);
                 _clientStream?.Write(buffer, 0, buffer.Length);
             }, OperationCancellationToken.Token);
         }
@@ -100,7 +129,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                var buffer = PacketSerializer.Serialize(packet, Pwd, Type);
+                var buffer = PacketSerializer.Serialize(packet);
                 if (_clientStream != null) await _clientStream.WriteAsync(buffer, 0, buffer.Length);
             }
             catch (Exception e)
@@ -117,7 +146,6 @@ namespace FiroozehGameService.Core.Socket
             {
                 DataBuilder?.Clear();
                 IsAvailable = false;
-                Pwd = null;
 
                 _client?.GetStream().Close();
                 _client?.Close();

@@ -14,7 +14,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
             return new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionGetLastChats,
-                JsonConvert.SerializeObject(room,
+               JsonConvert.SerializeObject(room,
                     new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,

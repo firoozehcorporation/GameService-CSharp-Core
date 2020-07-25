@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using FiroozehGameService.Models.GSLive.RT;
 
 namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
@@ -15,5 +16,10 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         protected abstract bool CheckAction(object payload);
 
         protected abstract Packet DoAction(object payload);
+
+        protected static byte[] GetBuffer(string data)
+        {
+            return Encoding.UTF8.GetBytes(data);
+        }
     }
 }

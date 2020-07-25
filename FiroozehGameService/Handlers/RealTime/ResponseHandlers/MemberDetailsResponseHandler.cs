@@ -11,10 +11,10 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
     {
         public static int ActionCommand => RT.ActionMembersDetail;
 
-        protected override void HandleResponse(Packet packet,GProtocolSendType type)
+        protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
-           RealTimeEventHandlers.RoomMembersDetailReceived?.Invoke(this,JsonConvert.DeserializeObject<List<Member>>(packet.Payload));
+            RealTimeEventHandlers.RoomMembersDetailReceived?.Invoke(this,
+                JsonConvert.DeserializeObject<List<Member>>(GetStringFromBuffer(packet.Payload)));
         }
-      
     }
 }

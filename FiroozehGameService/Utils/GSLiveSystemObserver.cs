@@ -27,7 +27,10 @@ namespace FiroozehGameService.Utils
             _timer.Start();
         }
         
-        public bool Increase () {
+        public bool Increase (bool isCritical)
+        {
+            if (isCritical) return true;
+            
             switch (_type) {
                 case GSLiveType.NotSet:
                     break;
@@ -44,7 +47,7 @@ namespace FiroozehGameService.Utils
                     }
                     break;
                 case GSLiveType.Core:
-                    if (_counter <= TB.TurnBasedLimit) {
+                    if (_counter <= Command.TimeLimit) {
                         _counter++;
                         return true;
                     }

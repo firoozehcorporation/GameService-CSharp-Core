@@ -20,8 +20,11 @@
 */
 
 
+using System;
+using System.Text;
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
@@ -96,7 +99,7 @@ namespace FiroozehGameService.Core.GSLive
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (GSLive.Handler.RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
-            GSLive.Handler.RealTimeHandler.Request(LeaveRoomHandler.Signature, GProtocolSendType.Reliable);
+            GSLive.Handler.RealTimeHandler.Request(LeaveRoomHandler.Signature, GProtocolSendType.Reliable,isCritical : true);
             GSLive.Handler.RealTimeHandler.Dispose();
         }
 
@@ -119,10 +122,45 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="data">(NOTNULL) Data To BroadCast </param>
         /// <param name="sendType">Send Type </param>
+        [Obsolete("This Method is Deprecated,Use SendPublicMessage(byte[] data, GProtocolSendType sendType) Instead")]
         public void SendPublicMessage(string data, GProtocolSendType sendType)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (string.IsNullOrEmpty(data)) throw new GameServiceException("data Cant Be EmptyOrNull");
+            if (GSLive.Handler.RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+            GSLive.Handler.RealTimeHandler.Request(SendPublicMessageHandler.Signature, sendType,
+                new DataPayload {Payload = Encoding.UTF8.GetBytes(data)});
+        }
+
+
+        /// <summary>
+        ///     Send A Data To Specific Player in Room.
+        /// </summary>
+        /// <param name="receiverId">(NOTNULL) (Type : MemberID)Player's ID</param>
+        /// <param name="data">(NOTNULL) Data for Send</param>
+        [Obsolete("This Method is Deprecated,Use SendPrivateMessage(string receiverId, byte[] data) Instead")]
+        public void SendPrivateMessage(string receiverId, string data)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (string.IsNullOrEmpty(receiverId) && string.IsNullOrEmpty(data))
+                throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull");
+            if (GSLive.Handler.RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+            GSLive.Handler.RealTimeHandler.Request(SendPrivateMessageHandler.Signature, GProtocolSendType.Reliable,
+                new DataPayload {ReceiverId = receiverId, Payload = Encoding.UTF8.GetBytes(data)});
+        }
+
+
+        /// <summary>
+        ///     Send A Data To All Players in Room.
+        /// </summary>
+        /// <param name="data">(NOTNULL) Data To BroadCast </param>
+        /// <param name="sendType">Send Type </param>
+        public void SendPublicMessage(byte[] data, GProtocolSendType sendType)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (data == null) throw new GameServiceException("data Cant Be Null");
             if (GSLive.Handler.RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
             GSLive.Handler.RealTimeHandler.Request(SendPublicMessageHandler.Signature, sendType,
@@ -135,10 +173,10 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="receiverId">(NOTNULL) (Type : MemberID)Player's ID</param>
         /// <param name="data">(NOTNULL) Data for Send</param>
-        public void SendPrivateMessage(string receiverId, string data)
+        public void SendPrivateMessage(string receiverId, byte[] data)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(receiverId) && string.IsNullOrEmpty(data))
+            if (string.IsNullOrEmpty(receiverId) && data == null)
                 throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull");
             if (GSLive.Handler.RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
@@ -155,7 +193,7 @@ namespace FiroozehGameService.Core.GSLive
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (GSLive.Handler.RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
-            GSLive.Handler.RealTimeHandler.Request(GetMemberHandler.Signature, GProtocolSendType.Reliable);
+            GSLive.Handler.RealTimeHandler.Request(GetMemberHandler.Signature, GProtocolSendType.Reliable,isCritical : true);
         }
 
 
@@ -210,6 +248,35 @@ namespace FiroozehGameService.Core.GSLive
             if (limit <= 0 || limit > 15) throw new GameServiceException("invalid Limit Value");
             await GSLive.Handler.CommandHandler.RequestAsync(FindMemberHandler.Signature,
                 new RoomDetail {Max = limit, UserOrMemberId = query});
+        }
+        
+        /// <summary>
+        ///     Get The Ping
+        /// </summary>
+        public short GetPing()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GSLive.Handler.RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+            return RealTimeHandler.GetPing();
+        }
+        
+        /// <summary>
+        ///     Send An Event To Another Players in Room
+        ///     NOTE : Do not use this function if you are using Real Time Utility
+        ///            , as critical errors may occur.
+        /// </summary>
+        /// <param name="caller">(NOTNULL) Caller Info Data </param>
+        /// <param name="data">(NOTNULL) Data To Send By Event </param>
+        /// <param name="sendType">Send Type </param>
+        internal void SendEvent(byte[] caller,byte[] data,GProtocolSendType sendType)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (caller == null || data == null) throw new GameServiceException("caller or data Cant Be Null");
+            if (GSLive.Handler.RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+            GSLive.Handler.RealTimeHandler.Request(NewEventHandler.Signature, sendType,
+                new DataPayload {Payload = data , ExtraData = caller},sendType == GProtocolSendType.Reliable);
         }
     }
 }

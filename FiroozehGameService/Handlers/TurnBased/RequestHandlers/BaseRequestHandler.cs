@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers

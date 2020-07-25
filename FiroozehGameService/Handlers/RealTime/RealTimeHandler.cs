@@ -11,7 +11,6 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using Newtonsoft.Json;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
@@ -31,6 +30,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
             // Set Internal Event Handlers
             CoreEventHandlers.Authorized += OnAuth;
+            CoreEventHandlers.OnMemberId += OnMemberId;
             CoreEventHandlers.GProtocolConnected += OnConnected;
             CoreEventHandlers.Ping += Ping;
             PingUtil.RequestPing += RequestPing;
@@ -39,6 +39,11 @@ namespace FiroozehGameService.Handlers.RealTime
             InitResponseMessageHandlers();
 
             LogUtil.Log(this, "RealTime init");
+        }
+
+        private static void OnMemberId(object sender, string id)
+        {
+            MemberId = id;
         }
 
         public void Dispose()
@@ -53,7 +58,12 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void RequestPing(object sender, EventArgs e)
         {
-            Request(GetPingHandler.Signature, GProtocolSendType.Reliable);
+            Request(GetPingHandler.Signature, GProtocolSendType.Reliable,isCritical : true);
+        }
+
+        internal static short GetPing()
+        {
+            return (short) PingUtil.GetLastPing();
         }
 
         private void Ping(object sender, APacket packet)
@@ -71,16 +81,18 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnConnected(object sender, EventArgs e)
         {
             // Send Auth When Connected
-            Request(AuthorizationHandler.Signature, GProtocolSendType.Reliable);
+            Request(AuthorizationHandler.Signature, GProtocolSendType.Reliable,isCritical : true);
         }
 
 
-        private static void OnAuth(object sender, string playerHash)
+        private void OnAuth(object sender, string playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
-            _udpClient.UpdatePwd(playerHash);
             LogUtil.Log(null, "RealTime OnAuth");
+            
+            // Get SnapShot After Auth
+            Request(SnapShotHandler.Signature,GProtocolSendType.Reliable,isCritical : true);
         }
 
         private void InitRequestMessageHandlers()
@@ -107,6 +119,9 @@ namespace FiroozehGameService.Handlers.RealTime
             _requestHandlers.Add(GetPingHandler.Signature, new GetPingHandler());
             _requestHandlers.Add(SendPrivateMessageHandler.Signature, new SendPrivateMessageHandler());
             _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
+            _requestHandlers.Add(NewEventHandler.Signature, new NewEventHandler());
+            _requestHandlers.Add(SnapShotHandler.Signature, new SnapShotHandler());
+
         }
 
         private void InitResponseMessageHandlers()
@@ -135,12 +150,14 @@ namespace FiroozehGameService.Handlers.RealTime
             _responseHandlers.Add(MemberDetailsResponseHandler.ActionCommand, new MemberDetailsResponseHandler());
             _responseHandlers.Add(PrivateMessageResponseHandler.ActionCommand, new PrivateMessageResponseHandler());
             _responseHandlers.Add(PublicMessageResponseHandler.ActionCommand, new PublicMessageResponseHandler());
+            _responseHandlers.Add(NewEventResponseHandler.ActionCommand, new NewEventResponseHandler());
+            _responseHandlers.Add(SnapShotResponseHandler.ActionCommand, new SnapShotResponseHandler());
         }
 
 
-        internal void Request(string handlerName, GProtocolSendType type, object payload = null)
+        internal void Request(string handlerName, GProtocolSendType type, object payload = null,bool isCritical = false)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload), type);
+            Send(_requestHandlers[handlerName]?.HandleAction(payload), type,isCritical);
         }
 
 
@@ -150,9 +167,9 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        private void Send(Packet packet, GProtocolSendType type)
+        private void Send(Packet packet, GProtocolSendType type,bool isCritical = false)
         {
-            if (!_observer.Increase()) return;
+            if (!_observer.Increase(isCritical)) return;
             if (!PacketUtil.CheckPacketSize(packet)) throw new GameServiceException("this Packet Is Too Big!");
             if (IsAvailable) _udpClient.Send(packet, type);
             else throw new GameServiceException("GameService Not Available");
@@ -172,11 +189,11 @@ namespace FiroozehGameService.Handlers.RealTime
             try
             {
                 if (_isDisposed) return;
-                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
+                var packet = (Packet) e.Packet;
                 packet.ClientReceiveTime = e.Time;
                 GameService.SynchronizationContext?.Send(delegate
                 {
-                    LogUtil.Log(this, "RealtimeHandler OnDataReceived < " + e.Data);
+                    LogUtil.Log(this, "RealtimeHandler OnDataReceived < " + packet);
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType);
                 }, null);
             }
@@ -195,8 +212,9 @@ namespace FiroozehGameService.Handlers.RealTime
         private readonly GsLiveSystemObserver _observer;
         private readonly PingUtil _pingUtil;
         private readonly bool _isDisposed;
-
-
+        
+        
+        public static string MemberId { private set; get; }
         public static string PlayerHash { private set; get; }
         public static string PlayToken => GameService.PlayToken;
         public static bool IsAvailable => _udpClient?.IsAvailable ?? false;

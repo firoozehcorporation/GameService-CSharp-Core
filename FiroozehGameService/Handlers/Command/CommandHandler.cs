@@ -14,7 +14,6 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command
 {
@@ -22,8 +21,7 @@ namespace FiroozehGameService.Handlers.Command
     {
         public CommandHandler()
         {
-            _tcpClient = new GsTcpClient(Models.Consts.Command.CommandArea);
-            _tcpClient.SetType(GSLiveType.Core);
+            _tcpClient = new GsTcpClient();
             _tcpClient.DataReceived += OnDataReceived;
             _tcpClient.Error += OnError;
 
@@ -59,7 +57,6 @@ namespace FiroozehGameService.Handlers.Command
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = playerHash;
-            _tcpClient.UpdatePwd(playerHash);
             LogUtil.Log(null, "CommandHandler OnAuth");
 
             if (_isFirstInit) return;
@@ -70,7 +67,7 @@ namespace FiroozehGameService.Handlers.Command
         private async void OnPing(object sender, APacket packet)
         {
             if (sender.GetType() != typeof(PingResponseHandler)) return;
-            await RequestAsync(PingPongHandler.Signature);
+            await RequestAsync(PingPongHandler.Signature,isCritical : true);
             LogUtil.Log(this, "CommandHandler OnPing");
         }
 
@@ -165,39 +162,39 @@ namespace FiroozehGameService.Handlers.Command
         public async Task Init()
         {
             _cancellationToken = new CancellationTokenSource();
-            if (_tcpClient.Init())
+            if (_tcpClient.Init(GameService.CommandInfo))
             {
                 Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
-                await RequestAsync(AuthorizationHandler.Signature);
+                await RequestAsync(AuthorizationHandler.Signature,isCritical : true);
                 LogUtil.Log(this, "CommandHandler Init done");
             }
             else
             {
-                LogUtil.Log(this, "CommandHandler Init done With TimeOut");
+                LogUtil.Log(this, "CommandHandler Init done With TimeOut or Error");
             }
         }
 
 
-        internal void Request(string handlerName, object payload = null)
+        internal void Request(string handlerName, object payload = null,bool isCritical = false)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload));
+            Send(_requestHandlers[handlerName]?.HandleAction(payload),isCritical);
         }
 
-        internal async Task RequestAsync(string handlerName, object payload = null)
+        internal async Task RequestAsync(string handlerName, object payload = null,bool isCritical = false)
         {
-            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
+            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload),isCritical);
         }
 
 
-        private void Send(Packet packet)
+        private void Send(Packet packet,bool isCritical = false)
         {
-            if (!_observer.Increase()) return;
+            if (!_observer.Increase(isCritical)) return;
             _tcpClient.Send(packet);
         }
 
-        private async Task SendAsync(Packet packet)
+        private async Task SendAsync(Packet packet,bool isCritical = false)
         {
-            if (!_observer.Increase()) return;
+            if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) await _tcpClient.SendAsync(packet);
             else throw new GameServiceException("GameService Not Available");
         }
@@ -214,8 +211,8 @@ namespace FiroozehGameService.Handlers.Command
         {
             try
             {
-                var packet = JsonConvert.DeserializeObject<Packet>(e.Data);
-                LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Data);
+                var packet = (Packet) e.Packet;
+                LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Packet);
 
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.Core))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);

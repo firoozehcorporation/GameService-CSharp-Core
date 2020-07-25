@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Text;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers
@@ -11,6 +11,6 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
             HandleResponse(packet);
         }
 
-        protected abstract void HandleResponse(Packet packet);
+        protected abstract void HandleResponse(Packet packet); 
     }
 }

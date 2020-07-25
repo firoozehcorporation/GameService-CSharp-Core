@@ -7,7 +7,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 {
     internal class GetRoomResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand 
+        public static int ActionCommand
             => Models.Consts.Command.ActionGetRooms;
 
         protected override void HandleResponse(Packet packet)

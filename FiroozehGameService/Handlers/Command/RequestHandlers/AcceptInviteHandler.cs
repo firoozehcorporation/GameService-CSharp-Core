@@ -13,7 +13,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         {
             return new Packet(
                 CommandHandler.PlayerHash,
-                Models.Consts.Command.ActionAcceptInvite,
+                Models.Consts.Command.ActionAcceptInvite, 
                 JsonConvert.SerializeObject(inviteOptions, new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,

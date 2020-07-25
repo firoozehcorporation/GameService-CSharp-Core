@@ -9,18 +9,20 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
         public static string Signature =>
             "AUTHORIZATION";
 
-        public AuthorizationHandler() {}
-
         protected override Packet DoAction(object payload)
-            => new Packet(
+        {
+            return new Packet(
                 null,
                 TB.ActionAuth,
                 JsonConvert.SerializeObject(
                     new AuthPayload(TurnBasedHandler.CurrentRoom?.Id, TurnBasedHandler.PlayToken),
-                    new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
+        }
 
 
         protected override bool CheckAction(object payload)
-            => true;
+        {
+            return true;
+        }
     }
 }
