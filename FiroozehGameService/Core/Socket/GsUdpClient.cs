@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
@@ -133,7 +134,11 @@ namespace FiroozehGameService.Core.Socket
                 if(packet.Action == RT.ActionPing) packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 var buffer = PacketSerializable.Serialize(packet);
                 LogUtil.Log(this,"RealTime Send Payload Len : " + buffer.Length);
-                SendQueue.Enqueue(buffer);
+
+                if (GsSerializer.Object.GetSendQueueBufferSize(SendQueue) <= RT.MaxPacketSize && SendQueue.Count <= sizeof(byte))
+                    SendQueue.Enqueue(buffer);
+                else
+                    LogUtil.LogError(this, "SendQueue is Full,so Ignore this");
             }
             else
             {
@@ -160,6 +165,6 @@ namespace FiroozehGameService.Core.Socket
                 var buffer = GsSerializer.Object.GetSendQueueBuffer(SendQueue);
                 Client?.Send(buffer,buffer.Length);
             }, OperationCancellationToken.Token);
-        }
+        } 
     }
 }

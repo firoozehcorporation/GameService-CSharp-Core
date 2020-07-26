@@ -281,8 +281,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         
         internal static byte[] GetSendQueueBuffer(Queue<byte[]> queue)
         {
-            var bufferSize = queue.Sum(i => i.Length + sizeof(ushort)) + sizeof(byte);
-            
+            var bufferSize = GetSendQueueBufferSize(queue);
             var packetBuffer = BufferPool.GetBuffer(bufferSize);
             using (var packetWriter = ByteArrayReaderWriter.Get(packetBuffer))
             {
@@ -299,7 +298,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         }
         
         
-        internal static Queue<byte[]> GetQueueData(byte[] buffer)
+        internal static IEnumerable<byte[]> GetQueueData(byte[] buffer)
         {
             var data = new Queue<byte[]>();
             using (var packetReader = ByteArrayReaderWriter.Get(buffer))
@@ -312,6 +311,9 @@ namespace FiroozehGameService.Utils.Serializer.Utils
             return data;
         }
         
+        
+        internal static int GetSendQueueBufferSize(IEnumerable<byte[]> data) 
+            => data.Sum(i => i.Length + sizeof(ushort)) + sizeof(byte);
         
         private static byte[] GetBuffer(string data, bool isUtf) 
             => isUtf ? Encoding.UTF8.GetBytes(data) : Encoding.ASCII.GetBytes(data);
