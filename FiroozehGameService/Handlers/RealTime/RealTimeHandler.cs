@@ -34,11 +34,18 @@ namespace FiroozehGameService.Handlers.RealTime
             CoreEventHandlers.GProtocolConnected += OnConnected;
             CoreEventHandlers.Ping += Ping;
             PingUtil.RequestPing += RequestPing;
+            ObserverCompacterUtil.SendObserverEventHandler += SendObserverEventHandler;
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
             LogUtil.Log(this, "RealTime init");
+        }
+
+        
+        private void SendObserverEventHandler(object sender, byte[] data)
+        {
+            Request(ObserverHandler.Signature,GProtocolSendType.UnReliable,data);
         }
 
         private static void OnMemberId(object sender, string id)
@@ -51,6 +58,8 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient?.StopReceiving();
             _observer?.Dispose();
             _pingUtil?.Dispose();
+            
+            ObserverCompacterUtil.Dispose();
             LogUtil.Log(this, "RealTime Dispose");
             CoreEventHandlers.Dispose?.Invoke(this, null);
         }
@@ -91,6 +100,8 @@ namespace FiroozehGameService.Handlers.RealTime
             PlayerHash = playerHash;
             LogUtil.Log(null, "RealTime OnAuth");
             
+            ObserverCompacterUtil.Init();
+
             // Get SnapShot After Auth
             Request(SnapShotHandler.Signature,GProtocolSendType.Reliable,isCritical : true);
         }
@@ -121,7 +132,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
             _requestHandlers.Add(NewEventHandler.Signature, new NewEventHandler());
             _requestHandlers.Add(SnapShotHandler.Signature, new SnapShotHandler());
-
+            _requestHandlers.Add(ObserverHandler.Signature, new ObserverHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -152,6 +163,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _responseHandlers.Add(PublicMessageResponseHandler.ActionCommand, new PublicMessageResponseHandler());
             _responseHandlers.Add(NewEventResponseHandler.ActionCommand, new NewEventResponseHandler());
             _responseHandlers.Add(SnapShotResponseHandler.ActionCommand, new SnapShotResponseHandler());
+            _responseHandlers.Add(ObserverResponseHandler.ActionCommand, new ObserverResponseHandler());
         }
 
 
@@ -171,10 +183,10 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (!_observer.Increase(isCritical)) return;
             if (!PacketUtil.CheckPacketSize(packet)) throw new GameServiceException("this Packet Is Too Big!");
-            if (IsAvailable) _udpClient.AddToQueue(packet, type);
+            if (IsAvailable) _udpClient.Send(packet, type);
             else throw new GameServiceException("GameService Not Available");
         }
-
+        
 
         private void OnError(object sender, ErrorArg e)
         {

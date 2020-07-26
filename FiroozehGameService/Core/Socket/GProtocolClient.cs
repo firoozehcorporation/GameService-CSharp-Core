@@ -17,12 +17,9 @@ namespace FiroozehGameService.Core.Socket
         internal abstract void Init();
         internal abstract void CreateInstance();
         internal abstract void StopReceiving();
-        internal abstract void AddToQueue(Packet packet, GProtocolSendType type);
-
-        internal abstract void StartQueueWorker();
-        internal abstract void StopQueueWorker();
-
+        internal abstract void Send(Packet packet, GProtocolSendType type);
         
+
 
         protected void OnDataReceived(SocketDataReceived arg)
         {
@@ -38,14 +35,7 @@ namespace FiroozehGameService.Core.Socket
 
         protected Client Client;
         protected Area Area;
-        protected const GSLiveType Type = GSLiveType.RealTime;
-        
-        
-        internal readonly Queue<byte[]> SendQueue = new Queue<byte[]>();
-        internal Event QueueWorkerEvent;
-        protected CancellationTokenSource OperationCancellationToken;
 
-        
         protected readonly ISerializer PacketSerializable = new PacketSerializer();
         protected readonly IDeserializer PacketDeserializer = new PacketDeserializer();
 

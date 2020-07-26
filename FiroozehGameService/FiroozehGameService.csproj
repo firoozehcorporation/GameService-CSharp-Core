@@ -125,6 +125,7 @@
         <Compile Include="Handlers\RealTime\RequestHandlers\GetMembersHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\GetPingHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\IRequestHandler.cs"/>
+        <Compile Include="Handlers\RealTime\RequestHandlers\ObserverHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\SendPrivateMessageHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\SendPublicMessageHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\LeaveRoomHandler.cs"/>
@@ -139,6 +140,7 @@
         <Compile Include="Handlers\RealTime\ResponseHandlers\LeaveRoomResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\MemberDetailsResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\NewEventResponseHandler.cs"/>
+        <Compile Include="Handlers\RealTime\ResponseHandlers\ObserverResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PingResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PrivateMessageResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PublicMessageResponseHandler.cs"/>
@@ -268,6 +270,7 @@
         <Compile Include="Utils\ActionUtil.cs"/>
         <Compile Include="Utils\DictionaryUtil.cs"/>
         <Compile Include="Utils\EventCallerUtil.cs"/>
+        <Compile Include="Utils\ObserverComapcterUtil.cs"/>
         <Compile Include="Utils\GSLiveSystemObserver.cs"/>
         <Compile Include="Utils\HttpRequestObserver.cs"/>
         <Compile Include="Utils\ImageUtil.cs"/>

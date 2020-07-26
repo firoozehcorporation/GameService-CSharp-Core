@@ -22,7 +22,7 @@ namespace FiroozehGameService.Utils
 
     public class LogUtil
     {
-        private const bool IsDebug = false;
+        private const bool IsDebug = true;
         public static EventHandler<Log> LogEventHandler;
 
 

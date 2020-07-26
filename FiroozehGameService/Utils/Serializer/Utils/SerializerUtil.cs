@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Utils.Serializer.Abstracts;
 using FiroozehGameService.Utils.Serializer.Helpers;
 using FiroozehGameService.Utils.Serializer.Models;
@@ -296,20 +297,25 @@ namespace FiroozehGameService.Utils.Serializer.Utils
 
             return packetBuffer;
         }
-        
-        
-        internal static Queue<byte[]> GetQueueData(byte[] buffer)
+
+
+        internal static List<Tuple<string,byte[]>> GetObservers(byte[] buffer)
         {
-            var data = new Queue<byte[]>();
+            var data = new List<Tuple<string, byte[]>>();
             using (var packetReader = ByteArrayReaderWriter.Get(buffer))
             {
                 var count = packetReader.ReadByte();
                 for (var i = 0; i < count; i++)
-                    data.Enqueue(packetReader.ReadBytes(packetReader.ReadUInt16()));
+                {
+                    var ownerId = packetReader.ReadBytes(packetReader.ReadInt16());
+                    var payload = packetReader.ReadBytes(packetReader.ReadInt16());
+                    data.Add(Tuple.Create(GetStringFromBuffer(ownerId,true),payload));
+                }
             }
 
             return data;
         }
+
         
         
         internal static int GetSendQueueBufferSize(IEnumerable<byte[]> data) 

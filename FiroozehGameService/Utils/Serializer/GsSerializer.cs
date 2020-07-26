@@ -59,7 +59,8 @@ namespace FiroozehGameService.Utils.Serializer
         /// </summary>
         public static EventHandler<List<SnapShotData>> OnNewSnapShotReceived;
         
-        
+
+
         /// <summary>
         /// Represents TypeRegistry In Gs Serializer Class
         /// </summary>
@@ -161,7 +162,24 @@ namespace FiroozehGameService.Utils.Serializer
                 if(caller == null || buffer == null)
                     throw new GameServiceException("GsSerializer Err -> Caller or buffer Cant Be Null");
             
-                Core.GameService.GSLive.RealTime.SendEvent(caller,buffer,GProtocolSendType.Reliable);
+                GSLiveRT.SendEvent(caller,buffer,GProtocolSendType.Reliable);
+            }
+            
+            
+            
+            /// <summary>
+            /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+            /// Send An Object Buffer Data
+            /// </summary>
+            /// <param name="caller"> The caller Data</param>
+            /// <param name="buffer"> The Buffer Data</param>
+            /// <returns></returns>
+            /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
+            public static void SendObserver(byte[] caller , byte[] buffer)
+            {
+                if(buffer == null)
+                    throw new GameServiceException("GsSerializer Err -> buffer Cant Be Null");
+                GSLiveRT.SendObserver(caller,buffer);
             }
             
             
@@ -210,10 +228,11 @@ namespace FiroozehGameService.Utils.Serializer
             }
 
             
-            internal static Queue<byte[]> GetQueueData(byte[] buffer)
+            internal static List<Tuple<string,byte[]>> GetObservers(byte[] buffer)
             {
-                return SerializerUtil.GetQueueData(buffer);
+                return SerializerUtil.GetObservers(buffer);
             }
+            
 
             internal static int GetSendQueueBufferSize(IEnumerable<byte[]> data)
             {

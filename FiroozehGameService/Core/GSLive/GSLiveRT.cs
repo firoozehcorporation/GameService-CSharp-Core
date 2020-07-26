@@ -31,6 +31,7 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.RT;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.GSLive
 {
@@ -261,22 +262,29 @@ namespace FiroozehGameService.Core.GSLive
             return RealTimeHandler.GetPing();
         }
         
-        /// <summary>
-        ///     Send An Event To Another Players in Room
-        ///     NOTE : Do not use this function if you are using Real Time Utility
-        ///            , as critical errors may occur.
-        /// </summary>
-        /// <param name="caller">(NOTNULL) Caller Info Data </param>
-        /// <param name="data">(NOTNULL) Data To Send By Event </param>
-        /// <param name="sendType">Send Type </param>
-        internal void SendEvent(byte[] caller,byte[] data,GProtocolSendType sendType)
+      
+        
+        
+        internal static void SendEvent(byte[] caller,byte[] data,GProtocolSendType sendType)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (caller == null || data == null) throw new GameServiceException("caller or data Cant Be Null");
             if (GSLive.Handler.RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
+            
             GSLive.Handler.RealTimeHandler.Request(NewEventHandler.Signature, sendType,
                 new DataPayload {Payload = data , ExtraData = caller},true);
+        }
+
+
+        internal static void SendObserver(byte[] caller,byte[] data)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (data == null) throw new GameServiceException("caller or data Cant Be Null");
+            if (GSLive.Handler.RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+            
+            ObserverCompacterUtil.AddToQueue(new DataPayload {Payload = data , ExtraData = caller});
         }
     }
 }
