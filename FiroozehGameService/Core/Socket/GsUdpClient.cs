@@ -67,11 +67,12 @@ namespace FiroozehGameService.Core.Socket
                 Buffer.BlockCopy(payload,0,neededBuffer,0,payloadsize);
                 
                 var queueData = GsSerializer.Object.GetQueueData(neededBuffer);
-                foreach (var data in queueData)
+                while (queueData.Count > 0)
                 {
+                    var data = queueData.Dequeue();
                     OnDataReceived(new SocketDataReceived
                     {
-                        Packet = PacketDeserializer.Deserialize(data, 0, data.Length),
+                        Packet = PacketDeserializer.Deserialize(data),
                         Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
                     });
                 }
@@ -156,14 +157,16 @@ namespace FiroozehGameService.Core.Socket
         internal override void StopQueueWorker()
         {
             QueueWorkerEvent?.Dispose();
+            SendQueue?.Clear();
         }
 
         private void EventHandler(object sender, Event e)
         {
             Task.Run(() =>
             {
+                if (SendQueue.Count <= 0) return;
                 var buffer = GsSerializer.Object.GetSendQueueBuffer(SendQueue);
-                Client?.Send(buffer,buffer.Length);
+                Client?.Send(buffer, buffer.Length);
             }, OperationCancellationToken.Token);
         } 
     }

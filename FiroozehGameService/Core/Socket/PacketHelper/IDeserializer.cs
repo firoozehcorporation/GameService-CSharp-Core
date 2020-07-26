@@ -4,7 +4,7 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal interface IDeserializer
     {
-        APacket Deserialize(byte[] buffer, int offset, int receivedBytes);
+        APacket Deserialize(byte[] buffer);
         APacket Deserialize(string buffer);
     }
 }

@@ -9,12 +9,11 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal class PacketDeserializer : IDeserializer
     {
-        public APacket Deserialize(byte[] buffer, int offset, int receivedBytes)
+        public APacket Deserialize(byte[] buffer)
         {
             try
             {
-                var seg = new ArraySegment<byte>(buffer,offset,receivedBytes);
-                return new Models.GSLive.RT.Packet(seg.ToArray());
+                return new Models.GSLive.RT.Packet(buffer);
             }
             catch (Exception e)
             {

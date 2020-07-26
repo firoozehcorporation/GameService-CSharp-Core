@@ -298,7 +298,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         }
         
         
-        internal static IEnumerable<byte[]> GetQueueData(byte[] buffer)
+        internal static Queue<byte[]> GetQueueData(byte[] buffer)
         {
             var data = new Queue<byte[]>();
             using (var packetReader = ByteArrayReaderWriter.Get(buffer))

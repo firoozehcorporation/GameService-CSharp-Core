@@ -210,7 +210,7 @@ namespace FiroozehGameService.Utils.Serializer
             }
 
             
-            internal static IEnumerable<byte[]> GetQueueData(byte[] buffer)
+            internal static Queue<byte[]> GetQueueData(byte[] buffer)
             {
                 return SerializerUtil.GetQueueData(buffer);
             }
