@@ -208,8 +208,19 @@ namespace FiroozehGameService.Utils.Serializer
             {
                 return SerializerUtil.GetSnapShotsFromBuffer(buffer);
             }
+
             
+            internal static Queue<byte[]> GetQueueData(byte[] buffer)
+            {
+                return SerializerUtil.GetQueueData(buffer);
+            }
             
+            internal static byte[] GetSendQueueBuffer(Queue<byte[]> queue)
+            {
+                return SerializerUtil.GetSendQueueBuffer(queue);
+            }
+
+
             private static GsReadStream GetReadStream(byte[] buffer)
             {
                 if(buffer == null)

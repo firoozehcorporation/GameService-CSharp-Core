@@ -276,7 +276,7 @@ namespace FiroozehGameService.Core.GSLive
             if (GSLive.Handler.RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
             GSLive.Handler.RealTimeHandler.Request(NewEventHandler.Signature, sendType,
-                new DataPayload {Payload = data , ExtraData = caller},sendType == GProtocolSendType.Reliable);
+                new DataPayload {Payload = data , ExtraData = caller},true);
         }
     }
 }

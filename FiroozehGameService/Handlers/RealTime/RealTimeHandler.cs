@@ -171,7 +171,7 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (!_observer.Increase(isCritical)) return;
             if (!PacketUtil.CheckPacketSize(packet)) throw new GameServiceException("this Packet Is Too Big!");
-            if (IsAvailable) _udpClient.Send(packet, type);
+            if (IsAvailable) _udpClient.AddToQueue(packet, type);
             else throw new GameServiceException("GameService Not Available");
         }
 
