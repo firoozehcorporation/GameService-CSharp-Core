@@ -135,7 +135,7 @@ namespace FiroozehGameService.Core.Socket
                 var buffer = PacketSerializable.Serialize(packet);
                 LogUtil.Log(this,"RealTime Send Payload Len : " + buffer.Length);
 
-                if (GsSerializer.Object.GetSendQueueBufferSize(SendQueue) <= RT.MaxPacketSize && SendQueue.Count <= sizeof(byte))
+                if (GsSerializer.Object.GetSendQueueBufferSize(SendQueue) + buffer.Length <= RT.MaxPacketSize && SendQueue.Count <= sizeof(byte))
                     SendQueue.Enqueue(buffer);
                 else
                     LogUtil.LogError(this, "SendQueue is Full,so Ignore this");
