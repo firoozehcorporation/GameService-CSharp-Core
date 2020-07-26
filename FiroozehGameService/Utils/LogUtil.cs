@@ -28,14 +28,14 @@ namespace FiroozehGameService.Utils
 
         internal static void Log(object where, string txt)
         {
-            if (IsDebug)
+            if (!IsDebug) return;
                 LogEventHandler?.Invoke(where,
                     new Log(LogType.Normal, DateTime.Now.ToString("h:mm:ss tt") + "--" + txt));
         }
 
         internal static void LogError(object where, string err)
         {
-            if (IsDebug)
+             if (!IsDebug) return;
                 LogEventHandler?.Invoke(where,
                     new Log(LogType.Error, DateTime.Now.ToString("h:mm:ss tt") + "--" + err));
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive.RT;
@@ -17,10 +18,11 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
             try
             {
                 var (ownerId,payloads) = GsSerializer.Object.GetObserver(packet.Payload);
-                foreach (var payload in payloads)
+                
+                while (payloads.Count > 0)
                 {
-                    var dataPayload = new DataPayload(payload);
-                    GsSerializer.OnNewEventHandler?.Invoke(null,
+                    var dataPayload = new DataPayload(payloads.Dequeue());
+                    GsSerializer.OnNewEventHandler?.Invoke(this,
                         new EventData
                         {
                             Caller = dataPayload.ExtraData,
