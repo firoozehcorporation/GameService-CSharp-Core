@@ -228,11 +228,22 @@ namespace FiroozehGameService.Utils.Serializer
             }
 
             
-            internal static Tuple<string,byte[]> GetObserver(byte[] buffer)
+            internal static Tuple<string, IEnumerable<byte[]>> GetObserver(byte[] buffer)
+            {
+                var (ownerId, bufferData) = SerializerUtil.GetObserver(buffer);
+                return Tuple.Create(ownerId,GetQueueData(bufferData));
+            }
+
+
+            private static IEnumerable<byte[]> GetQueueData(byte[] buffer)
+            {
+                return SerializerUtil.GetQueueData(buffer);
+            }
+            
+            internal static Tuple<string,byte[]> GetSendQueue(byte[] buffer)
             {
                 return SerializerUtil.GetObserver(buffer);
             }
-            
 
             internal static int GetSendQueueBufferSize(IEnumerable<byte[]> data)
             {

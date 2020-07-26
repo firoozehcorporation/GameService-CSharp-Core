@@ -45,6 +45,7 @@ namespace FiroozehGameService.Utils
         
         private static void EventHandler(object sender, Event e)
         {
+            if(_sendQueue.Count <= 0) return;
             SendObserverEventHandler?.Invoke(null, GsSerializer.Object.GetSendQueueBuffer(_sendQueue));
         }
     }

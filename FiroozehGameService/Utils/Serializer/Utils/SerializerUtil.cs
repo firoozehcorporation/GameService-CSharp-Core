@@ -297,6 +297,20 @@ namespace FiroozehGameService.Utils.Serializer.Utils
 
             return packetBuffer;
         }
+        
+        
+        internal static Queue<byte[]> GetQueueData(byte[] buffer)
+        {
+            var data = new Queue<byte[]>();
+            using (var packetReader = ByteArrayReaderWriter.Get(buffer))
+            {
+                var count = packetReader.ReadByte();
+                for (var i = 0; i < count; i++)
+                    data.Enqueue(packetReader.ReadBytes(packetReader.ReadUInt16()));
+            }
+
+            return data;
+        }
 
 
         internal static Tuple<string,byte[]> GetObserver(byte[] buffer)

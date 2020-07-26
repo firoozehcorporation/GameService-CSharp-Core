@@ -16,19 +16,22 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         {
             try
             {
-                var (ownerId,payload) = GsSerializer.Object.GetObserver(packet.Payload);
-                var dataPayload = new DataPayload(payload);
-                GsSerializer.OnNewEventHandler?.Invoke(this,
-                    new EventData
-                    {
+                var (ownerId,payloads) = GsSerializer.Object.GetObserver(packet.Payload);
+                foreach (var payload in payloads)
+                {
+                    var dataPayload = new DataPayload(payload);
+                    GsSerializer.OnNewEventHandler?.Invoke(null,
+                        new EventData
+                        {
                             Caller = dataPayload.ExtraData,
                             Data = dataPayload.Payload,
                             SenderId = ownerId
-                    });
+                        });
+                }
             }
             catch (Exception e)
             {
-                LogUtil.LogError(this, e.Message);
+                LogUtil.LogError(this, e.Message + "\r\n" + e.InnerException);
             }
         }
     }
