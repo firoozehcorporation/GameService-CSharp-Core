@@ -299,21 +299,15 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         }
 
 
-        internal static List<Tuple<string,byte[]>> GetObservers(byte[] buffer)
+        internal static Tuple<string,byte[]> GetObserver(byte[] buffer)
         {
-            var data = new List<Tuple<string, byte[]>>();
             using (var packetReader = ByteArrayReaderWriter.Get(buffer))
             {
-                var count = packetReader.ReadByte();
-                for (var i = 0; i < count; i++)
-                {
-                    var ownerId = packetReader.ReadBytes(packetReader.ReadInt16());
-                    var payload = packetReader.ReadBytes(packetReader.ReadInt16());
-                    data.Add(Tuple.Create(GetStringFromBuffer(ownerId,true),payload));
-                }
+                var len = packetReader.ReadByte();
+                var ownerId = GetStringFromBuffer(packetReader.ReadBytes(len), true);
+                var payload = packetReader.ReadBytes(buffer.Length - len);
+                return Tuple.Create(ownerId, payload);
             }
-
-            return data;
         }
 
         

@@ -228,9 +228,9 @@ namespace FiroozehGameService.Utils.Serializer
             }
 
             
-            internal static List<Tuple<string,byte[]>> GetObservers(byte[] buffer)
+            internal static Tuple<string,byte[]> GetObserver(byte[] buffer)
             {
-                return SerializerUtil.GetObservers(buffer);
+                return SerializerUtil.GetObserver(buffer);
             }
             
 
