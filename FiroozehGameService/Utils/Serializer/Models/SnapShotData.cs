@@ -37,7 +37,13 @@ namespace FiroozehGameService.Utils.Serializer.Models
         /// <summary>
         /// SnapShot Object Type
         /// </summary>
-        Object = 0x1
+        Object = 0x1,
+        
+        
+        /// <summary>
+        /// SnapShot Property Type
+        /// </summary>
+        Property = 0x2
     }
     /// <summary>
     /// Represents SnapShotData Data Model In Game Service Binary Serializer
