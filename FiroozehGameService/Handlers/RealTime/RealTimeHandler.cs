@@ -61,7 +61,10 @@ namespace FiroozehGameService.Handlers.RealTime
             
             ObserverCompacterUtil.Dispose();
             LogUtil.Log(this, "RealTime Dispose");
+
+            _isDisposed = true;
             CoreEventHandlers.Dispose?.Invoke(this, null);
+            RealTimeEventHandlers.CurrentPlayerLeftRoom?.Invoke(this,null);
         }
 
 
@@ -191,8 +194,9 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnError(object sender, ErrorArg e)
         {
             LogUtil.Log(this, "RealTime Error");
-            if (_isDisposed) return;
-            Init();
+            Dispose();
+            //if (_isDisposed) return;
+            //Init();
         }
 
 
@@ -223,7 +227,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private readonly GsLiveSystemObserver _observer;
         private readonly PingUtil _pingUtil;
-        private readonly bool _isDisposed;
+        private bool _isDisposed;
         
         
         public static string MemberId { private set; get; }

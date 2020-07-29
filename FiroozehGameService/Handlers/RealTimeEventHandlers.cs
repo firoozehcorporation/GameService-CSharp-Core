@@ -54,6 +54,14 @@ namespace FiroozehGameService.Handlers
         
         
         /// <summary>
+        /// Calls When Current Player Left the Current Room
+        /// This Event Handler Called By Following Function :
+        /// <see cref="GSLiveRT.LeaveRoom"/>
+        /// </summary>
+        public static EventHandler CurrentPlayerLeftRoom;
+        
+        
+        /// <summary>
         /// Calls When SomeOne Send Message In Current Room
         /// This Event Handler Called By Following Functions :
         /// <see cref="GSLiveRT.SendPublicMessage"/>
