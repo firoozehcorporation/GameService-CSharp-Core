@@ -59,6 +59,24 @@ namespace FiroozehGameService.Utils.Serializer
         /// </summary>
         public static EventHandler<List<SnapShotData>> OnNewSnapShotReceived;
         
+        
+        
+        /// <summary>
+        /// Calls When Current Player Left the Current Room
+        /// This Event Handler Called By Following Function :
+        /// <see cref="GSLiveRT.LeaveRoom"/>
+        /// </summary>
+        public static EventHandler CurrentPlayerLeftRoom;
+        
+        
+        
+        /// <summary>
+        /// Calls When Current Player Left the Current Room
+        /// This Event Handler Called By Following Function :
+        /// <see cref="GSLiveRT.JoinRoom"/>
+        /// </summary>
+        public static EventHandler CurrentPlayerJoinRoom;
+        
 
 
         /// <summary>

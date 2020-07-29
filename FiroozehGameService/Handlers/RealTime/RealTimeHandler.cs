@@ -11,6 +11,7 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
+using FiroozehGameService.Utils.Serializer;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
@@ -63,8 +64,8 @@ namespace FiroozehGameService.Handlers.RealTime
             LogUtil.Log(this, "RealTime Dispose");
 
             _isDisposed = true;
+            GsSerializer.CurrentPlayerLeftRoom?.Invoke(this,null);
             CoreEventHandlers.Dispose?.Invoke(this, null);
-            RealTimeEventHandlers.CurrentPlayerLeftRoom?.Invoke(this,null);
         }
 
 
@@ -107,6 +108,8 @@ namespace FiroozehGameService.Handlers.RealTime
 
             // Get SnapShot After Auth
             Request(SnapShotHandler.Signature,GProtocolSendType.Reliable,isCritical : true);
+            
+            GsSerializer.CurrentPlayerJoinRoom?.Invoke(this,null);
         }
 
         private void InitRequestMessageHandlers()
