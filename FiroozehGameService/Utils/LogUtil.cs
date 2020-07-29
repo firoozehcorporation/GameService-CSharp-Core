@@ -22,22 +22,22 @@ namespace FiroozehGameService.Utils
 
     public class LogUtil
     {
-        private const bool IsDebug = true;
+        private const bool IsDebug = false;
         public static EventHandler<Log> LogEventHandler;
 
 
         internal static void Log(object where, string txt)
         {
             if (!IsDebug) return;
-                LogEventHandler?.Invoke(where,
-                    new Log(LogType.Normal, DateTime.Now.ToString("h:mm:ss tt") + "--" + txt));
+            LogEventHandler?.Invoke(where,
+                new Log(LogType.Normal, DateTime.Now.ToString("h:mm:ss tt") + "--" + txt));
         }
 
         internal static void LogError(object where, string err)
         {
-             if (!IsDebug) return;
-                LogEventHandler?.Invoke(where,
-                    new Log(LogType.Error, DateTime.Now.ToString("h:mm:ss tt") + "--" + err));
+            if (!IsDebug) return;
+            LogEventHandler?.Invoke(where,
+                new Log(LogType.Error, DateTime.Now.ToString("h:mm:ss tt") + "--" + err));
         }
     }
 }
