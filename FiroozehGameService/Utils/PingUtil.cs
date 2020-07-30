@@ -21,7 +21,11 @@ namespace FiroozehGameService.Utils
                 Enabled = false
             };
             _timer.Elapsed += (sender, args) => { RequestPing?.Invoke(this, null); };
-            _timer.Start();
+        }
+
+        internal void Init()
+        {
+            _timer?.Start();
         }
 
         internal static long GetLastPing()

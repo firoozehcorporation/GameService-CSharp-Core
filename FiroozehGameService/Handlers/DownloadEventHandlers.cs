@@ -37,11 +37,17 @@ namespace FiroozehGameService.Handlers
         /// Calls When Download Completed
         /// </summary>
         public static EventHandler<DownloadCompleteArgs> DownloadCompleted;
+
+
+        /// <summary>
+        /// Calls When Download Cancelled
+        /// </summary>
+        public static EventHandler<DownloadCancelledArgs> DownloadCancelled;
         
         
         /// <summary>
         /// Calls When An Error Occured 
         /// </summary>
-        public static EventHandler<ErrorArg> DownloadError;
+        public static EventHandler<DownloadErrorArgs> DownloadError;
     }
 }

@@ -11,7 +11,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public static string Signature =>
             "EVENT_HANDLER";
 
-        public NewEventHandler() {}
+        internal NewEventHandler() {}
 
         private static Packet DoAction(DataPayload payload)
             => new Packet(RealTimeHandler.PlayerHash,RT.ActionEvent,GProtocolSendType.Reliable,payload.Serialize());        

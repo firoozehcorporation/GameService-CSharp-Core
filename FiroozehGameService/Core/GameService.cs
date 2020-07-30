@@ -397,11 +397,39 @@ namespace FiroozehGameService.Core
 
 
         /// <summary>
-        ///     Stop All Current Download Assets
+        ///     Cancel All Current Download Assets
         /// </summary>
-        public static void StopAllDownloadAsset()
+        public static void CancelAllDownloadAsset()
         {
-            _downloadManager.StopAllDownloads();
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First");
+            _downloadManager?.CancelAllDownloads();
+        }
+        
+        
+        /// <summary>
+        ///     Cancel Download Asset With Asset Tag
+        /// </summary>
+        public static void CancelDownloadAsset(string tag)
+        {
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First");
+            if (string.IsNullOrEmpty(tag)) 
+                throw new GameServiceException("Asset Tag Cant Be EmptyOrNull");
+            _downloadManager.CancelDownload(tag);
+        }
+        
+        
+        /// <summary>
+        ///     Cancel Download Asset With Asset Info
+        /// </summary>
+        public static void CancelDownloadAsset(AssetInfo info)
+        {
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First");
+            if (info == null)
+                throw new GameServiceException("AssetInfo Cant Be Null");
+            _downloadManager?.CancelDownload(info);
         }
 
 
@@ -557,7 +585,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "5.0.0";
+            return "5.0.1";
         }
 
 

@@ -63,6 +63,7 @@ namespace FiroozehGameService.Handlers.RealTime
             ObserverCompacterUtil.Dispose();
             LogUtil.Log(this, "RealTime Dispose");
 
+            PlayerHash = null;
             _isDisposed = true;
             GsSerializer.CurrentPlayerLeftRoom?.Invoke(this,null);
             CoreEventHandlers.Dispose?.Invoke(this, null);
@@ -104,6 +105,7 @@ namespace FiroozehGameService.Handlers.RealTime
             PlayerHash = playerHash;
             LogUtil.Log(null, "RealTime OnAuth");
             
+            _pingUtil?.Init();
             ObserverCompacterUtil.Init();
 
             // Get SnapShot After Auth

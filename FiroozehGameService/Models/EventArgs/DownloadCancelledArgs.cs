@@ -1,4 +1,4 @@
-// <copyright file="ErrorArg.cs" company="Firoozeh Technology LTD">
+// <copyright file="DownloadCancelledArgs.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,10 +21,26 @@
 * @author Alireza Ghodrati
 */
 
+using FiroozehGameService.Models.Internal;
+
 namespace FiroozehGameService.Models.EventArgs
 {
-    internal class ErrorArg : System.EventArgs
+    /// <summary>
+    /// Represents DownloadProgressArgs
+    /// </summary>
+    public class DownloadCancelledArgs : System.EventArgs
     {
-        public string Error { get; set; }
+        /// <summary>
+        /// Gets the Asset Info
+        /// </summary>
+        /// <value>the Asset Info</value>
+        public AssetInfo AssetInfo { internal set; get; }
+        
+        
+        /// <summary>
+        /// Gets the Save Path
+        /// </summary>
+        /// <value>the Save Path</value>
+        public string SavePath { internal set; get; }
     }
 }

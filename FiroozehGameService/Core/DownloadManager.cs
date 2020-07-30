@@ -16,11 +16,14 @@
 
 
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Handlers;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.Internal;
 
@@ -38,6 +41,7 @@ namespace FiroozehGameService.Core
         internal DownloadManager(GameServiceClientConfiguration config)
         {
             _configuration = config;
+            _webClients = new Dictionary<string, WebClient>();
         }
 
         internal async Task StartDownload(string tag)
@@ -49,7 +53,7 @@ namespace FiroozehGameService.Core
             }
             catch (Exception e)
             {
-                DownloadEventHandlers.DownloadError?.Invoke(this, new ErrorArg
+                DownloadEventHandlers.DownloadError?.Invoke(this, new DownloadErrorArgs
                 {
                     Error = e.Message
                 });
@@ -65,7 +69,7 @@ namespace FiroozehGameService.Core
             }
             catch (Exception e)
             {
-                DownloadEventHandlers.DownloadError?.Invoke(this, new ErrorArg
+                DownloadEventHandlers.DownloadError?.Invoke(this, new DownloadErrorArgs
                 {
                     Error = e.Message
                 });
@@ -77,9 +81,20 @@ namespace FiroozehGameService.Core
         {
             try
             {
-                _client = new WebClient();
+                if (_webClients.ContainsKey(info.AssetInfoData.Name))
+                {
+                    DownloadEventHandlers.DownloadError?.Invoke(this, new DownloadErrorArgs
+                    {
+                        AssetInfo = info,
+                        Error = "Tag \"" + info.AssetInfoData.Name + "\" is Already in Download Queue!"
+                    });
+                    return;
+                }
+                
+                var client = new WebClient();
+                _webClients.Add(info.AssetInfoData.Name,client);
                 // Set Events
-                _client.DownloadProgressChanged += (s, progress) =>
+                client.DownloadProgressChanged += (s, progress) =>
                 {
                     DownloadEventHandlers.DownloadProgress?.Invoke(this, new DownloadProgressArgs
                     {
@@ -90,21 +105,29 @@ namespace FiroozehGameService.Core
                     });
                 };
 
-                _client.DownloadDataCompleted += (sender, args) =>
+                client.DownloadDataCompleted += (sender, args) =>
                 {
-                    _client?.Dispose();
+                    if (args.Cancelled)
+                    {
+                        DownloadEventHandlers.DownloadCancelled?.Invoke(this,new DownloadCancelledArgs {AssetInfo = info});
+                        return;
+                    }
+                    client.Dispose();
+                    _webClients.Remove(info.AssetInfoData.Name);
                     DownloadEventHandlers.DownloadCompleted?.Invoke(this, new DownloadCompleteArgs
                     {
                         DownloadedAssetAsBytes = args.Result
                     });
                 };
 
-                await _client?.DownloadDataTaskAsync(info.AssetInfoData.Link);
+                await client.DownloadDataTaskAsync(info.AssetInfoData.Link);
             }
             catch (Exception e)
             {
-                DownloadEventHandlers.DownloadError?.Invoke(this, new ErrorArg
+                _webClients.Remove(info.AssetInfoData.Name);
+                DownloadEventHandlers.DownloadError?.Invoke(this, new DownloadErrorArgs
                 {
+                    AssetInfo = info,
                     Error = e.Message
                 });
             }
@@ -115,9 +138,22 @@ namespace FiroozehGameService.Core
             var completeAddress = path + '/' + info.AssetInfoData.Name;
             try
             {
-                _client = new WebClient();
+                if (_webClients.ContainsKey(info.AssetInfoData.Name))
+                {
+                    DownloadEventHandlers.DownloadError?.Invoke(this, new DownloadErrorArgs
+                    {
+                        AssetInfo = info,
+                        SavePath = completeAddress,
+                        Error = "Tag \"" + info.AssetInfoData.Name + "\" is Already in Download Queue!"
+                    });
+                    return;
+                }
+                
+                var client = new WebClient();
+                _webClients.Add(info.AssetInfoData.Name,client);
                 // Set Events
-                _client.DownloadProgressChanged += (s, progress) =>
+                client.DownloadProgressChanged += (s, progress) =>
+                {
                     DownloadEventHandlers.DownloadProgress?.Invoke(this, new DownloadProgressArgs
                     {
                         FileTag = info.AssetInfoData.Name,
@@ -125,39 +161,80 @@ namespace FiroozehGameService.Core
                         TotalBytesToReceive = progress.TotalBytesToReceive,
                         ProgressPercentage = progress.ProgressPercentage
                     });
-
-
-                _client.DownloadFileCompleted += (s, e) =>
+                };
+                
+                client.DownloadFileCompleted += (s, e) =>
                 {
-                    _client?.Dispose();
+                    if (e.Cancelled)
+                    {
+                        RemoveCancelledFile(completeAddress);
+                        DownloadEventHandlers.DownloadCancelled?.Invoke(this,new DownloadCancelledArgs {AssetInfo = info , SavePath = path});
+                        return;
+                    }
+                    
+                    client.Dispose();
+                    _webClients.Remove(info.AssetInfoData.Name);
                     DownloadEventHandlers.DownloadCompleted?.Invoke(this, new DownloadCompleteArgs
                     {
                         DownloadedAssetPath = completeAddress
                     });
                 };
-
-
-                _client?.DownloadFileAsync(new Uri(info.AssetInfoData.Link), completeAddress);
+                
+                client.DownloadFileAsync(new Uri(info.AssetInfoData.Link), completeAddress);
             }
             catch (Exception e)
             {
-                DownloadEventHandlers.DownloadError?.Invoke(this, new ErrorArg
+                _webClients.Remove(info.AssetInfoData.Name);
+                DownloadEventHandlers.DownloadError?.Invoke(this, new DownloadErrorArgs
                 {
+                    AssetInfo = info,
+                    SavePath = completeAddress,
                     Error = e.Message
                 });
             }
         }
 
 
-        internal void StopAllDownloads()
+        internal void CancelAllDownloads()
         {
-            _client.CancelAsync();
+            foreach (var client in _webClients)
+            {
+                client.Value?.CancelAsync();
+                client.Value?.Dispose();
+            }
+            _webClients.Clear();
         }
+
+        internal void CancelDownload(string tag)
+        {
+            if(!_webClients.ContainsKey(tag))
+                throw new GameServiceException("The Tag \"" + tag + "\" is Not Exist In Download Queue!");
+           
+            _webClients[tag]?.CancelAsync();
+            _webClients[tag]?.Dispose();
+            _webClients.Remove(tag);
+        }
+        
+        
+        internal void CancelDownload(AssetInfo info)
+        {
+            var tag = info.AssetInfoData.Name;
+            if(!_webClients.ContainsKey(tag))
+                throw new GameServiceException("The Tag \"" + tag + "\" is Not Exist In Download Queue!");
+           
+            _webClients[tag]?.CancelAsync();
+            _webClients[tag]?.Dispose();
+            _webClients.Remove(tag);
+        }
+
+
+        private static void RemoveCancelledFile(string fullPath) => File.Delete(fullPath);
+        
 
         #region DownloadRegion
 
         private readonly GameServiceClientConfiguration _configuration;
-        private WebClient _client;
+        private readonly Dictionary<string, WebClient> _webClients;
 
         #endregion
     }

@@ -213,7 +213,9 @@
         <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
         <Compile Include="Models\Enums\GSLive\RT\MessageType.cs"/>
         <Compile Include="Models\Enums\GsWebRequestMethod.cs"/>
+        <Compile Include="Models\EventArgs\DownloadCancelledArgs.cs"/>
         <Compile Include="Models\EventArgs\DownloadCompleteArgs.cs"/>
+        <Compile Include="Models\EventArgs\DownloadErrorArgs.cs"/>
         <Compile Include="Models\EventArgs\SocketDataReceived.cs"/>
         <Compile Include="Models\EventArgs\DownloadProgressArgs.cs"/>
         <Compile Include="Models\EventArgs\ErrorArg.cs"/>
