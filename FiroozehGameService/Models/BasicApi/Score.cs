@@ -56,14 +56,5 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Rank of This Score</value>
         [JsonProperty("rank")] public int Rank;
-        
-
-        public override string ToString()
-        {
-            return "Score{" +
-                   ", Submitter='" + Submitter + '\'' +
-                   ", value=" + Value +
-                   '}';
-        }
     }
 }

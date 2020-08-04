@@ -102,7 +102,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
-            PlayerHash = (long) playerHash;
+            PlayerHash = (ulong) playerHash;
             LogUtil.Log(null, "RealTime OnAuth");
             
             _pingUtil?.Init();
@@ -235,7 +235,7 @@ namespace FiroozehGameService.Handlers.RealTime
         
         
         public static string MemberId { private set; get; }
-        public static long PlayerHash { private set; get; }
+        public static ulong PlayerHash { private set; get; }
         public static string PlayToken => GameService.PlayToken;
         public static bool IsAvailable => _udpClient?.IsAvailable ?? false;
 

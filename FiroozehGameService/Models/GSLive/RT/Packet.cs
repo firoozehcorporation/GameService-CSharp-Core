@@ -12,7 +12,7 @@ namespace FiroozehGameService.Models.GSLive.RT
         internal int Action;
         internal long ClientReceiveTime;
         internal long ClientSendTime;
-        internal long Hash;
+        internal ulong Hash;
         internal byte[] Payload;
         internal GProtocolSendType SendType;
 
@@ -23,7 +23,7 @@ namespace FiroozehGameService.Models.GSLive.RT
         {
             Deserialize(buffer);
         }
-        public Packet(long hash, int action, GProtocolSendType sendType = GProtocolSendType.UnReliable,
+        public Packet(ulong hash, int action, GProtocolSendType sendType = GProtocolSendType.UnReliable,
             byte[] payload = null)
         {
             Hash = hash;
@@ -63,7 +63,7 @@ namespace FiroozehGameService.Models.GSLive.RT
 
                 // data Segment
                 packetWriter.Write((byte)SendType);
-                packetWriter.Write((ulong) Hash);  
+                packetWriter.Write(Hash);  
 
                 if(havePayload == 0x1)  packetWriter.Write(Payload);
                 if(haveSendTime == 0x1) packetWriter.Write(ClientSendTime);
@@ -84,7 +84,7 @@ namespace FiroozehGameService.Models.GSLive.RT
                 if(havePayload == 0x1) _payloadLen = packetWriter.ReadUInt16();
                  
                 SendType = (GProtocolSendType) packetWriter.ReadByte();
-                Hash     = (long)              packetWriter.ReadUInt64();
+                Hash     =                     packetWriter.ReadUInt64();
 
                 if(havePayload == 0x1)    Payload = packetWriter.ReadBytes(_payloadLen);
                 if(haveSendTime == 0x1)   ClientSendTime = packetWriter.ReadInt64();
