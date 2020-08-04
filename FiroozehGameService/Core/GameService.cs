@@ -583,7 +583,7 @@ namespace FiroozehGameService.Core
         ///     Get The Current GameService Version
         /// </summary>
         /// <value> return The Current GameService Version </value>
-        public static string Version() => "5.1.1";
+        public static string Version() => "5.1.2";
         
 
 
@@ -599,6 +599,7 @@ namespace FiroozehGameService.Core
             _isAvailable = false;
             IsGuest = false;
             GSLive?.Dispose();
+            GsWebRequest.Dispose();
         }
 
         #region GameServiceRegion

@@ -7,9 +7,10 @@ namespace FiroozehGameService.Utils
     internal class HttpRequestObserver
     {
         
-        private const int Reset = 1000;
-        public const int MaxRequest = 3;
+        internal const int Reset = 3;
+        internal const int MaxRequest = 9;
         private int _counter;
+        internal bool IsDisposed;
         private readonly Timer _timer;
 
 
@@ -18,11 +19,12 @@ namespace FiroozehGameService.Utils
         {
             _timer = new Timer
             {
-                Interval = Reset,
+                Interval = Reset * 1000,
                 Enabled = false
             };
             _timer.Elapsed += (sender, args) => {  _counter = 0; };
             _timer.Start();
+            IsDisposed = false;
         }
         
         
@@ -37,6 +39,7 @@ namespace FiroozehGameService.Utils
         {
             _timer?.Stop();
             _timer?.Close();
+            IsDisposed = true;
         }
         
         

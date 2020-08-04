@@ -10,9 +10,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal static class GsWebRequest
     {
-        private static readonly HttpRequestObserver Observer = new HttpRequestObserver();
-        private static readonly HttpClient Client = new HttpClient();
-        private static readonly string UserAgent = "UnitySDK " + GameService.Version();
+        private static HttpRequestObserver Observer = new HttpRequestObserver();
+        private static HttpClient Client = new HttpClient();
+        private static readonly string UserAgent = "UnitySDK-" + GameService.Version();
 
         internal static async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers = null)
         {
@@ -59,13 +59,28 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
+        internal static void Dispose()
+        {
+            Observer?.Dispose();
+            Client?.Dispose();
+        }
+
+        private static void CheckDisposed()
+        {
+            if (!Observer.IsDisposed) return;
+            Observer = new HttpRequestObserver();
+            Client = new HttpClient();
+        }
+
+
         private static async Task<HttpResponseMessage> DoRequest(string url,
             GsWebRequestMethod method = GsWebRequestMethod.Get, string body = null,
             Dictionary<string, string> headers = null)
         {
-            
+
+            CheckDisposed();
             if(!Observer.Increase())
-                throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest + " Requests Per Sec");
+                throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest + " Requests Per " + HttpRequestObserver.Reset + " Secs");
            
             var httpClient = Init(headers);
             StringContent content = null;
