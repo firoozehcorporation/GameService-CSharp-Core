@@ -162,7 +162,22 @@ namespace FiroozehGameService.Core
             return await ApiRequest.GetLeaderBoardDetails(leaderBoardId, scoreLimit);
         }
 
-
+        
+        /// <summary>
+        ///     With this command you can get Current Player Score with the ID of the LeaderBoard id
+        ///     you registered in the Developer panel.
+        /// </summary>
+        /// <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Score</param>
+        /// <value> return Score </value>
+        public static async Task<Score> GetCurrentPlayerScore(string leaderBoardId)
+        {
+            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if (string.IsNullOrEmpty(leaderBoardId))
+                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull");
+            return await ApiRequest.GetCurrentPlayerScore(leaderBoardId);
+        }
+        
+        
         /// <summary>
         ///     With this command you can get information about the current player is playing
         /// </summary>

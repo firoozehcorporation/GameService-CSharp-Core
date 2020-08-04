@@ -171,6 +171,21 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message);
             }
         }
+        
+        
+        
+        internal static async Task<Score> GetCurrentPlayerScore(string leaderBoardId)
+        {
+            var response = await GsWebRequest.Get(Api.LeaderBoard + leaderBoardId + "/me", CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Score>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
+            }
+        }
 
 
         internal static async Task<User> GetUserData(string userId)
