@@ -63,7 +63,7 @@ namespace FiroozehGameService.Handlers.RealTime
             ObserverCompacterUtil.Dispose();
             LogUtil.Log(this, "RealTime Dispose");
 
-            PlayerHash = null;
+            PlayerHash = 0;
             _isDisposed = true;
             GsSerializer.CurrentPlayerLeftRoom?.Invoke(this,null);
             CoreEventHandlers.Dispose?.Invoke(this, null);
@@ -99,10 +99,10 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        private void OnAuth(object sender, string playerHash)
+        private void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
-            PlayerHash = playerHash;
+            PlayerHash = (long) playerHash;
             LogUtil.Log(null, "RealTime OnAuth");
             
             _pingUtil?.Init();
@@ -190,7 +190,6 @@ namespace FiroozehGameService.Handlers.RealTime
         private void Send(Packet packet, GProtocolSendType type,bool isCritical = false)
         {
             if (!_observer.Increase(isCritical)) return;
-            if (!PacketUtil.CheckPacketSize(packet)) throw new GameServiceException("this Packet Is Too Big!");
             if (IsAvailable) _udpClient.Send(packet, type);
             else throw new GameServiceException("GameService Not Available");
         }
@@ -236,7 +235,7 @@ namespace FiroozehGameService.Handlers.RealTime
         
         
         public static string MemberId { private set; get; }
-        public static string PlayerHash { private set; get; }
+        public static long PlayerHash { private set; get; }
         public static string PlayToken => GameService.PlayToken;
         public static bool IsAvailable => _udpClient?.IsAvailable ?? false;
 

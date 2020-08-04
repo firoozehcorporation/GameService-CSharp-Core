@@ -1,5 +1,6 @@
 ﻿using System;
 using FiroozehGameService.Handlers;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
@@ -97,6 +98,10 @@ namespace FiroozehGameService.Core.Socket
                 packet.SendType = type;
                 if(packet.Action == RT.ActionPing) packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 var buffer = PacketSerializable.Serialize(packet);
+                
+                if (!PacketUtil.CheckPacketSize(buffer)) 
+                    throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " + RT.MaxPacketSize + " bytes.");
+
                 LogUtil.Log(this,"RealTime Send Payload Len : " + buffer.Length);
                 
                 Client?.Send(buffer, buffer.Length);

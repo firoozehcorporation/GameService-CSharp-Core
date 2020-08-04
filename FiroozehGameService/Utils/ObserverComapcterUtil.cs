@@ -34,7 +34,7 @@ namespace FiroozehGameService.Utils
         internal static void AddToQueue(DataPayload dataPayload)
         {
             var payload = dataPayload.Serialize();
-            if (GsSerializer.Object.GetSendQueueBufferSize(_sendQueue) + payload.Length <= RT.MaxPacketSize
+            if (GsSerializer.Object.GetSendQueueBufferSize(_sendQueue) + payload.Length <= RT.MaxPacketBeforeSize
                 && _sendQueue.Count <= MaxQueueSize)
                 _sendQueue?.Enqueue(payload);
             else

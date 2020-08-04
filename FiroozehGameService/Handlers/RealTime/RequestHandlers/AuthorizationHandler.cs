@@ -15,7 +15,7 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         {
             if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
             return new Packet(
-                null,
+                0,
                 RT.ActionAuth,
                 GProtocolSendType.Reliable, GetBuffer(JsonConvert.SerializeObject(
                     new AuthPayload(RealTimeHandler.CurrentRoom?.Id, RealTimeHandler.PlayToken)

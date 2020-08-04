@@ -18,6 +18,7 @@ namespace FiroozehGameService.Models.Consts
 
 
         internal const int MaxPacketSize = 1 * 1024;
+        internal const int MaxPacketBeforeSize = 1 * 1024 - 20;
 
         // Limit Checker
         internal const int RealTimeLimit = 15; // 15 Request per sec

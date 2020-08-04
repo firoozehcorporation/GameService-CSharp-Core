@@ -12,19 +12,18 @@ namespace FiroozehGameService.Models.GSLive.RT
         internal int Action;
         internal long ClientReceiveTime;
         internal long ClientSendTime;
-        internal string Hash;
+        internal long Hash;
         internal byte[] Payload;
         internal GProtocolSendType SendType;
 
         
-        private int _hashLen;
         private int _payloadLen;
 
         public Packet(byte[] buffer)
         {
             Deserialize(buffer);
         }
-        public Packet(string hash, int action, GProtocolSendType sendType = GProtocolSendType.UnReliable,
+        public Packet(long hash, int action, GProtocolSendType sendType = GProtocolSendType.UnReliable,
             byte[] payload = null)
         {
             Hash = hash;
@@ -35,15 +34,9 @@ namespace FiroozehGameService.Models.GSLive.RT
         
         internal override byte[] Serialize()
         {
-            byte haveToken = 0x0,havePayload = 0x0,haveSendTime = 0x0;
-            short prefixLen = 5 * sizeof(byte);
-
-            if (Hash != null)
-            {
-                haveToken = 0x1;
-                _hashLen = Hash.Length;
-                prefixLen += sizeof(byte);
-            }
+            byte havePayload = 0x0,haveSendTime = 0x0;
+            short prefixLen = 4 * sizeof(byte) + sizeof(ulong);
+            
             
             if (Payload != null)
             {
@@ -63,17 +56,16 @@ namespace FiroozehGameService.Models.GSLive.RT
             {
                 // header Segment
                 packetWriter.Write((byte)Action);
-                packetWriter.Write(haveToken);
                 packetWriter.Write(haveSendTime);
                 packetWriter.Write(havePayload);
                 
                 if(havePayload == 0x1)  packetWriter.Write((ushort)_payloadLen);
-                if(haveToken == 0x1)    packetWriter.Write((byte)_hashLen);
 
                 // data Segment
                 packetWriter.Write((byte)SendType);
+                packetWriter.Write((ulong) Hash);  
+
                 if(havePayload == 0x1)  packetWriter.Write(Payload);
-                if(haveToken == 0x1)    packetWriter.Write(ConvertToBytes(Hash));  
                 if(haveSendTime == 0x1) packetWriter.Write(ClientSendTime);
             }
             
@@ -86,24 +78,22 @@ namespace FiroozehGameService.Models.GSLive.RT
             {
                 Action = packetWriter.ReadByte();
 
-                var haveToken = packetWriter.ReadByte();
                 var haveSendTime = packetWriter.ReadByte();
                 var havePayload = packetWriter.ReadByte();
 
                 if(havePayload == 0x1) _payloadLen = packetWriter.ReadUInt16();
-                if(haveToken == 0x1)   _hashLen = packetWriter.ReadByte();
                  
                 SendType = (GProtocolSendType) packetWriter.ReadByte();
-                
+                Hash     = (long)              packetWriter.ReadUInt64();
+
                 if(havePayload == 0x1)    Payload = packetWriter.ReadBytes(_payloadLen);
-                if(haveToken == 0x1)      Hash = ConvertToString(packetWriter.ReadBytes(_hashLen));
                 if(haveSendTime == 0x1)   ClientSendTime = packetWriter.ReadInt64();
             }
         }
 
         internal override int BufferSize(short prefixLen)
         {
-            return prefixLen + _hashLen + _payloadLen;
+            return prefixLen + _payloadLen;
         }
         
         public override string ToString()

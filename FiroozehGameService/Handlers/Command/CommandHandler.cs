@@ -53,10 +53,10 @@ namespace FiroozehGameService.Handlers.Command
             LogUtil.Log(this, "CommandHandler Dispose");
         }
 
-        private void OnAuth(object sender, string playerHash)
+        private void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
-            PlayerHash = playerHash;
+            PlayerHash = (string) playerHash;
             LogUtil.Log(null, "CommandHandler OnAuth");
 
             if (_isFirstInit) return;

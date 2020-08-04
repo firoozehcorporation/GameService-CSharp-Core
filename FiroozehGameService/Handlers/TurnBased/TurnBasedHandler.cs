@@ -49,10 +49,10 @@ namespace FiroozehGameService.Handlers.TurnBased
             LogUtil.Log(this, "TurnBased Dispose");
         }
 
-        private static void OnAuth(object sender, string playerHash)
+        private static void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
-            PlayerHash = playerHash;
+            PlayerHash = (string) playerHash;
             LogUtil.Log(null, "TurnBased OnAuth");
         }
 
