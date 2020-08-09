@@ -10,8 +10,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal static class GsWebRequest
     {
-        private static HttpRequestObserver Observer = new HttpRequestObserver();
-        private static HttpClient Client = new HttpClient();
+        private static HttpRequestObserver _observer = new HttpRequestObserver();
+        private static HttpClient _client = new HttpClient();
         private static readonly string UserAgent = "UnitySDK-" + GameService.Version();
 
         internal static async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers = null)
@@ -49,27 +49,27 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         private static HttpClient Init(Dictionary<string, string> headers = null)
         {
-            if (headers == null) return Client;
-            Client.DefaultRequestHeaders.Clear();
+            if (headers == null) return _client;
+            _client.DefaultRequestHeaders.Clear();
             foreach (var header in headers)
-                Client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                _client.DefaultRequestHeaders.Add(header.Key, header.Value);
 
-            Client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
-            return Client;
+            _client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+            return _client;
         }
 
 
         internal static void Dispose()
         {
-            Observer?.Dispose();
-            Client?.Dispose();
+            _observer?.Dispose();
+            _client?.Dispose();
         }
 
         private static void CheckDisposed()
         {
-            if (!Observer.IsDisposed) return;
-            Observer = new HttpRequestObserver();
-            Client = new HttpClient();
+            if (!_observer.IsDisposed) return;
+            _observer = new HttpRequestObserver();
+            _client = new HttpClient();
         }
 
 
@@ -79,13 +79,16 @@ namespace FiroozehGameService.Core.ApiWebRequest
         {
 
             CheckDisposed();
-            if(!Observer.Increase())
+            if(!_observer.Increase())
                 throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest + " Requests Per " + HttpRequestObserver.Reset + " Secs");
            
             var httpClient = Init(headers);
             StringContent content = null;
             if (body != null) content = new StringContent(body, Encoding.UTF8, "application/json");
 
+            LogUtil.Log(null,"GSWebRequest -> URL: " + url + ", method: " + method + ", " +
+                             "Body: " + body);
+            
             switch (method)
             {
                 case GsWebRequestMethod.Get:
