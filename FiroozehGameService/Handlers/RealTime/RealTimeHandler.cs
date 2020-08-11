@@ -46,7 +46,7 @@ namespace FiroozehGameService.Handlers.RealTime
         
         private void SendObserverEventHandler(object sender, byte[] data)
         {
-            Request(ObserverHandler.Signature,GProtocolSendType.UnReliable,data);
+            Request(ObserverHandler.Signature,GProtocolSendType.UnReliable,data,canSendBigSize : true);
         }
 
         private static void OnMemberId(object sender, string id)
@@ -175,9 +175,9 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        internal void Request(string handlerName, GProtocolSendType type, object payload = null,bool isCritical = false)
+        internal void Request(string handlerName, GProtocolSendType type, object payload = null,bool isCritical = false,bool canSendBigSize = false)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload), type,isCritical);
+            Send(_requestHandlers[handlerName]?.HandleAction(payload), type,isCritical,canSendBigSize);
         }
 
 
@@ -187,10 +187,10 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        private void Send(Packet packet, GProtocolSendType type,bool isCritical = false)
+        private void Send(Packet packet, GProtocolSendType type,bool isCritical = false,bool canSendBigSize = false)
         {
             if (!_observer.Increase(isCritical)) return;
-            if (IsAvailable) _udpClient.Send(packet, type);
+            if (IsAvailable) _udpClient.Send(packet, type,canSendBigSize);
             else throw new GameServiceException("GameService Not Available");
         }
         

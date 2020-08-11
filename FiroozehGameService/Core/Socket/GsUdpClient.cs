@@ -91,16 +91,24 @@ namespace FiroozehGameService.Core.Socket
         }
 
 
-        internal override void Send(Packet packet, GProtocolSendType type)
+        internal override void Send(Packet packet, GProtocolSendType type,bool canSendBigSize = false)
         {
             if (Client?.State == ClientState.Connected)
             {
                 packet.SendType = type;
                 if(packet.Action == RT.ActionPing) packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 var buffer = PacketSerializable.Serialize(packet);
-                
-                if (!PacketUtil.CheckPacketSize(buffer)) 
-                    throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " + RT.MaxPacketSize + " bytes.");
+
+                if (!canSendBigSize)
+                {
+                    if (!PacketUtil.CheckPacketSize(buffer))
+                    {
+                        LogUtil.LogError(this,
+                            "this Packet Is Too Big!,Max Packet Size is " + RT.MaxPacketSize + " bytes.");
+                        throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " +
+                                                       RT.MaxPacketSize + " bytes.");
+                    }
+                }
 
                 LogUtil.Log(this,"RealTime Send Payload Len : " + buffer.Length);
                 
