@@ -342,6 +342,18 @@ namespace FiroozehGameService.Core
             return await TimeUtil.GetCurrentTime();
         }
 
+        
+        
+        /// <summary>
+        ///     This command Check Can Login With Phone Number
+        /// </summary>
+        /// <value> return The Status</value>
+        public static async Task<bool> CanLoginWithPhoneNumber()
+        {
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            return await ApiRequest.CheckPhoneLoginStatus();
+        }
+
 
         /// <summary>
         ///     Gets Asset Info With AssetTag
@@ -465,6 +477,25 @@ namespace FiroozehGameService.Core
             return await ApiRequest.ExecuteCloudFunction(functionId, functionParameters, isPublic);
         }
 
+
+
+        /// <summary>
+        ///     Send Login Code With SMS , If you want to LoginWithPhoneNumber, You Must Call This Function first
+        ///     It May Throw Exception
+        ///     <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
+        /// </summary>
+        /// <value> return true if Send Successfully </value>
+        public static async Task<bool> SendLoginCodeWithSms(string phoneNumber)
+        {
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (string.IsNullOrEmpty(phoneNumber)) throw new GameServiceException("phoneNumber Cant Be EmptyOrNull");
+            if (IsAuthenticated()) Logout();
+            return await ApiRequest.SendLoginCodeWithSms(phoneNumber);
+        }
+
+        
+        
         /// <summary>
         ///     Normal Login (InFirstOnly) To Game Service
         ///     It May Throw Exception
@@ -536,6 +567,38 @@ namespace FiroozehGameService.Core
             await Core.GSLive.GSLive.Init();
             return UserToken;
         }
+        
+        
+        
+        /// <summary>
+        ///     Normal Login With Phone Number To Game Service
+        ///     You Must Call SendLoginCodeWithSms First, to get SMS Code.
+        ///     It May Throw Exception
+        ///
+        ///     <param name="nickName">(Not NULL)Specifies Nick Name </param>
+        ///     <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
+        ///     <param name="smsCode">(Not NULL)Specifies SMS Code</param>
+        /// </summary>
+        /// <value> return UserToken if Login Successfully </value>
+        public static async Task<string> LoginWithPhoneNumber(string nickName,string phoneNumber,string smsCode)
+        {
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (string.IsNullOrEmpty(smsCode)) throw new GameServiceException("smsCode Cant Be EmptyOrNull");
+            if (IsAuthenticated()) Logout();
+
+            var login = await ApiRequest.LoginWithPhoneNumber(nickName,phoneNumber,smsCode);
+            UserToken = login.Token;
+            var auth = await ApiRequest.Authorize();
+            CommandInfo = auth.CommandInfo;
+            PlayToken = auth.Token;
+            CurrentGame = auth.Game;
+            _isAvailable = true;
+            IsGuest = false;
+            await Core.GSLive.GSLive.Init();
+            return UserToken;
+        }
+
 
         /// <summary>
         ///     Login To Game Service As Guest
@@ -598,7 +661,7 @@ namespace FiroozehGameService.Core
         ///     Get The Current GameService Version
         /// </summary>
         /// <value> return The Current GameService Version </value>
-        public static string Version() => "5.2.1";
+        public static string Version() => "5.3.0";
         
 
 

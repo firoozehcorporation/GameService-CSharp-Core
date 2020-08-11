@@ -9,6 +9,7 @@ namespace FiroozehGameService.Models.Consts
 
         public const string LoginUser = BaseUrl2 + "/auth/app/login";
         public const string LoginWithGoogle = BaseUrl2 + "/auth/g/callback";
+        public const string LoginWithPhoneNumber = BaseUrl2 + "/auth/phone";
         public const string Start = BaseUrl2 + "/auth/start";
         public const string GetMemberData = BaseUrl2 + "/v1/member/";
         public const string GetUserData = BaseUrl2 + "/v1/user/";

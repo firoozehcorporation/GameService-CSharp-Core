@@ -96,6 +96,38 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message);
             }
         }
+        
+        
+        internal static async Task<Login> LoginWithPhoneNumber(string name,string phoneNumber,string code)
+        {
+            var body = JsonConvert.SerializeObject(CreatePhoneLoginDictionary(name,code,phoneNumber));
+            var response = await GsWebRequest.Post(Api.LoginWithGoogle, body);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
+            }
+        }
+        
+        
+        internal static async Task<bool> SendLoginCodeWithSms(string phoneNumber)
+        {
+            var body = JsonConvert.SerializeObject(CreateSendSmsDictionary(phoneNumber));
+            var response = await GsWebRequest.Post(Api.LoginWithPhoneNumber, body);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
+            }
+        }
+        
+        
 
 
         internal static async Task<Login> SignUp(string nickName, string email, string password)
@@ -481,6 +513,22 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
+        
+        
+        internal static async Task<bool> CheckPhoneLoginStatus()
+        {
+            var body = JsonConvert.SerializeObject(CreateSendSmsDictionary());
+            var response = await GsWebRequest.Put(Api.LoginWithPhoneNumber, body);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
+            }
+        }
+
 
         private static Dictionary<string, object> CreateLoginDictionary(string email, string password, string nickname,
             bool isGuest)
@@ -516,7 +564,31 @@ namespace FiroozehGameService.Core.ApiWebRequest
             return new Dictionary<string, object>
                 {{"token", idToken}, {"device_id", Configuration.SystemInfo.DeviceUniqueId}};
         }
+        
+        
+        private static Dictionary<string, object> CreateSendSmsDictionary(string phoneNumber = null)
+        {
+            return new Dictionary<string, object>
+                {
+                    {"game", Configuration.ClientId},
+                    {"secret", Configuration.ClientSecret},
+                    {"phone_number", phoneNumber}
+                };
+        }
 
+        
+        private static Dictionary<string, object> CreatePhoneLoginDictionary(string name,string code,string phoneNumber)
+        {
+            return new Dictionary<string, object>
+            {
+                {"device_id", Configuration.SystemInfo.DeviceUniqueId},
+                {"phone_number", phoneNumber},
+                {"code", code},
+                {"name", name}
+            };
+        }
+
+        
         private static Dictionary<string, object> CreateAuthorizationDictionary(string userToken)
         {
             var param = new Dictionary<string, object>
