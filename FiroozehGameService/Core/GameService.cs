@@ -586,6 +586,8 @@ namespace FiroozehGameService.Core
         {
             if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (string.IsNullOrEmpty(nickName)) throw new GameServiceException("nickName Cant Be EmptyOrNull");
+            if (string.IsNullOrEmpty(phoneNumber)) throw new GameServiceException("phoneNumber Cant Be EmptyOrNull");
             if (string.IsNullOrEmpty(smsCode)) throw new GameServiceException("smsCode Cant Be EmptyOrNull");
             if (IsAuthenticated()) Logout();
 

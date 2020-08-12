@@ -102,7 +102,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<Login> LoginWithPhoneNumber(string name,string phoneNumber,string code)
         {
             var body = JsonConvert.SerializeObject(CreatePhoneLoginDictionary(name,code,phoneNumber));
-            var response = await GsWebRequest.Post(Api.LoginWithGoogle, body);
+            var response = await GsWebRequest.Post(Api.LoginWithPhoneNumber, body);
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
