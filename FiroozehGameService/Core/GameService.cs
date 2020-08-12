@@ -373,6 +373,7 @@ namespace FiroozehGameService.Core
         /// </summary>
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
         /// <param name="dirPath">(Not NULL)Specifies the Download File Directory Path </param>
+        [Obsolete("This Method is Deprecated,Use DownloadAsset(AssetInfo info, string dirPath) Instead")]
         public static async Task DownloadAsset(string tag, string dirPath)
         {
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
@@ -387,6 +388,7 @@ namespace FiroozehGameService.Core
         ///     Set DownloadManager Event Handlers To Get Download Status
         /// </summary>
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
+        [Obsolete("This Method is Deprecated,Use DownloadAsset(AssetInfo info) Instead")]
         public static async Task DownloadAsset(string tag)
         {
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");

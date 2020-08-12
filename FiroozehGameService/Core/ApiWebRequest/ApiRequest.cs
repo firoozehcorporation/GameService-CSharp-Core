@@ -25,7 +25,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<AssetInfo> GetAssetInfo(string gameId, string tag)
         {
             var url = Api.BaseUrl2 + "/game/" + gameId + "/datapack/?tag=" + tag;
-            var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
+            var body = JsonConvert.SerializeObject(CreateDataPackDictionary());
+            var response = await GsWebRequest.Post(url,body);
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -588,6 +589,14 @@ namespace FiroozehGameService.Core.ApiWebRequest
             };
         }
 
+        
+        private static Dictionary<string, object> CreateDataPackDictionary()
+        {
+            return new Dictionary<string, object>
+            {
+                {"secret", Configuration.ClientSecret}
+            };
+        }
         
         private static Dictionary<string, object> CreateAuthorizationDictionary(string userToken)
         {
