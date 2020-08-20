@@ -121,7 +121,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
-                return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
             }
         }
 
@@ -529,11 +532,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
             var response = await GsWebRequest.Put(Api.LoginWithPhoneNumber, body);
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
-            {
-                if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
-                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+            { 
+                return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
             }
         }
 
