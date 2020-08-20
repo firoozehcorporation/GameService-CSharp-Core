@@ -184,6 +184,7 @@
         <Compile Include="Models\BasicApi\LeaderBoard.cs"/>
         <Compile Include="Models\BasicApi\LeaderBoardDetails.cs"/>
         <Compile Include="Models\BasicApi\Login.cs"/>
+        <Compile Include="Models\BasicApi\MemberInfo.cs"/>
         <Compile Include="Models\BasicApi\SaveDetails.cs"/>
         <Compile Include="Models\BasicApi\Score.cs"/>
         <Compile Include="Models\BasicApi\SubmitScoreResponse.cs"/>

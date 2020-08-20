@@ -216,8 +216,20 @@ namespace FiroozehGameService.Core
                 throw new GameServiceException("memberId Cant Be EmptyOrNull");
             return await ApiRequest.GetMemberData(memberId);
         }
-
-
+        
+        
+        /// <summary>
+        ///     With this command you can get The Last Login Member Info
+        /// </summary>
+        /// <value> return Member Data </value>
+        public static async Task<MemberInfo> GetLastLoginMemberInfo()
+        {
+            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            return await ApiRequest.GetLastLoginMemberInfo();
+        }
+        
+        
+        
         /// <summary>
         ///     With this command you can Edit information about the current player is playing
         /// </summary>

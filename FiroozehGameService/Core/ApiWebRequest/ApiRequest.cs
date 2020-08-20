@@ -243,6 +243,22 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message);
             }
         }
+        
+        
+        internal static async Task<MemberInfo> GetLastLoginMemberInfo()
+        {
+            var body = JsonConvert.SerializeObject(CreateLastLoginDictionary());
+            var response = await GsWebRequest.Post(Api.GetLastLoginInfo, body);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<MemberInfo>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message);
+            }
+        }
+        
 
         internal static async Task<Member> EditCurrentPlayer(EditUserProfile editUserProfile)
         {
@@ -569,6 +585,17 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     {"secret", Configuration.ClientSecret},
                     {"phone_number", phoneNumber}
                 };
+        }
+
+        
+        private static Dictionary<string, object> CreateLastLoginDictionary()
+        {
+            return new Dictionary<string, object>
+            {
+                {"game", Configuration.ClientId},
+                {"secret", Configuration.ClientSecret},
+                {"device_id", Configuration.SystemInfo.DeviceUniqueId}
+            };
         }
 
         
