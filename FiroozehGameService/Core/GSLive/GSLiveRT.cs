@@ -85,11 +85,12 @@ namespace FiroozehGameService.Core.GSLive
         ///     Join In Room With RoomID
         /// </summary>
         /// <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
-        public async Task JoinRoom(string roomId)
+        /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
+        public async Task JoinRoom(string roomId,string extra = null)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (string.IsNullOrEmpty(roomId)) throw new GameServiceException("roomId Cant Be EmptyOrNull");
-            await GSLive.Handler.CommandHandler.RequestAsync(JoinRoomHandler.Signature, new RoomDetail {Id = roomId});
+            await GSLive.Handler.CommandHandler.RequestAsync(JoinRoomHandler.Signature, new RoomDetail {Id = roomId , Extra = extra});
         }
 
         /// <summary>
@@ -229,12 +230,13 @@ namespace FiroozehGameService.Core.GSLive
         ///     Note: After accepting the invitation, you will be automatically entered into the game room
         /// </summary>
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
-        public async Task AcceptInvite(string inviteId)
+        /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
+        public async Task AcceptInvite(string inviteId,string extra = null)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (string.IsNullOrEmpty(inviteId)) throw new GameServiceException("inviteId Cant Be EmptyOrNull");
             await GSLive.Handler.CommandHandler.RequestAsync(AcceptInviteHandler.Signature,
-                new RoomDetail {Invite = inviteId, GsLiveType = (int) GSLiveType.RealTime});
+                new RoomDetail {Invite = inviteId,Extra = extra, GsLiveType = (int) GSLiveType.RealTime});
         }
 
         /// <summary>

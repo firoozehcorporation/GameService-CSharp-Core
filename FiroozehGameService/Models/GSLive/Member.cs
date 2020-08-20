@@ -51,6 +51,16 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Member Name</value>
         [JsonProperty("name")] public string Name;
 
+        
+        /// <summary>
+        ///     Gets the Member Extra Data (NULLABLE).
+        ///     NOTE : The Extra Data Only Available in :
+        ///            1 - AutoMatch
+        ///            2 - Join Room
+        ///            3 - Member Details
+        /// </summary>
+        /// <value>the Member Extra</value>
+        [JsonProperty("extra")] public string Extra;
 
         /// <summary>
         ///     Gets the Member User Data

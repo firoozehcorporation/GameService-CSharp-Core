@@ -21,6 +21,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                 {
                     Name = options.RoomName,
                     Role = options.Role,
+                    Extra = options.Extra,
                     Min = options.MinPlayer,
                     Max = options.MaxPlayer,
                     IsPrivate = options.IsPrivate,

@@ -20,6 +20,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                 JsonConvert.SerializeObject(new RoomDetail
                 {
                     Role = options.Role,
+                    Extra = options.Extra,
                     Min = options.MinPlayer,
                     Max = options.MaxPlayer,
                     Type = Models.Consts.Command.ActionAutoMatch,
