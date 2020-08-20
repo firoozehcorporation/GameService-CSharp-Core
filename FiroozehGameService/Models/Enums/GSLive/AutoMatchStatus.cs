@@ -22,10 +22,11 @@
 namespace FiroozehGameService.Models.Enums.GSLive
 {
     /// <summary>
-    /// Represents AutoMatchStatus Of GSLive System
+    ///     Represents AutoMatchStatus Of GSLive System
     /// </summary>
     public enum AutoMatchStatus
     {
-        OnWaiting , OnUserJoined
+        OnWaiting,
+        OnUserJoined
     }
 }

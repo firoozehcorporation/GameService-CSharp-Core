@@ -90,9 +90,9 @@ namespace FiroozehGameService.Core
                     });
                     return;
                 }
-                
+
                 var client = new WebClient();
-                _webClients.Add(info.AssetInfoData.Name,client);
+                _webClients.Add(info.AssetInfoData.Name, client);
                 // Set Events
                 client.DownloadProgressChanged += (s, progress) =>
                 {
@@ -109,9 +109,11 @@ namespace FiroozehGameService.Core
                 {
                     if (args.Cancelled)
                     {
-                        DownloadEventHandlers.DownloadCancelled?.Invoke(this,new DownloadCancelledArgs {AssetInfo = info});
+                        DownloadEventHandlers.DownloadCancelled?.Invoke(this,
+                            new DownloadCancelledArgs {AssetInfo = info});
                         return;
                     }
+
                     client.Dispose();
                     _webClients.Remove(info.AssetInfoData.Name);
                     DownloadEventHandlers.DownloadCompleted?.Invoke(this, new DownloadCompleteArgs
@@ -148,9 +150,9 @@ namespace FiroozehGameService.Core
                     });
                     return;
                 }
-                
+
                 var client = new WebClient();
-                _webClients.Add(info.AssetInfoData.Name,client);
+                _webClients.Add(info.AssetInfoData.Name, client);
                 // Set Events
                 client.DownloadProgressChanged += (s, progress) =>
                 {
@@ -162,16 +164,17 @@ namespace FiroozehGameService.Core
                         ProgressPercentage = progress.ProgressPercentage
                     });
                 };
-                
+
                 client.DownloadFileCompleted += (s, e) =>
                 {
                     if (e.Cancelled)
                     {
                         RemoveCancelledFile(completeAddress);
-                        DownloadEventHandlers.DownloadCancelled?.Invoke(this,new DownloadCancelledArgs {AssetInfo = info , SavePath = path});
+                        DownloadEventHandlers.DownloadCancelled?.Invoke(this,
+                            new DownloadCancelledArgs {AssetInfo = info, SavePath = path});
                         return;
                     }
-                    
+
                     client.Dispose();
                     _webClients.Remove(info.AssetInfoData.Name);
                     DownloadEventHandlers.DownloadCompleted?.Invoke(this, new DownloadCompleteArgs
@@ -179,7 +182,7 @@ namespace FiroozehGameService.Core
                         DownloadedAssetPath = completeAddress
                     });
                 };
-                
+
                 client.DownloadFileAsync(new Uri(info.AssetInfoData.Link), completeAddress);
             }
             catch (Exception e)
@@ -202,34 +205,38 @@ namespace FiroozehGameService.Core
                 client.Value?.CancelAsync();
                 client.Value?.Dispose();
             }
+
             _webClients.Clear();
         }
 
         internal void CancelDownload(string tag)
         {
-            if(!_webClients.ContainsKey(tag))
+            if (!_webClients.ContainsKey(tag))
                 throw new GameServiceException("The Tag \"" + tag + "\" is Not Exist In Download Queue!");
-           
+
             _webClients[tag]?.CancelAsync();
             _webClients[tag]?.Dispose();
             _webClients.Remove(tag);
         }
-        
-        
+
+
         internal void CancelDownload(AssetInfo info)
         {
             var tag = info.AssetInfoData.Name;
-            if(!_webClients.ContainsKey(tag))
+            if (!_webClients.ContainsKey(tag))
                 throw new GameServiceException("The Tag \"" + tag + "\" is Not Exist In Download Queue!");
-           
+
             _webClients[tag]?.CancelAsync();
             _webClients[tag]?.Dispose();
             _webClients.Remove(tag);
         }
 
 
-        private static void RemoveCancelledFile(string fullPath) => File.Delete(fullPath);
-        
+        private static void RemoveCancelledFile(string fullPath)
+        {
+            File.Delete(fullPath);
+        }
+
 
         #region DownloadRegion
 

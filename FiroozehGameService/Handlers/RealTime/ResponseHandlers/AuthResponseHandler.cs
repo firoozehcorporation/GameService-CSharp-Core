@@ -7,15 +7,15 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 {
     internal class AuthResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand 
+        public static int ActionCommand
             => RT.ActionAuth;
 
-        protected override void HandleResponse(Packet packet,GProtocolSendType type)
+        protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
             var memberId = Encoding.UTF8.GetString(packet.Payload);
-            
-            CoreEventHandlers.OnMemberId?.Invoke(this,memberId);
-            CoreEventHandlers.Authorized?.Invoke(this,packet.Hash);
+
+            CoreEventHandlers.OnMemberId?.Invoke(this, memberId);
+            CoreEventHandlers.Authorized?.Invoke(this, packet.Hash);
         }
     }
 }

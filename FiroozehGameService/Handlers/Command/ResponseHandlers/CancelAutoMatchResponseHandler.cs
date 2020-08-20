@@ -5,7 +5,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 {
     internal class CancelAutoMatchResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand 
+        public static int ActionCommand
             => Models.Consts.Command.ActionCancelAutoMatch;
 
         protected override void HandleResponse(Packet packet)

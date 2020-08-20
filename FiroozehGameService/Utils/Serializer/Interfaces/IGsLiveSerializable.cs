@@ -24,20 +24,20 @@ using FiroozehGameService.Utils.Serializer.Helpers;
 namespace FiroozehGameService.Utils.Serializer.Interfaces
 {
     /// <summary>
-    ///  Represents IGsLiveSerializable In Game Service Binary Serializer
-    ///  You Can Make Your Class Observable Serializable With Implement this Class 
+    ///     Represents IGsLiveSerializable In Game Service Binary Serializer
+    ///     You Can Make Your Class Observable Serializable With Implement this Class
     /// </summary>
     public interface IGsLiveSerializable
     {
         /// <summary>
-        /// the OnGsLiveRead Function You Can Read Your Data form readStream
+        ///     the OnGsLiveRead Function You Can Read Your Data form readStream
         /// </summary>
         /// <param name="readStream"></param>
         void OnGsLiveRead(GsReadStream readStream);
 
-        
+
         /// <summary>
-        /// the OnGsLiveWrite Function You Can Write Your Data To writeStream
+        ///     the OnGsLiveWrite Function You Can Write Your Data To writeStream
         /// </summary>
         /// <param name="writeStream"></param>
         void OnGsLiveWrite(GsWriteStream writeStream);

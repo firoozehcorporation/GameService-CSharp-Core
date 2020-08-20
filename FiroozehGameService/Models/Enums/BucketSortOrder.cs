@@ -21,15 +21,15 @@ using System;
 */
 
 
-
 namespace FiroozehGameService.Models.Enums
 {
     /// <summary>
-    /// Represents BucketSortOrder Model In Game Service Basic API
+    ///     Represents BucketSortOrder Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public enum BucketSortOrder
     {
-        Ascending = 1 , Descending = -1
+        Ascending = 1,
+        Descending = -1
     }
 }

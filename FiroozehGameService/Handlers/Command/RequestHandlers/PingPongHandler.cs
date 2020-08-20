@@ -1,4 +1,5 @@
-﻿using FiroozehGameService.Models.GSLive.Command;
+﻿using System;
+using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
@@ -7,21 +8,22 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         public static string Signature
             => "PING_PONG";
 
-        public PingPongHandler(){}
-
         private static Packet DoAction()
-            => new Packet(
+        {
+            return new Packet(
                 CommandHandler.PlayerHash,
                 Models.Consts.Command.ActionPing);
+        }
 
         protected override bool CheckAction(object payload)
-           => true;
+        {
+            return true;
+        }
 
         protected override Packet DoAction(object payload)
         {
-            if (!CheckAction(payload)) throw new System.ArgumentException();
+            if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction();
         }
     }
-
 }

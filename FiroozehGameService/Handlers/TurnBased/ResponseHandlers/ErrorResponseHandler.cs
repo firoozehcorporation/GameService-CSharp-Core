@@ -4,14 +4,14 @@ using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 {
-    internal class ErrorResponseHandler :BaseResponseHandler
+    internal class ErrorResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand 
+        public static int ActionCommand
             => TB.Errors;
 
         protected override void HandleResponse(Packet packet)
         {
-            CoreEventHandlers.Error?.Invoke(this,new ErrorEvent
+            CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {
                 Type = GSLiveType.TurnBased,
                 Error = packet.Message

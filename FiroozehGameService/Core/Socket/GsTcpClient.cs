@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Security;
 using System.Net.Sockets;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
@@ -17,7 +16,9 @@ namespace FiroozehGameService.Core.Socket
     internal class GsTcpClient : GsSocketClient
     {
         private const short TimeOut = 5000;
+
         private TcpClient _client;
+
         //private SslStream _clientStream;
         private NetworkStream _clientStream;
 
@@ -38,8 +39,8 @@ namespace FiroozehGameService.Core.Socket
 
                 LogUtil.Log(this, "GsTcpClient -> Init Started with -> " + CommandInfo + " or " + Area);
                 _client = new TcpClientWithTimeout(ip, port, TimeOut).Connect();
-                LogUtil.Log(this,"GsTcpClient -> Connected,Waiting for Handshakes...");
-               
+                LogUtil.Log(this, "GsTcpClient -> Connected,Waiting for Handshakes...");
+
                 /*var certificate = new X509Certificate2(Encoding.Default.GetBytes(cert));
                 X509Certificate[] x509Certificates = {certificate};
                 var certsCollection = new X509CertificateCollection(x509Certificates);
@@ -59,7 +60,7 @@ namespace FiroozehGameService.Core.Socket
                     return false;
                 }
                 */
-                
+
                 _clientStream = _client.GetStream();
                 OperationCancellationToken = new CancellationTokenSource();
                 IsAvailable = true;
@@ -73,12 +74,13 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-        private static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        private static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain,
+            SslPolicyErrors sslPolicyErrors)
         {
             if (sslPolicyErrors == SslPolicyErrors.None)
                 return true;
 
-            LogUtil.LogError(null,"Certificate error: " + sslPolicyErrors);
+            LogUtil.LogError(null, "Certificate error: " + sslPolicyErrors);
             return false;
         }
 

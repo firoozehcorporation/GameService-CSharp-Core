@@ -24,23 +24,23 @@ namespace FiroozehGameService.Utils.Serializer.Models
     internal enum Types : byte
     {
         Null = 0x0,
-        
-        Bool ,
-        Byte ,
-        Char ,
+
+        Bool,
+        Byte,
+        Char,
         Double,
-        Float ,
-        Int ,
-        Long ,
-        Short ,
-        
-        Uint ,
+        Float,
+        Int,
+        Long,
+        Short,
+
+        Uint,
         Ushort,
         Ulong,
-        
-        
-        String ,
-        
+
+
+        String,
+
         ByteArray,
         CharArray,
         DoubleArray,
@@ -48,8 +48,8 @@ namespace FiroozehGameService.Utils.Serializer.Models
         IntArray,
         LongArray,
         StringArray,
-        
-        
+
+
         CustomObject
     }
 }

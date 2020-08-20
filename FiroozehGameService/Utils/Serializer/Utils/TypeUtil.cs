@@ -30,17 +30,16 @@ using FiroozehGameService.Utils.Serializer.Helpers;
 namespace FiroozehGameService.Utils.Serializer.Utils
 {
     /// <summary>
-    ///   Represents TypeUtil In Game Service Binary Serializer
+    ///     Represents TypeUtil In Game Service Binary Serializer
     /// </summary>
     internal static class TypeUtil
     {
-        
-        private static readonly Dictionary<int,BaseSerializer> ObjectsCache = new Dictionary<int, BaseSerializer>();
-        private static readonly Dictionary<int,Type> HashToType = new Dictionary<int, Type>();
-        private static readonly Dictionary<Type,int> TypeToHash = new Dictionary<Type,int>();
+        private static readonly Dictionary<int, BaseSerializer> ObjectsCache = new Dictionary<int, BaseSerializer>();
+        private static readonly Dictionary<int, Type> HashToType = new Dictionary<int, Type>();
+        private static readonly Dictionary<Type, int> TypeToHash = new Dictionary<Type, int>();
 
         /// <summary>
-        /// Register New Type You Want To Working With Game Service Serializer
+        ///     Register New Type You Want To Working With Game Service Serializer
         /// </summary>
         /// <param name="serializer"> Your Object Serializer</param>
         /// <typeparam name="T"> Your Object Base Type</typeparam>
@@ -48,79 +47,79 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         internal static void RegisterNewType<T>(ObjectSerializer<T> serializer)
         {
             var type = typeof(T);
-            if(TypeToHash.ContainsKey(type))
+            if (TypeToHash.ContainsKey(type))
                 throw new GameServiceException("The Type " + type + " is Exist!");
 
             var typeHash = HashUtil.GetHashFromType(type);
-            if(HashToType.ContainsKey(typeHash))
+            if (HashToType.ContainsKey(typeHash))
                 throw new GameServiceException("The Type " + type + " Hash is Exist!");
-            
-            TypeToHash.Add(type,typeHash);
-            HashToType.Add(typeHash,type);
-            ObjectsCache.Add(typeHash,serializer);
+
+            TypeToHash.Add(type, typeHash);
+            HashToType.Add(typeHash, type);
+            ObjectsCache.Add(typeHash, serializer);
         }
 
-        
+
         /// <summary>
-        /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-        /// Internal Get Hash And WriteStream of Registered Object
+        ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+        ///     Internal Get Hash And WriteStream of Registered Object
         /// </summary>
         /// <param name="obj"> Your Object You Want To Get Stream</param>
         /// <returns></returns>
         /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
-        internal static Tuple<int,GsWriteStream> GetWriteStream(object obj)
+        internal static Tuple<int, GsWriteStream> GetWriteStream(object obj)
         {
             var type = obj.GetType();
-            
-            if(!TypeToHash.ContainsKey(type))
+
+            if (!TypeToHash.ContainsKey(type))
                 throw new GameServiceException("The Type " + type + " is Not Registered as New Type!");
-            
+
             var serializer = ObjectsCache[TypeToHash[type]];
-            
-            if(!serializer.CanSerializeModel(obj))
+
+            if (!serializer.CanSerializeModel(obj))
                 throw new GameServiceException("The Type " + type + " Not Serializable!");
 
-            
+
             var writeStream = new GsWriteStream();
-            serializer.SerializeObject(obj,writeStream);
-            return Tuple.Create(TypeToHash[type],writeStream);
+            serializer.SerializeObject(obj, writeStream);
+            return Tuple.Create(TypeToHash[type], writeStream);
         }
 
-        
+
         /// <summary>
-        /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-        /// Get Object From Hash and GsReadStream
+        ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+        ///     Get Object From Hash and GsReadStream
         /// </summary>
         /// <param name="hash">the Object Hash</param>
         /// <param name="readStream">The Read Stream To Read Object</param>
         /// <returns></returns>
         /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
-        internal static object GetFinalObject(int hash,GsReadStream readStream)
+        internal static object GetFinalObject(int hash, GsReadStream readStream)
         {
-            if(!HashToType.ContainsKey(hash))
+            if (!HashToType.ContainsKey(hash))
                 throw new GameServiceException("Type With Hash " + hash + " is Not Registered!");
-            
+
             var serializer = ObjectsCache[hash];
-            if(!serializer.CanSerializeModel(HashToType[hash]))
+            if (!serializer.CanSerializeModel(HashToType[hash]))
                 throw new GameServiceException("Type With Hash " + hash + " is Not Serializable!");
-            
+
             return serializer.DeserializeObject(readStream);
         }
 
 
         /// <summary>
-        /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-        /// Get WriteStream For object params
+        ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+        ///     Get WriteStream For object params
         /// </summary>
         /// <param name="data">the Objects</param>
         /// <returns></returns>
         /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
         internal static GsWriteStream GetWriteStreamFromParams(params object[] data)
         {
-            if(data == null)
+            if (data == null)
                 throw new GameServiceException("Params Cant Be Null");
-            
-            if(data.Length == 0)
+
+            if (data.Length == 0)
                 throw new GameServiceException("Params Cant Be Empty");
 
             var writeStream = new GsWriteStream();
@@ -132,8 +131,8 @@ namespace FiroozehGameService.Utils.Serializer.Utils
 
 
         /// <summary>
-        /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-        /// Get String Object Types
+        ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+        ///     Get String Object Types
         /// </summary>
         /// <param name="parameters">the Objects</param>
         /// <returns></returns>
@@ -143,13 +142,14 @@ namespace FiroozehGameService.Utils.Serializer.Utils
             if (parameters == null)
                 return typeString + ")";
 
-            typeString = parameters.Aggregate(typeString, (current, parameter) => current + (parameter.GetType() + ","));
+            typeString =
+                parameters.Aggregate(typeString, (current, parameter) => current + (parameter.GetType() + ","));
             return typeString.Remove(typeString.Length - 1) + ")";
         }
 
         /// <summary>
-        /// NOTE : Dont Use This Function , This Function Called By GsLiveRealtime SDK.
-        /// Dispose The TypeUtil
+        ///     NOTE : Dont Use This Function , This Function Called By GsLiveRealtime SDK.
+        ///     Dispose The TypeUtil
         /// </summary>
         internal static void Dispose()
         {
@@ -157,11 +157,10 @@ namespace FiroozehGameService.Utils.Serializer.Utils
             HashToType?.Clear();
             TypeToHash?.Clear();
         }
-        
+
         internal static bool HaveType(object obj)
         {
             return TypeToHash.ContainsKey(obj.GetType());
         }
-        
     }
 }

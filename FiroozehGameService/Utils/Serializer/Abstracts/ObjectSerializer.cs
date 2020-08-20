@@ -26,35 +26,42 @@ using FiroozehGameService.Utils.Serializer.Helpers;
 namespace FiroozehGameService.Utils.Serializer.Abstracts
 {
     /// <summary>
-    ///   Represents ObjectSerializer In Game Service Binary Serializer
-    ///   You Can Make Your Object Serializable With Implement this Class 
+    ///     Represents ObjectSerializer In Game Service Binary Serializer
+    ///     You Can Make Your Object Serializable With Implement this Class
     /// </summary>
     /// <typeparam name="T"> The Type of Object You Want To Serializable</typeparam>
     public abstract class ObjectSerializer<T> : BaseSerializer
     {
-        
         internal override bool CanSerializeModel(object obj)
-            => obj.GetType() == typeof(T);
-        
+        {
+            return obj.GetType() == typeof(T);
+        }
+
         internal override bool CanSerializeModel(Type type)
-            => type == typeof(T);
-        
-        internal override void SerializeObject(object obj,GsWriteStream writeStream) 
-            => WriteObject((T) obj,writeStream);
-        
+        {
+            return type == typeof(T);
+        }
+
+        internal override void SerializeObject(object obj, GsWriteStream writeStream)
+        {
+            WriteObject((T) obj, writeStream);
+        }
+
         internal override object DeserializeObject(GsReadStream readStream)
-            => ReadObject(readStream);
+        {
+            return ReadObject(readStream);
+        }
 
 
         /// <summary>
-        /// the WriteObject Function You Can Write Every things Of T To writeStream
+        ///     the WriteObject Function You Can Write Every things Of T To writeStream
         /// </summary>
         /// <param name="obj">Your Serializable Object</param>
         /// <param name="writeStream">The Write Stream for Writes Data</param>
-        protected abstract void WriteObject(T obj,GsWriteStream writeStream);
+        protected abstract void WriteObject(T obj, GsWriteStream writeStream);
 
         /// <summary>
-        /// the ReadObject Function You Can Read Every things Writes
+        ///     the ReadObject Function You Can Read Every things Writes
         /// </summary>
         /// <param name="readStream">he Write Stream for Reads Data</param>
         /// <returns></returns>

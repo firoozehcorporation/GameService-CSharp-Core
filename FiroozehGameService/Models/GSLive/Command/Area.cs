@@ -6,11 +6,11 @@ namespace FiroozehGameService.Models.GSLive.Command
     [Serializable]
     internal class Area
     {
-        [JsonProperty("0")] public string Ip;
-        [JsonProperty("1")] public string Protocol;
-        [JsonProperty("2")] public int Port;
-        [JsonProperty("3")] public string ConnectToken;
         [JsonProperty("4")] public string Cert;
+        [JsonProperty("3")] public string ConnectToken;
+        [JsonProperty("0")] public string Ip;
+        [JsonProperty("2")] public int Port;
+        [JsonProperty("1")] public string Protocol;
 
         public override string ToString()
         {

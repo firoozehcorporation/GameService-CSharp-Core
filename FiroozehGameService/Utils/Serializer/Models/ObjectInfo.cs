@@ -24,11 +24,11 @@ namespace FiroozehGameService.Utils.Serializer.Models
 {
     internal class ObjectInfo
     {
-        internal readonly object Src;
         internal readonly object Extra;
+        internal readonly object Src;
         internal readonly Types Type;
 
-        public ObjectInfo(object src,Types type, object extra = null)
+        public ObjectInfo(object src, Types type, object extra = null)
         {
             Type = type;
             Extra = extra;

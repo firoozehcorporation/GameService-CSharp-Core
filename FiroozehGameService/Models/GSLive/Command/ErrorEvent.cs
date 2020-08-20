@@ -25,18 +25,18 @@ using FiroozehGameService.Models.Enums.GSLive;
 namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
-    /// Represents ErrorEvent When Error Happened in GSLive
+    ///     Represents ErrorEvent When Error Happened in GSLive
     /// </summary>
     public class ErrorEvent
     {
         /// <summary>
-        /// Gets the Error Happened Type
+        ///     Gets the Error Happened Type
         /// </summary>
         /// <value>Error Happened Type</value>
         public GSLiveType Type { internal set; get; }
-        
+
         /// <summary>
-        /// Gets the Error Text
+        ///     Gets the Error Text
         /// </summary>
         /// <value>the Error Text</value>
         public string Error { internal set; get; }

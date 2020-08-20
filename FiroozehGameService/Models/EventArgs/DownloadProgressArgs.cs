@@ -15,8 +15,6 @@
 // </copyright>
 
 
-
-
 /**
 * @author Alireza Ghodrati
 */
@@ -24,30 +22,30 @@
 namespace FiroozehGameService.Models.EventArgs
 {
     /// <summary>
-    /// Represents DownloadProgressArgs
+    ///     Represents DownloadProgressArgs
     /// </summary>
     public class DownloadProgressArgs : System.EventArgs
     {
         /// <summary>
-        /// Gets the File Name.
+        ///     Gets the File Name.
         /// </summary>
         /// <value>the File Name</value>
         public string FileTag { internal set; get; }
 
         /// <summary>
-        /// Gets Downloaded File BytesReceived
+        ///     Gets Downloaded File BytesReceived
         /// </summary>
         /// <value>Downloaded File BytesReceived</value>
         public long BytesReceived { internal set; get; }
-        
+
         /// <summary>
-        /// Gets Download File TotalBytesToReceive
+        ///     Gets Download File TotalBytesToReceive
         /// </summary>
         /// <value>Download File TotalBytesToReceive</value>
         public long TotalBytesToReceive { internal set; get; }
-        
+
         /// <summary>
-        /// Gets Downloaded File ProgressPercentage
+        ///     Gets Downloaded File ProgressPercentage
         /// </summary>
         /// <value>Downloaded File ProgressPercentage</value>
         public int ProgressPercentage { internal set; get; }

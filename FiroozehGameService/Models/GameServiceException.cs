@@ -26,26 +26,23 @@ using System;
 namespace FiroozehGameService.Models
 {
     /// <summary>
-    /// Represents Game Service Exception
+    ///     Represents Game Service Exception
     /// </summary>
-    public class GameServiceException : Exception {
-
-
+    public class GameServiceException : Exception
+    {
         public GameServiceException()
             : base("A GameService Runtime error occurred!")
         {
-        
         }
+
         public GameServiceException(string msg)
             : base(msg)
         {
-        
-        }
-        public GameServiceException(string msg,Exception inner):
-            base(msg,inner)
-        {
-            
         }
 
+        public GameServiceException(string msg, Exception inner) :
+            base(msg, inner)
+        {
+        }
     }
 }

@@ -21,19 +21,19 @@ using FiroozehGameService.Models.Enums.GSLive;
 namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
-    /// Represents AutoMatchEvent When AutoMatch Update Status in GSLive
+    ///     Represents AutoMatchEvent When AutoMatch Update Status in GSLive
     /// </summary>
     [Serializable]
     public class AutoMatchEvent
     {
         /// <summary>
-        /// Gets the AutoMatchStatus
+        ///     Gets the AutoMatchStatus
         /// </summary>
         /// <value>the AutoMatchStatus</value>
         public AutoMatchStatus Status { get; internal set; }
-        
+
         /// <summary>
-        /// Gets the AutoMatch Players Queue
+        ///     Gets the AutoMatch Players Queue
         /// </summary>
         /// <value>the AutoMatch Players Queue</value>
         public List<Member> Players { get; internal set; }

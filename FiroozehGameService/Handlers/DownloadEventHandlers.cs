@@ -24,29 +24,29 @@ using FiroozehGameService.Models.EventArgs;
 namespace FiroozehGameService.Handlers
 {
     /// <summary>
-    /// Represents DownloadEventHandlers
+    ///     Represents DownloadEventHandlers
     /// </summary>
     public class DownloadEventHandlers
     {
         /// <summary>
-        /// Calls When New Download Progress Event Received
+        ///     Calls When New Download Progress Event Received
         /// </summary>
         public static EventHandler<DownloadProgressArgs> DownloadProgress;
-        
+
         /// <summary>
-        /// Calls When Download Completed
+        ///     Calls When Download Completed
         /// </summary>
         public static EventHandler<DownloadCompleteArgs> DownloadCompleted;
 
 
         /// <summary>
-        /// Calls When Download Cancelled
+        ///     Calls When Download Cancelled
         /// </summary>
         public static EventHandler<DownloadCancelledArgs> DownloadCancelled;
-        
-        
+
+
         /// <summary>
-        /// Calls When An Error Occured 
+        ///     Calls When An Error Occured
         /// </summary>
         public static EventHandler<DownloadErrorArgs> DownloadError;
     }

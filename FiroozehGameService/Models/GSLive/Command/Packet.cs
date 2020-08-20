@@ -6,11 +6,11 @@ namespace FiroozehGameService.Models.GSLive.Command
     [Serializable]
     internal class Packet : APacket
     {
-        [JsonProperty("0")] public string Token;
         [JsonProperty("1")] public int Action;
         [JsonProperty("2")] public string Data;
         [JsonProperty("3")] public string Message;
-        
+        [JsonProperty("0")] public string Token;
+
         public Packet(string token, int action, string data = null, string message = null)
         {
             Token = token;
@@ -31,7 +31,7 @@ namespace FiroozehGameService.Models.GSLive.Command
 
         internal override byte[] Serialize()
         {
-            return ConvertToBytes(JsonConvert.SerializeObject(this,new JsonSerializerSettings
+            return ConvertToBytes(JsonConvert.SerializeObject(this, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             }));

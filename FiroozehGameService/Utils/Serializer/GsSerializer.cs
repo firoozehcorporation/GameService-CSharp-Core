@@ -35,68 +35,63 @@ using FiroozehGameService.Utils.Serializer.Utils;
 namespace FiroozehGameService.Utils.Serializer
 {
     /// <summary>
-    /// Represents GsSerializer In Game Service Binary Serializer
+    ///     Represents GsSerializer In Game Service Binary Serializer
     /// </summary>
     public static class GsSerializer
     {
-
         /// <summary>
-        /// Calls When SomeOne Send New Event In Current Room
-        /// This Event Handler Called By Following Functions :
-        /// <see cref="GSLiveRT.SendEvent"/>
-        ///  NOTE : Do not use this EventHandler if you are using Real Time Utility
-        ///            , as critical errors may occur.
+        ///     Calls When SomeOne Send New Event In Current Room
+        ///     This Event Handler Called By Following Functions :
+        ///     <see cref="GSLiveRT.SendEvent" />
+        ///     NOTE : Do not use this EventHandler if you are using Real Time Utility
+        ///     , as critical errors may occur.
         /// </summary>
         public static EventHandler<EventData> OnNewEventHandler;
 
 
         /// <summary>
-        /// Calls When Server Send SnapShot In Current Room
-        /// This Event Handler Called By Following Functions :
-        /// <see cref="GSLiveRT.SendEvent"/>
-        ///  NOTE : Do not use this EventHandler if you are using Real Time Utility
-        ///            , as critical errors may occur.
+        ///     Calls When Server Send SnapShot In Current Room
+        ///     This Event Handler Called By Following Functions :
+        ///     <see cref="GSLiveRT.SendEvent" />
+        ///     NOTE : Do not use this EventHandler if you are using Real Time Utility
+        ///     , as critical errors may occur.
         /// </summary>
         public static EventHandler<List<SnapShotData>> OnNewSnapShotReceived;
-        
-        
-        
+
+
         /// <summary>
-        /// Calls When Current Player Left the Current Room
-        /// This Event Handler Called By Following Function :
-        /// <see cref="GSLiveRT.LeaveRoom"/>
+        ///     Calls When Current Player Left the Current Room
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveRT.LeaveRoom" />
         /// </summary>
         public static EventHandler CurrentPlayerLeftRoom;
-        
-        
-        
+
+
         /// <summary>
-        /// Calls When Current Player Left the Current Room
-        /// This Event Handler Called By Following Function :
-        /// <see cref="GSLiveRT.JoinRoom"/>
+        ///     Calls When Current Player Left the Current Room
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveRT.JoinRoom" />
         /// </summary>
         public static EventHandler CurrentPlayerJoinRoom;
-        
 
 
         /// <summary>
-        /// Represents TypeRegistry In Gs Serializer Class
+        ///     Represents TypeRegistry In Gs Serializer Class
         /// </summary>
         public static class TypeRegistry
         {
-            
             /// <summary>
-            /// NOTE : Dont Use This Function , This Function Called By GsLiveRealtime SDK.
-            /// Dispose The TypeUtil
+            ///     NOTE : Dont Use This Function , This Function Called By GsLiveRealtime SDK.
+            ///     Dispose The TypeUtil
             /// </summary>
             public static void Dispose()
             {
                 TypeUtil.Dispose();
             }
 
-            
+
             /// <summary>
-            /// Register New Type You Want To Working With Game Service Serializer
+            ///     Register New Type You Want To Working With Game Service Serializer
             /// </summary>
             /// <param name="serializer"> Your Object Serializer</param>
             /// <typeparam name="T"> Your Object Base Type</typeparam>
@@ -106,16 +101,16 @@ namespace FiroozehGameService.Utils.Serializer
                 TypeUtil.RegisterNewType(serializer);
             }
         }
-        
+
         /// <summary>
-        /// NOTE : Dont Use This Class Functions , Functions Calls By GsLiveRealtime SDK.
-        /// Represents Function In Gs Serializer Class
+        ///     NOTE : Dont Use This Class Functions , Functions Calls By GsLiveRealtime SDK.
+        ///     Represents Function In Gs Serializer Class
         /// </summary>
         public static class Function
         {
             /// <summary>
-            /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-            /// Get Buffer For object params
+            ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+            ///     Get Buffer For object params
             /// </summary>
             /// <param name="data">the Objects</param>
             /// <returns></returns>
@@ -134,7 +129,7 @@ namespace FiroozehGameService.Utils.Serializer
             }
 
             /// <summary>
-            /// Get Parameters From Buffer
+            ///     Get Parameters From Buffer
             /// </summary>
             /// <param name="buffer">The Parameter Buffer</param>
             /// <returns>the Parameters</returns>
@@ -149,8 +144,8 @@ namespace FiroozehGameService.Utils.Serializer
             }
 
             /// <summary>
-            /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-            /// Get String Object Types
+            ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+            ///     Get String Object Types
             /// </summary>
             /// <param name="parameters">the Objects</param>
             /// <returns></returns>
@@ -159,79 +154,78 @@ namespace FiroozehGameService.Utils.Serializer
                 return TypeUtil.GetParameterTypes(parameters);
             }
         }
-        
-        
+
+
         /// <summary>
-        /// NOTE : Dont Use This Class Functions , Functions Calls By GsLiveRealtime SDK.
-        /// Represents Object In Gs Serializer Class
+        ///     NOTE : Dont Use This Class Functions , Functions Calls By GsLiveRealtime SDK.
+        ///     Represents Object In Gs Serializer Class
         /// </summary>
         public static class Object
         {
             /// <summary>
-            /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-            /// Send An Object Buffer Data
+            ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+            ///     Send An Object Buffer Data
             /// </summary>
             /// <param name="caller"> The caller Data</param>
             /// <param name="buffer"> The Buffer Data</param>
             /// <returns></returns>
             /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
-            public static void SendObject(byte[] caller , byte[] buffer)
+            public static void SendObject(byte[] caller, byte[] buffer)
             {
-                if(caller == null || buffer == null)
+                if (caller == null || buffer == null)
                     throw new GameServiceException("GsSerializer Err -> Caller or buffer Cant Be Null");
-            
-                GSLiveRT.SendEvent(caller,buffer,GProtocolSendType.Reliable);
+
+                GSLiveRT.SendEvent(caller, buffer, GProtocolSendType.Reliable);
             }
-            
-            
-            
+
+
             /// <summary>
-            /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-            /// Send An Object Buffer Data
+            ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+            ///     Send An Object Buffer Data
             /// </summary>
             /// <param name="caller"> The caller Data</param>
             /// <param name="buffer"> The Buffer Data</param>
             /// <returns></returns>
             /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
-            public static void SendObserver(byte[] caller , byte[] buffer)
+            public static void SendObserver(byte[] caller, byte[] buffer)
             {
-                if(buffer == null)
+                if (buffer == null)
                     throw new GameServiceException("GsSerializer Err -> buffer Cant Be Null");
-                GSLiveRT.SendObserver(caller,buffer);
+                GSLiveRT.SendObserver(caller, buffer);
             }
-            
-            
+
+
             /// <summary>
-            /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-            /// Get Buffer From IGsLiveSerializable
+            ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+            ///     Get Buffer From IGsLiveSerializable
             /// </summary>
             /// <param name="serializable"> The serializable Object</param>
             /// <returns></returns>
             /// <exception cref="GameServiceException">Throw If invalid Action Happened</exception>
             public static byte[] GetBuffer(IGsLiveSerializable serializable)
             {
-                if(serializable == null)
+                if (serializable == null)
                     throw new GameServiceException("GsSerializer Err -> serializable cant be Null");
-            
+
                 var writeStream = new GsWriteStream();
                 serializable.OnGsLiveWrite(writeStream);
                 return SerializerUtil.Serialize(writeStream);
             }
 
             /// <summary>
-            /// NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
-            /// Update a Serializable Object With Buffer
+            ///     NOTE : Dont Use This Function, This Function Called By GsLiveRealtime SDK.
+            ///     Update a Serializable Object With Buffer
             /// </summary>
             /// <param name="serializable">Serializable Object</param>
             /// <param name="buffer">the Update Buffer</param>
-            public static void CallReadStream(IGsLiveSerializable serializable,byte[] buffer)
+            public static void CallReadStream(IGsLiveSerializable serializable, byte[] buffer)
             {
                 serializable?.OnGsLiveRead(GetReadStream(buffer));
             }
 
 
             /// <summary>
-            /// Get Current Player MemberId 
+            ///     Get Current Player MemberId
             /// </summary>
             /// <returns></returns>
             public static string GetCurrentPlayerMemberId()
@@ -245,11 +239,11 @@ namespace FiroozehGameService.Utils.Serializer
                 return SerializerUtil.GetSnapShotsFromBuffer(buffer);
             }
 
-            
+
             internal static Tuple<string, Queue<byte[]>> GetObserver(byte[] buffer)
             {
                 var (ownerId, bufferData) = SerializerUtil.GetObserver(buffer);
-                return Tuple.Create(ownerId,GetQueueData(bufferData));
+                return Tuple.Create(ownerId, GetQueueData(bufferData));
             }
 
 
@@ -257,8 +251,8 @@ namespace FiroozehGameService.Utils.Serializer
             {
                 return SerializerUtil.GetQueueData(buffer);
             }
-            
-            internal static Tuple<string,byte[]> GetSendQueue(byte[] buffer)
+
+            internal static Tuple<string, byte[]> GetSendQueue(byte[] buffer)
             {
                 return SerializerUtil.GetObserver(buffer);
             }
@@ -267,7 +261,7 @@ namespace FiroozehGameService.Utils.Serializer
             {
                 return SerializerUtil.GetSendQueueBufferSize(data);
             }
-            
+
             internal static byte[] GetSendQueueBuffer(Queue<byte[]> queue)
             {
                 return SerializerUtil.GetSendQueueBuffer(queue);
@@ -276,13 +270,11 @@ namespace FiroozehGameService.Utils.Serializer
 
             private static GsReadStream GetReadStream(byte[] buffer)
             {
-                if(buffer == null)
+                if (buffer == null)
                     throw new GameServiceException("GsSerializer Err -> buffer cant be Null");
 
                 return SerializerUtil.Deserialize(buffer);
             }
-            
         }
-        
     }
 }

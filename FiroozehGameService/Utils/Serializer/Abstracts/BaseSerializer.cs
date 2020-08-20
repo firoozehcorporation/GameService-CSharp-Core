@@ -26,18 +26,20 @@ using FiroozehGameService.Utils.Serializer.Helpers;
 namespace FiroozehGameService.Utils.Serializer.Abstracts
 {
     /// <summary>
-    ///  Represents BaseSerializer In Game Service Binary Serializer
+    ///     Represents BaseSerializer In Game Service Binary Serializer
     /// </summary>
     public abstract class BaseSerializer
     {
-        internal BaseSerializer(){}
-        
-        internal abstract void SerializeObject(object obj,GsWriteStream writeStream);
+        internal BaseSerializer()
+        {
+        }
+
+        internal abstract void SerializeObject(object obj, GsWriteStream writeStream);
 
         internal abstract object DeserializeObject(GsReadStream readStream);
 
         internal abstract bool CanSerializeModel(object obj);
-        
+
         internal abstract bool CanSerializeModel(Type type);
     }
 }

@@ -15,8 +15,6 @@
 // </copyright>
 
 
-
-
 /**
 * @author Alireza Ghodrati
 */
@@ -26,19 +24,19 @@ using FiroozehGameService.Models.Internal;
 namespace FiroozehGameService.Models.EventArgs
 {
     /// <summary>
-    /// Represents DownloadProgressArgs
+    ///     Represents DownloadProgressArgs
     /// </summary>
     public class DownloadCancelledArgs : System.EventArgs
     {
         /// <summary>
-        /// Gets the Asset Info
+        ///     Gets the Asset Info
         /// </summary>
         /// <value>the Asset Info</value>
         public AssetInfo AssetInfo { internal set; get; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Save Path
+        ///     Gets the Save Path
         /// </summary>
         /// <value>the Save Path</value>
         public string SavePath { internal set; get; }

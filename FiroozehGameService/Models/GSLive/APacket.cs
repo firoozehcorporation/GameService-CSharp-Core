@@ -6,6 +6,5 @@ namespace FiroozehGameService.Models.GSLive
     [Serializable]
     internal abstract class APacket : PacketBinary
     {
-        
     }
 }

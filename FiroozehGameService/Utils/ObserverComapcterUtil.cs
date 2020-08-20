@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using FiroozehGameService.Models.Consts;
-using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Utils.Serializer;
 
@@ -9,10 +8,9 @@ namespace FiroozehGameService.Utils
 {
     internal static class ObserverCompacterUtil
     {
+        private const short MaxQueueSize = 255;
         private static Queue<byte[]> _sendQueue;
         private static Event _queueWorkerEvent;
-
-        private const short MaxQueueSize = 255;
 
         public static EventHandler<byte[]> SendObserverEventHandler;
 
@@ -38,14 +36,13 @@ namespace FiroozehGameService.Utils
                 && _sendQueue.Count <= MaxQueueSize)
                 _sendQueue?.Enqueue(payload);
             else
-                LogUtil.LogError(null,"Send Queue is Full!");
-            
+                LogUtil.LogError(null, "Send Queue is Full!");
         }
-        
-        
+
+
         private static void EventHandler(object sender, Event e)
         {
-            if(_sendQueue.Count <= 0) return;
+            if (_sendQueue.Count <= 0) return;
             SendObserverEventHandler?.Invoke(null, GsSerializer.Object.GetSendQueueBuffer(_sendQueue));
         }
     }

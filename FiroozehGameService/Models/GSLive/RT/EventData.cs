@@ -35,26 +35,23 @@ namespace FiroozehGameService.Models.GSLive.RT
         /// </summary>
         /// <value>the Event Caller Buffer</value>
         public byte[] Caller;
-        
-        
-        
+
+
         /// <summary>
         ///     Gets the Event Data Buffer
         /// </summary>
         /// <value>the Event Data Buffer</value>
         public byte[] Data;
-        
-        
-        
+
+
         /// <summary>
-        /// the Receiver Id (Current Client Member ID)
+        ///     the Receiver Id (Current Client Member ID)
         /// </summary>
         public string ReceiverId;
-        
-        
-        
+
+
         /// <summary>
-        /// the Sender Id (Owner Member ID)
+        ///     the Sender Id (Owner Member ID)
         /// </summary>
         public string SenderId;
     }

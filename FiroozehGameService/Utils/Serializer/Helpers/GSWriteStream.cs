@@ -25,7 +25,7 @@ using System.Collections.Generic;
 namespace FiroozehGameService.Utils.Serializer.Helpers
 {
     /// <summary>
-    /// Represents GsWriteStream In Game Service Binary Serializer
+    ///     Represents GsWriteStream In Game Service Binary Serializer
     /// </summary>
     public class GsWriteStream
     {
@@ -37,14 +37,14 @@ namespace FiroozehGameService.Utils.Serializer.Helpers
         }
 
         /// <summary>
-        /// Write Your Data In Stream
+        ///     Write Your Data In Stream
         /// </summary>
         /// <param name="data">Your Object Wants To Write in Stream</param>
         public void WriteNext(object data)
-        { 
+        {
             _objects?.Enqueue(data);
         }
-        
+
         internal object GetObject()
         {
             return _objects.Dequeue();
@@ -54,6 +54,5 @@ namespace FiroozehGameService.Utils.Serializer.Helpers
         {
             return _objects.Count > 0;
         }
-
     }
 }

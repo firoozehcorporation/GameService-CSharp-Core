@@ -1,5 +1,4 @@
 using FiroozehGameService.Models.Consts;
-using FiroozehGameService.Models.GSLive.RT;
 
 namespace FiroozehGameService.Utils
 {

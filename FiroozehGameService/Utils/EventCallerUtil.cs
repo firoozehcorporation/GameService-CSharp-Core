@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Timers;
 using FiroozehGameService.Core;
 
 namespace FiroozehGameService.Utils
 {
-    
     public class Event
     {
-        internal Timer Timer;
         private readonly long _interval;
         public EventHandler<Event> EventHandler;
+        internal Timer Timer;
 
         internal Event(long interval)
         {
@@ -24,14 +22,11 @@ namespace FiroozehGameService.Utils
                 Interval = _interval,
                 Enabled = false
             };
-            
+
             Timer.Elapsed += (sender, args) =>
             {
                 GameService.SynchronizationContext?.Send(
-                    delegate
-                    { 
-                        EventHandler?.Invoke(this,this);
-                    }, null);
+                    delegate { EventHandler?.Invoke(this, this); }, null);
             };
             Timer.Start();
         }
@@ -41,10 +36,9 @@ namespace FiroozehGameService.Utils
             Timer?.Stop();
             Timer?.Close();
         }
-        
     }
-    
-    
+
+
     public static class EventCallerUtil
     {
         public static Event CreateNewEvent(long interval)

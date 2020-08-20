@@ -1,8 +1,10 @@
+using System.Threading;
+
 namespace FiroozehGameService.Utils
 {
     internal class ThreadManager
     {
-        private static int mainThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-        internal static bool IsMainThread => System.Threading.Thread.CurrentThread.ManagedThreadId == mainThreadId;
+        private static readonly int mainThreadId = Thread.CurrentThread.ManagedThreadId;
+        internal static bool IsMainThread => Thread.CurrentThread.ManagedThreadId == mainThreadId;
     }
 }

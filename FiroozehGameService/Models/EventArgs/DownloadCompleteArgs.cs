@@ -15,8 +15,6 @@
 // </copyright>
 
 
-
-
 /**
 * @author Alireza Ghodrati
 */
@@ -26,24 +24,23 @@ using FiroozehGameService.Core;
 namespace FiroozehGameService.Models.EventArgs
 {
     /// <summary>
-    /// Represents DownloadCompleteArgs
+    ///     Represents DownloadCompleteArgs
     /// </summary>
     public class DownloadCompleteArgs
     {
         /// <summary>
-        /// Gets the Downloaded Asset As Bytes
-        /// Notes : Only Available When Use this Function <see cref="GameService.DownloadAsset(string)"/>
+        ///     Gets the Downloaded Asset As Bytes
+        ///     Notes : Only Available When Use this Function <see cref="GameService.DownloadAsset(string)" />
         /// </summary>
         /// <value>the Downloaded Assets As Bytes</value>
         public byte[] DownloadedAssetAsBytes { internal set; get; }
-        
-        
+
+
         /// <summary>
-        /// Gets the Downloaded Asset Path 
-        /// Notes : Only Available When Use this Function <see cref="GameService.DownloadAsset(string,string)"/>
+        ///     Gets the Downloaded Asset Path
+        ///     Notes : Only Available When Use this Function <see cref="GameService.DownloadAsset(string,string)" />
         /// </summary>
         /// <value>the Downloaded Asset Path </value>
         public string DownloadedAssetPath { internal set; get; }
-
     }
 }

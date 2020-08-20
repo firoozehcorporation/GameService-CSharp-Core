@@ -15,8 +15,6 @@
 // </copyright>
 
 
-
-
 /**
 * @author Alireza Ghodrati
 */

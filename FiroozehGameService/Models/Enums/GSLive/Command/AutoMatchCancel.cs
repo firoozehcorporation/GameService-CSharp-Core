@@ -22,11 +22,11 @@
 namespace FiroozehGameService.Models.Enums.GSLive.Command
 {
     /// <summary>
-    /// Represents AutoMatchCancel
+    ///     Represents AutoMatchCancel
     /// </summary>
     public enum AutoMatchCancel
     {
-      
-        Success , NotInQueue
+        Success,
+        NotInQueue
     }
 }

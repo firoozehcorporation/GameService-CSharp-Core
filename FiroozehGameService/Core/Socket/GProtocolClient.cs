@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using FiroozehGameService.Core.Socket.PacketHelper;
 using FiroozehGameService.Models.Enums;
-using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
-using FiroozehGameService.Utils;
 using GProtocol.Public;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
@@ -17,8 +13,7 @@ namespace FiroozehGameService.Core.Socket
         internal abstract void Init();
         internal abstract void CreateInstance();
         internal abstract void StopReceiving();
-        internal abstract void Send(Packet packet, GProtocolSendType type,bool canSendBigSize = false);
-        
+        internal abstract void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false);
 
 
         protected void OnDataReceived(SocketDataReceived arg)

@@ -77,18 +77,18 @@ namespace FiroozehGameService.Core.ApiWebRequest
             GsWebRequestMethod method = GsWebRequestMethod.Get, string body = null,
             Dictionary<string, string> headers = null)
         {
-
             CheckDisposed();
-            if(!_observer.Increase())
-                throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest + " Requests Per " + HttpRequestObserver.Reset + " Secs");
-           
+            if (!_observer.Increase())
+                throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest +
+                                               " Requests Per " + HttpRequestObserver.Reset + " Secs");
+
             var httpClient = Init(headers);
             StringContent content = null;
             if (body != null) content = new StringContent(body, Encoding.UTF8, "application/json");
 
-            LogUtil.Log(null,"GSWebRequest -> URL: " + url + ", method: " + method + ", " +
-                             "Body: " + body);
-            
+            LogUtil.Log(null, "GSWebRequest -> URL: " + url + ", method: " + method + ", " +
+                              "Body: " + body);
+
             switch (method)
             {
                 case GsWebRequestMethod.Get:

@@ -5,6 +5,6 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal interface IValidator
     {
-        IEnumerable<string> ValidateDataAndReturn(StringBuilder data); 
+        IEnumerable<string> ValidateDataAndReturn(StringBuilder data);
     }
 }

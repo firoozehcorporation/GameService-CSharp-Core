@@ -1,8 +1,4 @@
-﻿
-
-
-
-using FiroozehGameService.Models.GSLive.Command;
+﻿using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.TurnBased
 {

@@ -23,18 +23,18 @@ using FiroozehGameService.Models.Enums.GSLive;
 namespace FiroozehGameService.Models.GSLive.Command
 {
     /// <summary>
-    /// Represents JoinEvent
+    ///     Represents JoinEvent
     /// </summary>
     public class JoinEvent
     {
         /// <summary>
-        /// Gets the GSLive Type for JoinEvent
+        ///     Gets the GSLive Type for JoinEvent
         /// </summary>
         /// <value>the GSLive Type for JoinEvent</value>
         public GSLiveType Type { internal set; get; }
-        
+
         /// <summary>
-        /// Gets the Join Data
+        ///     Gets the Join Data
         /// </summary>
         /// <value>the Join Data</value>
         public JoinData JoinData { internal set; get; }

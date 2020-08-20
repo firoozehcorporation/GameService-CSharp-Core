@@ -37,7 +37,7 @@ namespace FiroozehGameService.Utils
         {
             _lastPing = ping;
         }
-        
+
         internal static long Diff(long one, long two)
         {
             return Math.Abs(one - two);

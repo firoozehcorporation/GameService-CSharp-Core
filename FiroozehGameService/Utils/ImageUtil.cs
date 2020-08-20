@@ -9,8 +9,8 @@ namespace FiroozehGameService.Utils
     {
         internal static async Task<ImageUploadResult> UploadProfileImage(byte[] imageBuffer)
         {
-           if(imageBuffer.Length > 1000 * 1024) throw new GameServiceException("ProfileImage is Too Large");
-           return await ApiRequest.UploadUserProfileLogo(imageBuffer);
+            if (imageBuffer.Length > 1000 * 1024) throw new GameServiceException("ProfileImage is Too Large");
+            return await ApiRequest.UploadUserProfileLogo(imageBuffer);
         }
     }
 }

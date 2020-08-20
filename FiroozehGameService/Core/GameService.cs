@@ -162,7 +162,7 @@ namespace FiroozehGameService.Core
             return await ApiRequest.GetLeaderBoardDetails(leaderBoardId, scoreLimit);
         }
 
-        
+
         /// <summary>
         ///     With this command you can get Current Player Score with the ID of the LeaderBoard id
         ///     you registered in the Developer panel.
@@ -176,8 +176,8 @@ namespace FiroozehGameService.Core
                 throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull");
             return await ApiRequest.GetCurrentPlayerScore(leaderBoardId);
         }
-        
-        
+
+
         /// <summary>
         ///     With this command you can get information about the current player is playing
         /// </summary>
@@ -216,8 +216,8 @@ namespace FiroozehGameService.Core
                 throw new GameServiceException("memberId Cant Be EmptyOrNull");
             return await ApiRequest.GetMemberData(memberId);
         }
-        
-        
+
+
         /// <summary>
         ///     With this command you can get The Last Login Member Info
         /// </summary>
@@ -227,9 +227,8 @@ namespace FiroozehGameService.Core
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             return await ApiRequest.GetLastLoginMemberInfo();
         }
-        
-        
-        
+
+
         /// <summary>
         ///     With this command you can Edit information about the current player is playing
         /// </summary>
@@ -354,8 +353,7 @@ namespace FiroozehGameService.Core
             return await TimeUtil.GetCurrentTime();
         }
 
-        
-        
+
         /// <summary>
         ///     This command Check Can Login With Phone Number
         /// </summary>
@@ -446,8 +444,8 @@ namespace FiroozehGameService.Core
                 throw new GameServiceException("You Must Configuration First");
             _downloadManager?.CancelAllDownloads();
         }
-        
-        
+
+
         /// <summary>
         ///     Cancel Download Asset With Asset Tag
         /// </summary>
@@ -455,12 +453,12 @@ namespace FiroozehGameService.Core
         {
             if (Configuration == null)
                 throw new GameServiceException("You Must Configuration First");
-            if (string.IsNullOrEmpty(tag)) 
+            if (string.IsNullOrEmpty(tag))
                 throw new GameServiceException("Asset Tag Cant Be EmptyOrNull");
             _downloadManager.CancelDownload(tag);
         }
-        
-        
+
+
         /// <summary>
         ///     Cancel Download Asset With Asset Info
         /// </summary>
@@ -492,7 +490,6 @@ namespace FiroozehGameService.Core
         }
 
 
-
         /// <summary>
         ///     Send Login Code With SMS , If you want to LoginWithPhoneNumber, You Must Call This Function first
         ///     It May Throw Exception
@@ -508,8 +505,7 @@ namespace FiroozehGameService.Core
             return await ApiRequest.SendLoginCodeWithSms(phoneNumber);
         }
 
-        
-        
+
         /// <summary>
         ///     Normal Login (InFirstOnly) To Game Service
         ///     It May Throw Exception
@@ -581,20 +577,18 @@ namespace FiroozehGameService.Core
             await Core.GSLive.GSLive.Init();
             return UserToken;
         }
-        
-        
-        
+
+
         /// <summary>
         ///     Normal Login With Phone Number To Game Service
         ///     You Must Call SendLoginCodeWithSms First, to get SMS Code.
         ///     It May Throw Exception
-        ///
         ///     <param name="nickName">(Not NULL)Specifies Nick Name </param>
         ///     <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
         ///     <param name="smsCode">(Not NULL)Specifies SMS Code</param>
         /// </summary>
         /// <value> return UserToken if Login Successfully </value>
-        public static async Task<string> LoginWithPhoneNumber(string nickName,string phoneNumber,string smsCode)
+        public static async Task<string> LoginWithPhoneNumber(string nickName, string phoneNumber, string smsCode)
         {
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
             if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
@@ -603,7 +597,7 @@ namespace FiroozehGameService.Core
             if (string.IsNullOrEmpty(smsCode)) throw new GameServiceException("smsCode Cant Be EmptyOrNull");
             if (IsAuthenticated()) Logout();
 
-            var login = await ApiRequest.LoginWithPhoneNumber(nickName,phoneNumber,smsCode);
+            var login = await ApiRequest.LoginWithPhoneNumber(nickName, phoneNumber, smsCode);
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize();
             CommandInfo = auth.CommandInfo;
@@ -667,16 +661,20 @@ namespace FiroozehGameService.Core
         ///     Check if Current User Authenticated
         /// </summary>
         /// <value> return True if Current User Authenticated Before </value>
-        public static bool IsAuthenticated() => _isAvailable;
-        
+        public static bool IsAuthenticated()
+        {
+            return _isAvailable;
+        }
 
 
         /// <summary>
         ///     Get The Current GameService Version
         /// </summary>
         /// <value> return The Current GameService Version </value>
-        public static string Version() => "5.4.0";
-        
+        public static string Version()
+        {
+            return "5.4.0";
+        }
 
 
         /// <summary>

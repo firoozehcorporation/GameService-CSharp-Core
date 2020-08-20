@@ -30,43 +30,41 @@ namespace FiroozehGameService.Handlers
 {
     /// <inheritdoc />
     /// <summary>
-    /// Represents RealTimeEventHandlers In MultiPlayer System
+    ///     Represents RealTimeEventHandlers In MultiPlayer System
     /// </summary>
     public class RealTimeEventHandlers : CommandEventHandler
     {
         /// <summary>
-        /// Calls When SomeOne Join To Current Room
-        /// It Maybe Current Player or Another
-        /// This Event Handler Called By Following Functions :
-        /// <see cref="GSLiveRT.JoinRoom"/>
-        /// <see cref="GSLiveRT.CreateRoom"/>
-        /// <see cref="GSLiveRT.AutoMatch"/>
+        ///     Calls When SomeOne Join To Current Room
+        ///     It Maybe Current Player or Another
+        ///     This Event Handler Called By Following Functions :
+        ///     <see cref="GSLiveRT.JoinRoom" />
+        ///     <see cref="GSLiveRT.CreateRoom" />
+        ///     <see cref="GSLiveRT.AutoMatch" />
         /// </summary>
         public static EventHandler<JoinEvent> JoinedRoom;
-        
-        
+
+
         /// <summary>
-        /// Calls When SomeOne Left the Current Room
-        /// This Event Handler Called By Following Function :
-        /// <see cref="GSLiveRT.LeaveRoom"/>
+        ///     Calls When SomeOne Left the Current Room
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveRT.LeaveRoom" />
         /// </summary>
         public static EventHandler<Member> LeftRoom;
-        
-        
-        
+
+
         /// <summary>
-        /// Calls When SomeOne Send Message In Current Room
-        /// This Event Handler Called By Following Functions :
-        /// <see cref="GSLiveRT.SendPublicMessage"/>
-        /// <see cref="GSLiveRT.SendPrivateMessage"/>
+        ///     Calls When SomeOne Send Message In Current Room
+        ///     This Event Handler Called By Following Functions :
+        ///     <see cref="GSLiveRT.SendPublicMessage" />
+        ///     <see cref="GSLiveRT.SendPrivateMessage" />
         /// </summary>
         public static EventHandler<MessageReceiveEvent> NewMessageReceived;
-        
-        
-        
+
+
         /// <summary>
-        /// Returns Current Room Members Detail  When Call The Following Function :
-        /// <see cref="GSLiveRT.GetRoomMembersDetail"/>
+        ///     Returns Current Room Members Detail  When Call The Following Function :
+        ///     <see cref="GSLiveRT.GetRoomMembersDetail" />
         /// </summary>
         public static EventHandler<List<Member>> RoomMembersDetailReceived;
     }

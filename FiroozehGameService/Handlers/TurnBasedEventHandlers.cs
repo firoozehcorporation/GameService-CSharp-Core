@@ -30,69 +30,68 @@ namespace FiroozehGameService.Handlers
 {
     /// <inheritdoc />
     /// <summary>
-    /// Represents TurnBasedEventHandlers In MultiPlayer System
+    ///     Represents TurnBasedEventHandlers In MultiPlayer System
     /// </summary>
     public class TurnBasedEventHandlers : CommandEventHandler
     {
-        
         /// <summary>
-        /// Calls When SomeOne Join To Current Room
-        /// It Maybe Current Player or Another
-        /// This Event Handler Called By Following Functions :
-        /// <see cref="GSLiveTB.JoinRoom"/>
-        /// <see cref="GSLiveTB.CreateRoom"/>
-        /// <see cref="GSLiveTB.AutoMatch"/>
+        ///     Calls When SomeOne Join To Current Room
+        ///     It Maybe Current Player or Another
+        ///     This Event Handler Called By Following Functions :
+        ///     <see cref="GSLiveTB.JoinRoom" />
+        ///     <see cref="GSLiveTB.CreateRoom" />
+        ///     <see cref="GSLiveTB.AutoMatch" />
         /// </summary>
         public static EventHandler<JoinEvent> JoinedRoom;
-        
-        
+
+
         /// <summary>
-        /// Calls When SomeOne Left the Current Room
-        /// This Event Handler Called By Following Function :
-        /// <see cref="GSLiveTB.LeaveRoom"/>
+        ///     Calls When SomeOne Left the Current Room
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveTB.LeaveRoom" />
         /// </summary>
         public static EventHandler<Member> LeftRoom;
-        
-        
+
+
         /// <summary>
-        /// Returns New Turn With Data From Another Players When Call The Following Function :
-        /// <see cref="GSLiveTB.TakeTurn"/>
+        ///     Returns New Turn With Data From Another Players When Call The Following Function :
+        ///     <see cref="GSLiveTB.TakeTurn" />
         /// </summary>
         public static EventHandler<Turn> TakeTurn;
-        
-        
+
+
         /// <summary>
-        /// Returns New Turn From Another Players When Call The Following Function :
-        /// <see cref="GSLiveTB.ChooseNext"/>
+        ///     Returns New Turn From Another Players When Call The Following Function :
+        ///     <see cref="GSLiveTB.ChooseNext" />
         /// </summary>
         public static EventHandler<Member> ChoosedNext;
-        
-        
+
+
         /// <summary>
-        /// Calls When SomeOne Announced To Finish Game
-        /// This Event Handler Called By Following Function :
-        /// <see cref="GSLiveTB.Finish"/>
+        ///     Calls When SomeOne Announced To Finish Game
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveTB.Finish" />
         /// </summary>
         public static EventHandler<Finish> Finished;
-        
-        
+
+
         /// <summary>
-        /// Calls When The Game Is Finished
-        /// This Event Handler Called By Following Function :
-        /// <see cref="GSLiveTB.Complete"/>
+        ///     Calls When The Game Is Finished
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GSLiveTB.Complete" />
         /// </summary>
         public static EventHandler<Complete> Completed;
-        
+
         /// <summary>
-        /// Returns Current Room Members Detail  When Call The Following Function :
-        /// <see cref="GSLiveTB.GetRoomMembersDetail"/>
+        ///     Returns Current Room Members Detail  When Call The Following Function :
+        ///     <see cref="GSLiveTB.GetRoomMembersDetail" />
         /// </summary>
         public static EventHandler<List<Member>> RoomMembersDetailReceived;
-        
-        
+
+
         /// <summary>
-        /// Returns Current Turn Member Received When Call The Following Function :
-        /// <see cref="GSLiveTB.GetCurrentTurnMember"/>
+        ///     Returns Current Turn Member Received When Call The Following Function :
+        ///     <see cref="GSLiveTB.GetCurrentTurnMember" />
         /// </summary>
         public static EventHandler<Member> CurrentTurnMemberReceived;
     }

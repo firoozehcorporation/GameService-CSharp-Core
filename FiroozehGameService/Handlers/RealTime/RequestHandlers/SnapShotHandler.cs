@@ -1,8 +1,8 @@
-﻿using FiroozehGameService.Models;
+﻿using System;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 {
@@ -11,18 +11,21 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public static string Signature =>
             "SNAPSHOT_HANDLER";
 
-        public SnapShotHandler() {}
-
         private static Packet DoAction()
-            => new Packet(RealTimeHandler.PlayerHash,RT.ActionSnapShot,GProtocolSendType.Reliable);        
-        
+        {
+            return new Packet(RealTimeHandler.PlayerHash, RT.ActionSnapShot, GProtocolSendType.Reliable);
+        }
+
         protected override Packet DoAction(object payload)
-        { 
+        {
             if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
-            if (!CheckAction(payload)) throw new System.ArgumentException();
+            if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction();
         }
 
-        protected override bool CheckAction(object payload) => true;
+        protected override bool CheckAction(object payload)
+        {
+            return true;
+        }
     }
 }

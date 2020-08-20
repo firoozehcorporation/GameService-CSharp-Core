@@ -20,7 +20,6 @@
 */
 
 using System;
-using FiroozehGameService.Core;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
@@ -31,6 +30,12 @@ namespace FiroozehGameService.Models.BasicApi
     [Serializable]
     public class MemberInfo
     {
+        /// <summary>
+        ///     Gets the Member Email.
+        /// </summary>
+        /// <value>the Member Email</value>
+        [JsonProperty("email")] public string Email;
+
         /// <summary>
         ///     Gets the Member ID
         ///     You Can Use it In MultiPlayer Functions that Needs Member id
@@ -51,21 +56,17 @@ namespace FiroozehGameService.Models.BasicApi
         /// <value>the Member Name</value>
         [JsonProperty("name")] public string Name;
 
-        
+
         /// <summary>
         ///     Gets the Member Phone Number.
         /// </summary>
         /// <value>the Member Phone Number</value>
         [JsonProperty("phone_number")] public string PhoneNumber;
-        
-        
-        /// <summary>
-        ///     Gets the Member Email.
-        /// </summary>
-        /// <value>the Member Email</value>
-        [JsonProperty("email")] public string Email;
-        
 
-        public override bool Equals(object obj) => Id == (obj as MemberInfo)?.Id;
+
+        public override bool Equals(object obj)
+        {
+            return Id == (obj as MemberInfo)?.Id;
+        }
     }
 }

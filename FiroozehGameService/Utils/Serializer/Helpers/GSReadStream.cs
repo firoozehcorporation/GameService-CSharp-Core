@@ -26,7 +26,7 @@ using FiroozehGameService.Models;
 namespace FiroozehGameService.Utils.Serializer.Helpers
 {
     /// <summary>
-    /// Represents GsReadStream In Game Service Binary Serializer
+    ///     Represents GsReadStream In Game Service Binary Serializer
     /// </summary>
     public class GsReadStream
     {
@@ -36,21 +36,21 @@ namespace FiroozehGameService.Utils.Serializer.Helpers
         {
             _objects = new Queue<object>();
         }
-        
+
         /// <summary>
-        /// Read Your Data Writes To Stream
+        ///     Read Your Data Writes To Stream
         /// </summary>
         /// <returns></returns>
         /// <exception cref="GameServiceException">throw if Stream Queue Is Empty</exception>
         public object ReadNext()
         {
-            if(_objects?.Count == 0)
+            if (_objects?.Count == 0)
                 throw new GameServiceException("GSReadStream Queue Is Empty!");
 
             return _objects?.Dequeue();
         }
 
-        
+
         internal void Add(object o)
         {
             _objects?.Enqueue(o);
@@ -60,6 +60,5 @@ namespace FiroozehGameService.Utils.Serializer.Helpers
         {
             return _objects?.Count > 0;
         }
-        
     }
 }

@@ -42,7 +42,8 @@ namespace FiroozehGameService.Core.GSLive
             /// <param name="maxPlayer">Specifies the Room max player limit (MAX=8)</param>
             /// <param name="isPersist">Specifies the Room Persistence</param>
             /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
-            public AutoMatchOption(string role, int minPlayer = 2, int maxPlayer = 2, bool isPersist = false,string extra = null)
+            public AutoMatchOption(string role, int minPlayer = 2, int maxPlayer = 2, bool isPersist = false,
+                string extra = null)
             {
                 if (minPlayer < 2 || minPlayer > 8) throw new GameServiceException("Invalid MinPlayer Value");
                 if (maxPlayer < 2 || maxPlayer > 8) throw new GameServiceException("Invalid MaxPlayer Value");
@@ -81,8 +82,8 @@ namespace FiroozehGameService.Core.GSLive
             /// <param name="isPersist">Specifies the Room Persistence</param>
             /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
             public CreateRoomOption(string roomName, string role, int minPlayer = 2, int maxPlayer = 2,
-                bool isPrivate = false, bool isPersist = false,string extra = null)
-                : base(role, minPlayer, maxPlayer, isPersist,extra)
+                bool isPrivate = false, bool isPersist = false, string extra = null)
+                : base(role, minPlayer, maxPlayer, isPersist, extra)
             {
                 if (string.IsNullOrEmpty(roomName)) throw new GameServiceException("RoomName Cant Be EmptyOrNull");
                 RoomName = roomName;

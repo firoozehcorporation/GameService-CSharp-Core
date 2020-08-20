@@ -1,4 +1,3 @@
-
 namespace FiroozehGameService.Models.Enums.GSLive.Command
 {
     public enum TapActionType

@@ -28,7 +28,12 @@ namespace FiroozehGameService.Models.BasicApi
     [Serializable]
     public class EditUserProfile
     {
-        
+        /// <summary>
+        ///     Set New ProfileLogo(BytesBuffer) For CurrentPlayer.
+        /// </summary>
+        /// <value> New ProfileLogo For CurrentPlayer</value>
+        internal byte[] Logo;
+
         /// <summary>
         ///     Set New NickName For CurrentPlayer.
         /// </summary>
@@ -41,13 +46,6 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value> New PhoneNumber For CurrentPlayer</value>
         internal string PhoneNumber;
-        
-        
-        /// <summary>
-        ///     Set New ProfileLogo(BytesBuffer) For CurrentPlayer.
-        /// </summary>
-        /// <value> New ProfileLogo For CurrentPlayer</value>
-        internal byte[] Logo;
 
         /// <summary>
         ///     EditUserProfile Data Model

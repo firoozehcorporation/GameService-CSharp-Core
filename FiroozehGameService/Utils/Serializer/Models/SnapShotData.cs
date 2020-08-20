@@ -22,52 +22,51 @@
 
 namespace FiroozehGameService.Utils.Serializer.Models
 {
-
     /// <summary>
-    /// Represents SnapShotType Data Model In Game Service Binary Serializer
+    ///     Represents SnapShotType Data Model In Game Service Binary Serializer
     /// </summary>
     public enum SnapShotType : byte
     {
         /// <summary>
-        /// SnapShot Function Type
+        ///     SnapShot Function Type
         /// </summary>
         Function = 0x0,
-        
-        
+
+
         /// <summary>
-        /// SnapShot Object Type
+        ///     SnapShot Object Type
         /// </summary>
         Object = 0x1,
-        
-        
+
+
         /// <summary>
-        /// SnapShot Property Type
+        ///     SnapShot Property Type
         /// </summary>
         Property = 0x2
     }
+
     /// <summary>
-    /// Represents SnapShotData Data Model In Game Service Binary Serializer
+    ///     Represents SnapShotData Data Model In Game Service Binary Serializer
     /// </summary>
     public class SnapShotData
     {
         /// <summary>
-        /// Get Type of SnapShot
-        /// </summary>
-        public SnapShotType Type;
-        
-        
-        /// <summary>
-        /// Get SnapShot Buffer Data
+        ///     Get SnapShot Buffer Data
         /// </summary>
         public byte[] Buffer;
 
 
         /// <summary>
-        /// The Snapshot OwnerId
+        ///     The Snapshot OwnerId
         /// </summary>
         public string OwnerId;
-        
-        internal SnapShotData(SnapShotType type, string ownerId,byte[] buffer)
+
+        /// <summary>
+        ///     Get Type of SnapShot
+        /// </summary>
+        public SnapShotType Type;
+
+        internal SnapShotData(SnapShotType type, string ownerId, byte[] buffer)
         {
             Type = type;
             Buffer = buffer;

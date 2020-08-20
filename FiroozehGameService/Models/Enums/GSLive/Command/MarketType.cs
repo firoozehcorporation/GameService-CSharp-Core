@@ -15,8 +15,6 @@
 // </copyright>
 
 
-
-
 /**
 * @author Alireza Ghodrati
 */
@@ -25,7 +23,7 @@
 namespace FiroozehGameService.Models.Enums.GSLive.Command
 {
     /// <summary>
-    /// Represents MarketType Model In Notification
+    ///     Represents MarketType Model In Notification
     /// </summary>
     public enum MarketType
     {

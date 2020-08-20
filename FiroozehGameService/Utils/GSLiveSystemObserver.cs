@@ -6,14 +6,9 @@ namespace FiroozehGameService.Utils
 {
     internal class GsLiveSystemObserver
     {
+        private readonly Timer _timer;
         private readonly GSLiveType _type;
         private int _counter;
-        private readonly Timer _timer;
-
-        private void Reset()
-        {
-            _counter = 0;
-        }
 
         public GsLiveSystemObserver(GSLiveType type)
         {
@@ -26,41 +21,56 @@ namespace FiroozehGameService.Utils
             _timer.Elapsed += (sender, args) => { Reset(); };
             _timer.Start();
         }
-        
-        public bool Increase (bool isCritical)
+
+        private void Reset()
+        {
+            _counter = 0;
+        }
+
+        public bool Increase(bool isCritical)
         {
             if (isCritical) return true;
-            
-            switch (_type) {
+
+            switch (_type)
+            {
                 case GSLiveType.NotSet:
                     break;
                 case GSLiveType.TurnBased:
-                    if (_counter <= TB.TurnBasedLimit) {
+                    if (_counter <= TB.TurnBasedLimit)
+                    {
                         _counter++;
                         return true;
                     }
+
                     break;
                 case GSLiveType.RealTime:
-                    if (_counter <= RT.RealTimeLimit) {
+                    if (_counter <= RT.RealTimeLimit)
+                    {
                         _counter++;
                         return true;
                     }
+
                     break;
                 case GSLiveType.Core:
-                    if (_counter <= Command.TimeLimit) {
+                    if (_counter <= Command.TimeLimit)
+                    {
                         _counter++;
                         return true;
                     }
+
                     break;
                 default:
                     return false;
             }
+
             return false;
         }
-        
-        
-        public int GetMaxRequestSupport () {
-            switch (_type) {
+
+
+        public int GetMaxRequestSupport()
+        {
+            switch (_type)
+            {
                 case GSLiveType.TurnBased:
                     return TB.TurnBasedLimit;
                 case GSLiveType.RealTime:
@@ -72,7 +82,6 @@ namespace FiroozehGameService.Utils
                 default:
                     return -1;
             }
-          
         }
 
         public void Dispose()
@@ -80,7 +89,5 @@ namespace FiroozehGameService.Utils
             _timer?.Stop();
             _timer?.Close();
         }
-        
-        
     }
 }

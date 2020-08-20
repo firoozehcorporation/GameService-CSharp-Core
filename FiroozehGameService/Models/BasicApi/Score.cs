@@ -33,6 +33,12 @@ namespace FiroozehGameService.Models.BasicApi
     public class Score
     {
         /// <summary>
+        ///     Gets the Rank of This Score.
+        /// </summary>
+        /// <value>the Rank of This Score</value>
+        [JsonProperty("rank")] public int Rank;
+
+        /// <summary>
         ///     Gets the Member Submit this Score.
         /// </summary>
         /// <value>the Member Submit this Score</value>
@@ -49,12 +55,5 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Value of This Score</value>
         [JsonProperty("value")] public int Value;
-        
-        
-        /// <summary>
-        ///     Gets the Rank of This Score.
-        /// </summary>
-        /// <value>the Rank of This Score</value>
-        [JsonProperty("rank")] public int Rank;
     }
 }

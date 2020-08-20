@@ -22,10 +22,11 @@
 namespace FiroozehGameService.Models.Enums.GSLive.RT
 {
     /// <summary>
-    /// Represents MessageType Of RealTime System
+    ///     Represents MessageType Of RealTime System
     /// </summary>
     public enum MessageType
     {
-        Public , Private
+        Public,
+        Private
     }
 }

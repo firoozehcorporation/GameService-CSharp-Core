@@ -1,5 +1,4 @@
-﻿
-using FiroozehGameService.Models.GSLive.RT;
+﻿using FiroozehGameService.Models.GSLive.RT;
 
 namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 {

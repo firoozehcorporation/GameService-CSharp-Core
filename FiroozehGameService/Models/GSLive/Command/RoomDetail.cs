@@ -6,6 +6,7 @@ namespace FiroozehGameService.Models.GSLive.Command
     [Serializable]
     internal class RoomDetail
     {
+        [JsonProperty("11")] public string Extra;
         [JsonProperty("7")] public int GsLiveType;
         [JsonProperty("0")] public string Id;
         [JsonProperty("2")] public string Invite;
@@ -15,7 +16,6 @@ namespace FiroozehGameService.Models.GSLive.Command
         [JsonProperty("5")] public int Min;
         [JsonProperty("3")] public string Name;
         [JsonProperty("8")] public string Role;
-        [JsonProperty("11")] public string Extra;
         [JsonProperty("4")] public int Type;
         [JsonProperty("1")] public string UserOrMemberId;
 

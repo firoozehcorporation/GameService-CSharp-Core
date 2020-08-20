@@ -13,7 +13,6 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             var scopeLevel = 0;
             var offset = 0;
             for (var i = 0; i < inputData.Length; i++)
-            {
                 switch (inputData[i])
                 {
                     case OpenedBracket:
@@ -31,7 +30,7 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
                         break;
                     }
                 }
-            }
+
             inputData.Remove(0, offset);
         }
     }

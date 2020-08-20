@@ -21,15 +21,15 @@ using System;
 */
 
 
-
 namespace FiroozehGameService.Models.Enums
 {
     /// <summary>
-    /// Represents BucketOwnershipTypes Model In Game Service Basic API
+    ///     Represents BucketOwnershipTypes Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public enum BucketOwnershipTypes
     {
-        Me , Another
+        Me,
+        Another
     }
 }

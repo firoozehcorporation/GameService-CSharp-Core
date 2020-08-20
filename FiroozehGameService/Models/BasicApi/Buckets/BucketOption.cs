@@ -23,7 +23,7 @@ using System;
 namespace FiroozehGameService.Models.BasicApi.Buckets
 {
     /// <summary>
-    /// Represents BucketOption Model In Game Service Basic API
+    ///     Represents BucketOption Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public abstract class BucketOption

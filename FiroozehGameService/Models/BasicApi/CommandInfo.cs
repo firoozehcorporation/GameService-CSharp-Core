@@ -6,11 +6,11 @@ namespace FiroozehGameService.Models.BasicApi
     [Serializable]
     internal class CommandInfo
     {
+        [JsonProperty("k")] public string Cert;
         [JsonProperty("ip")] public string Ip;
         [JsonProperty("port")] public int Port;
-        [JsonProperty("k")] public string Cert;
-        
-        
+
+
         public override string ToString()
         {
             return "CommandInfo{" +
@@ -19,6 +19,5 @@ namespace FiroozehGameService.Models.BasicApi
                    ", cert='" + Cert + '\'' +
                    '}';
         }
-        
     }
 }

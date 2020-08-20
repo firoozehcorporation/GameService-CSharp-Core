@@ -9,15 +9,15 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
         public static string Signature =>
             "LEAVE_ROOM";
 
-        public LeaveRoomHandler() {}
-
         protected override Packet DoAction(object payload)
-        { 
+        {
             if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
             return new Packet(RealTimeHandler.PlayerHash, RT.ActionLeave);
         }
 
         protected override bool CheckAction(object payload)
-            => true;
+        {
+            return true;
+        }
     }
 }
