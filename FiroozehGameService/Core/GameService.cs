@@ -224,7 +224,7 @@ namespace FiroozehGameService.Core
         /// <value> return Member Data </value>
         public static async Task<MemberInfo> GetLastLoginMemberInfo()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
+            if (Configuration == null) throw new GameServiceException("You Must Configuration First");
             return await ApiRequest.GetLastLoginMemberInfo();
         }
 
