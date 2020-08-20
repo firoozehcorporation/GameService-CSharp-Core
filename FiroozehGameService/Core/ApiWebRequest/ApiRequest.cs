@@ -121,13 +121,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
-                if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
-                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
             }
         }
-        
         
 
 
@@ -259,9 +255,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
             {
                 NickName = editUserProfile.NickName,
-                AllowAutoAddToGame = editUserProfile.AllowAutoAddToGame,
-                ShowGroupActivity = editUserProfile.ShowGroupActivity,
-                ShowPublicActivity = editUserProfile.ShowPublicActivity
+                PhoneNumber = editUserProfile.PhoneNumber
             });
 
             var response = await GsWebRequest.Put(Api.UserProfile, body, CreateUserTokenHeader());

@@ -225,7 +225,7 @@ namespace FiroozehGameService.Core
         public static async Task<Member> EditCurrentPlayerProfile(EditUserProfile profile)
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
-            if (profile == null) throw new GameServiceException("EditUserProfile Cant Be Null");
+            if (profile == null) throw new GameServiceException("profile Cant Be Null");
             return await ApiRequest.EditCurrentPlayer(profile);
         }
 
@@ -489,8 +489,8 @@ namespace FiroozehGameService.Core
         /// <value> return true if Send Successfully </value>
         public static async Task<bool> SendLoginCodeWithSms(string phoneNumber)
         {
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (string.IsNullOrEmpty(phoneNumber)) throw new GameServiceException("phoneNumber Cant Be EmptyOrNull");
             if (IsAuthenticated()) Logout();
             return await ApiRequest.SendLoginCodeWithSms(phoneNumber);
@@ -505,8 +505,8 @@ namespace FiroozehGameService.Core
         /// <value> return UserToken if Login Successfully </value>
         public static async Task<string> Login(string email, string password)
         {
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (string.IsNullOrEmpty(email)) throw new GameServiceException("Email Cant Be EmptyOrNull");
             if (string.IsNullOrEmpty(password)) throw new GameServiceException("Password Cant Be EmptyOrNull");
             if (IsAuthenticated()) Logout();
@@ -529,8 +529,8 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task Login(string userToken)
         {
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (string.IsNullOrEmpty(userToken)) throw new GameServiceException("UserToken Cant Be EmptyOrNull");
             if (IsAuthenticated()) Logout();
 
@@ -553,8 +553,8 @@ namespace FiroozehGameService.Core
         /// <value> return UserToken if Login Successfully </value>
         public static async Task<string> LoginWithGoogle(string idToken)
         {
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (string.IsNullOrEmpty(idToken)) throw new GameServiceException("IdToken Cant Be EmptyOrNull");
             if (IsAuthenticated()) Logout();
 
@@ -584,8 +584,8 @@ namespace FiroozehGameService.Core
         /// <value> return UserToken if Login Successfully </value>
         public static async Task<string> LoginWithPhoneNumber(string nickName,string phoneNumber,string smsCode)
         {
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (string.IsNullOrEmpty(nickName)) throw new GameServiceException("nickName Cant Be EmptyOrNull");
             if (string.IsNullOrEmpty(phoneNumber)) throw new GameServiceException("phoneNumber Cant Be EmptyOrNull");
             if (string.IsNullOrEmpty(smsCode)) throw new GameServiceException("smsCode Cant Be EmptyOrNull");
@@ -610,8 +610,8 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task Login()
         {
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (IsAuthenticated()) Logout();
 
             var login = await ApiRequest.LoginAsGuest();
@@ -631,8 +631,8 @@ namespace FiroozehGameService.Core
         /// <value> return UserToken if SignUp Successfully </value>
         public static async Task<string> SignUp(string nickName, string email, string password)
         {
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (Configuration == null) throw new GameServiceException("You Must Configuration First");
+            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable");
             if (string.IsNullOrEmpty(nickName)) throw new GameServiceException("NickName Cant Be EmptyOrNull");
             if (string.IsNullOrEmpty(email)) throw new GameServiceException("Email Cant Be EmptyOrNull");
             if (string.IsNullOrEmpty(password)) throw new GameServiceException("Password Cant Be EmptyOrNull");
@@ -655,17 +655,15 @@ namespace FiroozehGameService.Core
         ///     Check if Current User Authenticated
         /// </summary>
         /// <value> return True if Current User Authenticated Before </value>
-        public static bool IsAuthenticated()
-        {
-            return _isAvailable;
-        }
+        public static bool IsAuthenticated() => _isAvailable;
+        
 
 
         /// <summary>
         ///     Get The Current GameService Version
         /// </summary>
         /// <value> return The Current GameService Version </value>
-        public static string Version() => "5.3.0";
+        public static string Version() => "5.4.0";
         
 
 

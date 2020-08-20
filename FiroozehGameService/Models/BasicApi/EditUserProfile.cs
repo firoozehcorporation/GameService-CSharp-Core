@@ -28,12 +28,21 @@ namespace FiroozehGameService.Models.BasicApi
     [Serializable]
     public class EditUserProfile
     {
+        
         /// <summary>
-        ///     Set Allow Auto Add To Game For CurrentPlayer.
+        ///     Set New NickName For CurrentPlayer.
         /// </summary>
-        /// <value> Allow Auto Add To Game For CurrentPlayer</value>
-        internal bool AllowAutoAddToGame;
+        /// <value> New NickName For CurrentPlayer</value>
+        internal string NickName;
 
+
+        /// <summary>
+        ///     Set New PhoneNumber For CurrentPlayer.
+        /// </summary>
+        /// <value> New PhoneNumber For CurrentPlayer</value>
+        internal string PhoneNumber;
+        
+        
         /// <summary>
         ///     Set New ProfileLogo(BytesBuffer) For CurrentPlayer.
         /// </summary>
@@ -41,45 +50,20 @@ namespace FiroozehGameService.Models.BasicApi
         internal byte[] Logo;
 
         /// <summary>
-        ///     Set New NickName For CurrentPlayer.
-        /// </summary>
-        /// <value> New NickName For CurrentPlayer</value>
-        internal string NickName;
-
-        /// <summary>
-        ///     Set Show Group Activity For CurrentPlayer.
-        /// </summary>
-        /// <value> Allow Show Group Activity For CurrentPlayer</value>
-        internal bool ShowGroupActivity;
-
-        /// <summary>
-        ///     Set Show Public Activity For CurrentPlayer.
-        /// </summary>
-        /// <value> Allow Show Public Activity For CurrentPlayer</value>
-        internal bool ShowPublicActivity;
-
-
-        /// <summary>
         ///     EditUserProfile Data Model
         /// </summary>
         /// <param name="nickName">the value of nickName you want to update</param>
         /// <param name="logo">the value of logo you want to update</param>
-        /// <param name="allowAutoAddToGame">the value of allowAutoAddToGame you want to update</param>
-        /// <param name="showPublicActivity">the value of showPublicActivity you want to update</param>
-        /// <param name="showGroupActivity">the value of showGroupActivity you want to update</param>
+        /// <param name="phoneNumber">the value of phoneNumber you want to update</param>
         public EditUserProfile(
             string nickName = null,
             byte[] logo = null,
-            bool allowAutoAddToGame = false,
-            bool showPublicActivity = false,
-            bool showGroupActivity = false
+            string phoneNumber = null
         )
         {
             NickName = nickName;
             Logo = logo;
-            AllowAutoAddToGame = allowAutoAddToGame;
-            ShowPublicActivity = showPublicActivity;
-            ShowGroupActivity = showGroupActivity;
+            PhoneNumber = phoneNumber;
         }
     }
 }
