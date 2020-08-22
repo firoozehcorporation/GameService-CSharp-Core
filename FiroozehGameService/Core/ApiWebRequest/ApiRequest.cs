@@ -274,6 +274,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 NickName = editUserProfile.NickName,
                 PhoneNumber = editUserProfile.PhoneNumber,
                 Email = editUserProfile.Email
+            },new JsonSerializerSettings
+            {
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
             });
 
             var response = await GsWebRequest.Put(Api.GetMemberData, body, CreatePlayTokenHeader());
