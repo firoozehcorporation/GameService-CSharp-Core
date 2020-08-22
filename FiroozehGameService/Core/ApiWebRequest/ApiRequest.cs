@@ -274,7 +274,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 NickName = editUserProfile.NickName,
                 PhoneNumber = editUserProfile.PhoneNumber,
                 Email = editUserProfile.Email
-            },new JsonSerializerSettings
+            }, new JsonSerializerSettings
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore

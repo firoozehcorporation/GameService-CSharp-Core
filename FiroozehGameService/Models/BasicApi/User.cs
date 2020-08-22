@@ -64,6 +64,20 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the User Name</value>
         [JsonProperty("name")] public string Name;
+        
+        
+        /// <summary>
+        ///     Gets the User Email.(NULLABLE)
+        /// </summary>
+        /// <value>the User Email</value>
+        [JsonProperty("email")] public string Email;
+        
+        
+        /// <summary>
+        ///     Gets the User Phone Number.(NULLABLE)
+        /// </summary>
+        /// <value>the User Phone Number</value>
+        [JsonProperty("mobile")] public string PhoneNumber;
 
 
         /// <summary>
