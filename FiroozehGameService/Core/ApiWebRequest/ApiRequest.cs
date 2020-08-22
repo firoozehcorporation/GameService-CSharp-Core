@@ -276,7 +276,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 Email = editUserProfile.Email
             });
 
-            var response = await GsWebRequest.Put(Api.GetMemberData, body, CreateUserTokenHeader());
+            var response = await GsWebRequest.Put(Api.GetMemberData, body, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
