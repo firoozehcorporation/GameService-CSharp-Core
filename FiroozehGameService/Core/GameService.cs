@@ -232,8 +232,8 @@ namespace FiroozehGameService.Core
         /// <summary>
         ///     With this command you can Edit information about the current player is playing
         /// </summary>
-        /// <value> return Edited Current Member Data Data </value>
-        public static async Task<Member> EditCurrentPlayerProfile(EditUserProfile profile)
+        /// <value> return Edited Current Member Info Data </value>
+        public static async Task<MemberInfo> EditCurrentPlayerProfile(EditUserProfile profile)
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available");
             if (profile == null) throw new GameServiceException("profile Cant Be Null");
@@ -673,7 +673,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "5.4.0";
+            return "5.4.1";
         }
 
 

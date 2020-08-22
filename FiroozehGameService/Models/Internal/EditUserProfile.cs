@@ -8,5 +8,6 @@ namespace FiroozehGameService.Models.Internal
     {
         [JsonProperty("name")] public string NickName;
         [JsonProperty("mobile")] public string PhoneNumber;
+        [JsonProperty("email")] public string Email;
     }
 }

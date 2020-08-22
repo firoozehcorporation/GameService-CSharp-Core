@@ -261,7 +261,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<Member> EditCurrentPlayer(EditUserProfile editUserProfile)
+        internal static async Task<MemberInfo> EditCurrentPlayer(EditUserProfile editUserProfile)
         {
             if (editUserProfile.Logo != null)
             {
@@ -272,16 +272,16 @@ namespace FiroozehGameService.Core.ApiWebRequest
             var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
             {
                 NickName = editUserProfile.NickName,
-                PhoneNumber = editUserProfile.PhoneNumber
+                PhoneNumber = editUserProfile.PhoneNumber,
+                Email = editUserProfile.Email
             });
 
-            var response = await GsWebRequest.Put(Api.UserProfile, body, CreateUserTokenHeader());
+            var response = await GsWebRequest.Put(Api.GetMemberData, body, CreateUserTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<TEditUser>(await reader.ReadToEndAsync())
-                        .Member;
+                    return JsonConvert.DeserializeObject<MemberInfo>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message);
             }

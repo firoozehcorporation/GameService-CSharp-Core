@@ -46,22 +46,34 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value> New PhoneNumber For CurrentPlayer</value>
         internal string PhoneNumber;
-
+        
+        
         /// <summary>
+        ///     Set New Email For CurrentPlayer.
+        /// </summary>
+        /// <value> New Email For CurrentPlayer</value>
+        internal string Email;
+
+        
+        /// <summary>
+        /// 
         ///     EditUserProfile Data Model
         /// </summary>
         /// <param name="nickName">the value of nickName you want to update</param>
         /// <param name="logo">the value of logo you want to update</param>
         /// <param name="phoneNumber">the value of phoneNumber you want to update</param>
+        /// <param name="email">the value of email you want to update</param>
         public EditUserProfile(
             string nickName = null,
             byte[] logo = null,
-            string phoneNumber = null
+            string phoneNumber = null,
+            string email = null
         )
         {
             NickName = nickName;
             Logo = logo;
             PhoneNumber = phoneNumber;
+            Email = email;
         }
     }
 }

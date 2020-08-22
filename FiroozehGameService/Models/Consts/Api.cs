@@ -25,6 +25,5 @@ namespace FiroozehGameService.Models.Consts
 
 
         public const string UserProfileLogo = BaseUrl1 + "/Application/image";
-        public const string UserProfile = BaseUrl1 + "/Application";
     }
 }

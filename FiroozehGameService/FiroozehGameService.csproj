@@ -190,7 +190,6 @@
         <Compile Include="Models\BasicApi\SubmitScoreResponse.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TAchievement.cs"/>
         <Compile Include="Models\BasicApi\TResponse\BucketT.cs"/>
-        <Compile Include="Models\BasicApi\TResponse\TEditUser.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TLeaderBoard.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TMember.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TSave.cs"/>
