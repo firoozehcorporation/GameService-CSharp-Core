@@ -27,6 +27,6 @@ namespace FiroozehGameService.Models.Enums.GSLive
     public enum AutoMatchStatus
     {
         OnWaiting,
-        OnUserJoined
+        OnUserUpdated
     }
 }
