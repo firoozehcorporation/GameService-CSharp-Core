@@ -5,7 +5,7 @@ namespace FiroozehGameService.Utils
     internal class HttpRequestObserver
     {
         internal const int Reset = 3;
-        internal const int MaxRequest = 9;
+        internal const int MaxRequest = 15;
         private readonly Timer _timer;
         private int _counter;
         internal bool IsDisposed;
