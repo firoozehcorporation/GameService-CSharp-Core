@@ -3,29 +3,24 @@ using System.Timers;
 
 namespace FiroozehGameService.Utils
 {
-    internal class PingUtil
+    internal static class PingUtil
     {
+        
         private const int Interval = 1000;
         private static long _lastPing = -1;
-
         internal static EventHandler RequestPing;
+        private static Timer _timer;
+        
 
-        private readonly Timer _timer;
-
-        internal PingUtil()
+        internal static void Init()
         {
             if (_timer != null) return;
             _timer = new Timer
             {
                 Interval = Interval,
-                Enabled = false
+                Enabled = true
             };
-            _timer.Elapsed += (sender, args) => { RequestPing?.Invoke(this, null); };
-        }
-
-        internal void Init()
-        {
-            _timer?.Start();
+            _timer.Elapsed += (sender, args) => { RequestPing?.Invoke(null, null); };
         }
 
         internal static long GetLastPing()
@@ -41,20 +36,6 @@ namespace FiroozehGameService.Utils
         internal static long Diff(long one, long two)
         {
             return Math.Abs(one - two);
-        }
-
-        internal void Dispose()
-        {
-            try
-            {
-                _timer?.Dispose();
-                RequestPing = null;
-                _lastPing = -1;
-            }
-            catch (Exception e)
-            {
-                LogUtil.LogError(null, "PingUtil Err : " + e);
-            }
         }
     }
 }

@@ -26,7 +26,6 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.Error += OnError;
 
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
-            _pingUtil = new PingUtil();
             _isDisposed = false;
 
             // Set Internal Event Handlers
@@ -57,7 +56,6 @@ namespace FiroozehGameService.Handlers.RealTime
 
             _udpClient?.StopReceiving();
             _observer?.Dispose();
-            _pingUtil?.Dispose();
 
             ObserverCompacterUtil.Dispose();
             LogUtil.Log(this, "RealTime Dispose");
@@ -113,7 +111,7 @@ namespace FiroozehGameService.Handlers.RealTime
             PlayerHash = (ulong) playerHash;
             LogUtil.Log(null, "RealTime OnAuth");
 
-            _pingUtil?.Init();
+            PingUtil.Init();
             ObserverCompacterUtil.Init();
 
             // Get SnapShot After Auth
@@ -239,7 +237,6 @@ namespace FiroozehGameService.Handlers.RealTime
         public static Room CurrentRoom;
 
         private readonly GsLiveSystemObserver _observer;
-        private readonly PingUtil _pingUtil;
         private bool _isDisposed;
 
 
