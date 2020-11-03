@@ -45,6 +45,16 @@ namespace FiroozehGameService.Handlers.RealTime
 
         public void Dispose()
         {
+            if (_isDisposed)
+            {
+                LogUtil.Log(this, "RealTime Already Disposed!");
+                return;
+            }
+            
+            _isDisposed = true;
+            PlayerHash = 0;
+
+
             _udpClient?.StopReceiving();
             _observer?.Dispose();
             _pingUtil?.Dispose();
@@ -52,8 +62,6 @@ namespace FiroozehGameService.Handlers.RealTime
             ObserverCompacterUtil.Dispose();
             LogUtil.Log(this, "RealTime Dispose");
 
-            PlayerHash = 0;
-            _isDisposed = true;
             GsSerializer.CurrentPlayerLeftRoom?.Invoke(this, null);
             CoreEventHandlers.Dispose?.Invoke(this, null);
         }

@@ -41,10 +41,15 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         public void Dispose()
         {
+            if (_isDisposed)
+            {
+                LogUtil.Log(this, "Already TurnBased Disposed!");
+                return;
+            }
             _isDisposed = true;
             _tcpClient?.StopReceiving();
-            _observer.Dispose();
-            _cancellationToken.Cancel(true);
+            _observer?.Dispose();
+            _cancellationToken?.Cancel(true);
             CoreEventHandlers.Dispose?.Invoke(this, null);
             LogUtil.Log(this, "TurnBased Dispose");
         }

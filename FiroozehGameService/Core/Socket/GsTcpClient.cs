@@ -148,13 +148,13 @@ namespace FiroozehGameService.Core.Socket
             {
                 DataBuilder?.Clear();
                 IsAvailable = false;
+                OperationCancellationToken?.Cancel(false);
+                OperationCancellationToken?.Dispose();
 
                 _client?.GetStream().Close();
                 _client?.Close();
                 _client = null;
-
-                OperationCancellationToken?.Cancel(false);
-                OperationCancellationToken?.Dispose();
+                
                 OperationCancellationToken = null;
                 LogUtil.Log(this, "GsTcpClient -> StopReceiving");
             }

@@ -102,9 +102,9 @@ namespace FiroozehGameService.Core.GSLive
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (GSLive.Handler.RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
-            GSLive.Handler.RealTimeHandler.Request(LeaveRoomHandler.Signature, GProtocolSendType.Reliable,
+            GSLive.Handler.RealTimeHandler?.Request(LeaveRoomHandler.Signature, GProtocolSendType.Reliable,
                 isCritical: true);
-            GSLive.Handler.RealTimeHandler.Dispose();
+            GSLive.Handler.RealTimeHandler?.Dispose();
         }
 
 

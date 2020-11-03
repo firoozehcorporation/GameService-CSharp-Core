@@ -28,6 +28,7 @@ using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.TB;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.GSLive
 {
@@ -147,9 +148,9 @@ namespace FiroozehGameService.Core.GSLive
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (GSLive.Handler.TurnBasedHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First");
-            await GSLive.Handler.TurnBasedHandler.RequestAsync(LeaveRoomHandler.Signature,
+            await GSLive.Handler.TurnBasedHandler?.RequestAsync(LeaveRoomHandler.Signature,
                 new DataPayload {NextId = whoIsNext});
-            GSLive.Handler.TurnBasedHandler.Dispose();
+            GSLive.Handler.TurnBasedHandler?.Dispose();
         }
 
 
