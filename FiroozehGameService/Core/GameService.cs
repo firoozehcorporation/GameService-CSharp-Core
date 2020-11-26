@@ -60,12 +60,6 @@ namespace FiroozehGameService.Core
             GSLive = new GSLive.GSLive();
         }
 
-        internal static void OnNotificationReceived(Notification notification)
-        {
-            NotificationReceived?.Invoke(null, notification);
-        }
-
-
         /// <summary>
         ///     With this command you can get  list of all your game LeaderBoard
         ///     that you have registered in the Developer panel
@@ -673,7 +667,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "5.4.3";
+            return "6.0.0";
         }
 
 

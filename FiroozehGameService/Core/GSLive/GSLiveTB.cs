@@ -26,6 +26,7 @@ using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Models.Enums.GSLive.TB;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.TB;
 using FiroozehGameService.Utils;
@@ -136,6 +137,56 @@ namespace FiroozehGameService.Core.GSLive
                 throw new GameServiceException("You Must Create or Join Room First");
             await GSLive.Handler.TurnBasedHandler.RequestAsync(ChooseNextHandler.Signature,
                 new DataPayload {NextId = whoIsNext});
+        }
+
+        
+        /// <summary>
+        ///     Every Member can Set Properties to Sync Data With EachOthers
+        /// </summary>
+        /// <param name="key">(NOTNULL)  The Key Value</param>
+        /// <param name="value">(NOTNULL) The Value of Key </param>
+        public async Task SetProperty(string key,string value)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GSLive.Handler.TurnBasedHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+          
+            if (string.IsNullOrEmpty(key)) throw new GameServiceException("Key Cant Be EmptyOrNull");
+            if (string.IsNullOrEmpty(value)) throw new GameServiceException("Value Cant Be EmptyOrNull");
+
+            await GSLive.Handler.TurnBasedHandler.RequestAsync(PropertyHandler.Signature,
+                new DataPayload {Action = (int) PropertyAction.SetOrUpdate ,Id = key , Data = value});
+        }
+
+        
+        
+        /// <summary>
+        ///     Delete Properties And Sync it With EachOthers
+        /// </summary>
+        /// <param name="key">(NOTNULL) The Key Value</param>
+        public async Task RemoveProperty(string key)
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GSLive.Handler.TurnBasedHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+          
+            if (string.IsNullOrEmpty(key)) throw new GameServiceException("Key Cant Be EmptyOrNull");
+
+            await GSLive.Handler.TurnBasedHandler.RequestAsync(PropertyHandler.Signature,
+                new DataPayload {Action = (int) PropertyAction.Delete ,Id = key});
+        }
+
+        
+        /// <summary>
+        ///     Get All Properties
+        /// </summary>
+        public async Task GetProperties()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GSLive.Handler.TurnBasedHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First");
+            
+            await GSLive.Handler.TurnBasedHandler.RequestAsync(SnapshotHandler.Signature);
         }
 
 

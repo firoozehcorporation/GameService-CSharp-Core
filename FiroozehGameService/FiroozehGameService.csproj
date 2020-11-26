@@ -155,7 +155,9 @@
         <Compile Include="Handlers\TurnBased\RequestHandlers\FinishHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\GetMembersHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\LeaveRoomHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\RequestHandlers\PropertyHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\PingPongHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\RequestHandlers\SnapshotHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\TakeTurnHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\AuthResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\BaseResponseHandler.cs"/>
@@ -169,6 +171,8 @@
         <Compile Include="Handlers\TurnBased\ResponseHandlers\LeaveRoomResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\MemberDetailsResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\PingResponseHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\ResponseHandlers\PropertyResponseHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\ResponseHandlers\SnapShotResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\TakeTurnResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\TurnBasedHandler.cs"/>
         <Compile Include="Models\BasicApi\Achievement.cs"/>
@@ -212,6 +216,7 @@
         <Compile Include="Models\Enums\GSLive\GSLiveType.cs"/>
         <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
         <Compile Include="Models\Enums\GSLive\RT\MessageType.cs"/>
+        <Compile Include="Models\Enums\GSLive\TB\PropertyAction.cs"/>
         <Compile Include="Models\Enums\GsWebRequestMethod.cs"/>
         <Compile Include="Models\EventArgs\DownloadCancelledArgs.cs"/>
         <Compile Include="Models\EventArgs\DownloadCompleteArgs.cs"/>
@@ -258,6 +263,8 @@
         <Compile Include="Models\GSLive\TB\DataPayload.cs"/>
         <Compile Include="Models\GSLive\TB\Finish.cs"/>
         <Compile Include="Models\GSLive\TB\Outcome.cs"/>
+        <Compile Include="Models\GSLive\TB\PropertyPayload.cs"/>
+        <Compile Include="Models\GSLive\TB\SnapShot.cs"/>
         <Compile Include="Models\GSLive\TB\Turn.cs"/>
         <Compile Include="Models\Internal\AssetsInfo.cs"/>
         <Compile Include="Models\Internal\EditUserProfile.cs"/>
@@ -296,9 +303,6 @@
         <Compile Include="Utils\TimeUtil.cs"/>
         <Compile Include="Utils\URLUtil.cs"/>
     </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
                    Other similar extension points exist, see Microsoft.Common.targets.

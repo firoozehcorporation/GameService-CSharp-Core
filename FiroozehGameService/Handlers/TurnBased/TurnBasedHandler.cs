@@ -95,6 +95,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             _requestHandlers.Add(CurrentTurnHandler.Signature, new CurrentTurnHandler());
             _requestHandlers.Add(FinishHandler.Signature, new FinishHandler());
             _requestHandlers.Add(TakeTurnHandler.Signature, new TakeTurnHandler());
+            _requestHandlers.Add(PropertyHandler.Signature, new PropertyHandler());
+            _requestHandlers.Add(SnapshotHandler.Signature, new SnapshotHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -126,6 +128,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             _responseHandlers.Add(FinishResponseHandler.ActionCommand, new FinishResponseHandler());
             _responseHandlers.Add(PingResponseHandler.ActionCommand, new PingResponseHandler());
             _responseHandlers.Add(TakeTurnResponseHandler.ActionCommand, new TakeTurnResponseHandler());
+            _responseHandlers.Add(PropertyResponseHandler.ActionCommand, new PropertyResponseHandler());
+            _responseHandlers.Add(SnapShotResponseHandler.ActionCommand, new SnapShotResponseHandler());
         }
 
 

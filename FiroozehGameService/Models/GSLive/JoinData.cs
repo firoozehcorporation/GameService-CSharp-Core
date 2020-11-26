@@ -27,12 +27,6 @@ namespace FiroozehGameService.Models.GSLive
     public class JoinData
     {
         /// <summary>
-        ///     Gets the Player Member Who Joined To Room.
-        /// </summary>
-        /// <value>the Player Member Who Joined To Room</value>
-        [JsonProperty("3")] public Member JoinedMember;
-
-        /// <summary>
         ///     Gets the Room Join Type.
         /// </summary>
         /// <value>the Room Join Type</value>
@@ -45,5 +39,19 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Room Join Data</value>
         [JsonProperty("2")] public RoomData RoomData;
+        
+        
+        /// <summary>
+        ///     Gets the Player Member Who Joined To Room.
+        /// </summary>
+        /// <value>the Player Member Who Joined To Room</value>
+        [JsonProperty("3")] public Member JoinedMember;
+        
+        
+        /// <summary>
+        ///     Gets the Player Member Order Who Joined To Room.
+        /// </summary>
+        /// <value>the Player Member Order Who Joined To Room</value>
+        [JsonProperty("4")] public int JoinedMemberOrder;
     }
 }

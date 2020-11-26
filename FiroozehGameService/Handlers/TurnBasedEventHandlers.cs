@@ -65,6 +65,22 @@ namespace FiroozehGameService.Handlers
         ///     <see cref="GSLiveTB.ChooseNext" />
         /// </summary>
         public static EventHandler<Member> ChoosedNext;
+        
+        
+        /// <summary>
+        ///     Returns NewOrUpdate Property From Another Players When Call The Following Functions :
+        ///     <see cref="GSLiveTB.SetProperty" />
+        ///     <see cref="GSLiveTB.RemoveProperty" />
+        /// </summary>
+        public static EventHandler<PropertyPayload> PropertyUpdated;
+        
+        
+        
+        /// <summary>
+        ///     Returns SnapShot From Another Players When Call The Following Function :
+        ///     <see cref="GSLiveTB.GetProperties" />
+        /// </summary>
+        public static EventHandler<List<SnapShot>> SnapShotReceived;
 
 
         /// <summary>

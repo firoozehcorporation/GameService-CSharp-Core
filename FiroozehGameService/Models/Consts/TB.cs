@@ -13,6 +13,9 @@ namespace FiroozehGameService.Models.Consts
         public const int GetMembers = 9;
         public const int OnJoin = 11;
         public const int OnCurrentTurnDetail = 12;
+        public const int OnProperty = 13;
+        public const int OnSnapshot = 15;
+
 
 
         public const int Errors = 100;
