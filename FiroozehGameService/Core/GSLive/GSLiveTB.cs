@@ -84,13 +84,14 @@ namespace FiroozehGameService.Core.GSLive
         ///     Join In Room With RoomID
         /// </summary>
         /// <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
-        /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
-        public async Task JoinRoom(string roomId, string extra = null)
+        /// <param name="extra">(NULLABLE)Specifies the Extra Data To Send to Other Clients</param>
+        /// <param name="password">(NULLABLE)Specifies the Password if Room is Private</param>
+        public async Task JoinRoom(string roomId, string extra = null,string password = null)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
             if (string.IsNullOrEmpty(roomId)) throw new GameServiceException("roomId Cant Be EmptyOrNull");
             await GSLive.Handler.CommandHandler.RequestAsync(JoinRoomHandler.Signature,
-                new RoomDetail {Id = roomId, Extra = extra});
+                new RoomDetail {Id = roomId, Extra = extra , RoomPassword = password});
         }
 
 

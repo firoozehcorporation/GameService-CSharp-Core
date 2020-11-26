@@ -26,6 +26,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                     Max = options.MaxPlayer,
                     IsPrivate = options.IsPrivate,
                     IsPersist = options.IsPersist,
+                    RoomPassword = options.RoomPassword,
                     Type = Models.Consts.Command.ActionCreateRoom,
                     GsLiveType = (int) options.GsLiveType
                 }, new JsonSerializerSettings
