@@ -33,6 +33,7 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 
         protected override bool CheckAction(object payload)
         {
+            if (payload == null) return true;
             return payload.GetType() == typeof(DataPayload);
         }
     }

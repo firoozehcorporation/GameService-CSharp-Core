@@ -264,7 +264,7 @@
         <Compile Include="Models\GSLive\TB\Finish.cs"/>
         <Compile Include="Models\GSLive\TB\Outcome.cs"/>
         <Compile Include="Models\GSLive\TB\PropertyPayload.cs"/>
-        <Compile Include="Models\GSLive\TB\SnapShot.cs"/>
+        <Compile Include="Models\GSLive\TB\PropertyData.cs"/>
         <Compile Include="Models\GSLive\TB\Turn.cs"/>
         <Compile Include="Models\Internal\AssetsInfo.cs"/>
         <Compile Include="Models\Internal\EditUserProfile.cs"/>

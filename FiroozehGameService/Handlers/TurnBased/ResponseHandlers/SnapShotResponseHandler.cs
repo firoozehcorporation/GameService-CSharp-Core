@@ -12,8 +12,8 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            var snapShot = JsonConvert.DeserializeObject<List<SnapShot>>(packet.Data);
-            TurnBasedEventHandlers.SnapShotReceived?.Invoke(this, snapShot);
+            var propertyData = JsonConvert.DeserializeObject<List<PropertyData>>(packet.Data);
+            TurnBasedEventHandlers.PropertiesReceived?.Invoke(this, propertyData);
         }
     }
 }

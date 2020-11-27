@@ -77,10 +77,10 @@ namespace FiroozehGameService.Handlers
         
         
         /// <summary>
-        ///     Returns SnapShot From Another Players When Call The Following Function :
+        ///     Returns Properties From Another Players When Call The Following Function :
         ///     <see cref="GSLiveTB.GetProperties" />
         /// </summary>
-        public static EventHandler<List<SnapShot>> SnapShotReceived;
+        public static EventHandler<List<PropertyData>> PropertiesReceived;
 
 
         /// <summary>
