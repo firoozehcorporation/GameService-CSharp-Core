@@ -63,8 +63,8 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private async void OnPing(object sender, APacket packet)
         {
-            if (sender.GetType() == typeof(PingResponseHandler))
-                await RequestAsync(PingPongHandler.Signature, isCritical: true);
+            if (sender.GetType() != typeof(PingResponseHandler)) return;
+            await RequestAsync(PingPongHandler.Signature, isCritical: true);
             LogUtil.Log(null, "TurnBased OnPing");
         }
 

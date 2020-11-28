@@ -1,6 +1,7 @@
 using System;
 using System.Net.Sockets;
 using System.Threading;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.Socket.ClientHelper
 {
@@ -15,15 +16,17 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
         private readonly string _hostname;
         private readonly int _port;
         private readonly int _timeoutMilliseconds;
+        private readonly int _timeoutWaitMilliseconds;
         private bool _connected;
         private TcpClient _connection;
         private Exception _exception;
 
-        internal TcpClientWithTimeout(string hostname, int port, int timeoutMilliseconds)
+        internal TcpClientWithTimeout(string hostname, int port, int timeoutMilliseconds,int timeoutWaitMilliseconds)
         {
             _hostname = hostname;
             _port = port;
             _timeoutMilliseconds = timeoutMilliseconds;
+            _timeoutWaitMilliseconds = timeoutWaitMilliseconds;
         }
 
         internal TcpClient Connect()
@@ -63,6 +66,11 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
         {
             try
             {
+                LogUtil.Log(this,"Wait " + _timeoutWaitMilliseconds + " Before Connect");
+                Thread.Sleep(_timeoutWaitMilliseconds);
+                LogUtil.Log(this,"Connect To " + _hostname);
+
+                
                 _connection = new TcpClient(_hostname, _port);
                 // record that it succeeded, for the main thread to return to the caller
                 _connected = true;

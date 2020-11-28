@@ -33,5 +33,6 @@ namespace FiroozehGameService.Models.Consts
 
         // Limit Checker
         internal const int TimeLimit = 5; // 10 Request per sec
+        internal const short MaxRetryConnect = 7;
     }
 }

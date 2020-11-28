@@ -690,8 +690,7 @@ namespace FiroozehGameService.Core
 
         private const string Tag = "FiroozehGameService";
         private static bool _isAvailable;
-        public static event EventHandler<Notification> NotificationReceived;
-
+        
         internal static string UserToken;
         internal static string PlayToken;
         internal static Game CurrentGame;

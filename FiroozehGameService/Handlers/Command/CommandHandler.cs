@@ -166,11 +166,14 @@ namespace FiroozehGameService.Handlers.Command
             {
                 Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
                 await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
+                _retryConnectCounter = 0;
                 LogUtil.Log(this, "CommandHandler Init done");
             }
             else
             {
-                LogUtil.Log(this, "CommandHandler Init done With TimeOut or Error");
+                _retryConnectCounter++;
+                LogUtil.Log(this, "CommandHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+                await Init();
             }
         }
 
@@ -231,6 +234,7 @@ namespace FiroozehGameService.Handlers.Command
         private static GsTcpClient _tcpClient;
         private readonly GsLiveSystemObserver _observer;
         private CancellationTokenSource _cancellationToken;
+        private int _retryConnectCounter;
         private bool _isDisposed;
         private bool _isFirstInit;
 

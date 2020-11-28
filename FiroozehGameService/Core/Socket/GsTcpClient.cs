@@ -16,6 +16,7 @@ namespace FiroozehGameService.Core.Socket
     internal class GsTcpClient : GsSocketClient
     {
         private const short TimeOut = 5000;
+        private const short TimeOutWait = 2000;
 
         private TcpClient _client;
 
@@ -38,7 +39,7 @@ namespace FiroozehGameService.Core.Socket
                 var port = CommandInfo?.Port ?? Area.Port;
 
                 LogUtil.Log(this, "GsTcpClient -> Init Started with -> " + CommandInfo + " or " + Area);
-                _client = new TcpClientWithTimeout(ip, port, TimeOut).Connect();
+                _client = new TcpClientWithTimeout(ip, port, TimeOut,TimeOutWait).Connect();
                 LogUtil.Log(this, "GsTcpClient -> Connected,Waiting for Handshakes...");
 
                 /*var certificate = new X509Certificate2(Encoding.Default.GetBytes(cert));
