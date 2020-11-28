@@ -83,20 +83,24 @@ namespace FiroozehGameService.Core.GSLive
             /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
             /// <param name="roomPassword">Specifies the Room Password If the Room is Private</param>
             public CreateRoomOption(string roomName, string role, int minPlayer = 2, int maxPlayer = 2,
-                bool isPrivate = false, bool isPersist = false, string extra = null,string roomPassword = null)
+                bool isPrivate = false, bool isPersist = false, string extra = null, string roomPassword = null)
                 : base(role, minPlayer, maxPlayer, isPersist, extra)
             {
                 if (string.IsNullOrEmpty(roomName)) throw new GameServiceException("RoomName Cant Be EmptyOrNull");
-                if (!isPrivate && !string.IsNullOrEmpty(roomPassword)) throw new GameServiceException("RoomPassword Can Only Set When Room is Private");
-                if (isPrivate  && string.IsNullOrEmpty(roomPassword))  throw new GameServiceException("RoomPassword Cant Be EmptyOrNull When Room is Private");
-                
+                if (!isPrivate && !string.IsNullOrEmpty(roomPassword))
+                    throw new GameServiceException("RoomPassword Can Only Set When Room is Private");
+                if (isPrivate && string.IsNullOrEmpty(roomPassword))
+                    throw new GameServiceException("RoomPassword Cant Be EmptyOrNull When Room is Private");
+                if (isPrivate && (roomPassword.Length < 4 || roomPassword.Length > 15))
+                    throw new GameServiceException("RoomPassword Length Must Be Between 4 and 15");
+
                 RoomName = roomName;
                 RoomPassword = roomPassword;
                 IsPrivate = isPrivate;
             }
 
             internal string RoomName { get; }
-            
+
             internal string RoomPassword { get; }
 
             internal bool IsPrivate { get; }
