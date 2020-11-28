@@ -64,8 +64,7 @@ namespace FiroozehGameService.Handlers
         {
             if (TurnBasedHandler != null && TurnBasedHandler.IsAvailable)
             {
-                await TurnBasedHandler.RequestAsync(TurnBased.RequestHandlers.LeaveRoomHandler.Signature,
-                    isCritical: true);
+                await TurnBasedHandler.RequestAsync(TurnBased.RequestHandlers.LeaveRoomHandler.Signature, isCritical: true);
                 TurnBasedHandler.Dispose();
                 TurnBasedHandler = null;
             }

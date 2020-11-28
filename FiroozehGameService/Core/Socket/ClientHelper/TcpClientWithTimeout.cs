@@ -1,6 +1,10 @@
 using System;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
+using FiroozehGameService.Handlers;
+using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.Socket.ClientHelper
@@ -15,70 +19,70 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
     {
         private readonly string _hostname;
         private readonly int _port;
-        private readonly int _timeoutMilliseconds;
         private readonly int _timeoutWaitMilliseconds;
         private bool _connected;
         private TcpClient _connection;
         private Exception _exception;
+        private readonly CancellationTokenSource _cancellationToken;
 
-        internal TcpClientWithTimeout(string hostname, int port, int timeoutMilliseconds,int timeoutWaitMilliseconds)
+
+        internal TcpClientWithTimeout(string hostname, int port,int timeoutWaitMilliseconds)
         {
             _hostname = hostname;
             _port = port;
-            _timeoutMilliseconds = timeoutMilliseconds;
             _timeoutWaitMilliseconds = timeoutWaitMilliseconds;
+            _cancellationToken = new CancellationTokenSource();
         }
 
-        internal TcpClient Connect()
+        internal async Task Connect(GSLiveType type)
         {
             // kick off the thread that tries to connect
             _connected = false;
             _exception = null;
-            var thread = new Thread(BeginConnect) {IsBackground = true};
-            // So that a failed connection attempt 
-            // wont prevent the process from terminating while it does the long timeout
-            thread.Start();
 
-            // wait for either the timeout or the thread to finish
-            thread.Join(_timeoutMilliseconds);
+
+            await Task.Run(async () => { await BeginConnect(); },_cancellationToken.Token);
 
             if (_connected)
             {
-                // it succeeded, so return the connection
-                thread.Abort();
-                return _connection;
+                CoreEventHandlers.OnTcpClientConnected?.Invoke(type,_connection);
+                return;
             }
 
             if (_exception != null)
             {
-                // it crashed, so return the exception to the caller
-                thread.Abort();
-                throw _exception;
+                CoreEventHandlers.OnGsTcpClientError?.Invoke(type, new GameServiceException(_exception.Message));
+                return;
             }
-
-            // if it gets here, it timed out, so abort the thread and throw an exception
-            thread.Abort();
-            var message = $"TcpClient connection to {_hostname}:{_port} timed out";
-            throw new TimeoutException(message);
+            
+            CoreEventHandlers.OnGsTcpClientError?.Invoke(type,new GameServiceException( $"TcpClient connection to {_hostname}:{_port} timed out"));
         }
 
-        private void BeginConnect()
+        private async Task BeginConnect()
         {
             try
             {
-                LogUtil.Log(this,"Wait " + _timeoutWaitMilliseconds + " Before Connect");
-                Thread.Sleep(_timeoutWaitMilliseconds);
-                LogUtil.Log(this,"Connect To " + _hostname);
-
+                LogUtil.Log(this, "Wait " + _timeoutWaitMilliseconds + " Before Connect");
+                await Task.Delay(_timeoutWaitMilliseconds);
+                LogUtil.Log(this, "Connect To " + _hostname);
                 
-                _connection = new TcpClient(_hostname, _port);
-                // record that it succeeded, for the main thread to return to the caller
+                _connection = new TcpClient(_hostname,_port);
+                /*_connection = new TcpClient();
+                var result = _connection.BeginConnect(_hostname, _port, null, null);
+
+                var success = result.AsyncWaitHandle.WaitOne(_timeoutWaitMilliseconds);
+                if (!success) throw new GameServiceException("Connection Main Timeout");
+                
+                _connection.EndConnect(result);*/
                 _connected = true;
             }
             catch (Exception ex)
             {
-                // record the exception for the main thread to re-throw back to the calling code
                 _exception = ex;
+            }
+            finally
+            {
+                _cancellationToken?.Cancel(false);
             }
         }
     }

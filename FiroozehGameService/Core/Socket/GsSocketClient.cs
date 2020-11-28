@@ -3,7 +3,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.PacketHelper;
+using FiroozehGameService.Handlers;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
 
@@ -12,8 +15,6 @@ namespace FiroozehGameService.Core.Socket
     internal abstract class GsSocketClient
     {
         public event EventHandler<SocketDataReceived> DataReceived;
-        public event EventHandler<ErrorArg> Error;
-
 
         protected void OnDataReceived(SocketDataReceived arg)
         {
@@ -24,10 +25,10 @@ namespace FiroozehGameService.Core.Socket
         {
             IsAvailable = false;
             DataBuilder?.Clear();
-            Error?.Invoke(this, errorArg);
+            CoreEventHandlers.OnGsTcpClientError?.Invoke(Type, new GameServiceException(errorArg.Error));
         }
 
-        internal abstract bool Init(CommandInfo info);
+        internal abstract Task Init(CommandInfo info);
 
         internal abstract void Send(Packet packet);
 
@@ -42,6 +43,7 @@ namespace FiroozehGameService.Core.Socket
         private const int BufferCapacity = 1024 * 128;
         protected CommandInfo CommandInfo;
         protected Area Area;
+        protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected CancellationTokenSource OperationCancellationToken;
         public bool IsAvailable;

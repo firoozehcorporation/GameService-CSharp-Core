@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core;
@@ -23,7 +24,6 @@ namespace FiroozehGameService.Handlers.Command
         {
             _tcpClient = new GsTcpClient();
             _tcpClient.DataReceived += OnDataReceived;
-            _tcpClient.Error += OnError;
 
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.Core);
@@ -37,10 +37,34 @@ namespace FiroozehGameService.Handlers.Command
             // Set Internal Event Handlers
             CoreEventHandlers.Ping += OnPing;
             CoreEventHandlers.Authorized += OnAuth;
+            CoreEventHandlers.OnGsTcpClientConnected += OnGsTcpClientConnected;
+            CoreEventHandlers.OnGsTcpClientError += OnGsTcpClientError;
 
             LogUtil.Log(this, "CommandHandler Initialized with "
                               + _requestHandlers.Count + " Request Handlers & "
                               + _responseHandlers.Count + " Response Handlers");
+        }
+
+        private async void OnGsTcpClientError(object sender, GameServiceException exception)
+        {
+            if((GSLiveType) sender != GSLiveType.Core) return;
+            if (_isDisposed) return;
+
+            LogUtil.Log(this, "CommandHandler -> OnGsTcpClientError : " + exception);
+            _retryConnectCounter++;
+            LogUtil.Log(this, "CommandHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+            await Init();
+        }
+
+        private async void OnGsTcpClientConnected(object sender, TcpClient e)
+        {
+            if((GSLiveType) sender != GSLiveType.Core) return;
+            
+            LogUtil.Log(this, "CommandHandler -> Connected,Waiting for Handshakes... , Type : " + (GSLiveType) sender);
+            _rootTask = Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+            await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
+            _retryConnectCounter = 0;
+            LogUtil.Log(this, "CommandHandler Init done");
         }
 
         public void Dispose()
@@ -162,19 +186,7 @@ namespace FiroozehGameService.Handlers.Command
         public async Task Init()
         {
             _cancellationToken = new CancellationTokenSource();
-            if (_tcpClient.Init(GameService.CommandInfo))
-            {
-                Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
-                await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
-                _retryConnectCounter = 0;
-                LogUtil.Log(this, "CommandHandler Init done");
-            }
-            else
-            {
-                _retryConnectCounter++;
-                LogUtil.Log(this, "CommandHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
-                await Init();
-            }
+            await _tcpClient.Init(GameService.CommandInfo);
         }
 
 
@@ -202,14 +214,6 @@ namespace FiroozehGameService.Handlers.Command
             else throw new GameServiceException("GameService Not Available");
         }
 
-        private async void OnError(object sender, ErrorArg e)
-        {
-            LogUtil.LogError(this, "CommandHandler OnError > " + e.Error + ", isDisposed : " + _isDisposed);
-            if (_isDisposed) return;
-            await Init();
-        }
-
-
         private void OnDataReceived(object sender, SocketDataReceived e)
         {
             try
@@ -232,6 +236,7 @@ namespace FiroozehGameService.Handlers.Command
         #region Fields
 
         private static GsTcpClient _tcpClient;
+        private Task _rootTask;
         private readonly GsLiveSystemObserver _observer;
         private CancellationTokenSource _cancellationToken;
         private int _retryConnectCounter;
