@@ -122,8 +122,9 @@ namespace FiroozehGameService.Utils.Serializer
                     var stream = TypeUtil.GetWriteStreamFromParams(data);
                     return SerializerUtil.Serialize(stream);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    e.LogException(typeof(GsSerializer),DebugLocation.RealTime,"SerializeParams");
                     return null;
                 }
             }
@@ -173,7 +174,8 @@ namespace FiroozehGameService.Utils.Serializer
             public static void SendObject(byte[] caller, byte[] buffer)
             {
                 if (caller == null || buffer == null)
-                    throw new GameServiceException("GsSerializer Err -> Caller or buffer Cant Be Null");
+                    throw new GameServiceException("GsSerializer Err -> Caller or buffer Cant Be Null")
+                        .LogException(typeof(GsSerializer),DebugLocation.RealTime,"SendObject");
 
                 GSLiveRT.SendEvent(caller, buffer, GProtocolSendType.Reliable);
             }
@@ -190,7 +192,9 @@ namespace FiroozehGameService.Utils.Serializer
             public static void SendObserver(byte[] caller, byte[] buffer)
             {
                 if (buffer == null)
-                    throw new GameServiceException("GsSerializer Err -> buffer Cant Be Null");
+                    throw new GameServiceException("GsSerializer Err -> buffer Cant Be Null")
+                        .LogException(typeof(GsSerializer),DebugLocation.RealTime,"SendObserver");
+
                 GSLiveRT.SendObserver(caller, buffer);
             }
 
@@ -205,7 +209,8 @@ namespace FiroozehGameService.Utils.Serializer
             public static byte[] GetBuffer(IGsLiveSerializable serializable)
             {
                 if (serializable == null)
-                    throw new GameServiceException("GsSerializer Err -> serializable cant be Null");
+                    throw new GameServiceException("GsSerializer Err -> serializable cant be Null")
+                        .LogException(typeof(GsSerializer),DebugLocation.RealTime,"GetBuffer");
 
                 var writeStream = new GsWriteStream();
                 serializable.OnGsLiveWrite(writeStream);
@@ -271,7 +276,8 @@ namespace FiroozehGameService.Utils.Serializer
             private static GsReadStream GetReadStream(byte[] buffer)
             {
                 if (buffer == null)
-                    throw new GameServiceException("GsSerializer Err -> buffer cant be Null");
+                    throw new GameServiceException("GsSerializer Err -> buffer cant be Null")
+                        .LogException(typeof(GsSerializer),DebugLocation.RealTime,"GetReadStream");
 
                 return SerializerUtil.Deserialize(buffer);
             }

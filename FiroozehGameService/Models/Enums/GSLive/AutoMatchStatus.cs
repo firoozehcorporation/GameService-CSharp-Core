@@ -26,7 +26,13 @@ namespace FiroozehGameService.Models.Enums.GSLive
     /// </summary>
     public enum AutoMatchStatus
     {
+        /// <summary>
+        /// Set When Current Member Joined To AutoMatch Queue
+        /// </summary>
         OnWaiting,
+        /// <summary>
+        /// Set When Other Member Joined To AutoMatch Queue
+        /// </summary>
         OnUserUpdated
     }
 }

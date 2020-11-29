@@ -1,3 +1,23 @@
+// <copyright file="RealTimeHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//    limitations under the License.
+// </copyright>
+
+/**
+* @author Alireza Ghodrati
+*/
+
 using System;
 using System.Collections.Generic;
 using FiroozehGameService.Core;
@@ -39,14 +59,16 @@ namespace FiroozehGameService.Handlers.RealTime
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
-            LogUtil.Log(this, "RealTime init");
+            LogUtil.Log(this, "RealTimeHandler init");
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Constructor","RealTimeHandler init");
         }
 
         public void Dispose()
         {
             if (_isDisposed)
             {
-                LogUtil.Log(this, "RealTime Already Disposed!");
+                LogUtil.Log(this, "RealTimeHandler Already Disposed!");
+                DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Dispose","RealTimeHandler Already Disposed");
                 return;
             }
             
@@ -58,6 +80,8 @@ namespace FiroozehGameService.Handlers.RealTime
             _observer?.Dispose();
 
             ObserverCompacterUtil.Dispose();
+            
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Dispose","RealTimeHandler Dispose Done");
             LogUtil.Log(this, "RealTime Dispose");
 
             GsSerializer.CurrentPlayerLeftRoom?.Invoke(this, null);
@@ -109,7 +133,9 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = (ulong) playerHash;
+            
             LogUtil.Log(null, "RealTime OnAuth");
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"OnAuth","RealTimeHandler Auth Done");
 
             PingUtil.Init();
             ObserverCompacterUtil.Init();
@@ -198,13 +224,17 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) _udpClient.Send(packet, type, canSendBigSize);
-            else throw new GameServiceException("GameService Not Available");
+            else throw new GameServiceException("GameService Not Available")
+                .LogException<RealTimeHandler>(DebugLocation.RealTime,"Send");
         }
 
 
         private void OnError(object sender, ErrorArg e)
         {
+            
             LogUtil.Log(this, "RealTime Error");
+            DebugUtil.LogError<RealTimeHandler>(DebugLocation.RealTime,"OnError",e.Error);
+            
             Dispose();
             //if (_isDisposed) return;
             //Init();
@@ -227,6 +257,7 @@ namespace FiroozehGameService.Handlers.RealTime
             catch (Exception exception)
             {
                 LogUtil.LogError(this, "RealtimeHandler OnDataReceived ERR : " + exception);
+                exception.LogException<RealTimeHandler>(DebugLocation.RealTime,"OnDataReceived");
             }
         }
 

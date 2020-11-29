@@ -1,4 +1,4 @@
-// <copyright file="MarketType.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="IRequestHandler.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +14,16 @@
 //    limitations under the License.
 // </copyright>
 
-
 /**
 * @author Alireza Ghodrati
 */
 
+using FiroozehGameService.Models.GSLive.Command;
 
-namespace FiroozehGameService.Models.Enums.GSLive.Command
+namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 {
-    /// <summary>
-    ///     Represents MarketType Model In Notification
-    /// </summary>
-    public enum MarketType
+    internal interface IRequestHandler
     {
-        NotSet,
-        Bazaar,
-        Myket,
-        IranApps,
-        GooglePlay
+        Packet HandleAction(object payload);
     }
 }

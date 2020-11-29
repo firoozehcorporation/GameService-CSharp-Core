@@ -26,7 +26,13 @@ namespace FiroozehGameService.Models.Enums.GSLive
     /// </summary>
     public enum JoinType
     {
+        /// <summary>
+        /// Sets When Current Member Join From Create Room
+        /// </summary>
         Normal,
+        /// <summary>
+        /// Sets When Current Member Join From AutoMatch
+        /// </summary>
         AutoMatch
     }
 }

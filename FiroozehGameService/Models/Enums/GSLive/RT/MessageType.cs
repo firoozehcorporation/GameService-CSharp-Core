@@ -26,7 +26,13 @@ namespace FiroozehGameService.Models.Enums.GSLive.RT
     /// </summary>
     public enum MessageType
     {
+        /// <summary>
+        /// Set When RealTime Message is Public
+        /// </summary>
         Public,
+        /// <summary>
+        /// Set When Realtime Message is Private
+        /// </summary>
         Private
     }
 }

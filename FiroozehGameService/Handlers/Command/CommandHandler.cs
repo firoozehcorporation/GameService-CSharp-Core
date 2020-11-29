@@ -1,3 +1,23 @@
+// <copyright file="CommandHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//    limitations under the License.
+// </copyright>
+
+/**
+* @author Alireza Ghodrati
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -10,6 +30,7 @@ using FiroozehGameService.Handlers.Command.RequestHandlers.Chat;
 using FiroozehGameService.Handlers.Command.ResponseHandlers;
 using FiroozehGameService.Handlers.Command.ResponseHandlers.Chat;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
@@ -43,6 +64,8 @@ namespace FiroozehGameService.Handlers.Command
             LogUtil.Log(this, "CommandHandler Initialized with "
                               + _requestHandlers.Count + " Request Handlers & "
                               + _responseHandlers.Count + " Response Handlers");
+            
+            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"Constructor","CommandHandler Initialized");
         }
 
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
@@ -51,8 +74,13 @@ namespace FiroozehGameService.Handlers.Command
             if (_isDisposed) return;
 
             LogUtil.Log(this, "CommandHandler -> OnGsTcpClientError : " + exception);
+            exception.LogException<CommandHandler>(DebugLocation.Command, "OnGsTcpClientError");
+            
             _retryConnectCounter++;
+            
             LogUtil.Log(this, "CommandHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+            DebugUtil.LogError<CommandHandler>(DebugLocation.Command,"OnGsTcpClientError","CommandHandler Reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+
             await Init();
         }
 
@@ -60,11 +88,16 @@ namespace FiroozehGameService.Handlers.Command
         {
             if((GSLiveType) sender != GSLiveType.Command) return;
             
-            LogUtil.Log(this, "CommandHandler -> Connected,Waiting for Handshakes... , Type : " + (GSLiveType) sender);
+            LogUtil.Log(this, "CommandHandler -> Connected,Waiting for Handshakes...");
+            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"OnGsTcpClientConnected","CommandHandler -> Connected,Waiting for Handshakes...");
+
+            
             _rootTask = Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
             _retryConnectCounter = 0;
+            
             LogUtil.Log(this, "CommandHandler Init done");
+            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"OnGsTcpClientConnected","CommandHandler Init done");
         }
 
         public void Dispose()
@@ -74,17 +107,23 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient?.StopReceiving();
             _observer.Dispose();
             _cancellationToken.Cancel(false);
+            
             LogUtil.Log(this, "CommandHandler Dispose");
+            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"Dispose","CommandHandler Dispose Done");
         }
 
         private void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = (string) playerHash;
+            
             LogUtil.Log(null, "CommandHandler OnAuth");
 
             if (_isFirstInit) return;
             _isFirstInit = true;
+            
+            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"OnAuth","CommandHandler Auth Done");
+            
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }
 
@@ -92,6 +131,7 @@ namespace FiroozehGameService.Handlers.Command
         {
             if (sender.GetType() != typeof(PingResponseHandler)) return;
             await RequestAsync(PingPongHandler.Signature, isCritical: true);
+            
             LogUtil.Log(this, "CommandHandler OnPing");
         }
 
@@ -211,7 +251,8 @@ namespace FiroozehGameService.Handlers.Command
         {
             if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) await _tcpClient.SendAsync(packet);
-            else throw new GameServiceException("GameService Not Available");
+            else throw new GameServiceException("GameService Not Available")
+                .LogException<CommandHandler>(DebugLocation.Command,"SendAsync");
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)
@@ -230,6 +271,7 @@ namespace FiroozehGameService.Handlers.Command
             catch (Exception exception)
             {
                 LogUtil.LogError(this, "CommandHandler OnDataReceived ERR : " + exception);
+                exception.LogException<CommandHandler>(DebugLocation.Command,"OnDataReceived");
             }
         }
 

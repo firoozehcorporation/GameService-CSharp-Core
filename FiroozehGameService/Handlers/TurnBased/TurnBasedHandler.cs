@@ -1,3 +1,23 @@
+// <copyright file="TurnBasedHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//    limitations under the License.
+// </copyright>
+
+/**
+* @author Alireza Ghodrati
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -9,6 +29,7 @@ using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.ResponseHandlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
@@ -39,7 +60,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
-            LogUtil.Log(this, "TurnBased Initialized");
+            LogUtil.Log(this, "TurnBasedHandler Init");
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Constructor","TurnBasedHandler Init");
         }
 
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
@@ -47,36 +69,48 @@ namespace FiroozehGameService.Handlers.TurnBased
             if((GSLiveType) sender != GSLiveType.TurnBased) return;
             if (_isDisposed) return;
 
-            LogUtil.Log(this, "TurnBasedHandler -> OnGsTcpClientError : " + exception);
+            LogUtil.LogError(this, "TurnBasedHandler -> OnGsTcpClientError : " + exception);
+            exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError");
+
             _retryConnectCounter++;
             
-            if (_retryConnectCounter >= TB.MaxRetryConnect)
+            if (_retryConnectCounter >= TurnBasedConst.MaxRetryConnect)
             {
                 LogUtil.Log(this, "TurnBasedHandler Reached to MaxRetryConnect , so dispose TurnBased...");
+                DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError","TurnBasedHandler Reached to MaxRetryConnect , so dispose TurnBased...");
                 Dispose();
                 return;
             }
             
             LogUtil.Log(this, "TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError","TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+
             await Init();
         }
 
         private async void OnGsTcpClientConnected(object sender, TcpClient e)
         {
             if((GSLiveType) sender != GSLiveType.TurnBased) return;
+
+            LogUtil.Log(this, "TurnBasedHandler -> Connected,Waiting for Handshakes...");
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientConnected","TurnBasedHandler -> Connected,Waiting for Handshakes...");
+
             
-            LogUtil.Log(this, "TurnBasedHandler -> Connected,Waiting for Handshakes..., Type : " + (GSLiveType) sender);
             Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
+         
             _retryConnectCounter = 0;
+            
             LogUtil.Log(this, "TurnBasedHandler Init done"); 
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientConnected","TurnBasedHandler Init done");
         }
 
         public void Dispose()
         {
             if (_isDisposed)
             {
-                LogUtil.Log(this, "Already TurnBased Disposed!");
+                LogUtil.Log(this, "TurnBasedHandler Already Disposed!");
+                DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Dispose","TurnBasedHandler Already Disposed");
                 return;
             }
 
@@ -86,14 +120,18 @@ namespace FiroozehGameService.Handlers.TurnBased
             _observer?.Dispose();
             _cancellationToken?.Cancel(true);
             CoreEventHandlers.Dispose?.Invoke(this, null);
+            
             LogUtil.Log(this, "TurnBasedHandler Dispose");
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Dispose","TurnBasedHandler Dispose Done");
         }
 
         private static void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = (string) playerHash;
+            
             LogUtil.Log(null, "TurnBasedHandler OnAuth");
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnAuth","TurnBasedHandler Auth Done");
         }
 
         private async void OnPing(object sender, APacket packet)
@@ -196,7 +234,8 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) await _tcpClient.SendAsync(packet);
-            else throw new GameServiceException("GameService Not Available");
+            else throw new GameServiceException("GameService Not Available")
+                .LogException<TurnBasedHandler>(DebugLocation.TurnBased,"SendAsync");
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)
@@ -215,6 +254,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             catch (Exception exception)
             {
                 LogUtil.LogError(this, "TurnBasedHandler OnDataReceived ERR : " + exception);
+                exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased,"OnDataReceived");
             }
         }
 

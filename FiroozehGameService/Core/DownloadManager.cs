@@ -14,7 +14,6 @@
 //    limitations under the License.
 // </copyright>
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,8 +23,10 @@ using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.Internal;
+using FiroozehGameService.Utils;
 
 /**
 * @author Alireza Ghodrati
@@ -212,7 +213,8 @@ namespace FiroozehGameService.Core
         internal void CancelDownload(string tag)
         {
             if (!_webClients.ContainsKey(tag))
-                throw new GameServiceException("The Tag \"" + tag + "\" is Not Exist In Download Queue!");
+                throw new GameServiceException("The Tag \"" + tag + "\" is Not Exist In Download Queue!")
+                    .LogException<DownloadManager>(DebugLocation.Internal, "CancelDownload(string)");
 
             _webClients[tag]?.CancelAsync();
             _webClients[tag]?.Dispose();
@@ -224,7 +226,8 @@ namespace FiroozehGameService.Core
         {
             var tag = info.AssetInfoData.Name;
             if (!_webClients.ContainsKey(tag))
-                throw new GameServiceException("The Tag \"" + tag + "\" is Not Exist In Download Queue!");
+                throw new GameServiceException("The Tag \"" + tag + "\" is Not Exist In Download Queue!")
+                    .LogException<DownloadManager>(DebugLocation.Internal, "CancelDownload(AssetInfo)");
 
             _webClients[tag]?.CancelAsync();
             _webClients[tag]?.Dispose();

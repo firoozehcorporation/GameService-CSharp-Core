@@ -19,6 +19,7 @@
 * @author Alireza Ghodrati
 */
 
+using System;
 using FiroozehGameService.Models.Enums;
 
 namespace FiroozehGameService.Models.EventArgs
@@ -43,5 +44,12 @@ namespace FiroozehGameService.Models.EventArgs
         /// the Debug Data
         /// </summary>
         public string Data;
+        
+        
+        /// <summary>
+        /// the Debug Exception
+        /// NullAble, Only Available When  Where is Exception
+        /// </summary>
+        public Exception Exception;
     }
 }

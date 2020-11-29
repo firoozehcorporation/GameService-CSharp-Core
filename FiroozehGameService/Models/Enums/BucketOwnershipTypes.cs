@@ -29,7 +29,13 @@ namespace FiroozehGameService.Models.Enums
     [Serializable]
     public enum BucketOwnershipTypes
     {
+        /// <summary>
+        /// Sets The Current Member OwnerShip
+        /// </summary>
         Me,
+        /// <summary>
+        /// Sets The Other Member OwnerShip
+        /// </summary>
         Another
     }
 }

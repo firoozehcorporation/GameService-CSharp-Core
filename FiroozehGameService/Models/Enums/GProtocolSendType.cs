@@ -26,7 +26,13 @@ namespace FiroozehGameService.Models.Enums
     /// </summary>
     public enum GProtocolSendType
     {
+        /// <summary>
+        /// Sets To Use GProtocol To Send Packets on UnReliable Tech
+        /// </summary>
         UnReliable,
+        /// <summary>
+        /// Sets To Use GProtocol To Send Packets on Reliable Tech
+        /// </summary>
         Reliable
     }
 }

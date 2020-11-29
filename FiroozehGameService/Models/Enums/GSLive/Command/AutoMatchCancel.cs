@@ -26,7 +26,13 @@ namespace FiroozehGameService.Models.Enums.GSLive.Command
     /// </summary>
     public enum AutoMatchCancel
     {
+        /// <summary>
+        /// Set When AutoMatchCancel Success
+        /// </summary>
         Success,
+        /// <summary>
+        /// Set When The Member Not In AutoMatch Queue
+        /// </summary>
         NotInQueue
     }
 }

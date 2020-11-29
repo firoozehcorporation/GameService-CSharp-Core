@@ -34,6 +34,10 @@ namespace FiroozehGameService.Models.Enums
         /// <summary>
         /// Error Log
         /// </summary>
-        Error
+        Error,
+        /// <summary>
+        /// Exception Log
+        /// </summary>
+        Exception
     }
 }

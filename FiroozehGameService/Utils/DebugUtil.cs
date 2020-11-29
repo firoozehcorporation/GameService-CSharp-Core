@@ -61,8 +61,9 @@ namespace FiroozehGameService.Utils
         }
 
         
-        internal static void LogError(DebugLocation where,string callingClass,string callingMethod,string data) 
+        internal static void LogError<TClass>(DebugLocation where,string callingMethod,string data) 
         {
+            var callingClass = typeof(TClass).Name;
             new Debug
             {
                 LogTypeType = LogType.Error, 
@@ -71,8 +72,9 @@ namespace FiroozehGameService.Utils
             }.Invoke();
         }
         
-        internal static void LogError(DebugLocation where,string callingClass,string callingMethod,Exception exception)
+        internal static void LogError(Type type,DebugLocation where,string callingMethod,Exception exception)
         {
+            var callingClass = type.Name;
             new Debug
             {
                 LogTypeType = LogType.Error, 
@@ -82,29 +84,31 @@ namespace FiroozehGameService.Utils
         }
 
 
-        internal static GameServiceException LogException<TClass>(this GameServiceException exception,DebugLocation where,string callingMethod)
+        internal static Exception LogException<TClass>(this Exception exception,DebugLocation where,string callingMethod)
          where TClass : class
         {
             var callingClass = typeof(TClass).Name;
             new Debug
             {
-                LogTypeType = LogType.Error, 
+                LogTypeType = LogType.Exception, 
+                Exception = exception,
                 Where = where,
-                Data = GetTime() + " - [" + callingClass + ".cs" + " ▶ " + LogType.Error + " F:" +callingMethod + "] : " + exception.Message
+                Data = GetTime() + " - [" + callingClass + ".cs" + " ▶ " + LogType.Exception + " F:" +callingMethod + "] : " + exception.Message
             }.Invoke();
             
             return exception;
         }
         
         
-        internal static GameServiceException LogException(this GameServiceException exception,Type type,DebugLocation where,string callingMethod)
+        internal static Exception LogException(this Exception exception,Type type,DebugLocation where,string callingMethod)
         {
             var callingClass = type.Name;
             new Debug
             {
-                LogTypeType = LogType.Error, 
+                LogTypeType = LogType.Exception, 
+                Exception = exception,
                 Where = where,
-                Data = GetTime() + " - [" + callingClass + ".cs" + " ▶ " + LogType.Error + " F:" +callingMethod + "] : " + exception.Message
+                Data = GetTime() + " - [" + callingClass + ".cs" + " ▶ " + LogType.Exception + " F:" +callingMethod + "] : " + exception.Message
             }.Invoke();
             
             return exception;
