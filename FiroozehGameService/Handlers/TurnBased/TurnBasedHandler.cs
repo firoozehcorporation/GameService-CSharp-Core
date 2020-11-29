@@ -8,6 +8,7 @@ using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.ResponseHandlers;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
@@ -48,6 +49,14 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             LogUtil.Log(this, "TurnBasedHandler -> OnGsTcpClientError : " + exception);
             _retryConnectCounter++;
+            
+            if (_retryConnectCounter >= TB.MaxRetryConnect)
+            {
+                LogUtil.Log(this, "TurnBasedHandler Reached to MaxRetryConnect , so dispose TurnBased...");
+                Dispose();
+                return;
+            }
+            
             LogUtil.Log(this, "TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
             await Init();
         }
@@ -70,6 +79,8 @@ namespace FiroozehGameService.Handlers.TurnBased
                 LogUtil.Log(this, "Already TurnBased Disposed!");
                 return;
             }
+
+            _retryConnectCounter = 0;
             _isDisposed = true;
             _tcpClient?.StopReceiving();
             _observer?.Dispose();

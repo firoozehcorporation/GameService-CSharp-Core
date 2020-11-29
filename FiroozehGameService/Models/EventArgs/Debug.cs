@@ -1,5 +1,5 @@
-// <copyright file="GSLiveType.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+// <copyright file="Debug.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,32 +14,34 @@
 //    limitations under the License.
 // </copyright>
 
+
 /**
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameService.Models.Enums.GSLive
+using FiroozehGameService.Models.Enums;
+
+namespace FiroozehGameService.Models.EventArgs
 {
     /// <summary>
-    ///     Represents GSLiveType Of GSLive System
+    /// Represents Game Service Debug Class
     /// </summary>
-    public enum GSLiveType
+    public class Debug
     {
         /// <summary>
-        /// Used No Where
+        /// the Debug Type (Normal or Error)
         /// </summary>
-        NotSet,
+        public LogType LogTypeType;
+
         /// <summary>
-        /// Used in TurnBased System
+        /// the Debug Location
         /// </summary>
-        TurnBased,
+        public DebugLocation Where;
+        
+
         /// <summary>
-        /// Used in RealTime System
+        /// the Debug Data
         /// </summary>
-        RealTime,
-        /// <summary>
-        /// Used in Command System
-        /// </summary>
-        Command
+        public string Data;
     }
 }

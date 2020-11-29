@@ -1,5 +1,5 @@
-// <copyright file="GSLiveType.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+// <copyright file="LogType.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,32 +14,26 @@
 //    limitations under the License.
 // </copyright>
 
+
 /**
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameService.Models.Enums.GSLive
+
+namespace FiroozehGameService.Models.Enums
 {
     /// <summary>
-    ///     Represents GSLiveType Of GSLive System
+    ///  Represents LogType Class in GameService Debug System
     /// </summary>
-    public enum GSLiveType
+    public enum LogType
     {
         /// <summary>
-        /// Used No Where
+        /// Normal Log
         /// </summary>
-        NotSet,
+        Normal,
         /// <summary>
-        /// Used in TurnBased System
+        /// Error Log
         /// </summary>
-        TurnBased,
-        /// <summary>
-        /// Used in RealTime System
-        /// </summary>
-        RealTime,
-        /// <summary>
-        /// Used in Command System
-        /// </summary>
-        Command
+        Error
     }
 }

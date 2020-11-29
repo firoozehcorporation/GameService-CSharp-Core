@@ -12,7 +12,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         {
             CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {
-                Type = GSLiveType.Core,
+                Type = GSLiveType.Command,
                 Error = packet.Message
             });
         }

@@ -15,7 +15,9 @@ namespace FiroozehGameService.Core.Socket
 {
     internal class GsTcpClient : GsSocketClient
     {
-        private const short TimeOutWait = 1000;
+        private const short CommandTimeOutWait = 1000;
+        private const short TurnTimeOutWait = 500;
+
 
         private TcpClient _client;
 
@@ -47,13 +49,14 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 CommandInfo = info;
-                Type = info == null ? GSLiveType.TurnBased : GSLiveType.Core;
-                
+                Type = CommandInfo == null ? GSLiveType.TurnBased : GSLiveType.Command;
+
                 var ip = CommandInfo == null ? Area.Ip : CommandInfo.Ip;
                 var port = CommandInfo?.Port ?? Area.Port;
+                var timeOutWait = CommandInfo == null ? TurnTimeOutWait : CommandTimeOutWait;
 
                 LogUtil.Log(this, "GsTcpClient -> Init Started with -> " + CommandInfo + " or " + Area);
-                await new TcpClientWithTimeout(ip, port,TimeOutWait).Connect(Type);
+                await new TcpClientWithTimeout(ip, port,timeOutWait).Connect(Type);
             }
             catch (Exception e)
             {

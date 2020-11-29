@@ -84,7 +84,7 @@ namespace FiroozehGameService.Core.GSLive
         }
 
 
-        internal void Dispose()
+        internal static void Dispose()
         {
             Handler?.Dispose();
         }

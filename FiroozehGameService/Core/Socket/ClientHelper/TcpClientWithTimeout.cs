@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Utils;
 
@@ -63,17 +64,14 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             try
             {
                 LogUtil.Log(this, "Wait " + _timeoutWaitMilliseconds + " Before Connect");
+                DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Wait " + _timeoutWaitMilliseconds + " Before Connect");
+               
                 await Task.Delay(_timeoutWaitMilliseconds);
+                
                 LogUtil.Log(this, "Connect To " + _hostname);
+                DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Connect To " + _hostname);
                 
                 _connection = new TcpClient(_hostname,_port);
-                /*_connection = new TcpClient();
-                var result = _connection.BeginConnect(_hostname, _port, null, null);
-
-                var success = result.AsyncWaitHandle.WaitOne(_timeoutWaitMilliseconds);
-                if (!success) throw new GameServiceException("Connection Main Timeout");
-                
-                _connection.EndConnect(result);*/
                 _connected = true;
             }
             catch (Exception ex)

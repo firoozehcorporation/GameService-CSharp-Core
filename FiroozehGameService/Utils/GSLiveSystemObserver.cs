@@ -51,7 +51,7 @@ namespace FiroozehGameService.Utils
                     }
 
                     break;
-                case GSLiveType.Core:
+                case GSLiveType.Command:
                     if (_counter <= Command.TimeLimit)
                     {
                         _counter++;
@@ -75,7 +75,7 @@ namespace FiroozehGameService.Utils
                     return TB.TurnBasedLimit;
                 case GSLiveType.RealTime:
                     return RT.RealTimeLimit;
-                case GSLiveType.Core:
+                case GSLiveType.Command:
                     return TB.TurnBasedLimit;
                 case GSLiveType.NotSet:
                     return -1;

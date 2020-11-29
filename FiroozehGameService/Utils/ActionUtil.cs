@@ -15,7 +15,7 @@ namespace FiroozehGameService.Utils
                     return IsInternalTbAction(action);
                 case GSLiveType.RealTime:
                     return IsInternalRtAction(action);
-                case GSLiveType.Core:
+                case GSLiveType.Command:
                     return IsInternalCAction(action);
                 default:
                     return false;

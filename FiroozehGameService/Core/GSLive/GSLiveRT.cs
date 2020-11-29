@@ -52,8 +52,8 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)Create Room Option</param>
         public async Task CreateRoom(GSLiveOption.CreateRoomOption option)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (option == null) throw new GameServiceException("option Cant Be Null");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"CreateRoom");
+            if (option == null) throw new GameServiceException("option Cant Be Null").LogException<GSLiveRT>(DebugLocation.RealTime,"CreateRoom");
             option.GsLiveType = GSLiveType.RealTime;
             await GSLive.Handler.CommandHandler.RequestAsync(CreateRoomHandler.Signature, option);
         }
@@ -65,8 +65,8 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
         public async Task AutoMatch(GSLiveOption.AutoMatchOption option)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (option == null) throw new GameServiceException("option Cant Be Null");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"AutoMatch");
+            if (option == null) throw new GameServiceException("option Cant Be Null").LogException<GSLiveRT>(DebugLocation.RealTime,"AutoMatch");
             option.GsLiveType = GSLiveType.RealTime;
             await GSLive.Handler.CommandHandler.RequestAsync(AutoMatchHandler.Signature, option);
         }
@@ -77,7 +77,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task CancelAutoMatch()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"CancelAutoMatch");
             await GSLive.Handler.CommandHandler.RequestAsync(CancelAutoMatchHandler.Signature);
         }
 
@@ -89,8 +89,8 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="password">(NULLABLE)Specifies the Password if Room is Private</param>
         public async Task JoinRoom(string roomId, string extra = null,string password = null)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(roomId)) throw new GameServiceException("roomId Cant Be EmptyOrNull");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"JoinRoom");
+            if (string.IsNullOrEmpty(roomId)) throw new GameServiceException("roomId Cant Be EmptyOrNull").LogException<GSLiveRT>(DebugLocation.RealTime,"JoinRoom");
             await GSLive.Handler.CommandHandler.RequestAsync(JoinRoomHandler.Signature,
                 new RoomDetail {Id = roomId, Extra = extra , RoomPassword = password});
         }
@@ -100,9 +100,9 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public void LeaveRoom()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"LeaveRoom");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"LeaveRoom");
+            
             GSLive.Handler.RealTimeHandler?.Request(LeaveRoomHandler.Signature, GProtocolSendType.Reliable,
                 isCritical: true);
             GSLive.Handler.RealTimeHandler?.Dispose();
@@ -115,8 +115,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="role">(NOTNULL)Room's Role </param>
         public async Task GetAvailableRooms(string role)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(role)) throw new GameServiceException("role Cant Be EmptyOrNull");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"GetAvailableRooms");
+            if (string.IsNullOrEmpty(role)) throw new GameServiceException("role Cant Be EmptyOrNull").LogException<GSLiveRT>(DebugLocation.RealTime,"GetAvailableRooms");
+           
             await GSLive.Handler.CommandHandler.RequestAsync(GetRoomsHandler.Signature,
                 new RoomDetail {Role = role, GsLiveType = (int) GSLiveType.RealTime});
         }
@@ -130,10 +131,10 @@ namespace FiroozehGameService.Core.GSLive
         [Obsolete("This Method is Deprecated,Use SendPublicMessage(byte[] data, GProtocolSendType sendType) Instead")]
         public void SendPublicMessage(string data, GProtocolSendType sendType)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(data)) throw new GameServiceException("data Cant Be EmptyOrNull");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPublicMessage");
+            if (string.IsNullOrEmpty(data)) throw new GameServiceException("data Cant Be EmptyOrNull").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPublicMessage");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPublicMessage");
+            
             GSLive.Handler.RealTimeHandler.Request(SendPublicMessageHandler.Signature, sendType,
                 new DataPayload {Payload = Encoding.UTF8.GetBytes(data)});
         }
@@ -147,11 +148,10 @@ namespace FiroozehGameService.Core.GSLive
         [Obsolete("This Method is Deprecated,Use SendPrivateMessage(string receiverId, byte[] data) Instead")]
         public void SendPrivateMessage(string receiverId, string data)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(receiverId) && string.IsNullOrEmpty(data))
-                throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPrivateMessage");
+            if (string.IsNullOrEmpty(receiverId) && string.IsNullOrEmpty(data)) throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPrivateMessage");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPrivateMessage");
+           
             GSLive.Handler.RealTimeHandler.Request(SendPrivateMessageHandler.Signature, GProtocolSendType.Reliable,
                 new DataPayload {ReceiverId = receiverId, Payload = Encoding.UTF8.GetBytes(data)});
         }
@@ -164,10 +164,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="sendType">Send Type </param>
         public void SendPublicMessage(byte[] data, GProtocolSendType sendType)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (data == null) throw new GameServiceException("data Cant Be Null");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPublicMessage");
+            if (data == null) throw new GameServiceException("data Cant Be Null").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPublicMessage");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPublicMessage");
+          
             GSLive.Handler.RealTimeHandler.Request(SendPublicMessageHandler.Signature, sendType,
                 new DataPayload {Payload = data});
         }
@@ -180,11 +180,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="data">(NOTNULL) Data for Send</param>
         public void SendPrivateMessage(string receiverId, byte[] data)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(receiverId) && data == null)
-                throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPrivateMessage");
+            if (string.IsNullOrEmpty(receiverId) && data == null) throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPrivateMessage");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"SendPrivateMessage");
+           
             GSLive.Handler.RealTimeHandler.Request(SendPrivateMessageHandler.Signature, GProtocolSendType.Reliable,
                 new DataPayload {ReceiverId = receiverId, Payload = data});
         }
@@ -195,9 +194,9 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public void GetRoomMembersDetail()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"GetRoomMembersDetail");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"GetRoomMembersDetail");
+          
             GSLive.Handler.RealTimeHandler.Request(GetMemberHandler.Signature, GProtocolSendType.Reliable,
                 isCritical: true);
         }
@@ -208,7 +207,8 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task GetInviteInbox()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"GetInviteInbox");
+           
             await GSLive.Handler.CommandHandler.RequestAsync(InviteListHandler.Signature,
                 new RoomDetail {GsLiveType = (int) GSLiveType.RealTime});
         }
@@ -221,9 +221,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
         public async Task InviteUser(string roomId, string userId)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(roomId) && string.IsNullOrEmpty(userId))
-                throw new GameServiceException("roomId Or userId Cant Be EmptyOrNull");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"InviteUser");
+            if (string.IsNullOrEmpty(roomId) && string.IsNullOrEmpty(userId)) throw new GameServiceException("roomId Or userId Cant Be EmptyOrNull").LogException<GSLiveRT>(DebugLocation.RealTime,"InviteUser");
+         
             await GSLive.Handler.CommandHandler.RequestAsync(InviteUserHandler.Signature,
                 new RoomDetail {UserOrMemberId = userId, Id = roomId, GsLiveType = (int) GSLiveType.RealTime});
         }
@@ -237,8 +237,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
         public async Task AcceptInvite(string inviteId, string extra = null)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(inviteId)) throw new GameServiceException("inviteId Cant Be EmptyOrNull");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"AcceptInvite");
+            if (string.IsNullOrEmpty(inviteId)) throw new GameServiceException("inviteId Cant Be EmptyOrNull").LogException<GSLiveRT>(DebugLocation.RealTime,"AcceptInvite");
+            
             await GSLive.Handler.CommandHandler.RequestAsync(AcceptInviteHandler.Signature,
                 new RoomDetail {Invite = inviteId, Extra = extra, GsLiveType = (int) GSLiveType.RealTime});
         }
@@ -250,9 +251,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="limit">(Max = 15) The Result Limits</param>
         public async Task FindMember(string query, int limit = 10)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(query)) throw new GameServiceException("query Cant Be EmptyOrNull");
-            if (limit <= 0 || limit > 15) throw new GameServiceException("invalid Limit Value");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"FindMember");
+            if (string.IsNullOrEmpty(query)) throw new GameServiceException("query Cant Be EmptyOrNull").LogException<GSLiveRT>(DebugLocation.RealTime,"FindMember");
+            if (limit <= 0 || limit > 15) throw new GameServiceException("invalid Limit Value").LogException<GSLiveRT>(DebugLocation.RealTime,"FindMember");
+          
             await GSLive.Handler.CommandHandler.RequestAsync(FindMemberHandler.Signature,
                 new RoomDetail {Max = limit, UserOrMemberId = query});
         }
@@ -262,19 +264,18 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public short GetPing()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"GetPing");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"GetPing");
+           
             return RealTimeHandler.GetPing();
         }
 
 
         internal static void SendEvent(byte[] caller, byte[] data, GProtocolSendType sendType)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (caller == null || data == null) throw new GameServiceException("caller or data Cant Be Null");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"SendEvent");
+            if (caller == null || data == null) throw new GameServiceException("caller or data Cant Be Null").LogException<GSLiveRT>(DebugLocation.RealTime,"SendEvent");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"SendEvent");
 
             GSLive.Handler.RealTimeHandler.Request(NewEventHandler.Signature, sendType,
                 new DataPayload {Payload = data, ExtraData = caller}, true);
@@ -283,10 +284,9 @@ namespace FiroozehGameService.Core.GSLive
 
         internal static void SendObserver(byte[] caller, byte[] data)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (data == null) throw new GameServiceException("caller or data Cant Be Null");
-            if (GSLive.Handler.RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveRT>(DebugLocation.RealTime,"SendObserver");
+            if (data == null) throw new GameServiceException("caller or data Cant Be Null").LogException<GSLiveRT>(DebugLocation.RealTime,"SendObserver");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveRT>(DebugLocation.RealTime,"SendObserver");
 
             ObserverCompacterUtil.AddToQueue(new DataPayload {Payload = data, ExtraData = caller});
         }

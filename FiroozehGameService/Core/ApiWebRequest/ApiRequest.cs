@@ -8,6 +8,7 @@ using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
 using FiroozehGameService.Models.BasicApi.TResponse;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
@@ -18,6 +19,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal static class ApiRequest
     {
+
+        private const string Tag = "ApiRequest";
+        
         private static string Pt => GameService.PlayToken;
         private static string Ut => GameService.UserToken;
         private static GameServiceClientConfiguration Configuration => GameService.Configuration;
@@ -32,7 +36,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 if (!response.IsSuccessStatusCode)
                     throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                        .Message);
+                        .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetAssetInfo");
+
                 var info = JsonConvert.DeserializeObject<AssetInfo>(await reader.ReadToEndAsync());
                 return info;
             }
@@ -49,7 +54,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"Authorize");
             }
         }
 
@@ -64,7 +69,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"LoginAsGuest");
             }
         }
 
@@ -79,7 +84,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"Login");
             }
         }
 
@@ -94,7 +99,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"LoginWithGoogle");
             }
         }
 
@@ -109,7 +114,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"LoginWithPhoneNumber");
             }
         }
 
@@ -124,7 +129,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"SendLoginCodeWithSms");
             }
         }
 
@@ -139,7 +144,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Login>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"SignUp");
             }
         }
 
@@ -154,7 +159,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TLeaderBoard>(await reader.ReadToEndAsync())
                         .LeaderBoards;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetLeaderBoard");
             }
         }
 
@@ -169,7 +174,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TAchievement>(await reader.ReadToEndAsync())
                         .Achievements;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetAchievements");
             }
         }
 
@@ -184,7 +189,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<T>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetSaveGame");
             }
         }
 
@@ -199,7 +204,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TMember>(await reader.ReadToEndAsync())
                         .Member;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetCurrentPlayer");
             }
         }
 
@@ -213,7 +218,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Score>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetCurrentPlayerScore");
             }
         }
 
@@ -227,7 +232,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<User>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetUserData");
             }
         }
 
@@ -241,7 +246,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Member>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetMemberData");
             }
         }
 
@@ -256,7 +261,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<MemberInfo>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetLastLoginMemberInfo");
             }
         }
 
@@ -287,7 +292,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<MemberInfo>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"EditCurrentPlayer");
             }
         }
 
@@ -302,7 +307,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<List<TBucket>>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetBucketItems");
             }
         }
 
@@ -317,7 +322,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetBucketItem");
             }
         }
 
@@ -332,7 +337,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<LeaderBoardDetails>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetLeaderBoardDetails");
             }
         }
 
@@ -349,7 +354,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync()).SaveDetails;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"SaveGame");
             }
         }
 
@@ -367,7 +372,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TSubmitScore>(await reader.ReadToEndAsync())
                         .SubmitScoreResponse;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"SubmitScore");
             }
         }
 
@@ -383,7 +388,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TUnlockAchievement>(await reader.ReadToEndAsync())
                         .Achievement;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"UnlockAchievement");
             }
         }
 
@@ -405,7 +410,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"UpdateBucketItem");
             }
         }
 
@@ -424,7 +429,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"AddBucketItem");
             }
         }
 
@@ -439,7 +444,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"RemoveLastSave");
             }
         }
 
@@ -455,7 +460,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"DeleteBucketItems");
             }
         }
 
@@ -471,7 +476,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"DeleteBucketItem");
             }
         }
 
@@ -486,7 +491,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 var data = await reader.ReadToEndAsync();
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<ImageUploadResult>(data);
-                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(data).Message);
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(data).Message)
+                    .LogException(typeof(ApiRequest),DebugLocation.Http,"UploadUserProfileLogo");
             }
         }
 
@@ -499,7 +505,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return await reader.ReadToEndAsync();
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetCurrentServerTime");
             }
         }
 
@@ -525,7 +531,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return await reader.ReadToEndAsync();
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message);
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"ExecuteCloudFunction");
             }
         }
 

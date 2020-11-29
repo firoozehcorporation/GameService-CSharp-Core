@@ -21,7 +21,9 @@
 
 
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Internal;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Builder
 {
@@ -30,23 +32,32 @@ namespace FiroozehGameService.Builder
     /// </summary>
     public class GameServiceClientConfiguration
     {
+        private const string Tag = "GameServiceClientConfiguration";
+       
         internal readonly string ClientId;
         internal readonly string ClientSecret;
         internal readonly SystemInfo SystemInfo;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clientId"></param>
+        /// <param name="clientSecret"></param>
+        /// <param name="systemInfo"></param>
+        /// <exception cref="GameServiceException"></exception>
         public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo)
         {
             ClientId = string.IsNullOrEmpty(clientId)
-                ? throw new GameServiceException("ClientId Cant Be Empty")
+                ? throw new GameServiceException("ClientId Cant Be Empty").LogException<GameServiceClientConfiguration>(DebugLocation.Internal,"Constructor")
                 : ClientId = clientId;
             ClientSecret = string.IsNullOrEmpty(clientSecret)
-                ? throw new GameServiceException("ClientSecret Cant Be Empty")
+                ? throw new GameServiceException("ClientSecret Cant Be Empty").LogException<GameServiceClientConfiguration>(DebugLocation.Internal,"Constructor")
                 : ClientSecret = clientSecret;
             SystemInfo = systemInfo == null
-                ? throw new GameServiceException("SystemInfo Cant Be NULL")
+                ? throw new GameServiceException("SystemInfo Cant Be NULL").LogException<GameServiceClientConfiguration>(DebugLocation.Internal,"Constructor")
                 : SystemInfo = systemInfo;
             if (systemInfo.DeviceUniqueId == null)
-                throw new GameServiceException("DeviceUniqueId In SystemInfo Cant Be NULL");
+                throw new GameServiceException("DeviceUniqueId In SystemInfo Cant Be NULL").LogException<GameServiceClientConfiguration>(DebugLocation.Internal,"Constructor");
         }
     }
 }

@@ -1,14 +1,10 @@
 using System;
+using FiroozehGameService.Models.Enums;
 
 namespace FiroozehGameService.Utils
 {
-    public enum LogType
-    {
-        Normal,
-        Error
-    }
 
-    public class Log
+    internal class Log
     {
         internal Log(LogType type, string txt)
         {
@@ -20,10 +16,10 @@ namespace FiroozehGameService.Utils
         public string Txt { get; }
     }
 
-    public class LogUtil
+    internal class LogUtil
     {
-        private const bool IsDebug = true;
-        public static EventHandler<Log> LogEventHandler;
+        private const bool IsDebug = false;
+        private static EventHandler<Log> LogEventHandler;
 
 
         internal static void Log(object where, string txt)

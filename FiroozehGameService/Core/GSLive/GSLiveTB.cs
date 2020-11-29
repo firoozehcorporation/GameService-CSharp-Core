@@ -25,6 +25,7 @@ using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.Enums.GSLive.TB;
 using FiroozehGameService.Models.GSLive.Command;
@@ -50,8 +51,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)Create Room Option</param>
         public async Task CreateRoom(GSLiveOption.CreateRoomOption option)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (option == null) throw new GameServiceException("option Cant Be Null");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"CreateRoom");
+            if (option == null) throw new GameServiceException("option Cant Be Null").LogException<GSLiveTB>(DebugLocation.TurnBased,"CreateRoom");
+            
             option.GsLiveType = GSLiveType.TurnBased;
             await GSLive.Handler.CommandHandler.RequestAsync(CreateRoomHandler.Signature, option);
         }
@@ -63,8 +65,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
         public async Task AutoMatch(GSLiveOption.AutoMatchOption option)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (option == null) throw new GameServiceException("option Cant Be Null");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"AutoMatch");
+            if (option == null) throw new GameServiceException("option Cant Be Null").LogException<GSLiveTB>(DebugLocation.TurnBased,"AutoMatch");
+            
             option.GsLiveType = GSLiveType.TurnBased;
             await GSLive.Handler.CommandHandler.RequestAsync(AutoMatchHandler.Signature, option);
         }
@@ -75,7 +78,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task CancelAutoMatch()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"CancelAutoMatch");
             await GSLive.Handler.CommandHandler.RequestAsync(CancelAutoMatchHandler.Signature);
         }
 
@@ -88,8 +91,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="password">(NULLABLE)Specifies the Password if Room is Private</param>
         public async Task JoinRoom(string roomId, string extra = null,string password = null)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(roomId)) throw new GameServiceException("roomId Cant Be EmptyOrNull");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"JoinRoom");
+            if (string.IsNullOrEmpty(roomId)) throw new GameServiceException("roomId Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"JoinRoom");
+           
             await GSLive.Handler.CommandHandler.RequestAsync(JoinRoomHandler.Signature,
                 new RoomDetail {Id = roomId, Extra = extra , RoomPassword = password});
         }
@@ -101,8 +105,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="role">(NOTNULL)Room's Role </param>
         public async Task GetAvailableRooms(string role)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(role)) throw new GameServiceException("role Cant Be EmptyOrNull");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetAvailableRooms");
+            if (string.IsNullOrEmpty(role)) throw new GameServiceException("role Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetAvailableRooms");
+          
             await GSLive.Handler.CommandHandler.RequestAsync(GetRoomsHandler.Signature,
                 new RoomDetail {Role = role, GsLiveType = (int) GSLiveType.TurnBased});
         }
@@ -118,9 +123,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="whoIsNext">(NULLABLE) Next Player's ID </param>
         public async Task TakeTurn(string data = null, string whoIsNext = null)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"TakeTurn");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"TakeTurn");
+         
             await GSLive.Handler.TurnBasedHandler.RequestAsync(TakeTurnHandler.Signature,
                 new DataPayload {Data = data, NextId = whoIsNext});
         }
@@ -133,9 +138,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="whoIsNext">(NULLABLE)Next Player's ID </param>
         public async Task ChooseNext(string whoIsNext = null)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"ChooseNext");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"ChooseNext");
+            
             await GSLive.Handler.TurnBasedHandler.RequestAsync(ChooseNextHandler.Signature,
                 new DataPayload {NextId = whoIsNext});
         }
@@ -148,12 +153,11 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="value">(NOTNULL) The Value of Key </param>
         public async Task SetProperty(string key,string value)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"SetProperty");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"SetProperty");
           
-            if (string.IsNullOrEmpty(key)) throw new GameServiceException("Key Cant Be EmptyOrNull");
-            if (string.IsNullOrEmpty(value)) throw new GameServiceException("Value Cant Be EmptyOrNull");
+            if (string.IsNullOrEmpty(key)) throw new GameServiceException("Key Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"SetProperty");
+            if (string.IsNullOrEmpty(value)) throw new GameServiceException("Value Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"SetProperty");
 
             await GSLive.Handler.TurnBasedHandler.RequestAsync(PropertyHandler.Signature,
                 new DataPayload {Action = (int) PropertyAction.SetOrUpdate ,Id = key , Data = value});
@@ -167,11 +171,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="key">(NOTNULL) The Key Value</param>
         public async Task RemoveProperty(string key)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"RemoveProperty");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"RemoveProperty");
           
-            if (string.IsNullOrEmpty(key)) throw new GameServiceException("Key Cant Be EmptyOrNull");
+            if (string.IsNullOrEmpty(key)) throw new GameServiceException("Key Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"CreateRoom");
 
             await GSLive.Handler.TurnBasedHandler.RequestAsync(PropertyHandler.Signature,
                 new DataPayload {Action = (int) PropertyAction.Delete ,Id = key});
@@ -183,9 +186,8 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task GetProperties()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetProperties");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetProperties");
             
             await GSLive.Handler.TurnBasedHandler.RequestAsync(SnapshotHandler.Signature);
         }
@@ -197,11 +199,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="whoIsNext">(NULLABLE)(Type : Member's ID) Player's id You Want To Select Next Turn</param>
         public async Task LeaveRoom(string whoIsNext = null)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
-            await GSLive.Handler.TurnBasedHandler?.RequestAsync(LeaveRoomHandler.Signature,
-                new DataPayload {NextId = whoIsNext});
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"LeaveRoom");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"LeaveRoom");
+            
+            await GSLive.Handler.TurnBasedHandler?.RequestAsync(LeaveRoomHandler.Signature, new DataPayload {NextId = whoIsNext});
             GSLive.Handler.TurnBasedHandler?.Dispose();
         }
 
@@ -212,10 +213,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="outcomes">(NOTNULL) A set of players and their results</param>
         public async Task Finish(Dictionary<string, Outcome> outcomes)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (outcomes == null) throw new GameServiceException("outcomes Cant Be Null");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"Finish");
+            if (outcomes == null) throw new GameServiceException("outcomes Cant Be Null").LogException<GSLiveTB>(DebugLocation.TurnBased,"Finish");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"Finish");
+           
             await GSLive.Handler.TurnBasedHandler.RequestAsync(FinishHandler.Signature,
                 new DataPayload {Outcomes = outcomes});
         }
@@ -227,10 +228,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="memberId">(NOTNULL)The Specific player ID</param>
         public async Task Complete(string memberId)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(memberId)) throw new GameServiceException("memberId Cant Be EmptyOrNull");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"Complete");
+            if (string.IsNullOrEmpty(memberId)) throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"Complete");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"Complete");
+          
             await GSLive.Handler.TurnBasedHandler.RequestAsync(CompleteHandler.Signature,
                 new DataPayload {Id = memberId});
         }
@@ -241,9 +242,9 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task GetRoomMembersDetail()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetRoomMembersDetail");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetRoomMembersDetail");
+           
             await GSLive.Handler.TurnBasedHandler.RequestAsync(GetMemberHandler.Signature);
         }
 
@@ -253,9 +254,9 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task GetCurrentTurnMember()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (GSLive.Handler.TurnBasedHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetCurrentTurnMember");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetCurrentTurnMember");
+         
             await GSLive.Handler.TurnBasedHandler.RequestAsync(CurrentTurnHandler.Signature);
         }
 
@@ -265,7 +266,7 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public async Task GetInviteInbox()
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetInviteInbox");
             await GSLive.Handler.CommandHandler.RequestAsync(InviteListHandler.Signature,
                 new RoomDetail {GsLiveType = (int) GSLiveType.TurnBased});
         }
@@ -278,9 +279,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
         public async Task InviteUser(string roomId, string userId)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(roomId) && string.IsNullOrEmpty(userId))
-                throw new GameServiceException("roomId Or userId Cant Be EmptyOrNull");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"InviteUser");
+            if (string.IsNullOrEmpty(roomId) && string.IsNullOrEmpty(userId)) throw new GameServiceException("roomId Or userId Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"InviteUser");
+           
             await GSLive.Handler.CommandHandler.RequestAsync(InviteUserHandler.Signature,
                 new RoomDetail {UserOrMemberId = userId, Id = roomId, GsLiveType = (int) GSLiveType.TurnBased});
         }
@@ -294,8 +295,9 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
         public async Task AcceptInvite(string inviteId, string extra = null)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(inviteId)) throw new GameServiceException("inviteId Cant Be EmptyOrNull");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"AcceptInvite");
+            if (string.IsNullOrEmpty(inviteId)) throw new GameServiceException("inviteId Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"AcceptInvite");
+            
             await GSLive.Handler.CommandHandler.RequestAsync(AcceptInviteHandler.Signature,
                 new RoomDetail {Invite = inviteId, Extra = extra, GsLiveType = (int) GSLiveType.RealTime});
         }
@@ -307,9 +309,10 @@ namespace FiroozehGameService.Core.GSLive
         /// <param name="limit">(Max = 15) The Result Limits</param>
         public async Task FindMember(string query, int limit = 10)
         {
-            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode");
-            if (string.IsNullOrEmpty(query)) throw new GameServiceException("query Cant Be EmptyOrNull");
-            if (limit < 0 || limit > 15) throw new GameServiceException("invalid Limit Value");
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"FindMember");
+            if (string.IsNullOrEmpty(query)) throw new GameServiceException("query Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"FindMember");
+            if (limit < 0 || limit > 15) throw new GameServiceException("invalid Limit Value").LogException<GSLiveTB>(DebugLocation.TurnBased,"FindMember");
+         
             await GSLive.Handler.CommandHandler.RequestAsync(FindMemberHandler.Signature,
                 new RoomDetail {Max = limit, UserOrMemberId = query});
         }

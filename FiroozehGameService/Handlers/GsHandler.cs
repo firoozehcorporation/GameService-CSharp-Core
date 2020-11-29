@@ -40,7 +40,7 @@ namespace FiroozehGameService.Handlers
                 case GSLiveType.RealTime:
                     ConnectToRtServer(startPayload);
                     break;
-                case GSLiveType.Core:
+                case GSLiveType.Command:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -20,7 +20,9 @@
 */
 
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.GSLive
 {
@@ -45,10 +47,10 @@ namespace FiroozehGameService.Core.GSLive
             public AutoMatchOption(string role, int minPlayer = 2, int maxPlayer = 2, bool isPersist = false,
                 string extra = null)
             {
-                if (minPlayer < 2 || minPlayer > 8) throw new GameServiceException("Invalid MinPlayer Value");
-                if (maxPlayer < 2 || maxPlayer > 8) throw new GameServiceException("Invalid MaxPlayer Value");
-                if (maxPlayer < minPlayer) throw new GameServiceException("MaxPlayer Cant Smaller Than MinPlayer");
-                if (string.IsNullOrEmpty(role)) throw new GameServiceException("Role Cant Be EmptyOrNull");
+                if (minPlayer < 2 || minPlayer > 8) throw new GameServiceException("Invalid MinPlayer Value").LogException<AutoMatchOption>(DebugLocation.Internal,"Constructor");
+                if (maxPlayer < 2 || maxPlayer > 8) throw new GameServiceException("Invalid MaxPlayer Value").LogException<AutoMatchOption>(DebugLocation.Internal,"Constructor");
+                if (maxPlayer < minPlayer) throw new GameServiceException("MaxPlayer Cant Smaller Than MinPlayer").LogException<AutoMatchOption>(DebugLocation.Internal,"Constructor");
+                if (string.IsNullOrEmpty(role)) throw new GameServiceException("Role Cant Be EmptyOrNull").LogException<AutoMatchOption>(DebugLocation.Internal,"Constructor");
 
                 MinPlayer = minPlayer;
                 MaxPlayer = maxPlayer;
@@ -64,7 +66,6 @@ namespace FiroozehGameService.Core.GSLive
             internal bool IsPersist { get; }
             internal GSLiveType GsLiveType { set; get; }
         }
-
         /// <inheritdoc />
         /// <summary>
         ///     Represents GSLive CreateRoomOption
@@ -86,13 +87,10 @@ namespace FiroozehGameService.Core.GSLive
                 bool isPrivate = false, bool isPersist = false, string extra = null, string roomPassword = null)
                 : base(role, minPlayer, maxPlayer, isPersist, extra)
             {
-                if (string.IsNullOrEmpty(roomName)) throw new GameServiceException("RoomName Cant Be EmptyOrNull");
-                if (!isPrivate && !string.IsNullOrEmpty(roomPassword))
-                    throw new GameServiceException("RoomPassword Can Only Set When Room is Private");
-                if (isPrivate && string.IsNullOrEmpty(roomPassword))
-                    throw new GameServiceException("RoomPassword Cant Be EmptyOrNull When Room is Private");
-                if (isPrivate && (roomPassword.Length < 4 || roomPassword.Length > 15))
-                    throw new GameServiceException("RoomPassword Length Must Be Between 4 and 15");
+                if (string.IsNullOrEmpty(roomName)) throw new GameServiceException("RoomName Cant Be EmptyOrNull").LogException<CreateRoomOption>(DebugLocation.Internal,"Constructor");
+                if (!isPrivate && !string.IsNullOrEmpty(roomPassword)) throw new GameServiceException("RoomPassword Can Only Set When Room is Private").LogException<CreateRoomOption>(DebugLocation.Internal,"Constructor");
+                if (isPrivate && string.IsNullOrEmpty(roomPassword)) throw new GameServiceException("RoomPassword Cant Be EmptyOrNull When Room is Private").LogException<CreateRoomOption>(DebugLocation.Internal,"Constructor");
+                if (isPrivate && (roomPassword.Length < 4 || roomPassword.Length > 15)) throw new GameServiceException("RoomPassword Length Must Be Between 4 and 15").LogException<CreateRoomOption>(DebugLocation.Internal,"Constructor");
 
                 RoomName = roomName;
                 RoomPassword = roomPassword;

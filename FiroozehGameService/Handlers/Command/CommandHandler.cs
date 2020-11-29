@@ -26,7 +26,7 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient.DataReceived += OnDataReceived;
 
             _cancellationToken = new CancellationTokenSource();
-            _observer = new GsLiveSystemObserver(GSLiveType.Core);
+            _observer = new GsLiveSystemObserver(GSLiveType.Command);
             _isDisposed = false;
             _isFirstInit = false;
 
@@ -47,7 +47,7 @@ namespace FiroozehGameService.Handlers.Command
 
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
         {
-            if((GSLiveType) sender != GSLiveType.Core) return;
+            if((GSLiveType) sender != GSLiveType.Command) return;
             if (_isDisposed) return;
 
             LogUtil.Log(this, "CommandHandler -> OnGsTcpClientError : " + exception);
@@ -58,7 +58,7 @@ namespace FiroozehGameService.Handlers.Command
 
         private async void OnGsTcpClientConnected(object sender, TcpClient e)
         {
-            if((GSLiveType) sender != GSLiveType.Core) return;
+            if((GSLiveType) sender != GSLiveType.Command) return;
             
             LogUtil.Log(this, "CommandHandler -> Connected,Waiting for Handshakes... , Type : " + (GSLiveType) sender);
             _rootTask = Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
@@ -221,7 +221,7 @@ namespace FiroozehGameService.Handlers.Command
                 var packet = (Packet) e.Packet;
                 LogUtil.Log(this, "CommandHandler OnDataReceived < " + e.Packet);
 
-                if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.Core))
+                if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.Command))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
                 else
                     GameService.SynchronizationContext?.Send(
