@@ -50,6 +50,7 @@
   </ItemGroup>
     <ItemGroup>
         <Compile Include="Builder\GameServiceClientConfiguration.cs"/>
+        <Compile Include="Builder\GameServiceDebugConfiguration.cs"/>
         <Compile Include="Core\ApiWebRequest\ApiRequest.cs"/>
         <Compile Include="Core\ApiWebRequest\GSWebRequest.cs"/>
         <Compile Include="Core\DownloadManager.cs"/>

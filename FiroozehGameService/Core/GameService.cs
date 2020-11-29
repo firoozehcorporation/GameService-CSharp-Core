@@ -49,7 +49,7 @@ namespace FiroozehGameService.Core
         /// <summary>
         ///     Set configuration For Initialize Game Service.
         /// </summary>
-        /// <param name="configuration">(Not NULL)configuration For Initialize Game Service</param>
+        /// <param name="configuration">(NOTNULL)configuration For Initialize Game Service</param>
         public static void ConfigurationInstance(GameServiceClientConfiguration configuration)
         {
             if (configuration == null) throw new GameServiceException("Configuration Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"ConfigurationInstance");
@@ -61,6 +61,16 @@ namespace FiroozehGameService.Core
             Configuration = configuration;
             _downloadManager = new DownloadManager(Configuration);
             GSLive = new GSLive.GSLive();
+        }
+        
+        
+        /// <summary>
+        ///     Set configuration For Game Service Debug System
+        /// </summary>
+        /// <param name="configuration">(NOTNULL)configuration For Game Service Debug System</param>
+        public static void ConfigurationDebug(GameServiceDebugConfiguration configuration)
+        {
+            DebugConfiguration = configuration ?? throw new GameServiceException("Configuration Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"ConfigurationDebug");
         }
 
         /// <summary>
@@ -690,6 +700,8 @@ namespace FiroozehGameService.Core
         internal static bool IsGuest;
         internal static SynchronizationContext SynchronizationContext;
         internal static GameServiceClientConfiguration Configuration { get; private set; }
+        internal static GameServiceDebugConfiguration DebugConfiguration { get; private set; }
+
 
         /// <summary>
         /// Returns Debug Data

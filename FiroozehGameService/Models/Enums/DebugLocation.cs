@@ -27,6 +27,10 @@ namespace FiroozehGameService.Models.Enums
     public enum DebugLocation
     {
         /// <summary>
+        /// Happened In All GameService Systems
+        /// </summary>
+        All , 
+        /// <summary>
         /// Happened In GameService Core 
         /// </summary>
         Internal , 

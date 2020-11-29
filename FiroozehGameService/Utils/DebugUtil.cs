@@ -21,6 +21,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using FiroozehGameService.Core;
@@ -38,6 +39,8 @@ namespace FiroozehGameService.Utils
         
         internal static void LogNormal(Type type,DebugLocation where,string callingMethod,string data)
         {
+            if(!CanDebug(LogType.Normal,where)) return;
+            
             var callingClass = type.Name;
             new Debug
             {
@@ -51,6 +54,8 @@ namespace FiroozehGameService.Utils
         internal static void LogNormal<TClass>(DebugLocation where,string callingMethod,string data)
            where TClass : class
         {
+            if(!CanDebug(LogType.Normal,where)) return;
+
             var callingClass = typeof(TClass).Name;
             new Debug
             {
@@ -63,6 +68,8 @@ namespace FiroozehGameService.Utils
         
         internal static void LogError<TClass>(DebugLocation where,string callingMethod,string data) 
         {
+            if(!CanDebug(LogType.Error,where)) return;
+
             var callingClass = typeof(TClass).Name;
             new Debug
             {
@@ -74,6 +81,8 @@ namespace FiroozehGameService.Utils
         
         internal static void LogError(Type type,DebugLocation where,string callingMethod,Exception exception)
         {
+            if(!CanDebug(LogType.Error,where)) return;
+
             var callingClass = type.Name;
             new Debug
             {
@@ -87,6 +96,8 @@ namespace FiroozehGameService.Utils
         internal static Exception LogException<TClass>(this Exception exception,DebugLocation where,string callingMethod)
          where TClass : class
         {
+            if(!CanDebug(LogType.Exception,where)) return exception;
+            
             var callingClass = typeof(TClass).Name;
             new Debug
             {
@@ -102,6 +113,8 @@ namespace FiroozehGameService.Utils
         
         internal static Exception LogException(this Exception exception,Type type,DebugLocation where,string callingMethod)
         {
+            if(!CanDebug(LogType.Exception,where)) return exception;
+
             var callingClass = type.Name;
             new Debug
             {
@@ -124,7 +137,36 @@ namespace FiroozehGameService.Utils
         {
             GameService.OnDebugReceived?.Invoke(null,debug);
         }
-        
+
+
+        private static bool CanDebug(LogType type , DebugLocation where)
+        {
+            if (GameService.DebugConfiguration == null) return false;
+
+            var can = false;
+            switch (type)
+            {
+                case LogType.Normal:
+                    if (GameService.DebugConfiguration.EnableDebug) can = true;
+                    break;
+                case LogType.Error:
+                    if (GameService.DebugConfiguration.EnableError) can = true;
+                    break;
+                case LogType.Exception:
+                    if (GameService.DebugConfiguration.EnableException) can = true;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+
+            if (GameService.DebugConfiguration.DebugLocations == null)
+                return can;
+            if(GameService.DebugConfiguration.DebugLocations.Contains(DebugLocation.All))
+                return can;
+
+            can &= GameService.DebugConfiguration.DebugLocations.ToList().Any(dl => dl == where);
+            return can;
+        }
         
         private static MethodBase GetCallingMethodBase(StackFrame stackFrame)
         {

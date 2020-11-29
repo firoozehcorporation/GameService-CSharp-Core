@@ -32,19 +32,17 @@ namespace FiroozehGameService.Builder
     /// </summary>
     public class GameServiceClientConfiguration
     {
-        private const string Tag = "GameServiceClientConfiguration";
-       
         internal readonly string ClientId;
         internal readonly string ClientSecret;
         internal readonly SystemInfo SystemInfo;
 
         /// <summary>
-        /// 
+        /// Set GameServiceClientConfiguration Values
         /// </summary>
-        /// <param name="clientId"></param>
-        /// <param name="clientSecret"></param>
-        /// <param name="systemInfo"></param>
-        /// <exception cref="GameServiceException"></exception>
+        /// <param name="clientId">Set The ClientId From Developers Panel</param>
+        /// <param name="clientSecret">Set The ClientSecret From Developers Panel</param>
+        /// <param name="systemInfo">Set systemInfo</param>
+        /// <exception cref="GameServiceException">May GameServiceException Occur</exception>
         public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo)
         {
             ClientId = string.IsNullOrEmpty(clientId)
