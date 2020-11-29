@@ -29,6 +29,7 @@ using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
+using FiroozehGameService.Models.BasicApi.FaaS;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
@@ -465,12 +466,13 @@ namespace FiroozehGameService.Core
         /// <param name="functionParameters">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
         /// <param name="isPublic">Specifies the Function Visibility Type that Set in Developers Panel</param>
         /// <value> return Result in String </value>
-        public static async Task<string> ExecuteCloudFunction(string functionId,
+        public static async Task<FaaSResponse<TFaaS>> ExecuteCloudFunction<TFaaS>(string functionId,
             object functionParameters = null, bool isPublic = false)
+            where TFaaS : FaaSCore
         {
             if (!isPublic && !IsAuthenticated()) throw new GameServiceException("You Must Login First In Private Mode").LogException(typeof(GameService),DebugLocation.Internal,"ExecuteCloudFunction");
             if (string.IsNullOrEmpty(functionId)) throw new GameServiceException("functionId Cant Be NullOrEmpty").LogException(typeof(GameService),DebugLocation.Internal,"ExecuteCloudFunction");
-            return await ApiRequest.ExecuteCloudFunction(functionId, functionParameters, isPublic);
+            return await ApiRequest.ExecuteCloudFunction<TFaaS>(functionId, functionParameters, isPublic);
         }
 
 

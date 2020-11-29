@@ -27,6 +27,7 @@ using FiroozehGameService.Builder;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
+using FiroozehGameService.Models.BasicApi.FaaS;
 using FiroozehGameService.Models.BasicApi.TResponse;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
@@ -531,7 +532,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<string> ExecuteCloudFunction(string functionId,
+        internal static async Task<FaaSResponse<TFaaS>> ExecuteCloudFunction<TFaaS>(string functionId,
             object functionParameters, bool isPublic)
         {
             var body = JsonConvert.SerializeObject(functionParameters, new JsonSerializerSettings
@@ -550,7 +551,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return await reader.ReadToEndAsync();
+                    return JsonConvert.DeserializeObject<FaaSResponse<TFaaS>>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"ExecuteCloudFunction");
             }

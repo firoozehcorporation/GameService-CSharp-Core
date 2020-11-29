@@ -185,6 +185,8 @@
         <Compile Include="Models\BasicApi\CommandInfo.cs"/>
         <Compile Include="Models\BasicApi\EditUserProfile.cs"/>
         <Compile Include="Models\BasicApi\Error.cs"/>
+        <Compile Include="Models\BasicApi\FaaS\FaaSCore.cs"/>
+        <Compile Include="Models\BasicApi\FaaS\FaaSResponse.cs"/>
         <Compile Include="Models\BasicApi\LeaderBoard.cs"/>
         <Compile Include="Models\BasicApi\LeaderBoardDetails.cs"/>
         <Compile Include="Models\BasicApi\Login.cs"/>
