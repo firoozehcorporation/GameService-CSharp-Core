@@ -48,6 +48,7 @@ namespace FiroozehGameService.Handlers.Command
 
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.Command);
+            _keepAliveUtil = new KeepAliveUtil();
             _isDisposed = false;
             _isFirstInit = false;
 
@@ -59,13 +60,20 @@ namespace FiroozehGameService.Handlers.Command
             CoreEventHandlers.Ping += OnPing;
             CoreEventHandlers.Authorized += OnAuth;
             CoreEventHandlers.OnGsTcpClientConnected += OnGsTcpClientConnected;
-            CoreEventHandlers.OnGsTcpClientError += OnGsTcpClientError;
+            CoreEventHandlers.OnGsTcpClientError += OnGsTcpClientError; 
+            _keepAliveUtil.Caller += KeepAliveChecker;
 
             LogUtil.Log(this, "CommandHandler Initialized with "
                               + _requestHandlers.Count + " Request Handlers & "
                               + _responseHandlers.Count + " Response Handlers");
             
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"Constructor","CommandHandler Initialized");
+        }
+
+        private async void KeepAliveChecker(object sender, EventArgs e)
+        {
+            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"KeepAliveChecker","CommandHandler -> Send KeepAlive Done");
+            await RequestAsync(KeepAliveHandler.Signature, null, true,true);
         }
 
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
@@ -92,7 +100,7 @@ namespace FiroozehGameService.Handlers.Command
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"OnGsTcpClientConnected","CommandHandler -> Connected,Waiting for Handshakes...");
 
             
-            _rootTask = Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+            Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
             _retryConnectCounter = 0;
             
@@ -105,8 +113,9 @@ namespace FiroozehGameService.Handlers.Command
             _isDisposed = true;
             _isFirstInit = false;
             _tcpClient?.StopReceiving();
-            _observer.Dispose();
-            _cancellationToken.Cancel(false);
+            _observer?.Dispose();
+            _keepAliveUtil?.Dispose();
+            _cancellationToken?.Cancel(false);
             
             LogUtil.Log(this, "CommandHandler Dispose");
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"Dispose","CommandHandler Dispose Done");
@@ -122,6 +131,8 @@ namespace FiroozehGameService.Handlers.Command
             if (_isFirstInit) return;
             _isFirstInit = true;
             
+            _keepAliveUtil?.Start();
+            
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"OnAuth","CommandHandler Auth Done");
             
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
@@ -133,6 +144,7 @@ namespace FiroozehGameService.Handlers.Command
             await RequestAsync(PingPongHandler.Signature, isCritical: true);
             
             LogUtil.Log(this, "CommandHandler OnPing");
+            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"OnPing","CommandHandler Ping Called");
         }
 
 
@@ -165,6 +177,7 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(InviteUserHandler.Signature, new InviteUserHandler());
             _requestHandlers.Add(JoinRoomHandler.Signature, new JoinRoomHandler());
             _requestHandlers.Add(PingPongHandler.Signature, new PingPongHandler());
+            _requestHandlers.Add(KeepAliveHandler.Signature,new KeepAliveHandler());
 
 
             _requestHandlers.Add(GetChannelRecentMessagesRequestHandler.Signature,
@@ -235,9 +248,9 @@ namespace FiroozehGameService.Handlers.Command
             Send(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
         }
 
-        internal async Task RequestAsync(string handlerName, object payload = null, bool isCritical = false)
+        internal async Task RequestAsync(string handlerName, object payload = null, bool isCritical = false,bool dontCheckAvailability = false)
         {
-            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
+            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload), isCritical,dontCheckAvailability);
         }
 
 
@@ -247,11 +260,11 @@ namespace FiroozehGameService.Handlers.Command
             _tcpClient.Send(packet);
         }
 
-        private async Task SendAsync(Packet packet, bool isCritical = false)
+        private async Task SendAsync(Packet packet, bool isCritical = false,bool dontCheckAvailability = false)
         {
             if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) await _tcpClient.SendAsync(packet);
-            else throw new GameServiceException("GameService Not Available")
+            else if(!dontCheckAvailability) throw new GameServiceException("GameService Not Available")
                 .LogException<CommandHandler>(DebugLocation.Command,"SendAsync");
         }
 
@@ -278,9 +291,9 @@ namespace FiroozehGameService.Handlers.Command
         #region Fields
 
         private static GsTcpClient _tcpClient;
-        private Task _rootTask;
         private readonly GsLiveSystemObserver _observer;
         private CancellationTokenSource _cancellationToken;
+        private readonly KeepAliveUtil _keepAliveUtil;
         private int _retryConnectCounter;
         private bool _isDisposed;
         private bool _isFirstInit;

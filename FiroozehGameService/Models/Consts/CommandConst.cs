@@ -24,36 +24,40 @@ namespace FiroozehGameService.Models.Consts
     internal static class CommandConst
     {
         // For Send
-        public const int ActionAuth = 0;
-        public const int ActionAutoMatch = 1;
-        public const int ActionCreateRoom = 2;
-        public const int ActionGetRooms = 3;
-        public const int ActionJoinRoom = 4;
-        public const int ActionPing = 5;
-        public const int ActionInviteUser = 6;
-        public const int ActionKickUser = 7;
-        public const int ActionGetInviteList = 8;
-        public const int ActionAcceptInvite = 9;
-        public const int ActionFindMember = 10;
-        public const int ActionNotification = 11;
-        public const int ActionOnInvite = 15;
-        public const int ActionCancelAutoMatch = 16;
+        internal const int ActionAuth = 0;
+        internal const int ActionAutoMatch = 1;
+        internal const int ActionCreateRoom = 2;
+        internal const int ActionGetRooms = 3;
+        internal const int ActionJoinRoom = 4;
+        internal const int ActionPing = 5;
+        internal const int ActionInviteUser = 6;
+        internal const int ActionKickUser = 7;
+        internal const int ActionGetInviteList = 8;
+        internal const int ActionAcceptInvite = 9;
+        internal const int ActionFindMember = 10;
+        internal const int ActionNotification = 11;
+        internal const int ActionOnInvite = 15;
+        internal const int ActionCancelAutoMatch = 16;
 
 
-        public const int ActionSubscribe = 12;
-        public const int ActionPublicChat = 13;
-        public const int ActionUnSubscribe = 14;
-        public const int ActionGetChannelsSubscribed = 17;
-        public const int ActionPrivateChat = 18;
-        public const int ActionChatRoomDetails = 19;
-        public const int ActionGetLastChats = 20;
-        public const int ActionGetPendingChats = 21;
+        internal const int ActionSubscribe = 12;
+        internal const int ActionPublicChat = 13;
+        internal const int ActionUnSubscribe = 14;
+        internal const int ActionGetChannelsSubscribed = 17;
+        internal const int ActionPrivateChat = 18;
+        internal const int ActionChatRoomDetails = 19;
+        internal const int ActionGetLastChats = 20;
+        internal const int ActionGetPendingChats = 21;
+        
+        internal const int ActionKeepAlive = byte.MaxValue;
 
 
-        public const int Error = 100;
+
+        internal const int Error = 100;
 
         // Limit Checker
         internal const int TimeLimit = 5; // 10 Request per sec
+        internal const int KeepAliveTime = 1500;
         internal const short MaxRetryConnect = 7;
     }
 }

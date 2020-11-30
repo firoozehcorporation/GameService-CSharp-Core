@@ -39,11 +39,8 @@ namespace FiroozehGameService.Core.Socket
     {
         private const short CommandTimeOutWait = 1000;
         private const short TurnTimeOutWait = 500;
-
-
+        
         private TcpClient _client;
-
-        //private SslStream _clientStream;
         private NetworkStream _clientStream;
         
 
@@ -64,11 +61,10 @@ namespace FiroozehGameService.Core.Socket
             
             LogUtil.Log(this, "GsTcpClient -> Init Done");
             DebugUtil.LogNormal<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,"OnTcpClientConnected","GsTcpClient -> Init Done");
-            
-            
+
             CoreEventHandlers.OnGsTcpClientConnected?.Invoke(sender,client);
         }
-
+        
 
         internal override async Task Init(CommandInfo info)
         {
@@ -99,7 +95,6 @@ namespace FiroozehGameService.Core.Socket
         {
             LogUtil.Log(this, "GsTcpClient -> StartReceiving");
             DebugUtil.LogNormal<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,"StartReceiving","GsTcpClient -> StartReceiving");
-
             
             while (IsAvailable)
                 try
@@ -147,7 +142,11 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 var buffer = PacketSerializer.Serialize(packet);
-                if (_clientStream != null) await _clientStream.WriteAsync(buffer, 0, buffer.Length);
+                if (_clientStream != null)
+                {
+                    await _clientStream.WriteAsync(buffer, 0, buffer.Length);
+                    await _clientStream.FlushAsync();
+                }
             }
             catch (Exception e)
             {
