@@ -48,7 +48,6 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
-            _keepAliveUtil = new KeepAliveUtil();
             _isDisposed = false;
 
             // Set Internal Event Handlers
@@ -56,8 +55,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             CoreEventHandlers.Authorized += OnAuth;
             CoreEventHandlers.OnGsTcpClientConnected += OnGsTcpClientConnected;
             CoreEventHandlers.OnGsTcpClientError += OnGsTcpClientError;
-            _keepAliveUtil.Caller += KeepAliveChecker;
-
 
 
             InitRequestMessageHandlers();
@@ -110,8 +107,6 @@ namespace FiroozehGameService.Handlers.TurnBased
          
             _retryConnectCounter = 0;
             
-            _keepAliveUtil?.Start();
-            
             LogUtil.Log(this, "TurnBasedHandler Init done"); 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientConnected","TurnBasedHandler Init done");
         }
@@ -127,7 +122,6 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             _retryConnectCounter = 0;
             _isDisposed = true;
-            _keepAliveUtil?.Dispose();
             _tcpClient?.StopReceiving();
             _observer?.Dispose();
             _cancellationToken?.Cancel(true);
@@ -278,7 +272,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         private static GsTcpClient _tcpClient;
         public static Room CurrentRoom;
         private readonly GsLiveSystemObserver _observer;
-        private readonly KeepAliveUtil _keepAliveUtil;
         private CancellationTokenSource _cancellationToken;
         private int _retryConnectCounter;
         private bool _isDisposed;

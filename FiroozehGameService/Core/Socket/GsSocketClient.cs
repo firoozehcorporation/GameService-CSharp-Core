@@ -55,6 +55,8 @@ namespace FiroozehGameService.Core.Socket
         internal abstract void Send(Packet packet);
 
         internal abstract Task SendAsync(Packet packet);
+        
+        protected abstract Task SendAsync(byte[] payload);
 
         internal abstract Task StartReceiving();
 
@@ -67,6 +69,7 @@ namespace FiroozehGameService.Core.Socket
         protected Area Area;
         protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
+        protected KeepAliveUtil KeepAliveUtil;
         protected CancellationTokenSource OperationCancellationToken;
         public bool IsAvailable;
 

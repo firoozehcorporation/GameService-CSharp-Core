@@ -48,7 +48,6 @@ namespace FiroozehGameService.Handlers.Command
 
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.Command);
-            _keepAliveUtil = new KeepAliveUtil();
             _isDisposed = false;
             _isFirstInit = false;
 
@@ -61,7 +60,6 @@ namespace FiroozehGameService.Handlers.Command
             CoreEventHandlers.Authorized += OnAuth;
             CoreEventHandlers.OnGsTcpClientConnected += OnGsTcpClientConnected;
             CoreEventHandlers.OnGsTcpClientError += OnGsTcpClientError; 
-            _keepAliveUtil.Caller += KeepAliveChecker;
 
             LogUtil.Log(this, "CommandHandler Initialized with "
                               + _requestHandlers.Count + " Request Handlers & "
@@ -114,7 +112,6 @@ namespace FiroozehGameService.Handlers.Command
             _isFirstInit = false;
             _tcpClient?.StopReceiving();
             _observer?.Dispose();
-            _keepAliveUtil?.Dispose();
             _cancellationToken?.Cancel(false);
             
             LogUtil.Log(this, "CommandHandler Dispose");
@@ -131,7 +128,6 @@ namespace FiroozehGameService.Handlers.Command
             if (_isFirstInit) return;
             _isFirstInit = true;
             
-            _keepAliveUtil?.Start();
             
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"OnAuth","CommandHandler Auth Done");
             
@@ -293,7 +289,6 @@ namespace FiroozehGameService.Handlers.Command
         private static GsTcpClient _tcpClient;
         private readonly GsLiveSystemObserver _observer;
         private CancellationTokenSource _cancellationToken;
-        private readonly KeepAliveUtil _keepAliveUtil;
         private int _retryConnectCounter;
         private bool _isDisposed;
         private bool _isFirstInit;

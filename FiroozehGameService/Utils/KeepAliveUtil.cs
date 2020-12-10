@@ -28,16 +28,16 @@ namespace FiroozehGameService.Utils
     internal class KeepAliveUtil
     {
         private readonly Timer _timer;
-        internal EventHandler Caller;
+        internal EventHandler<byte[]> Caller;
 
-        internal KeepAliveUtil()
+        internal KeepAliveUtil(int interval)
         {
             _timer = new Timer
             {
-                Interval = CommandConst.KeepAliveTime,
+                Interval = interval,
                 Enabled = false
             };
-            _timer.Elapsed += (sender, args) => { Caller?.Invoke(null,null); };
+            _timer.Elapsed += (sender, args) => { Caller?.Invoke(null,new byte[]{0x93,0x96,0x9F});};
         }
 
         internal void Start()

@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.ClientHelper;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.BasicApi;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
@@ -47,7 +48,14 @@ namespace FiroozehGameService.Core.Socket
         public GsTcpClient(Area area = null)
         {
             Area = area;
+            KeepAliveUtil = new KeepAliveUtil(area == null ? TurnBasedConst.KeepAliveTime : CommandConst.KeepAliveTime);
             CoreEventHandlers.OnTcpClientConnected += OnTcpClientConnected;
+            KeepAliveUtil.Caller += KeepAliveCaller;
+        }
+
+        private async void KeepAliveCaller(object sender, byte[] payload)
+        {
+            await SendAsync(payload);
         }
 
         private void OnTcpClientConnected(object sender, TcpClient client)
@@ -96,6 +104,8 @@ namespace FiroozehGameService.Core.Socket
             LogUtil.Log(this, "GsTcpClient -> StartReceiving");
             DebugUtil.LogNormal<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,"StartReceiving","GsTcpClient -> StartReceiving");
             
+            KeepAliveUtil?.Start();
+           
             while (IsAvailable)
                 try
                 {
@@ -137,6 +147,26 @@ namespace FiroozehGameService.Core.Socket
         }
 
 
+        protected override async Task SendAsync(byte[] payload)
+        {
+            try
+            {
+                if (_clientStream != null)
+                {
+                    await _clientStream.WriteAsync(payload, 0, payload.Length);
+                    await _clientStream.FlushAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                LogUtil.LogError(this, "Send -> " + e);
+                e.LogException<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
+
+                OnClosed(new ErrorArg {Error = e.ToString()});
+            }   
+        }
+        
+        
         internal override async Task SendAsync(Packet packet)
         {
             try
@@ -162,6 +192,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
+                KeepAliveUtil?.Dispose();
                 DataBuilder?.Clear();
                 IsAvailable = false;
                 OperationCancellationToken?.Cancel(false);
