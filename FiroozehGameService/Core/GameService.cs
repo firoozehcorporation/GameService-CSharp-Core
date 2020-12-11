@@ -33,7 +33,6 @@ using FiroozehGameService.Models.BasicApi.FaaS;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
-using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
@@ -60,7 +59,9 @@ namespace FiroozehGameService.Core
             if (IsAuthenticated()) throw new GameServiceException("Must Logout First To ReConfiguration").LogException(typeof(GameService),DebugLocation.Internal,"ConfigurationInstance");
             Configuration = configuration;
             _downloadManager = new DownloadManager(Configuration);
+            
             GSLive = new GSLive.GSLive();
+            Social = new Social.Social();
         }
         
         
@@ -708,7 +709,17 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static EventHandler<Debug> OnDebugReceived;
 
+        /// <summary>
+        /// The GameService GsLive System (like TurnBased , RealTime , ...)
+        /// </summary>
         public static GSLive.GSLive GSLive { get; private set; }
+        
+        /// <summary>
+        /// The GameService Social System (like Friends , Parties)
+        /// </summary>
+        public static Social.Social Social { get; private set; }
+
+        
         private static DownloadManager _downloadManager;
 
         #endregion

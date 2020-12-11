@@ -36,6 +36,7 @@ using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
+using Event = FiroozehGameService.Models.BasicApi.Event;
 
 namespace FiroozehGameService.Core.ApiWebRequest
 {
@@ -566,6 +567,107 @@ namespace FiroozehGameService.Core.ApiWebRequest
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             { 
                 return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+            }
+        }
+        
+        
+        internal static async Task<Results<Event>> GetAllEvents()
+        {
+            var response = await GsWebRequest.Get(Api.GetEvents);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Results<Event>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetAllEvents");
+            }
+        }
+        
+        
+        internal static async Task<Results<Member>> GetAllMembers(string urlQuery)
+        {
+            var response = await GsWebRequest.Get(Api.GetAllMembers + urlQuery);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Results<Member>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetAllMembers");
+            }
+        }
+        
+        
+        
+        internal static async Task<Results<FriendData>> GetMyFriends(string urlQuery)
+        {
+            var response = await GsWebRequest.Get(Api.GetMyFriends + urlQuery);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Results<FriendData>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetMyFriends");
+            }
+        }
+        
+        
+        
+        internal static async Task<Results<FriendData>> GetFriendPendingRequests(string urlQuery)
+        {
+            var response = await GsWebRequest.Get(Api.GetFriendRequests + urlQuery);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Results<FriendData>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"GetFriendPendingRequests");
+            }
+        }
+        
+        
+        
+        internal static async Task<bool> FriendRequest(string memberId)
+        {
+            var response = await GsWebRequest.Post(Api.Friends + memberId);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"FriendRequest");
+            }
+        }
+        
+        
+        internal static async Task<bool> AcceptFriendRequest(string memberId)
+        {
+            var response = await GsWebRequest.Put(Api.Friends + memberId);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"AcceptFriendRequest");
+            }
+        }
+        
+        
+        internal static async Task<bool> DeleteFriend(string memberId)
+        {
+            var response = await GsWebRequest.Delete(Api.Friends + memberId);
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest),DebugLocation.Http,"DeleteFriend");
             }
         }
 

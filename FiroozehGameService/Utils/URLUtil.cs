@@ -20,8 +20,11 @@
 */
 
 
+using System.Collections.Specialized;
+using System.Linq;
 using FiroozehGameService.Models.BasicApi.Buckets;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Internal;
 
 namespace FiroozehGameService.Utils
 {
@@ -48,6 +51,23 @@ namespace FiroozehGameService.Utils
                 }
 
             return url;
+        }
+        
+        
+        internal static string ToQueryString(this QueryData queryData)
+        {
+            return queryData.ToCollection().ToQueryString();
+        }
+        
+        
+        private static string ToQueryString(this NameValueCollection nvc)
+        {
+            var array = (
+                from key in nvc.AllKeys
+                from value in nvc.GetValues(key)
+                select $"{key}={value}"
+            ).ToArray();
+            return "?" + string.Join("&", array);
         }
     }
 }

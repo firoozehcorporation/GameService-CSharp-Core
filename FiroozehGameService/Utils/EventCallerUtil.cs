@@ -28,16 +28,16 @@ namespace FiroozehGameService.Utils
     /// <summary>
     ///  Represents Event In Game Service
     /// </summary>
-    public class Event
+    public class EventUtil
     {
         private readonly long _interval;
         /// <summary>
         /// Set New EventHandler by Observer
         /// </summary>
-        public EventHandler<Event> EventHandler;
+        public EventHandler<EventUtil> EventHandler;
         internal Timer Timer;
 
-        internal Event(long interval)
+        internal EventUtil(long interval)
         {
             _interval = interval;
         }
@@ -82,9 +82,9 @@ namespace FiroozehGameService.Utils
         /// </summary>
         /// <param name="interval">interval time</param>
         /// <returns></returns>
-        public static Event CreateNewEvent(long interval)
+        public static EventUtil CreateNewEvent(long interval)
         {
-            var newEvent = new Event(interval);
+            var newEvent = new EventUtil(interval);
             return newEvent;
         }
     }

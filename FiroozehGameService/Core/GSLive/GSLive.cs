@@ -37,7 +37,7 @@ namespace FiroozehGameService.Core.GSLive
         internal static GsHandler Handler;
 
 
-        public GSLive()
+        internal GSLive()
         {
             Handler = new GsHandler();
             RealTime = new GSLiveRT();
@@ -45,8 +45,20 @@ namespace FiroozehGameService.Core.GSLive
             TurnBased = new GSLiveTB();
         }
 
+        /// <summary>
+        /// The GameService RealTime System
+        /// </summary>
         public GSLiveRT RealTime { get; }
+        
+        /// <summary>
+        /// The GameService TurnBased System
+        /// </summary>
         public GSLiveTB TurnBased { get; }
+        
+        
+        /// <summary>
+        /// The GameService Chat System
+        /// </summary>
         public GSLiveChat Chat { get; }
 
 

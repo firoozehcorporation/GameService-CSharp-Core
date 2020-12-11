@@ -35,24 +35,36 @@ namespace FiroozehGameService.Models.Enums
         /// </summary>
         Internal , 
         /// <summary>
-        /// Happened In Http Service
+        /// Happened In Http System
         /// </summary>
         Http , 
         /// <summary>
-        /// Happened In Command Service
+        /// Happened In Command System
         /// </summary>
         Command ,
         /// <summary>
-        /// Happened In Chat Service
+        /// Happened In Chat System
         /// </summary>
         Chat ,
         /// <summary>
-        /// Happened In TurnBased Service
+        /// Happened In TurnBased System
         /// </summary>
         TurnBased ,
         /// <summary>
-        /// Happened In RealTime Service
+        /// Happened In RealTime System
         /// </summary>
-        RealTime
+        RealTime,
+        /// <summary>
+        /// Happened In Social System
+        /// </summary>
+        Social,
+        /// <summary>
+        /// Happened In Friend System
+        /// </summary>
+        Friend,
+        /// <summary>
+        /// Happened In Party System
+        /// </summary>
+        Party
     }
 }

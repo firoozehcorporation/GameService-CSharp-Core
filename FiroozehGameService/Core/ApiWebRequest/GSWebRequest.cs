@@ -41,7 +41,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             return await DoRequest(url, GsWebRequestMethod.Get, null, headers);
         }
 
-        internal static async Task<HttpResponseMessage> Put(string url, string body,
+        internal static async Task<HttpResponseMessage> Put(string url, string body = null,
             Dictionary<string, string> headers = null)
         {
             return await DoRequest(url, GsWebRequestMethod.Put, body, headers);

@@ -31,23 +31,23 @@ namespace FiroozehGameService.Utils
     {
         private const short MaxQueueSize = 255;
         private static Queue<byte[]> _sendQueue;
-        private static Event _queueWorkerEvent;
+        private static EventUtil _queueWorkerEventUtil;
 
         public static EventHandler<byte[]> SendObserverEventHandler;
 
         internal static void Init()
         {
             _sendQueue = new Queue<byte[]>();
-            _queueWorkerEvent = EventCallerUtil.CreateNewEvent(1000 / RealTimeConst.RealTimeLimit);
-            _queueWorkerEvent.EventHandler += EventHandler;
-            _queueWorkerEvent.Start();
+            _queueWorkerEventUtil = EventCallerUtil.CreateNewEvent(1000 / RealTimeConst.RealTimeLimit);
+            _queueWorkerEventUtil.EventHandler += EventHandler;
+            _queueWorkerEventUtil.Start();
         }
 
 
         internal static void Dispose()
         {
             _sendQueue?.Clear();
-            _queueWorkerEvent?.Dispose();
+            _queueWorkerEventUtil?.Dispose();
         }
 
         internal static void AddToQueue(DataPayload dataPayload)
@@ -61,7 +61,7 @@ namespace FiroozehGameService.Utils
         }
 
 
-        private static void EventHandler(object sender, Event e)
+        private static void EventHandler(object sender, EventUtil e)
         {
             if (_sendQueue.Count <= 0) return;
             SendObserverEventHandler?.Invoke(null, GsSerializer.Object.GetSendQueueBuffer(_sendQueue));
