@@ -21,34 +21,37 @@
 
 using System;
 using System.Collections.Specialized;
-using Newtonsoft.Json;
+using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Models.Internal
 {
     [Serializable]
     internal class QueryData
     {
+        internal int Limit;
         internal string Query;
         internal int Skip;
-        internal int Limit;
-        
-        internal QueryData(string query = null,int skip = 0,int limit = 0)
+
+        internal QueryData(string query = null, int skip = 0, int limit = 0)
         {
             Query = query;
             Skip = skip;
+            if (limit > 25)
+                throw new GameServiceException("QueryData Limit is More Than 25").LogException(typeof(QueryData),
+                    DebugLocation.Internal, "Constructor");
             Limit = limit;
         }
 
         internal NameValueCollection ToCollection()
         {
             var collection = new NameValueCollection();
-            
-            if(Query != null) collection.Add("q",Query);
-            collection.Add("skip",Skip.ToString());
-            collection.Add("limit",Limit.ToString());
-            
-            return collection;
 
+            if (Query != null) collection.Add("q", Query);
+            collection.Add("skip", Skip.ToString());
+            collection.Add("limit", Limit.ToString());
+
+            return collection;
         }
     }
 }

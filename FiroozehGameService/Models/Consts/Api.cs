@@ -42,21 +42,22 @@ namespace FiroozehGameService.Models.Consts
         public const string Achievements = BaseUrl2 + "/v1/achievement/";
         public const string LeaderBoard = BaseUrl2 + "/v1/leaderboard/";
         public const string Bucket = BaseUrl2 + "/v1/bucket/";
-        
-        
-        
+
+
         public const string GetEvents = BaseUrl2 + "/v1/events";
-        
-        
+
+
         public const string Friends = BaseUrl2 + "/v1/friends/";
         public const string GetAllMembers = BaseUrl2 + "/v1/friends";
         public const string GetMyFriends = BaseUrl2 + "/v1/friends/me";
         public const string GetFriendRequests = BaseUrl2 + "/v1/friends/me/pending";
 
 
-
-
-
+        public const string Parties = BaseUrl2 + "/v1/parties/party/";
+        public const string PartyJoinRequest = BaseUrl2 + "/v1/parties/";
+        public const string PartyImage = BaseUrl2 + "/v1/parties/party/image";
+        public const string GetAllParties = BaseUrl2 + "/v1/parties/party";
+        public const string GetMyParties = BaseUrl2 + "/v1/parties/me";
 
 
         public const string CurrentTime = BaseUrl2 + "/syncedtime/";

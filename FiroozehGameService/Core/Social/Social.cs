@@ -15,54 +15,53 @@
 // </copyright>
 
 
-
 /**
 * @author Alireza Ghodrati
 */
 
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
+using FiroozehGameService.Models.BasicApi.Social;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Utils;
-
-
 
 namespace FiroozehGameService.Core.Social
 {
     /// <summary>
-    ///  Represents GameService Social System
+    ///     Represents GameService Social System
     /// </summary>
     public class Social
     {
         /// <summary>
-        /// The GameService Friend System
+        ///     The GameService Friend System
         /// </summary>
         public Friend Friend;
-        
+
         /// <summary>
-        /// The GameService Party System
+        ///     The GameService Party System
         /// </summary>
         public Party Party;
 
-
-        /// <summary>
-        /// With this command you can get All Event Data
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Results<Event>> GetAllEvents()
-        {
-            if (!GameService.IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(Social),DebugLocation.Social,"GetAllEvents");
-            return await ApiRequest.GetAllEvents();
-        }
-        
         internal Social()
         {
             Friend = new Friend();
-            Party  = new Party();
+            Party = new Party();
+        }
+
+
+        /// <summary>
+        ///     With this command you can get All Event Data
+        /// </summary>
+        /// <returns>returns all Events</returns>
+        public async Task<Results<Event>> GetAllEvents()
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(Social),
+                    DebugLocation.Social, "GetAllEvents");
+            return await ApiRequest.GetAllEvents();
         }
     }
 }

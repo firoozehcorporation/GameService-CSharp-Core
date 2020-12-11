@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 /**
 * @author Alireza Ghodrati
 */
-namespace FiroozehGameService.Models.BasicApi
+namespace FiroozehGameService.Models.BasicApi.Social
 {
     /// <summary>
     ///     Represents Event Data Model In Game Service Basic API
@@ -31,51 +31,47 @@ namespace FiroozehGameService.Models.BasicApi
     public class Event
     {
         /// <summary>
-        ///     Gets the Event ID.
-        /// </summary>
-        /// <value>the Event ID</value>
-        [JsonProperty("_id")] public string Id;
-        
-        
-        /// <summary>
         ///     Gets the Event Action.
         /// </summary>
         /// <value>the Event Action</value>
         [JsonProperty("action")] public EventAction Action;
-        
-        
-        
+
+
+        /// <summary>
+        ///     Gets the Event Extra Data
+        ///     NOTE : Extra Data Is NULLABLE
+        ///     USAGE : Available When Action is <see cref="EventAction.ChangeMemberRole" />
+        /// </summary>
+        /// <value>the Event Extra Data</value>
+        [JsonProperty("extra")] public string Extra;
+
+
         /// <summary>
         ///     Gets the Member who Creates this Event.
         /// </summary>
         /// <value>the Event ID</value>
         [JsonProperty("who")] public Member FromMember;
-        
-        
+
+
         /// <summary>
         ///     Gets the Party Data
         ///     NOTE : Party Data Only Available in Party Actions
         /// </summary>
         /// <value>the Party Data</value>
         [JsonProperty("party")] public Member FromParty;
-        
-        
+
         /// <summary>
-        ///     Gets the Event Extra Data
-        ///     NOTE : Extra Data Is NULLABLE
-        ///     USAGE : Available When Action is <see cref="EventAction.ChangeMemberRole"/>
+        ///     Gets the Event ID.
         /// </summary>
-        /// <value>the Event Extra Data</value>
-        [JsonProperty("extra")] public string Extra;
-        
-        
-        
+        /// <value>the Event ID</value>
+        [JsonProperty("_id")] public string Id;
+
+
         /// <summary>
         ///     Gets the Event Time
         /// </summary>
         /// <value>the Event Time</value>
         [JsonProperty("at")] public DateTimeOffset Time;
-        
 
 
         public override string ToString()

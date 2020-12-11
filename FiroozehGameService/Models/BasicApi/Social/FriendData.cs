@@ -23,41 +23,32 @@ using System;
 using FiroozehGameService.Models.GSLive;
 using Newtonsoft.Json;
 
-namespace FiroozehGameService.Models.BasicApi
+namespace FiroozehGameService.Models.BasicApi.Social
 {
     /// <summary>
-    ///     Represents Friend Data Model In Game Service Basic API
+    ///     Represents Friend Data Model In Game Service Social Basic API
     /// </summary>
     [Serializable]
     public class FriendData
     {
-        
-        /// <summary>
-        ///     Gets the Friend Data Status.
-        /// </summary>
-        /// <value>the Friend Data Status</value>
-        [JsonProperty("status")] public int Status;
-        
-        
-        /// <summary>
-        ///     Gets the Friend Member Data.
-        ///     The Friend Member or Requester
-        /// </summary>
-        /// <value>the Friend Member Data</value>
-        [JsonProperty("pair_one")] public Member Member;
-        
-        
-        /// <summary>
-        ///     Gets the Friend Request Time
-        /// </summary>
-        /// <value>the Friend Request Time</value>
-        [JsonProperty("requested_at")] public DateTimeOffset RequestedTime;
-        
-        
         /// <summary>
         ///     Gets the Friend Request Accept Time
         /// </summary>
         /// <value>the Friend Request Accept Time</value>
         [JsonProperty("accepted_at")] public DateTimeOffset AcceptedTime;
+
+        /// <summary>
+        ///     Gets the Friend Member Data.
+        ///     The Friend Member or Requester
+        /// </summary>
+        /// <value>the Friend Member Data</value>
+        [JsonProperty("member")] public Member Member;
+
+
+        /// <summary>
+        ///     Gets the Friend Request Time
+        /// </summary>
+        /// <value>the Friend Request Time</value>
+        [JsonProperty("requested_at")] public DateTimeOffset RequestedTime;
     }
 }

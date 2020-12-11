@@ -22,6 +22,7 @@
 using System.Threading.Tasks;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Internal;
 
 namespace FiroozehGameService.Utils
@@ -30,8 +31,19 @@ namespace FiroozehGameService.Utils
     {
         internal static async Task<ImageUploadResult> UploadProfileImage(byte[] imageBuffer)
         {
-            if (imageBuffer.Length > 1000 * 1024) throw new GameServiceException("ProfileImage is Too Large");
+            if (imageBuffer.Length > 1000 * 1024)
+                throw new GameServiceException("ProfileImage is Too Large").LogException(typeof(ImageUtil),
+                    DebugLocation.Internal, "UploadProfileImage");
             return await ApiRequest.UploadUserProfileLogo(imageBuffer);
+        }
+
+
+        internal static async Task<ImageUploadResult> UploadPartyLogo(byte[] imageBuffer)
+        {
+            if (imageBuffer.Length > 500 * 1024)
+                throw new GameServiceException("Party Logo is Too Large").LogException(typeof(ImageUtil),
+                    DebugLocation.Internal, "UploadPartyLogo");
+            return await ApiRequest.UploadPartyLogo(imageBuffer);
         }
     }
 }
