@@ -19,7 +19,6 @@
 * @author Alireza Ghodrati
 */
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -589,8 +588,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<Results<Member>> GetAllMembers(string urlQuery)
         {
-            var response = await GsWebRequest.Get(Api.GetAllMembers + urlQuery,CreatePlayTokenHeader());
-            
+            var response = await GsWebRequest.Get(Api.Friends + urlQuery, CreatePlayTokenHeader());
+
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
@@ -603,7 +602,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<Results<FriendData>> GetMyFriends(string urlQuery)
         {
-            var response = await GsWebRequest.Get(Api.GetMyFriends + urlQuery,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.GetMyFriends + urlQuery, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -617,7 +616,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<Results<FriendData>> GetFriendPendingRequests(string urlQuery)
         {
-            var response = await GsWebRequest.Get(Api.GetFriendRequests + urlQuery,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.GetFriendRequests + urlQuery, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -631,7 +630,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> FriendRequest(string memberId)
         {
-            var response = await GsWebRequest.Post(Api.Friends + memberId,null,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.Friends + memberId, null, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -645,7 +644,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> AcceptFriendRequest(string memberId)
         {
-            var response = await GsWebRequest.Put(Api.Friends + memberId,null,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Put(Api.Friends + memberId, null, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -659,7 +658,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> DeleteFriend(string memberId)
         {
-            var response = await GsWebRequest.Delete(Api.Friends + memberId,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Delete(Api.Friends + memberId, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -673,7 +672,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<Results<Party>> GetAllParties(string urlQuery)
         {
-            var response = await GsWebRequest.Get(Api.GetAllParties + urlQuery,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.GetAllParties + urlQuery, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -687,7 +686,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<Results<Party>> GetMyParties(string urlQuery)
         {
-            var response = await GsWebRequest.Get(Api.GetMyParties + urlQuery,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.GetMyParties + urlQuery, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -701,7 +700,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<PartyInfo> GetPartyInfo(string partyId)
         {
-            var response = await GsWebRequest.Get(Api.Parties + partyId,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.Parties + partyId, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -909,7 +908,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> KickMember(string partyId, string memberId)
         {
-            var response = await GsWebRequest.Delete(Api.Parties + partyId + "/member/" + memberId,CreatePlayTokenHeader());
+            var response =
+                await GsWebRequest.Delete(Api.Parties + partyId + "/member/" + memberId, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -923,7 +923,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> AcceptJoinToParty(string partyId, string memberId)
         {
-            var response = await GsWebRequest.Post(Api.Parties + partyId + "/member/" + memberId + "/accept",null,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.Parties + partyId + "/member/" + memberId + "/accept", null,
+                CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -937,7 +938,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> RejectJoinToParty(string partyId, string memberId)
         {
-            var response = await GsWebRequest.Post(Api.Parties + partyId + "/member/" + memberId + "/reject",null,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.Parties + partyId + "/member/" + memberId + "/reject", null,
+                CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -951,7 +953,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> SendJoinRequestToParty(string partyId)
         {
-            var response = await GsWebRequest.Post(Api.PartyJoinRequest + partyId,null,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.PartyJoinRequest + partyId, null, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -965,7 +967,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> LeftParty(string partyId)
         {
-            var response = await GsWebRequest.Delete(Api.PartyJoinRequest + partyId,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Delete(Api.PartyJoinRequest + partyId, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -979,7 +981,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> AddFriendToParty(string partyId, string memberId)
         {
-            var response = await GsWebRequest.Post(Api.Parties + partyId + "/member/" + memberId + "/join",null,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.Parties + partyId + "/member/" + memberId + "/join", null,
+                CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {

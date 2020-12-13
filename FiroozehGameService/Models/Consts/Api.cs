@@ -48,7 +48,6 @@ namespace FiroozehGameService.Models.Consts
 
 
         public const string Friends = BaseUrl2 + "/v1/friends/";
-        public const string GetAllMembers = BaseUrl2 + "/v1/friends";
         public const string GetMyFriends = BaseUrl2 + "/v1/friends/me";
         public const string GetFriendRequests = BaseUrl2 + "/v1/friends/me/pending";
 
