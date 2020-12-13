@@ -78,6 +78,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
             _udpClient?.StopReceiving();
             _observer?.Dispose();
+            PingUtil.Dispose();
 
             ObserverCompacterUtil.Dispose();
             
@@ -102,7 +103,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void RequestPing(object sender, EventArgs e)
         {
-            Request(GetPingHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
+            if(IsAvailable) Request(GetPingHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
         }
 
         internal static short GetPing()
@@ -235,9 +236,8 @@ namespace FiroozehGameService.Handlers.RealTime
             LogUtil.Log(this, "RealTime Error");
             DebugUtil.LogError<RealTimeHandler>(DebugLocation.RealTime,"OnError",e.Error);
             
-            Dispose();
-            //if (_isDisposed) return;
-            //Init();
+            if (_isDisposed) return;
+            Init();
         }
 
 

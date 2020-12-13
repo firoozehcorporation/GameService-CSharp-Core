@@ -38,7 +38,7 @@ namespace FiroozehGameService.Core.Socket
 {
     internal class GsTcpClient : GsSocketClient
     {
-        private const short CommandTimeOutWait = 1000;
+        private const short CommandTimeOutWait = 700;
         private const short TurnTimeOutWait = 500;
         
         private TcpClient _client;

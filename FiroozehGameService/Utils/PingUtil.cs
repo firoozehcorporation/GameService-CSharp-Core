@@ -58,5 +58,12 @@ namespace FiroozehGameService.Utils
         {
             return Math.Abs(one - two);
         }
+
+        internal static void Dispose()
+        {
+            _lastPing = -1;
+            _timer?.Close();
+            _timer?.Dispose();
+        }
     }
 }
