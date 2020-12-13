@@ -20,6 +20,7 @@
 */
 
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
@@ -205,19 +206,19 @@ namespace FiroozehGameService.Core.GSLive
             await GSLive.Handler.TurnBasedHandler?.RequestAsync(LeaveRoomHandler.Signature, new DataPayload {NextId = whoIsNext});
             GSLive.Handler.TurnBasedHandler?.Dispose();
         }
-
-
+        
+        
         /// <summary>
         ///     If you want to announce the end of the game, use this function to send the result of your game to other players.
         /// </summary>
         /// <param name="outcomes">(NOTNULL) A set of players and their results</param>
-        public async Task Finish(Dictionary<string, Outcome> outcomes)
+        public async Task Vote(Dictionary<string, Outcome> outcomes)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"Finish");
             if (outcomes == null) throw new GameServiceException("outcomes Cant Be Null").LogException<GSLiveTB>(DebugLocation.TurnBased,"Finish");
             if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"Finish");
            
-            await GSLive.Handler.TurnBasedHandler.RequestAsync(FinishHandler.Signature,
+            await GSLive.Handler.TurnBasedHandler.RequestAsync(VoteHandler.Signature,
                 new DataPayload {Outcomes = outcomes});
         }
 

@@ -157,7 +157,7 @@
         <Compile Include="Handlers\TurnBased\RequestHandlers\ChooseNextHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\CompleteHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\CurrentTurnHandler.cs"/>
-        <Compile Include="Handlers\TurnBased\RequestHandlers\FinishHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\RequestHandlers\VoteHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\GetMembersHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\IRequestHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\KeepAliveHandler.cs"/>
@@ -172,7 +172,7 @@
         <Compile Include="Handlers\TurnBased\ResponseHandlers\CompleteResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\CurrentTurnResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\ErrorResponseHandler.cs"/>
-        <Compile Include="Handlers\TurnBased\ResponseHandlers\FinishResponseHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\ResponseHandlers\VoteResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\IResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\JoinRoomResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\LeaveRoomResponseHandler.cs"/>
@@ -272,7 +272,7 @@
         <Compile Include="Models\GSLive\RT\Packet.cs"/>
         <Compile Include="Models\GSLive\TB\Complete.cs"/>
         <Compile Include="Models\GSLive\TB\DataPayload.cs"/>
-        <Compile Include="Models\GSLive\TB\Finish.cs"/>
+        <Compile Include="Models\GSLive\TB\Vote.cs"/>
         <Compile Include="Models\GSLive\TB\Outcome.cs"/>
         <Compile Include="Models\GSLive\TB\PropertyPayload.cs"/>
         <Compile Include="Models\GSLive\TB\PropertyData.cs"/>

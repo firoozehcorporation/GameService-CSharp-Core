@@ -25,14 +25,14 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 {
-    internal class FinishResponseHandler : BaseResponseHandler
+    internal class VoteResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand => TurnBasedConst.OnFinish;
+        public static int ActionCommand => TurnBasedConst.OnVote;
 
         protected override void HandleResponse(Packet packet)
         {
-            TurnBasedEventHandlers.Finished?.Invoke(this,
-                JsonConvert.DeserializeObject<Finish>(packet.Data));
+            TurnBasedEventHandlers.VoteReceived?.Invoke(this,
+                JsonConvert.DeserializeObject<Vote>(packet.Data));
         }
     }
 }

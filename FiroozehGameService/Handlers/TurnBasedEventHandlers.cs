@@ -81,14 +81,15 @@ namespace FiroozehGameService.Handlers
         ///     <see cref="GSLiveTB.GetProperties" />
         /// </summary>
         public static EventHandler<List<PropertyData>> PropertiesReceived;
-
-
+        
+        
+        
         /// <summary>
         ///     Calls When SomeOne Announced To Finish Game
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveTB.Finish" />
+        ///     <see cref="GSLiveTB.Vote" />
         /// </summary>
-        public static EventHandler<Finish> Finished;
+        public static EventHandler<Vote> VoteReceived;
 
 
         /// <summary>

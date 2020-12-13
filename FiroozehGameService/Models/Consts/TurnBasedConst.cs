@@ -29,7 +29,7 @@ namespace FiroozehGameService.Models.Consts
         internal const int OnTakeTurn = 4;
         internal const int OnChooseNext = 5;
         internal const int OnLeave = 6;
-        internal const int OnFinish = 7;
+        internal const int OnVote = 7;
         internal const int OnComplete = 8;
         internal const int GetMembers = 9;
         internal const int OnJoin = 11;

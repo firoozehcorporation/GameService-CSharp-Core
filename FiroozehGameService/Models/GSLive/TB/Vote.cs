@@ -1,4 +1,4 @@
-// <copyright file="Finish.cs" company="Firoozeh Technology LTD">
+// <copyright file="Vote.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,7 +29,7 @@ namespace FiroozehGameService.Models.GSLive.TB
     ///     Represents Finish Data Model In GameService TurnBased MultiPlayer System
     /// </summary>
     [Serializable]
-    public class Finish
+    public class Vote
     {
         /// <summary>
         ///     Gets Member Data of Has Announced The End Of The Game.
@@ -40,7 +40,7 @@ namespace FiroozehGameService.Models.GSLive.TB
 
         /// <summary>
         ///     Gets the Outcomes sent from the player.
-        ///     Call From Other Player With this Function <see cref="Finish" />
+        ///     Call From Other Player With this Function <see cref="Vote" />
         ///     (Type : Dictionary(MemberID,Outcome))
         /// </summary>
         /// <value>the Outcomes sent from the player</value>

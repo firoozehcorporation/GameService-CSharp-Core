@@ -27,14 +27,14 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 {
-    internal class FinishHandler : BaseRequestHandler
+    internal class VoteHandler : BaseRequestHandler
     {
         public static string Signature =>
-            "FINISH";
+            "VOTE";
 
         private static Packet DoAction(DataPayload payload)
         {
-            return new Packet(TurnBasedHandler.PlayerHash, TurnBasedConst.OnFinish,
+            return new Packet(TurnBasedHandler.PlayerHash, TurnBasedConst.OnVote,
                 JsonConvert.SerializeObject(payload,
                     new JsonSerializerSettings
                     {
