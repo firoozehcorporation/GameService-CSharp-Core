@@ -67,5 +67,12 @@ namespace FiroozehGameService.Handlers
         ///     <see cref="GSLiveRT.GetRoomMembersDetail" />
         /// </summary>
         public static EventHandler<List<Member>> RoomMembersDetailReceived;
+        
+        
+        /// <summary>
+        ///     Returns Room Info When Call The Following Function :
+        ///     <see cref="GSLiveRT.GetCurrentRoomInfo" />
+        /// </summary>
+        public static EventHandler<RoomData> RoomInfoReceived;
     }
 }

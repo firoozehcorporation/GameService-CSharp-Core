@@ -132,6 +132,7 @@
         <Compile Include="Handlers\RealTime\RequestHandlers\GetPingHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\IRequestHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\ObserverHandler.cs"/>
+        <Compile Include="Handlers\RealTime\RequestHandlers\RoomInfoHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\SendPrivateMessageHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\SendPublicMessageHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\LeaveRoomHandler.cs"/>
@@ -150,6 +151,7 @@
         <Compile Include="Handlers\RealTime\ResponseHandlers\PingResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PrivateMessageResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PublicMessageResponseHandler.cs"/>
+        <Compile Include="Handlers\RealTime\ResponseHandlers\RoomInfoResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\SnapShotResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBasedEventHandlers.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\AuthorizationHandler.cs"/>

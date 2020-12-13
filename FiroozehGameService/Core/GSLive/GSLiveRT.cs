@@ -200,6 +200,20 @@ namespace FiroozehGameService.Core.GSLive
             GSLive.Handler.RealTimeHandler.Request(GetMemberHandler.Signature, GProtocolSendType.Reliable,
                 isCritical: true);
         }
+        
+        
+        
+        /// <summary>
+        ///     Get Current Room Info
+        /// </summary>
+        public void GetCurrentRoomInfo()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.RealTime,"GetCurrentRoomInfo");
+            if (GSLive.Handler.RealTimeHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.RealTime,"GetCurrentRoomInfo");
+            
+            GSLive.Handler.RealTimeHandler.Request(RoomInfoHandler.Signature,GProtocolSendType.Reliable);
+        }
+
 
 
         /// <summary>
