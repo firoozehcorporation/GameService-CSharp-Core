@@ -22,6 +22,7 @@
 using System;
 using System.Timers;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums;
 
 namespace FiroozehGameService.Utils
 {
@@ -37,7 +38,7 @@ namespace FiroozehGameService.Utils
                 Interval = interval,
                 Enabled = false
             };
-            _timer.Elapsed += (sender, args) => { Caller?.Invoke(null,new byte[]{0x93,0x96,0x9F});};
+            _timer.Elapsed += (sender, args) => { Caller?.Invoke(null,new byte[]{0x93,0x96,0x9F}); };
         }
 
         internal void Start()

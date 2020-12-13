@@ -48,7 +48,7 @@ namespace FiroozehGameService.Core.Socket
         public GsTcpClient(Area area = null)
         {
             Area = area;
-            KeepAliveUtil = new KeepAliveUtil(area == null ? TurnBasedConst.KeepAliveTime : CommandConst.KeepAliveTime);
+            KeepAliveUtil = new KeepAliveUtil(area == null ? CommandConst.KeepAliveTime : TurnBasedConst.KeepAliveTime);
             CoreEventHandlers.OnTcpClientConnected += OnTcpClientConnected;
             KeepAliveUtil.Caller += KeepAliveCaller;
         }
