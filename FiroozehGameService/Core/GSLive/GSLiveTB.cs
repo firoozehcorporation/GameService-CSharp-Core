@@ -31,6 +31,7 @@ using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.Enums.GSLive.TB;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.TB;
+using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.GSLive
@@ -152,7 +153,8 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         /// <param name="key">(NOTNULL)  The Key Value</param>
         /// <param name="value">(NOTNULL) The Value of Key </param>
-        public async Task SetProperty(string key,string value)
+        /// <param name="type">The Type of Property </param>
+        public async Task SetProperty(PropertyType type,string key,string value)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"SetProperty");
             if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"SetProperty");
@@ -161,7 +163,7 @@ namespace FiroozehGameService.Core.GSLive
             if (string.IsNullOrEmpty(value)) throw new GameServiceException("Value Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"SetProperty");
 
             await GSLive.Handler.TurnBasedHandler.RequestAsync(PropertyHandler.Signature,
-                new DataPayload {Action = (int) PropertyAction.SetOrUpdate ,Id = key , Data = value});
+                new DataPayload {Action = type == PropertyType.Member ? InternalPropertyAction.MemberSetOrUpdate : InternalPropertyAction.RoomSetOrUpdate,Id = key , Data = value});
         }
 
         
@@ -170,7 +172,8 @@ namespace FiroozehGameService.Core.GSLive
         ///     Delete Properties And Sync it With EachOthers
         /// </summary>
         /// <param name="key">(NOTNULL) The Key Value</param>
-        public async Task RemoveProperty(string key)
+        /// <param name="type"> The Type of Property </param>
+        public async Task RemoveProperty(PropertyType type,string key)
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"RemoveProperty");
             if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"RemoveProperty");
@@ -178,7 +181,7 @@ namespace FiroozehGameService.Core.GSLive
             if (string.IsNullOrEmpty(key)) throw new GameServiceException("Key Cant Be EmptyOrNull").LogException<GSLiveTB>(DebugLocation.TurnBased,"CreateRoom");
 
             await GSLive.Handler.TurnBasedHandler.RequestAsync(PropertyHandler.Signature,
-                new DataPayload {Action = (int) PropertyAction.Delete ,Id = key});
+                new DataPayload {Action = type == PropertyType.Member ? InternalPropertyAction.MemberDelete : InternalPropertyAction.RoomDelete,Id = key});
         }
 
         
@@ -191,6 +194,19 @@ namespace FiroozehGameService.Core.GSLive
             if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetProperties");
             
             await GSLive.Handler.TurnBasedHandler.RequestAsync(SnapshotHandler.Signature);
+        }
+        
+        
+        
+        /// <summary>
+        ///     Get Current Room Info
+        /// </summary>
+        public async Task GetCurrentRoomInfo()
+        {
+            if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetCurrentRoomInfo");
+            if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetCurrentRoomInfo");
+            
+            await GSLive.Handler.TurnBasedHandler.RequestAsync(RoomInfoHandler.Signature);
         }
 
 

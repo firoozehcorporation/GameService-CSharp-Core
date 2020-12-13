@@ -1,4 +1,4 @@
-// <copyright file="PropertyAction.cs" company="Firoozeh Technology LTD">
+// <copyright file="InternalPropertyAction.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,20 +19,28 @@
 */
 
 
-namespace FiroozehGameService.Models.Enums.GSLive.TB
+namespace FiroozehGameService.Models.Internal
 {
     /// <summary>
     /// Represents Game Service TurnBased Property Actions
     /// </summary>
-    public enum PropertyAction
+    internal static class InternalPropertyAction
     {
         /// <summary>
         /// SetOrUpdate the Value of Key
         /// </summary>
-        SetOrUpdate = 1,
+        internal const int MemberSetOrUpdate = 1;
         /// <summary>
         /// Delete the Value of Key
         /// </summary>
-        Delete = 2
+        internal const int MemberDelete = 2;
+        /// <summary>
+        /// SetOrUpdate the Value of Key
+        /// </summary>
+        internal const int RoomSetOrUpdate = 3;
+        /// <summary>
+        /// Delete the Value of Key
+        /// </summary>
+        internal const int RoomDelete = 4;
     }
 }

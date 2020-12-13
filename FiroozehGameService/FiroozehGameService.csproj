@@ -157,6 +157,7 @@
         <Compile Include="Handlers\TurnBased\RequestHandlers\ChooseNextHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\CompleteHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\CurrentTurnHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\RequestHandlers\RoomInfoHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\VoteHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\GetMembersHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\IRequestHandler.cs"/>
@@ -172,6 +173,7 @@
         <Compile Include="Handlers\TurnBased\ResponseHandlers\CompleteResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\CurrentTurnResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\ErrorResponseHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\ResponseHandlers\RoomInfoResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\VoteResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\IResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\JoinRoomResponseHandler.cs"/>
@@ -232,6 +234,7 @@
         <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
         <Compile Include="Models\Enums\GSLive\RT\MessageType.cs"/>
         <Compile Include="Models\Enums\GSLive\TB\PropertyAction.cs"/>
+        <Compile Include="Models\Enums\GSLive\TB\PropertyType.cs"/>
         <Compile Include="Models\Enums\GsWebRequestMethod.cs"/>
         <Compile Include="Models\Enums\LogType.cs"/>
         <Compile Include="Models\EventArgs\Debug.cs"/>
@@ -285,6 +288,7 @@
         <Compile Include="Models\Internal\ImageUploadResult.cs"/>
         <Compile Include="Models\Internal\PacketBinary.cs"/>
         <Compile Include="Models\Internal\Platform.cs"/>
+        <Compile Include="Models\Internal\InternalPropertyAction.cs"/>
         <Compile Include="Models\Internal\Publisher.cs"/>
         <Compile Include="Models\Internal\QueryData.cs"/>
         <Compile Include="Models\Internal\SetOrUpdateRole.cs"/>

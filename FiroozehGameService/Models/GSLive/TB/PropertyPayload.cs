@@ -8,32 +8,41 @@ namespace FiroozehGameService.Models.GSLive.TB
     /// </summary>
     public class PropertyPayload
     {
+        
         /// <summary>
-        ///     Gets the Property Action Type.
+        ///     Gets the Property Type.
         /// </summary>
-        /// <value>the PropertyPayload Action Type</value>
+        /// <value>the PropertyPayload Type</value>
+        /// <see cref="Enums.GSLive.TB.PropertyType" />
+        [JsonProperty("1")] public PropertyType Type;
+        
+        
+        /// <summary>
+        ///     Gets the Property Action
+        /// </summary>
+        /// <value>the PropertyPayload Action</value>
         /// <see cref="Enums.GSLive.TB.PropertyAction" />
-        [JsonProperty("1")] public PropertyAction Action;
+        [JsonProperty("2")] public PropertyAction Action;
         
         
         /// <summary>
         ///     Gets the Property Owner Member.
         /// </summary>
         /// <value>the Property Owner Member</value>
-        [JsonProperty("2")] public Member Owner;
+        [JsonProperty("3")] public Member Owner;
         
         
         /// <summary>
         ///     Gets the Property Key.
         /// </summary>
         /// <value>the Property Key</value>
-        [JsonProperty("3")] public string Key;
+        [JsonProperty("4")] public string Key;
 
         
         /// <summary>
         ///     Gets the Property Value.
         /// </summary>
         /// <value>the Property Value</value>
-        [JsonProperty("4")] public string Value;
+        [JsonProperty("5")] public string Value;
     }
 }

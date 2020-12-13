@@ -1,5 +1,5 @@
-﻿// <copyright file="PropertyResponseHandler.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+﻿// <copyright file="RoomInfoResponseHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,20 +21,21 @@
 
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums.GSLive.TB;
+using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.TB;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 {
-    internal class PropertyResponseHandler : BaseResponseHandler
+    internal class RoomInfoResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand => TurnBasedConst.OnProperty;
+        public static int ActionCommand => TurnBasedConst.OnRoomInfo;
 
         protected override void HandleResponse(Packet packet)
         {
-            var property = JsonConvert.DeserializeObject<PropertyPayload>(packet.Data);
-            TurnBasedEventHandlers.PropertyUpdated?.Invoke(this, property);
+            var roomData = JsonConvert.DeserializeObject<RoomData>(packet.Data);
+            TurnBasedEventHandlers.RoomInfoReceived?.Invoke(this, roomData);
         }
     }
 }

@@ -85,6 +85,14 @@ namespace FiroozehGameService.Handlers
         
         
         /// <summary>
+        ///     Returns Room Info When Call The Following Function :
+        ///     <see cref="GSLiveTB.GetCurrentRoomInfo" />
+        /// </summary>
+        public static EventHandler<RoomData> RoomInfoReceived;
+        
+        
+        
+        /// <summary>
         ///     Calls When SomeOne Announced To Finish Game
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GSLiveTB.Vote" />

@@ -1,4 +1,4 @@
-﻿// <copyright file="MemberPropertyHandler.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="RoomInfoHandler.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,32 +28,25 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 {
-    internal class PropertyHandler : BaseRequestHandler
+    internal class RoomInfoHandler : BaseRequestHandler
     {
-        public static string Signature => "PROPERTY_HANDLER";
+        public static string Signature => "ROOM_INFO_HANDLER";
 
-        private static Packet DoAction(DataPayload payload)
+        private static Packet DoAction()
         {
-            return new Packet(TurnBasedHandler.PlayerHash, TurnBasedConst.OnProperty,
-                JsonConvert.SerializeObject(payload
-                    , new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        DefaultValueHandling = DefaultValueHandling.Ignore
-                    })
-            );
+            return new Packet(TurnBasedHandler.PlayerHash, TurnBasedConst.OnRoomInfo);
         }
 
         protected override Packet DoAction(object payload)
         {
             if (!TurnBasedHandler.IsAvailable) throw new GameServiceException("GSLiveTurnBased Not Available yet");
             if (!CheckAction(payload)) throw new ArgumentException();
-            return DoAction(payload as DataPayload);
+            return DoAction();
         }
 
         protected override bool CheckAction(object payload)
         {
-            return payload.GetType() == typeof(DataPayload);
+            return true;
         }
     }
 }

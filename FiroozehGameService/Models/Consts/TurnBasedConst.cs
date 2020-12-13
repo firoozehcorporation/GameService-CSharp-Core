@@ -35,7 +35,10 @@ namespace FiroozehGameService.Models.Consts
         internal const int OnJoin = 11;
         internal const int OnCurrentTurnDetail = 12;
         internal const int OnProperty = 13;
+        internal const int OnRoomInfo = 14;
         internal const int OnSnapshot = 15;
+
+
         
         internal const int ActionKeepAlive = byte.MaxValue;
 

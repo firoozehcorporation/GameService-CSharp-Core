@@ -1,4 +1,4 @@
-// <copyright file="PropertyAction.cs" company="Firoozeh Technology LTD">
+// <copyright file="PropertyType.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,17 +22,17 @@
 namespace FiroozehGameService.Models.Enums.GSLive.TB
 {
     /// <summary>
-    /// Represents Game Service TurnBased Property Actions
+    /// Represents Game Service TurnBased Property Types
     /// </summary>
-    public enum PropertyAction
+    public enum PropertyType
     {
         /// <summary>
-        /// SetOrUpdate the Value of Key
+        /// Room Property
         /// </summary>
-        SetOrUpdate = 1,
+        Room = 1,
         /// <summary>
-        /// Delete the Value of Key
+        /// Member Property
         /// </summary>
-        Delete = 2
+        Member = 2
     }
 }

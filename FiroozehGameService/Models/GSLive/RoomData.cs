@@ -15,6 +15,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 /**
@@ -101,5 +102,12 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Room Status Value</value>
         [JsonProperty("9")] public int Status;
+
+
+        /// <summary>
+        ///     Gets the Room Variables.
+        /// </summary>
+        /// <value>the Room Variables</value>
+        [JsonProperty("10")] public Dictionary<string,string> Variables;
     }
 }
