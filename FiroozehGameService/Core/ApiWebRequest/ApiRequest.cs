@@ -1021,6 +1021,27 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "RevokeDevice");
             }
         }
+        
+        
+        
+        internal static async Task<bool> ChangePassword(string currentPass , string newPass)
+        {
+            
+            var body = JsonConvert.SerializeObject(new ChangePassword
+            {
+                CurrentPass = currentPass , NewPass = newPass
+            });
+
+            var response = await GsWebRequest.Post(Api.ChangePassword,body,CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "ChangePassword");
+            }
+        }
 
         private static Dictionary<string, object> CreateLoginDictionary(string email, string password, string nickname,
             bool isGuest)

@@ -284,6 +284,7 @@
         <Compile Include="Models\GSLive\TB\PropertyData.cs"/>
         <Compile Include="Models\GSLive\TB\Turn.cs"/>
         <Compile Include="Models\Internal\AssetsInfo.cs"/>
+        <Compile Include="Models\Internal\ChangePassword.cs"/>
         <Compile Include="Models\Internal\CreateParty.cs"/>
         <Compile Include="Models\Internal\EditUserProfile.cs"/>
         <Compile Include="Models\Internal\Game.cs"/>

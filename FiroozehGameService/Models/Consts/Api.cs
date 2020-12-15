@@ -36,6 +36,8 @@ namespace FiroozehGameService.Models.Consts
         public const string GetLastLoginInfo = BaseUrl2 + "/auth/app/login/info";
         public const string GetMemberData = BaseUrl2 + "/v1/member/";
         public const string GetUserData = BaseUrl2 + "/v1/user/";
+        public const string ChangePassword = BaseUrl2 + "/v1/user/changepassword";
+
 
 
         public const string SaveGame = BaseUrl2 + "/v1/savegame/";

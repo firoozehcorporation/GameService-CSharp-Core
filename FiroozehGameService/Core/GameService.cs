@@ -510,6 +510,21 @@ namespace FiroozehGameService.Core
             if (string.IsNullOrEmpty(deviceId)) throw new GameServiceException("deviceId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"RevokeActiveDevice");
             return await ApiRequest.RevokeDevice(deviceId);
         }
+        
+        
+        /// <summary>
+        ///     Change Password With CurrentPassword and New One
+        /// </summary>
+        /// <param name="currentPassword">(NOTNULL)Specifies the Current Password </param>
+        /// <param name="newPassword">(NOTNULL)Specifies the New Password </param>
+        public static async Task<bool> ChangePassword(string currentPassword,string newPassword)
+        {
+            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"ChangePassword");
+            if (string.IsNullOrEmpty(currentPassword)) throw new GameServiceException("currentPassword Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"ChangePassword");
+            if (string.IsNullOrEmpty(newPassword)) throw new GameServiceException("newPassword Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"ChangePassword");
+            
+            return await ApiRequest.ChangePassword(currentPassword,newPassword);
+        }
 
 
         /// <summary>
