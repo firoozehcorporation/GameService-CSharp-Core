@@ -574,7 +574,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<List<Event>> GetAllEvents()
         {
-            var response = await GsWebRequest.Get(Api.GetEvents);
+            var response = await GsWebRequest.Get(Api.GetEvents,CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {

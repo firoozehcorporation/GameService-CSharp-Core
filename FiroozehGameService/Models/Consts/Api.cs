@@ -46,7 +46,7 @@ namespace FiroozehGameService.Models.Consts
         public const string Bucket = BaseUrl2 + "/v1/bucket/";
 
 
-        public const string GetEvents = BaseUrl2 + "/v1/events";
+        public const string GetEvents = BaseUrl2 + "/v1/events/";
 
 
         public const string Friends = BaseUrl2 + "/v1/friends/";

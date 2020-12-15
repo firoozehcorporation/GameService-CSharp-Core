@@ -65,7 +65,7 @@ namespace FiroozehGameService.Models.BasicApi.Social
         ///     NOTE : Party Data Only Available in Party Actions
         /// </summary>
         /// <value>the Party Data</value>
-        [JsonProperty("party")] public Member FromParty;
+        [JsonProperty("party")] public Party FromParty;
 
         /// <summary>
         ///     Gets the Event ID.
@@ -83,7 +83,7 @@ namespace FiroozehGameService.Models.BasicApi.Social
 
         public override string ToString()
         {
-            return "Achievement{" +
+            return "Event{" +
                    "ID='" + Id + '\'' +
                    ", Action='" + Action + '\'' +
                    ", Member='" + FromMember + '\'' +
