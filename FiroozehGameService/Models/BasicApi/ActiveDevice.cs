@@ -38,20 +38,33 @@ namespace FiroozehGameService.Models.BasicApi
 
 
         /// <summary>
-        ///     Gets the Device Type
+        ///     Gets the Device Model
         /// </summary>
-        /// <value>the Device Type</value>
-        [JsonProperty("Device")] public string DeviceType;
+        /// <value>the Device Model</value>
+        [JsonProperty("DeviceModel")] public string DeviceModel;
 
-        
-        
+
+        /// <summary>
+        ///     Gets the Device Name
+        /// </summary>
+        /// <value>the Device Name</value>
+        [JsonProperty("DeviceName")] public string DeviceName;
+
+
         /// <summary>
         ///     Gets the First Login Time
         /// </summary>
         /// <value>the First Login Time</value>
         [JsonProperty("first_login")] public DateTimeOffset FirstLoginTime;
-        
-        
+
+
+        /// <summary>
+        ///     Gets the Device Graphics Name
+        /// </summary>
+        /// <value>the Device Graphics Name</value>
+        [JsonProperty("GraphicsDeviceName")] public string GraphicsDeviceName;
+
+
         /// <summary>
         ///     Gets the Last Login Time
         /// </summary>
@@ -59,15 +72,24 @@ namespace FiroozehGameService.Models.BasicApi
         [JsonProperty("last_login")] public DateTimeOffset LastLoginTime;
 
 
+        /// <summary>
+        ///     Gets the Device Operating System
+        /// </summary>
+        /// <value>the Device Operating System</value>
+        [JsonProperty("OperatingSystem")] public string OperatingSystem;
+
 
         public override string ToString()
         {
             return "LeaderBoard{" +
                    "DeviceID='" + DeviceId + '\'' +
-                   ", DeviceType='" + DeviceType + '\'' +
+                   ", DeviceName='" + DeviceName + '\'' +
+                   ", DeviceModel='" + DeviceModel + '\'' +
+                   ", OperatingSystem='" + OperatingSystem + '\'' +
+                   ", GraphicsDeviceName='" + GraphicsDeviceName + '\'' +
                    ", FirstLoginTime=" + FirstLoginTime +
                    ", LastLoginTime='" + LastLoginTime + '\'' +
-                    '}';
+                   '}';
         }
     }
 }
