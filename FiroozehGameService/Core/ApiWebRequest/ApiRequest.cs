@@ -572,14 +572,14 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<Results<Event>> GetAllEvents()
+        internal static async Task<List<Event>> GetAllEvents()
         {
             var response = await GsWebRequest.Get(Api.GetEvents);
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<Results<Event>>(await reader.ReadToEndAsync());
+                    return JsonConvert.DeserializeObject<List<Event>>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetAllEvents");
             }

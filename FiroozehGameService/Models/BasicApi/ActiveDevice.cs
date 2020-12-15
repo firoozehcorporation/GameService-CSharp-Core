@@ -49,15 +49,8 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Device Name</value>
         [JsonProperty("DeviceName")] public string DeviceName;
-
-
-        /// <summary>
-        ///     Gets the First Login Time
-        /// </summary>
-        /// <value>the First Login Time</value>
-        [JsonProperty("first_login")] public DateTimeOffset FirstLoginTime;
-
-
+        
+        
         /// <summary>
         ///     Gets the Device Graphics Name
         /// </summary>
@@ -65,18 +58,27 @@ namespace FiroozehGameService.Models.BasicApi
         [JsonProperty("GraphicsDeviceName")] public string GraphicsDeviceName;
 
 
-        /// <summary>
-        ///     Gets the Last Login Time
-        /// </summary>
-        /// <value>the Last Login Time</value>
-        [JsonProperty("last_login")] public DateTimeOffset LastLoginTime;
-
 
         /// <summary>
         ///     Gets the Device Operating System
         /// </summary>
         /// <value>the Device Operating System</value>
         [JsonProperty("OperatingSystem")] public string OperatingSystem;
+
+
+        /// <summary>
+        ///     Gets the Last Login Time
+        /// </summary>
+        /// <value>the Last Login Time</value>
+        [JsonProperty("last_login")] public DateTimeOffset LastLoginTime;
+        
+        
+        /// <summary>
+        ///     Gets the First Login Time
+        /// </summary>
+        /// <value>the First Login Time</value>
+        [JsonProperty("first_login")] public DateTimeOffset FirstLoginTime;
+        
 
 
         public override string ToString()

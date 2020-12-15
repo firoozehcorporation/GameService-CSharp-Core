@@ -20,6 +20,7 @@
 */
 
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
@@ -56,7 +57,7 @@ namespace FiroozehGameService.Core.Social
         ///     With this command you can get All Event Data
         /// </summary>
         /// <returns>returns all Events</returns>
-        public async Task<Results<Event>> GetAllEvents()
+        public async Task<List<Event>> GetAllEvents()
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException(typeof(Social),

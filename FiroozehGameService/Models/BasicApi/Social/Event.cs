@@ -52,6 +52,13 @@ namespace FiroozehGameService.Models.BasicApi.Social
         /// <value>the Event ID</value>
         [JsonProperty("who")] public Member FromMember;
 
+        
+        /// <summary>
+        ///     Gets the Game That Creates this Event.
+        /// </summary>
+        /// <value>the Game</value>
+        [JsonProperty("game")] public Game FromGame;
+
 
         /// <summary>
         ///     Gets the Party Data

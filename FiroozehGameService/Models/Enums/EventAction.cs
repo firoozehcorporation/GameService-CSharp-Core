@@ -30,18 +30,18 @@ namespace FiroozehGameService.Models.Enums
         /// <summary>
         /// Accept Friend Request Action
         /// </summary>
-        AcceptFriendRequest,
+        AcceptFriendRequest = 1,
         /// <summary>
         /// Accept Friend Request Action
         /// </summary>
-        AcceptJoinRequest,
+        AcceptJoinRequest = 2,
         /// <summary>
         /// kick Member Action
         /// </summary>
-        KickMember,
+        KickMember = 3,
         /// <summary>
         /// Change Member Role Action
         /// </summary>
-        ChangeMemberRole
+        ChangeMemberRole = 4
     }
 }
