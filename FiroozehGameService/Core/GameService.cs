@@ -485,6 +485,31 @@ namespace FiroozehGameService.Core
             if (string.IsNullOrEmpty(functionId)) throw new GameServiceException("functionId Cant Be NullOrEmpty").LogException(typeof(GameService),DebugLocation.Internal,"ExecuteCloudFunction");
             return await ApiRequest.ExecuteCloudFunction<TFaaS>(functionId, functionParameters, isPublic);
         }
+        
+        
+        /// <summary>
+        ///     Get All Active Devices
+        ///     You Can Get Active Devices to Revoke Some Devices Access
+        /// </summary>
+        /// <value> return Active Devices </value>
+        public static async Task<List<ActiveDevice>> GetActiveDevices()
+        {
+            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetActiveDevices");
+            return await ApiRequest.GetActiveDevices();
+        }
+
+        
+        /// <summary>
+        ///     Revoke a Active Device with deviceId
+        ///     You Can Get Active Devices to Revoke Some Devices Access
+        /// </summary>
+        /// <param name="deviceId">(NOTNULL)Specifies the device Id that you want to revoke</param>
+        public static async Task<bool> RevokeActiveDevice(string deviceId)
+        {
+            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"RevokeActiveDevice");
+            if (string.IsNullOrEmpty(deviceId)) throw new GameServiceException("deviceId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"RevokeActiveDevice");
+            return await ApiRequest.RevokeDevice(deviceId);
+        }
 
 
         /// <summary>

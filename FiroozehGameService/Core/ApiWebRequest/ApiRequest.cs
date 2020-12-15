@@ -992,6 +992,35 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetPartyInfo");
             }
         }
+        
+        
+        internal static async Task<List<ActiveDevice>> GetActiveDevices()
+        {
+            var response = await GsWebRequest.Get(Api.Devices, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<List<ActiveDevice>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetActiveDevices");
+            }
+        }
+        
+        
+        
+        internal static async Task<bool> RevokeDevice(string deviceId)
+        {
+            var response = await GsWebRequest.Delete(Api.Devices + deviceId, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "RevokeDevice");
+            }
+        }
 
         private static Dictionary<string, object> CreateLoginDictionary(string email, string password, string nickname,
             bool isGuest)

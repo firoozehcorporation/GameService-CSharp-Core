@@ -187,6 +187,7 @@
         <Compile Include="Handlers\TurnBased\ResponseHandlers\TakeTurnResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\TurnBasedHandler.cs"/>
         <Compile Include="Models\BasicApi\Achievement.cs"/>
+        <Compile Include="Models\BasicApi\ActiveDevice.cs"/>
         <Compile Include="Models\BasicApi\Buckets\BucketCore.cs"/>
         <Compile Include="Models\BasicApi\Buckets\BucketOption.cs"/>
         <Compile Include="Models\BasicApi\Buckets\Constraint.cs"/>
