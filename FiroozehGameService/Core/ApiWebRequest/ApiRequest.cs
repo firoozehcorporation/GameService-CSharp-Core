@@ -19,6 +19,7 @@
 * @author Alireza Ghodrati
 */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
@@ -736,7 +737,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
             var body = JsonConvert.SerializeObject(new CreateParty
             {
                 Name = option.Name,
-                Description = option.Description
+                Description = option.Description,
+                Max = option.MaxMember
             }, new JsonSerializerSettings
             {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
@@ -744,7 +746,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             });
 
 
-            var response = await GsWebRequest.Post(Api.Parties, body, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.GetAllParties, body, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -953,7 +955,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> SendJoinRequestToParty(string partyId)
         {
-            var response = await GsWebRequest.Post(Api.PartyJoinRequest + partyId, null, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.Parties + partyId, null, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {

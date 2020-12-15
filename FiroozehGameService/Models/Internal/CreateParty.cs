@@ -29,5 +29,6 @@ namespace FiroozehGameService.Models.Internal
     {
         [JsonProperty("desc")] public string Description;
         [JsonProperty("name")] public string Name;
+        [JsonProperty("max")] public int Max;
     }
 }

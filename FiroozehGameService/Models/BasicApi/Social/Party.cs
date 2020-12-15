@@ -48,7 +48,7 @@ namespace FiroozehGameService.Models.BasicApi.Social
         ///     Gets the Party ID
         /// </summary>
         /// <value>the Party ID</value>
-        [JsonProperty("_id")] public int Id;
+        [JsonProperty("_id")] public string Id;
 
         /// <summary>
         ///     Gets the Party Logo URL.
@@ -62,6 +62,20 @@ namespace FiroozehGameService.Models.BasicApi.Social
         /// </summary>
         /// <value>the Party Name</value>
         [JsonProperty("name")] public string Name;
+        
+        
+        /// <summary>
+        ///     Gets the Member Count.
+        /// </summary>
+        /// <value>the Member Count</value>
+        [JsonProperty("members_count")] public int MemberCount;
+        
+        
+        /// <summary>
+        ///     Gets the Max Member Count.
+        /// </summary>
+        /// <value>the Max Member Count</value>
+        [JsonProperty("max_member")] public int MaxMember;
 
 
         /// <summary>

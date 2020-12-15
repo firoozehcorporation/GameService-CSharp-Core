@@ -39,9 +39,10 @@ namespace FiroozehGameService.Core.Social
             ///     Specifies the Party Options
             ///     <param name="name">(MIN = 5 , MAX = 32 characters) Specifies the Party Name</param>
             ///     <param name="description">(NULLABLE)(MIN = 3 , MAX = 120 characters) Specifies the Party Description</param>
+            ///     <param name="maxMember">(MIN = 1 , MAX = 16) Specifies the Party Max Player</param>
             ///     <param name="logo">(NULLABLE) Specifies the Party Logo (BytesBuffer) </param>
             /// </summary>
-            public PartyOption(string name, string description = null, byte[] logo = null)
+            public PartyOption(string name, string description = null,int maxMember = 16, byte[] logo = null)
             {
                 if (string.IsNullOrEmpty(name))
                     throw new GameServiceException("party name Cant Be EmptyOrNull").LogException<SocialOptions>(
@@ -52,14 +53,22 @@ namespace FiroozehGameService.Core.Social
                 if (!string.IsNullOrEmpty(description) && (description.Length < 3 || description.Length > 120))
                     throw new GameServiceException("invalid party description").LogException<SocialOptions>(
                         DebugLocation.Social, "Constructor");
+                
+                if (maxMember < 1 || maxMember > 16)
+                    throw new GameServiceException("invalid party maxMember").LogException<SocialOptions>(
+                        DebugLocation.Social, "Constructor");
 
                 Name = name;
                 Description = description;
                 Logo = logo;
+                MaxMember = maxMember;
             }
 
             internal string Name { get; }
             internal string Description { get; }
+            
+            internal int MaxMember { get; }
+            
             internal byte[] Logo { get; }
         }
     }
