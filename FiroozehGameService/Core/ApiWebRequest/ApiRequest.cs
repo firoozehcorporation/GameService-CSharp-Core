@@ -424,8 +424,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             var url = Api.Bucket + bucketId + '/' + itemId;
             var body = JsonConvert.SerializeObject(editedBucket, new JsonSerializerSettings
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore
             });
 
             var response = await GsWebRequest.Put(url, body, CreatePlayTokenHeader());
@@ -1013,7 +1012,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         
         internal static async Task<bool> RevokeDevice(string deviceId)
         {
-            var response = await GsWebRequest.Delete(Api.Devices + deviceId, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Delete(Api.Devices + '/' + deviceId, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {

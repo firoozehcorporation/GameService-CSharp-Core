@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
-using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Social;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Utils;

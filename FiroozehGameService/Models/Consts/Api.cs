@@ -63,7 +63,7 @@ namespace FiroozehGameService.Models.Consts
 
         public const string CurrentTime = BaseUrl2 + "/syncedtime/";
         
-        public const string Devices = BaseUrl2 + "/v1/devices/";
+        public const string Devices = BaseUrl2 + "/v1/devices";
 
 
 

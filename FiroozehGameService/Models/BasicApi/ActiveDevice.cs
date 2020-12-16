@@ -83,7 +83,7 @@ namespace FiroozehGameService.Models.BasicApi
 
         public override string ToString()
         {
-            return "LeaderBoard{" +
+            return "ActiveDevice{" +
                    "DeviceID='" + DeviceId + '\'' +
                    ", DeviceName='" + DeviceName + '\'' +
                    ", DeviceModel='" + DeviceModel + '\'' +
