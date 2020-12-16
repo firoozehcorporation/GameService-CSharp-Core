@@ -73,6 +73,6 @@ namespace FiroozehGameService.Handlers
         ///     Returns Room Info When Call The Following Function :
         ///     <see cref="GSLiveRT.GetCurrentRoomInfo" />
         /// </summary>
-        public static EventHandler<RoomData> RoomInfoReceived;
+        public static EventHandler<RoomData> CurrentRoomInfoReceived;
     }
 }

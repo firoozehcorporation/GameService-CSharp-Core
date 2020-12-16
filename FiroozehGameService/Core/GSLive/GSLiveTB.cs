@@ -186,9 +186,9 @@ namespace FiroozehGameService.Core.GSLive
 
         
         /// <summary>
-        ///     Get All Properties
+        ///     Get All Member Properties
         /// </summary>
-        public async Task GetProperties()
+        public async Task GetMemberProperties()
         {
             if (GameService.IsGuest) throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetProperties");
             if (GSLive.Handler.TurnBasedHandler == null) throw new GameServiceException("You Must Create or Join Room First").LogException<GSLiveTB>(DebugLocation.TurnBased,"GetProperties");

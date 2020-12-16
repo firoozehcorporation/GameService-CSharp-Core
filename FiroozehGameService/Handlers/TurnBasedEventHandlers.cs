@@ -78,9 +78,9 @@ namespace FiroozehGameService.Handlers
         
         /// <summary>
         ///     Returns Properties From Another Players When Call The Following Function :
-        ///     <see cref="GSLiveTB.GetProperties" />
+        ///     <see cref="GSLiveTB.GetMemberProperties" />
         /// </summary>
-        public static EventHandler<List<PropertyData>> PropertiesReceived;
+        public static EventHandler<List<PropertyData>> MemberPropertiesReceived;
         
         
         
@@ -88,7 +88,7 @@ namespace FiroozehGameService.Handlers
         ///     Returns Room Info When Call The Following Function :
         ///     <see cref="GSLiveTB.GetCurrentRoomInfo" />
         /// </summary>
-        public static EventHandler<RoomData> RoomInfoReceived;
+        public static EventHandler<RoomData> CurrentRoomInfoReceived;
         
         
         

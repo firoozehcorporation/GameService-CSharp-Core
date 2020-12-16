@@ -34,7 +34,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
             var roomData = JsonConvert.DeserializeObject<RoomData>(GetStringFromBuffer(packet.Payload));
-            RealTimeEventHandlers.RoomInfoReceived?.Invoke(this, roomData);
+            RealTimeEventHandlers.CurrentRoomInfoReceived?.Invoke(this, roomData);
         }
     }
     

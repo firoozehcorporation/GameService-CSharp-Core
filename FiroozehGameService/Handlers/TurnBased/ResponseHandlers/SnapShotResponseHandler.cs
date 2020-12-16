@@ -34,7 +34,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
             var propertyData = JsonConvert.DeserializeObject<List<PropertyData>>(packet.Data);
-            TurnBasedEventHandlers.PropertiesReceived?.Invoke(this, propertyData);
+            TurnBasedEventHandlers.MemberPropertiesReceived?.Invoke(this, propertyData);
         }
     }
 }
