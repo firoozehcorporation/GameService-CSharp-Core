@@ -15,7 +15,9 @@
 // </copyright>
 
 using System;
+using FiroozehGameService.Core;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Utils;
 
 /**
 * @author Alireza Ghodrati
@@ -40,9 +42,15 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
         /// <param name="ownerUserId">user id of BucketOwnershipTypes.Another type</param>
         public Ownership(BucketOwnershipTypes ownershipTypes, string ownerUserId = null)
         {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("Ownership BucketOption Not Working Before Login")
+                    .LogException<Ownership>(DebugLocation.Internal, "Constructor");
+            
             _ownerUserId = ownershipTypes == BucketOwnershipTypes.Another && string.IsNullOrEmpty(ownerUserId)
                 ? throw new GameServiceException("OwnerUserId Cant Be EmptyOrNull When OwnershipType is Another")
+                    .LogException<Ownership>(DebugLocation.Internal,"Constructor")
                 : _ownerUserId = ownerUserId;
+           
             _ownershipTypes = ownershipTypes;
         }
 

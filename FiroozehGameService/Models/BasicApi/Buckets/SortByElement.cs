@@ -17,6 +17,7 @@
 
 using System;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Utils;
 
 /**
 * @author Alireza Ghodrati
@@ -41,7 +42,7 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
         public SortByElement(string elementName, BucketSortOrder sortOrder)
         {
             _elementName = string.IsNullOrEmpty(elementName)
-                ? throw new GameServiceException("ElementName Cant Be EmptyOrNull")
+                ? throw new GameServiceException("ElementName Cant Be EmptyOrNull").LogException<SortByElement>(DebugLocation.Internal,"Constructor")
                 : _elementName = elementName;
             _sortOrder = sortOrder;
         }

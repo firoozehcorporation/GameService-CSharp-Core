@@ -16,6 +16,8 @@
 
 
 using System;
+using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Utils;
 
 /**
 * @author Alireza Ghodrati
@@ -39,8 +41,8 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
         /// <param name="limit">Limit Value for Constraint BucketOption</param>
         public Constraint(int skip, int limit)
         {
-            _skip = skip < 0 ? throw new GameServiceException("Invalid Skip Value") : _skip = skip;
-            _limit = limit <= 0 || limit > 200 ? throw new GameServiceException("Invalid Limit Value") : _limit = limit;
+            _skip = skip < 0 ? throw new GameServiceException("Invalid Skip Value").LogException<Constraint>(DebugLocation.Internal,"Constructor") : _skip = skip;
+            _limit = limit <= 0 || limit > 200 ? throw new GameServiceException("Invalid Limit Value").LogException<Constraint>(DebugLocation.Internal,"Constructor") : _limit = limit;
         }
 
         internal override string GetParsedData()

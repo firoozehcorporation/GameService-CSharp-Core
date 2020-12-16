@@ -263,7 +263,6 @@ namespace FiroozehGameService.Core
         public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId, BucketOption[] options = null)
             where TBucket : BucketCore
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
             return await ApiRequest.GetBucketItems<TBucket>(bucketId, options);
         }
@@ -278,7 +277,6 @@ namespace FiroozehGameService.Core
         public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId)
             where TBucket : BucketCore
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
             if (string.IsNullOrEmpty(itemId)) throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
             return await ApiRequest.GetBucketItem<TBucket>(bucketId, itemId);
