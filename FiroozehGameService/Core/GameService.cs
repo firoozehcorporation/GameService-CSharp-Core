@@ -158,13 +158,14 @@ namespace FiroozehGameService.Core
         /// </summary>
         /// <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Detail</param>
         /// <param name="scoreLimit">(Min = 10,Max = 50) The Score List Limits</param>
+        /// <param name="onlyFriends"> if this option Enabled , returns the Friends Score </param>
         /// <value> return LeaderBoardDetails </value>
-        public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId, int scoreLimit = 10)
+        public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId, int scoreLimit = 10,bool onlyFriends = false)
         {
             if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetLeaderBoardDetails");
             if (string.IsNullOrEmpty(leaderBoardId)) throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetLeaderBoardDetails");
             if (scoreLimit < 10 || scoreLimit > 50) throw new GameServiceException("Invalid Limit Value").LogException(typeof(GameService),DebugLocation.Internal,"GetLeaderBoardDetails");
-            return await ApiRequest.GetLeaderBoardDetails(leaderBoardId, scoreLimit);
+            return await ApiRequest.GetLeaderBoardDetails(leaderBoardId, scoreLimit, onlyFriends);
         }
 
 

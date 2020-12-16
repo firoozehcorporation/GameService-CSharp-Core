@@ -352,9 +352,12 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey, int scoreLimit = 10)
+        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey, int scoreLimit = 10,bool onlyFriends = false)
         {
-            var url = Api.LeaderBoard + leaderBoardKey + "?limit=" + scoreLimit;
+            var url = Api.LeaderBoard + leaderBoardKey;
+            if (onlyFriends) url += "/friends";
+            url += "?limit=" + scoreLimit;
+            
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))

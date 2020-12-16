@@ -20,6 +20,7 @@
 */
 
 using System;
+using FiroozehGameService.Core;
 using FiroozehGameService.Models.BasicApi;
 using Newtonsoft.Json;
 
@@ -66,6 +67,14 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Member User Data</value>
         [JsonProperty("user")] public User User;
+        
+        
+        /// <summary>
+        ///     Gets the Member Online Status.
+        ///     this Property Only Available in <see cref="GameService.GetMemberData"/> and  <see cref="GameService.GetCurrentPlayer"/>
+        /// </summary>
+        /// <value>the Member Online Status</value>
+        [JsonProperty("is_online")] public bool IsOnline;
 
         public override bool Equals(object obj)
         {
