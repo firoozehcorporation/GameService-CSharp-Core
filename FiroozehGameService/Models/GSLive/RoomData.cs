@@ -98,10 +98,10 @@ namespace FiroozehGameService.Models.GSLive
 
 
         /// <summary>
-        ///     Gets the Room Status Value.
+        ///     Gets the Room Persist Status.
         /// </summary>
-        /// <value>the Room Status Value</value>
-        [JsonProperty("9")] public int Status;
+        /// <value>the Room Persist Status</value>
+        [JsonProperty("12")] public bool IsPersist;
 
 
         /// <summary>
@@ -109,5 +109,12 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Room Variables</value>
         [JsonProperty("11")] public Dictionary<string,string> Variables;
+        
+        
+        /// <summary>
+        ///     Gets the Room Create Time.
+        /// </summary>
+        /// <value>the Room Create Time</value>
+        [JsonProperty("13")] public DateTimeOffset CreateTime;
     }
 }
