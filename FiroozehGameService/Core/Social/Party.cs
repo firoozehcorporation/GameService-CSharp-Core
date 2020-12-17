@@ -27,6 +27,7 @@ using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Social;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using PartyData = FiroozehGameService.Models.BasicApi.Social.Party;
@@ -123,7 +124,7 @@ namespace FiroozehGameService.Core.Social
         /// <param name="partyId">(NOTNULL)The Party id</param>
         /// <param name="memberId">(NOTNULL)The Member id</param>
         /// <param name="role">(NOTNULL)(MIN = 5 , MAX = 32 characters)The Role</param>
-        public async Task<PartyData> SetOrUpdateRole(string partyId, string memberId, string role)
+        public async Task<bool> SetOrUpdateRole(string partyId, string memberId, string role)
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
@@ -182,7 +183,7 @@ namespace FiroozehGameService.Core.Social
         ///     (NOTNULL)The Variable ->
         ///     Name : (MIN = 5 , MAX = 32) , Value : (MIN = 1 ,MAX = 128) Characters
         /// </param>
-        public async Task<PartyMember> SetOrUpdateMemberVariable(string partyId, KeyValuePair<string, string> variable)
+        public async Task<bool> SetOrUpdateMemberVariable(string partyId, KeyValuePair<string, string> variable)
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
@@ -207,7 +208,7 @@ namespace FiroozehGameService.Core.Social
         /// </summary>
         /// <param name="partyId">(NOTNULL)The Party id</param>
         /// <param name="variableKey">(NOTNULL)The Variable Key</param>
-        public async Task<bool> DeleteVariable(string partyId, string variableKey)
+        public async Task<PartyData> DeleteVariable(string partyId, string variableKey)
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
@@ -228,7 +229,7 @@ namespace FiroozehGameService.Core.Social
         ///     NOTE : Only Creator or Admins Can Call This Function
         /// </summary>
         /// <param name="partyId">(NOTNULL)The Party id</param>
-        public async Task<bool> DeleteVariables(string partyId)
+        public async Task<PartyData> DeleteVariables(string partyId)
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
@@ -242,7 +243,7 @@ namespace FiroozehGameService.Core.Social
 
 
         /// <summary>
-        ///     Delete Party Member Variable with Variable Key
+        ///     Delete Party Current Member Variable with Variable Key
         ///     The Current Member Can Delete Own Variable in Party
         /// </summary>
         /// <param name="partyId">(NOTNULL)The Party id</param>
@@ -264,7 +265,7 @@ namespace FiroozehGameService.Core.Social
 
 
         /// <summary>
-        ///     Delete Party Member Variables
+        ///     Delete Party Current Member Variables
         ///     The Current Member Can Delete Own Variables in Party
         /// </summary>
         /// <param name="partyId">(NOTNULL)The Party id</param>
@@ -412,6 +413,25 @@ namespace FiroozehGameService.Core.Social
                 throw new GameServiceException("partyId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
                     "GetPartyInfo");
             return await ApiRequest.GetPartyInfo(partyId);
+        }
+
+
+        /// <summary>
+        ///     Get Party Join Requests With Specific skip & limit
+        /// </summary>
+        /// <param name="partyId">(NOTNULL)The Party id</param>
+        /// <param name="skip">The Result Skips</param>
+        /// <param name="limit">(Max = 25) The Result Limits</param>
+        public async Task<List<Member>> GetPartyJoinRequests(string partyId, int skip = 0, int limit = 25)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
+                    "GetPartyJoinRequests");
+            if (string.IsNullOrEmpty(partyId))
+                throw new GameServiceException("partyId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
+                    "GetPartyJoinRequests");
+
+            return await ApiRequest.GetPartyPendingRequests(partyId, new QueryData(null, skip, limit).ToQueryString());
         }
     }
 }

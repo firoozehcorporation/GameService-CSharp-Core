@@ -58,24 +58,24 @@ namespace FiroozehGameService.Models.BasicApi.Social
 
 
         /// <summary>
-        ///     Gets the Party Name.
+        ///     Gets the Max Member Count.
         /// </summary>
-        /// <value>the Party Name</value>
-        [JsonProperty("name")] public string Name;
-        
-        
+        /// <value>the Max Member Count</value>
+        [JsonProperty("max")] public int MaxMember;
+
+
         /// <summary>
         ///     Gets the Member Count.
         /// </summary>
         /// <value>the Member Count</value>
         [JsonProperty("members_count")] public int MemberCount;
-        
-        
+
+
         /// <summary>
-        ///     Gets the Max Member Count.
+        ///     Gets the Party Name.
         /// </summary>
-        /// <value>the Max Member Count</value>
-        [JsonProperty("max_member")] public int MaxMember;
+        /// <value>the Party Name</value>
+        [JsonProperty("name")] public string Name;
 
 
         /// <summary>

@@ -38,12 +38,12 @@ namespace FiroozehGameService.Utils
         }
 
 
-        internal static async Task<ImageUploadResult> UploadPartyLogo(byte[] imageBuffer)
+        internal static async Task<ImageUploadResult> UploadPartyLogo(byte[] imageBuffer, string partyId)
         {
             if (imageBuffer.Length > 500 * 1024)
                 throw new GameServiceException("Party Logo is Too Large").LogException(typeof(ImageUtil),
                     DebugLocation.Internal, "UploadPartyLogo");
-            return await ApiRequest.UploadPartyLogo(imageBuffer);
+            return await ApiRequest.UploadPartyLogo(imageBuffer, partyId);
         }
     }
 }

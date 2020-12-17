@@ -39,7 +39,6 @@ namespace FiroozehGameService.Models.Consts
         public const string ChangePassword = BaseUrl2 + "/v1/user/changepassword";
 
 
-
         public const string SaveGame = BaseUrl2 + "/v1/savegame/";
         public const string Achievements = BaseUrl2 + "/v1/achievement/";
         public const string LeaderBoard = BaseUrl2 + "/v1/leaderboard/";
@@ -55,16 +54,13 @@ namespace FiroozehGameService.Models.Consts
 
 
         public const string Parties = BaseUrl2 + "/v1/parties/party/";
-        public const string PartyJoinRequest = BaseUrl2 + "/v1/parties/";
-        public const string PartyImage = BaseUrl2 + "/v1/parties/party/image";
         public const string GetAllParties = BaseUrl2 + "/v1/parties/party";
         public const string GetMyParties = BaseUrl2 + "/v1/parties/me";
 
 
         public const string CurrentTime = BaseUrl2 + "/syncedtime/";
-        
-        public const string Devices = BaseUrl2 + "/v1/devices";
 
+        public const string Devices = BaseUrl2 + "/v1/devices";
 
 
         public const string UserProfileLogo = BaseUrl1 + "/Application/image";

@@ -352,12 +352,13 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey, int scoreLimit = 10,bool onlyFriends = false)
+        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey, int scoreLimit = 10,
+            bool onlyFriends = false)
         {
             var url = Api.LeaderBoard + leaderBoardKey;
             if (onlyFriends) url += "/friends";
             url += "?limit=" + scoreLimit;
-            
+
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -577,7 +578,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<List<Event>> GetAllEvents()
         {
-            var response = await GsWebRequest.Get(Api.GetEvents,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.GetEvents, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -714,9 +715,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
-        internal static async Task<ImageUploadResult> UploadPartyLogo(byte[] imageBuffer)
+        internal static async Task<ImageUploadResult> UploadPartyLogo(byte[] imageBuffer, string partyId)
         {
-            var response = await GsWebRequest.DoMultiPartPost(Api.PartyImage, imageBuffer, CreateUserTokenHeader());
+            var response = await GsWebRequest.DoMultiPartPost(Api.Parties + partyId + "/image", imageBuffer,
+                CreateUserTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -730,12 +732,6 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<Party> CreateParty(SocialOptions.PartyOption option)
         {
-            if (option.Logo != null)
-            {
-                var result = await ImageUtil.UploadPartyLogo(option.Logo);
-                LogUtil.Log(null, result.Url);
-            }
-
             var body = JsonConvert.SerializeObject(new CreateParty
             {
                 Name = option.Name,
@@ -752,24 +748,22 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
-                if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<Party>(await reader.ReadToEndAsync());
-                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "CreateParty");
+                if (!response.IsSuccessStatusCode)
+                    throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                        .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "CreateParty");
+
+                var party = JsonConvert.DeserializeObject<Party>(await reader.ReadToEndAsync());
+                if (option.Logo == null) return party;
+                var result = await ImageUtil.UploadPartyLogo(option.Logo, party.Id);
+                LogUtil.Log(null, result.Url);
+
+                return party;
             }
         }
 
-        internal static async Task<Party> SetOrUpdateRole(string partyId, string memberId, string role)
+        internal static async Task<bool> SetOrUpdateRole(string partyId, string memberId, string role)
         {
-            var body = JsonConvert.SerializeObject(new SetOrUpdateRole
-            {
-                Role = role
-            }, new JsonSerializerSettings
-            {
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                NullValueHandling = NullValueHandling.Ignore
-            });
-
+            var body = JsonConvert.SerializeObject(new SetOrUpdateRole {Role = role});
 
             var response = await GsWebRequest.Put(Api.Parties + partyId + "/member/" + memberId, body,
                 CreatePlayTokenHeader());
@@ -777,7 +771,12 @@ namespace FiroozehGameService.Core.ApiWebRequest
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<Party>(await reader.ReadToEndAsync());
+                {
+                    var data = await reader.ReadToEndAsync();
+                    Console.WriteLine(data);
+                    return JsonConvert.DeserializeObject<Error>(data).Status;
+                }
+
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "SetOrUpdateRole");
             }
@@ -802,7 +801,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
-        internal static async Task<PartyMember> SetOrUpdateMemberVariable(string partyId,
+        internal static async Task<bool> SetOrUpdateMemberVariable(string partyId,
             KeyValuePair<string, string> valuePair)
         {
             var body = JsonConvert.SerializeObject(new SetOrUpdateVariable
@@ -817,21 +816,21 @@ namespace FiroozehGameService.Core.ApiWebRequest
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<PartyMember>(await reader.ReadToEndAsync());
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "SetOrUpdateMemberVariable");
             }
         }
 
-        internal static async Task<bool> DeleteVariable(string partyId, string variableKey)
+        internal static async Task<Party> DeleteVariable(string partyId, string variableKey)
         {
-            var response = await GsWebRequest.Delete(Api.Parties + partyId + "/values/" + variableKey,
+            var response = await GsWebRequest.Delete(Api.Parties + partyId + "/values/global/" + variableKey,
                 CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                    return JsonConvert.DeserializeObject<Party>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteVariable");
             }
@@ -851,14 +850,14 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
-        internal static async Task<bool> DeleteVariables(string partyId)
+        internal static async Task<Party> DeleteVariables(string partyId)
         {
             var response = await GsWebRequest.Delete(Api.Parties + partyId + "/values", CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                    return JsonConvert.DeserializeObject<Party>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteVariables");
             }
@@ -883,7 +882,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         {
             if (option.Logo != null)
             {
-                var result = await ImageUtil.UploadPartyLogo(option.Logo);
+                var result = await ImageUtil.UploadPartyLogo(option.Logo, partyId);
                 LogUtil.Log(null, result.Url);
             }
 
@@ -971,7 +970,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<bool> LeftParty(string partyId)
         {
-            var response = await GsWebRequest.Delete(Api.PartyJoinRequest + partyId, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Delete(Api.Parties + partyId, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -996,8 +995,23 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetPartyInfo");
             }
         }
-        
-        
+
+
+        internal static async Task<List<Member>> GetPartyPendingRequests(string partyId, string urlQuery)
+        {
+            var response =
+                await GsWebRequest.Get(Api.Parties + partyId + "/pending" + urlQuery, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<List<Member>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetPartyPendingRequests");
+            }
+        }
+
+
         internal static async Task<List<ActiveDevice>> GetActiveDevices()
         {
             var response = await GsWebRequest.Get(Api.Devices, CreatePlayTokenHeader());
@@ -1010,9 +1024,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetActiveDevices");
             }
         }
-        
-        
-        
+
+
         internal static async Task<bool> RevokeDevice(string deviceId)
         {
             var response = await GsWebRequest.Delete(Api.Devices + '/' + deviceId, CreatePlayTokenHeader());
@@ -1025,18 +1038,16 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "RevokeDevice");
             }
         }
-        
-        
-        
-        internal static async Task<bool> ChangePassword(string currentPass , string newPass)
+
+
+        internal static async Task<bool> ChangePassword(string currentPass, string newPass)
         {
-            
             var body = JsonConvert.SerializeObject(new ChangePassword
             {
-                CurrentPass = currentPass , NewPass = newPass
+                CurrentPass = currentPass, NewPass = newPass
             });
 
-            var response = await GsWebRequest.Post(Api.ChangePassword,body,CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.ChangePassword, body, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {

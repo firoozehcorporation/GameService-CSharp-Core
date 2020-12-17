@@ -40,10 +40,17 @@ namespace FiroozehGameService.Models.BasicApi.Social
         /// <summary>
         ///     Gets the Event Extra Data
         ///     NOTE : Extra Data Is NULLABLE
-        ///     USAGE : Available When Action is <see cref="EventAction.ChangeMemberRole" />
+        ///     USAGE : Available When Action is <see cref="EventAction.ChangePartyMemberRole" />
         /// </summary>
         /// <value>the Event Extra Data</value>
         [JsonProperty("extra")] public string Extra;
+
+
+        /// <summary>
+        ///     Gets the Game That Creates this Event.
+        /// </summary>
+        /// <value>the Game</value>
+        [JsonProperty("game")] public Game FromGame;
 
 
         /// <summary>
@@ -51,13 +58,6 @@ namespace FiroozehGameService.Models.BasicApi.Social
         /// </summary>
         /// <value>the Event ID</value>
         [JsonProperty("who")] public Member FromMember;
-
-        
-        /// <summary>
-        ///     Gets the Game That Creates this Event.
-        /// </summary>
-        /// <value>the Game</value>
-        [JsonProperty("game")] public Game FromGame;
 
 
         /// <summary>

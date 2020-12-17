@@ -101,8 +101,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         {
             CheckDisposed();
             if (!_observer.Increase())
-                throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest + " Requests Per " + HttpRequestObserver.Reset + " Secs")
-                    .LogException(typeof(GsWebRequest),DebugLocation.Http,"DoRequest");
+                throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest +
+                                               " Requests Per " + HttpRequestObserver.Reset + " Secs")
+                    .LogException(typeof(GsWebRequest), DebugLocation.Http, "DoRequest");
 
             var httpClient = Init(headers);
             StringContent content = null;
@@ -110,8 +111,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             LogUtil.Log(null, "GSWebRequest -> URL: " + url + ", method: " + method + ", " +
                               "Body: " + body);
-            
-            DebugUtil.LogNormal(typeof(GsWebRequest),DebugLocation.Http,"DoRequest","GSWebRequest -> URL: " + url);
+
+            DebugUtil.LogNormal(typeof(GsWebRequest), DebugLocation.Http, "DoRequest", "GSWebRequest -> URL: " + url);
+
 
             switch (method)
             {
