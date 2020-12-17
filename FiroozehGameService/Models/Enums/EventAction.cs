@@ -45,6 +45,11 @@ namespace FiroozehGameService.Models.Enums
         /// <summary>
         /// Change Member Role Action
         /// </summary>
-        ChangePartyMemberRole = 4
+        ChangePartyMemberRole = 4,
+        
+        /// <summary>
+        /// Add To Party By Friend Action
+        /// </summary>
+        AddToPartyByFriend = 5
     }
 }
