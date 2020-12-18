@@ -33,7 +33,6 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 
         protected override Packet DoAction(object payload)
         {
-            if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
             return new Packet(
                 0,
                 RealTimeConst.ActionAuth,

@@ -252,7 +252,6 @@ namespace FiroozehGameService.Handlers.RealTime
                 packet.ClientReceiveTime = e.Time;
                 GameService.SynchronizationContext?.Send(delegate
                 {
-                    LogUtil.Log(this, "RealtimeHandler OnDataReceived < " + packet);
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType);
                 }, null);
             }
@@ -276,7 +275,7 @@ namespace FiroozehGameService.Handlers.RealTime
         public static string MemberId { private set; get; }
         public static ulong PlayerHash { private set; get; }
         public static string PlayToken => GameService.PlayToken;
-        public static bool IsAvailable => _udpClient?.IsAvailable ?? false;
+        public static bool IsAvailable => GsUdpClient.IsAvailable;
 
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
             new Dictionary<int, IResponseHandler>();

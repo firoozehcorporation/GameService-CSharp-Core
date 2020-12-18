@@ -38,10 +38,11 @@ namespace FiroozehGameService.Core.Socket
         public GsUdpClient(Area endpoint)
         {
             Area = endpoint;
+            IsAvailable = false;
             CreateInstance();
         }
 
-        public bool IsAvailable { get; private set; }
+        internal static bool IsAvailable { get; private set; }
 
 
         internal override void Init()
@@ -112,8 +113,13 @@ namespace FiroozehGameService.Core.Socket
 
                     OnClosed(new ErrorArg {Error = state.ToString()});
                     break;
-                case ClientState.ConnectTokenExpired: break;
-                case ClientState.Disconnected: break;
+                case ClientState.ConnectTokenExpired:
+                case ClientState.Disconnected:
+                case ClientState.SendingConnectionRequest:
+                case ClientState.SendingChallengeResponse:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
         }
 
