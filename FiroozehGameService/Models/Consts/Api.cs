@@ -56,6 +56,7 @@ namespace FiroozehGameService.Models.Consts
         public const string Parties = BaseUrl2 + "/v1/parties/party/";
         public const string GetAllParties = BaseUrl2 + "/v1/parties/party";
         public const string GetMyParties = BaseUrl2 + "/v1/parties/me";
+        public const string PartyImage = BaseUrl1 + "/api/v1/party/";
 
 
         public const string CurrentTime = BaseUrl2 + "/syncedtime/";

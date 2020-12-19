@@ -717,8 +717,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<ImageUploadResult> UploadPartyLogo(byte[] imageBuffer, string partyId)
         {
-            var response = await GsWebRequest.DoMultiPartPost(Api.Parties + partyId + "/image", imageBuffer,
-                CreateUserTokenHeader());
+            var response = await GsWebRequest.DoMultiPartPost(Api.PartyImage + partyId + "/image", imageBuffer,
+                CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {

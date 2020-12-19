@@ -16,6 +16,7 @@
 
 
 using FiroozehGameService.Core;
+using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.BasicApi;
 
@@ -51,9 +52,9 @@ namespace FiroozehGameService.Models.Consts
             /// <summary>
             ///     Represents GameService Authorize HTTP Errors
             ///     Errors that occur in the following Functions :
-            ///     <see cref="GameService.Login()" />
-            ///     <see cref="GameService.Login(string)" />
-            ///     <see cref="GameService.Login(string,string)" />
+            ///     <see cref="Login" />
+            ///     <see cref="Login" />
+            ///     <see cref="Login" />
             ///     <see cref="GameService.SignUp(string,string,string)" />
             /// </summary>
             public class Authorize : Internal
@@ -93,11 +94,11 @@ namespace FiroozehGameService.Models.Consts
 
             /// <inheritdoc />
             /// <summary>
-            ///     Represents GameService LastLoginInfo HTTP Errors
+            ///     Represents GameService GetLastLoginMemberInfo HTTP Errors
             ///     Errors that occur in the following Functions :
-            ///     <see cref="GameService.LastLoginInfo()" />
+            ///     <see cref="GameService.GetLastLoginMemberInfo" />
             /// </summary>
-            public class LastLoginInfo : Authorize
+            public class GetLastLoginMemberInfo : Authorize
             {
                 public const string UserNotFound = "user_notfound";
                 public const string MemberNotfound = "member_notfound";
@@ -111,7 +112,7 @@ namespace FiroozehGameService.Models.Consts
             ///     Errors that occur in the following Functions :
             ///     <see cref="GameService.SaveGame(string,object)" />
             ///     <see cref="GameService.GetSaveGame{T}()" />
-            ///     <see cref="GameService.RemoveSave()" />
+            ///     <see cref="GameService.RemoveLastSave()" />
             /// </summary>
             public class Save : Internal
             {
@@ -139,8 +140,8 @@ namespace FiroozehGameService.Models.Consts
             ///     Represents GameService Leaderboard HTTP Errors
             ///     Errors that occur in the following Functions :
             ///     <see cref="GameService.GetLeaderBoards()" />
-            ///     <see cref="GameService.GetLeaderBoardDetails(string,int)" />
-            ///     <see cref="GameService.GetMyScore()" />
+            ///     <see cref="GameService.GetLeaderBoardDetails" />
+            ///     <see cref="GameService.GetCurrentPlayerScore" />
             ///     <see cref="GameService.SubmitScore(string,int)" />
             /// </summary>
             public class Leaderboard : Internal
@@ -160,7 +161,7 @@ namespace FiroozehGameService.Models.Consts
             /// </summary>
             public class DownloadAssets
             {
-                public const string DatapackNotfound = "datapack_notfound";
+                public const string DataPackNotfound = "datapack_notfound";
                 public const string GameNotfound = "game_notfound";
             }
 
@@ -194,29 +195,259 @@ namespace FiroozehGameService.Models.Consts
             {
                 public const string UserNotFound = "user_notfound";
             }
+
+            /// <summary>
+            ///     Represents GameService ChangePassword HTTP Errors
+            ///     Errors that occur in the following Functions:
+            ///     <see cref="GameService.ChangePassword(string, string)" />
+            /// </summary>
+            public class ChangePassword
+            {
+                public const string UserNotFound = "user_notfound";
+                public const string SamePassword = "same_password";
+                public const string WrongPassword = "wrong_password";
+
+            }
+
+            /// <summary>
+            ///     Represents GameService GetActiveDevices HTTP Errors
+            ///     Errors that occur in the following Functions:
+            ///     <see cref="GameService.GetActiveDevices()" />
+            /// </summary>
+            public class GetActiveDevices
+            {
+
+            }
+
+            /// <summary>
+            ///     Represents GameService RevokeActiveDevice HTTP Errors
+            ///     Errors that occur in the following Functions:
+            ///     <see cref="GameService.RevokeActiveDevice(string)" />
+            /// </summary>
+            public class RevokeActiveDevice
+            {
+                public const string DeviceNotfound = "device_notfound";
+            }
         }
 
         /// <summary>
-        ///     Represents All GameService Errors in Command Requests
+        ///     Represents All GameService Errors in Social Requests
         /// </summary>
-        public static class Command{
-            
+        public static class Social
+        {
             /// <summary>
-            ///     Represents GameService Command Internal Errors
+            ///     Represents All GameService Friend Errors in Social Requests
             /// </summary>
-            public class Internal
+            public static class Friend
             {
-                public const string NotFound = "DB_ERROR";
-                public const string InvalidInput = "INVALID_INPUT";
-                public const string Limited = "Limited";
+                /// <summary>
+                ///     Represents GameService SendFriendRequest HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Friend.SendFriendRequest" />
+                /// </summary>
+                public class SendFriendRequest
+                {
+                    public const string IsFriendBefore = "is_friend_before";
+                }
+
+                /// <summary>
+                ///     Represents GameService AcceptFriendRequest HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Friend.AcceptFriendRequest" />
+                /// </summary>
+                public class AcceptFriendRequest
+                {
+                    public const string NotFriendBefore = "not_friend_before";
+                }
+
+                /// <summary>
+                ///     Represents GameService DeleteFriend HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Friend.DeleteFriend" />
+                /// </summary>
+                public class DeleteFriend
+                {
+                    public const string NotFriendBefore = "not_friend_before";
+                }
+
             }
 
-            /// <inheritdoc />
+
             /// <summary>
-            ///     Represents GameService Authorize Command Errors
-            ///     Errors that occur in initial connection
+            ///     Represents All GameService Party Errors in Social Requests
             /// </summary>
-            public class Authorize : Internal
+            public static class Party
+            {
+                /// <summary>
+                ///     Represents GameService GetPartyInfo HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.GetPartyInfo" />
+                /// </summary>
+                public class GetPartyInfo
+                {
+                    public const string MemberNotfound = "member_notfound";
+                }
+
+                /// <summary>
+                ///     Represents GameService EditParty HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.EditParty" />
+                /// </summary>
+                public class EditParty
+                {
+                    public const string PermissionDenied = "permission_denid";
+                }
+
+                /// <summary>
+                ///     Represents GameService AddFriend HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.AddFriend" />
+                /// </summary>
+                public class AddFriend
+                {
+                    public const string PermissionDenied = "permission_denid";
+                    public const string PartyIsFull = "party_isfull";
+                    public const string IsMemberBefore = "is_member_before";
+                    public const string NotFriendBefore = "not_friend_before";
+                }
+
+                /// <summary>
+                ///     Represents GameService JoinRequest HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.JoinRequest" />
+                /// </summary>
+                public class JoinRequest
+                {
+                    public const string PartyNotfound = "party_notfound";
+                    public const string IsMemberBefore = "is_member_before";
+                }
+
+                /// <summary>
+                ///     Represents GameService AcceptJoinRequest HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.AcceptJoinRequest" />
+                /// </summary>
+                public class AcceptJoinRequest
+                {
+                    public const string PartyNotfound = "party_notfound";
+                    public const string MemberNotfound = "member_notfound";
+                    public const string PermissionDenied = "permission_denid";
+                }
+
+                /// <summary>
+                ///     Represents GameService RejectJoinRequest HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.RejectJoinRequest" />
+                /// </summary>
+                public class RejectJoinRequest
+                {
+                    public const string PartyNotfound = "party_notfound";
+                    public const string MemberNotfound = "member_notfound";
+                    public const string PermissionDenied = "permission_denid";
+                }
+
+                /// <summary>
+                ///     Represents GameService LeftParty HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.LeftParty" />
+                /// </summary>
+                public class LeftParty
+                {
+                    public const string PartyNotfound = "party_notfound";
+                    public const string IsMemberBefore = "is_member_before";
+                }
+
+                /// <summary>
+                ///     Represents GameService KickMember HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.KickMember" />
+                /// </summary>
+                public class KickMember
+                {
+                    public const string PermissionDenied = "permission_denid";
+                }
+
+                /// <summary>
+                ///     Represents GameService SetOrUpdateRole HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.SetOrUpdateRole(string, string, string)" />
+                /// </summary>
+                public class SetOrUpdateRole
+                {
+                    public const string PermissionDenied = "permission_denid";
+                }
+
+                /// <summary>
+                ///     Represents GameService SetOrUpdateMemberVariable HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.SetOrUpdateMemberVariable" />
+                /// </summary>
+                public class SetOrUpdateMemberVariable
+                {
+                    public const string MemberNotfound = "member_notfound";
+                }
+
+                /// <summary>
+                ///     Represents GameService DeleteVariable HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.DeleteVariable" />
+                /// </summary>
+                public class DeleteMemberVariable
+                {
+                    public const string MemberNotfound = "member_notfound";
+                }
+
+                /// <summary>
+                ///     Represents GameService SetOrUpdateVariable HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.SetOrUpdateVariable" />
+                /// </summary>
+                public class SetOrUpdateVariable
+                {
+                    public const string PermissionDenied = "permission_denid";
+                }
+
+                /// <summary>
+                ///     Represents GameService DeleteVariable HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.DeleteVariable" />
+                /// </summary>
+                public class DeleteVariable
+                {
+                    public const string PermissionDenied = "permission_denid";
+                }
+
+                /// <summary>
+                ///     Represents GameService DeleteVariables HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.DeleteVariables" />
+                /// </summary>
+                public class DeleteVariables
+                {
+                    public const string PermissionDenied = "permission_denid";
+                }
+
+                /// <summary>
+                ///     Represents GameService DeleteMemberVariables HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.DeleteMemberVariables" />
+                /// </summary>
+                public class DeleteMemberVariables
+                {
+                    public const string MemberNotfound = "member_notfound";
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Represents All GameService Errors in GSLive Requests
+        /// </summary>
+        public static class GSLive
+        {
+            /// <summary>
+            ///     Represents All GameService Internal Errors in GSLive
+            /// </summary>
+            public static class Internal
             {
                 public const string GameNotfound = "game_notfound";
                 public const string UserNotfound = "user_notfound";
@@ -224,148 +455,6 @@ namespace FiroozehGameService.Models.Consts
                 public const string UserBanned = "user_banned";
                 public const string PlanLimit = "plan_limit";
                 public const string GameNotActive = "game_notactive";
-            }
-
-            /// <summary>
-            ///     Represents GameService AutoMatch Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.AutoMatch(object)" />
-            /// </summary>
-            public class AutoMatch
-            {
-                public const string PlanLimit = "plan_limit";
-                public const string InvalidID = "INVALID_ID";
-            }
-
-            /// <summary>
-            ///     Represents GameService CancelAutoMatch Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.CancelAutoMatch()" />
-            /// </summary>
-            public class CancelAutoMatch
-            {
-                public const string NotInWaitingQueue = "not_in_q";
-            }
-
-            /// <summary>
-            ///     Represents GameService CreateRoom Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.CreateRoom()" />
-            /// </summary>
-            public class CreateRoom
-            {
-                public const string PlanLimit = "plan_limit";
-                public const string InvalidID = "INVALID_ID";
-            }
-
-            /// <summary>
-            ///     Represents GameService GetAvailableRooms Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.GetAvailableRooms(string)" />
-            /// </summary>
-            public class GetAvailableRooms
-            {
-                public const string InvalidID = "INVALID_ID";
-            }
-
-            /// <summary>
-            ///     Represents GameService JoinRoom Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.JoinRoom(string)" />
-            /// </summary>
-            public class JoinRoom
-            {
-                public const string InvalidID = "INVALID_ID";
-                public const string WrongPassword = "wrong_password";
-                public const string RoomIsFull = "room_full";
-            }
-
-            /// <summary>
-            ///     Represents GameService InviteUser Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.InviteUser(string, string)" />
-            /// </summary>
-            public class InviteUser
-            {
-                public const string InvalidID = "INVALID_ID";
-                public const string RoomIsFull = "room_full";
-                public const string PermissionDenied = "permission_denid";
-                
-            }
-            
-            /// <summary>
-            ///     Represents GameService GetInviteInbox Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.GetInviteInbox()" />
-            /// </summary>
-            public class GetInviteInbox
-            {
-                public const string InvalidID = "INVALID_ID";                
-            }
-            
-            /// <summary>
-            ///     Represents GameService AcceptInvite Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.AcceptInvite(string)" />
-            /// </summary>
-            public class AcceptInvite
-            {
-                public const string InvalidID = "INVALID_ID";                
-            }
-
-            /// <summary>
-            ///     Represents GameService SubscribeChannel Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.SubscribeChannel(string)" />
-            /// </summary>
-            public class SubscribeChannel
-            {
-                public const string InvalidID = "INVALID_ID";                
-            }
-
-            /// <summary>
-            ///     Represents GameService SendChannelMessage Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.SendChannelMessage(string, string)" />
-            /// </summary>
-            public class SendChannelMessage
-            {
-                public const string NotMemberBefore = "not_member_before";                
-            }
-
-            /// <summary>
-            ///     Represents GameService UnSubscribeChannel Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.UnSubscribeChannel(string)" />
-            /// </summary>
-            public class UnSubscribeChannel
-            {
-                public const string NotMemberBefore = "not_member_before";                
-            }
-        }  
-
-        /// <summary>
-        ///     Represents All GameService Errors in TurnBase Requests
-        /// </summary>
-        public static class TurnBase{
-            /// <summary>
-            ///     Represents GameService Turnbase Internal Errors
-            /// </summary>
-            public class Internal
-            {
-                public const string NotFound = "DB_ERROR";
-                public const string InvalidInput = "INVALID_INPUT";
-                public const string Limited = "Limited";
-                public const string PermissionDenied = "permission_denid";
-            }
-
-            /// <inheritdoc />
-            /// <summary>
-            ///     Represents GameService Authorize TurnBase Errors
-            ///     Errors that occur in initial connection
-            /// </summary>
-            public class Authorize : Internal
-            {
                 public const string JWTError = "JWT_ERROR";
                 public const string NotFound = "DB_ERROR";
                 public const string InvalidID = "INVALID_ID";
@@ -374,76 +463,268 @@ namespace FiroozehGameService.Models.Consts
             }
 
             /// <summary>
-            ///     Represents GameService ModifyValue Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.ModifyValue(string)" />
+            ///     Represents All GameService Errors in Chat Requests
             /// </summary>
-            public class ModifyValue
+            public static class Chat
             {
-                public const string PropertyReached = "property_reached";                
-            }
-        }      
+                /// <summary>
+                ///     Represents GameService SubscribeChannel Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveChat.SubscribeChannel" />
+                /// </summary>
+                public class SubscribeChannel
+                {
+                    public const string InvalidID = "INVALID_ID";
+                }
 
-        /// <summary>
-        ///     Represents All GameService Errors in Realtime Requests
-        /// </summary>
-        public static class Realtime{
-/// <summary>
-            ///     Represents GameService Realtime Internal Errors
-            /// </summary>
-            public class Internal
-            {
-                public const string NotFound = "DB_ERROR";
-                public const string InvalidInput = "INVALID_INPUT";
-                public const string Limited = "Limited";
-                public const string PermissionDenied = "permission_denid";
+                /// <summary>
+                ///     Represents GameService SendChannelMessage Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveChat.SendChannelMessage" />
+                /// </summary>
+                public class SendChannelMessage
+                {
+                    public const string NotMemberBefore = "not_member_before";
+                }
+
+                /// <summary>
+                ///     Represents GameService UnSubscribeChannel Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveChat.UnSubscribeChannel" />
+                /// </summary>
+                public class UnSubscribeChannel
+                {
+                    public const string NotMemberBefore = "not_member_before";
+                }
             }
 
-            /// <inheritdoc />
-            /// <summary>
-            ///     Represents GameService Authorize Realtime Errors
-            ///     Errors that occur in initial connection
-            /// </summary>
-            public class Authorize : Internal
-            {
-                public const string JWTError = "JWT_ERROR";
-                public const string NotFound = "DB_ERROR";
-                public const string InvalidRoom = "INVALID_ROOM";
-                public const string InvalidID = "INVALID_ID";
-                public const string ObjectNotfound = "OBJECT_NOTFOUND";
-                public const string NotMemberOfRoom = "not_member";
-            }
 
             /// <summary>
-            ///     Represents GameService Instantitate Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.Instantitate(string)" />
+            ///     Represents All GameService Errors in TurnBase Requests
             /// </summary>
-            public class Instantitate
+            public static class TurnBase
             {
-                public const string CapacityError = "capacity_error";                
-            }
-            
-            /// <summary>
-            ///     Represents GameService RunFunction Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.RunFunction(string, Object, []Object)" />
-            /// </summary>
-            public class RunFunction
-            {
-                public const string CapacityError = "capacity_error";                
+
+                /// <summary>
+                ///     Represents GameService AutoMatch Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.AutoMatch" />
+                /// </summary>
+                public class AutoMatch
+                {
+                    public const string PlanLimit = "plan_limit";
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService CancelAutoMatch Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.CancelAutoMatch" />
+                /// </summary>
+                public class CancelAutoMatch
+                {
+                    public const string NotInWaitingQueue = "not_in_q";
+                }
+
+                /// <summary>
+                ///     Represents GameService CreateRoom Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.CreateRoom" />
+                /// </summary>
+                public class CreateRoom
+                {
+                    public const string PlanLimit = "plan_limit";
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService GetAvailableRooms Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.GetAvailableRooms" />
+                /// </summary>
+                public class GetAvailableRooms
+                {
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService JoinRoom Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.JoinRoom" />
+                /// </summary>
+                public class JoinRoom
+                {
+                    public const string InvalidID = "INVALID_ID";
+                    public const string WrongPassword = "wrong_password";
+                    public const string RoomIsFull = "room_full";
+                }
+
+                /// <summary>
+                ///     Represents GameService InviteUser Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.InviteUser" />
+                /// </summary>
+                public class InviteUser
+                {
+                    public const string InvalidID = "INVALID_ID";
+                    public const string RoomIsFull = "room_full";
+                    public const string PermissionDenied = "permission_denid";
+
+                }
+
+                /// <summary>
+                ///     Represents GameService GetInviteInbox Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.GetInviteInbox" />
+                /// </summary>
+                public class GetInviteInbox
+                {
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService AcceptInvite Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.AcceptInvite" />
+                /// </summary>
+                public class AcceptInvite
+                {
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService SetProperty Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveTB.SetProperty" />
+                /// </summary>
+                public class SetProperty
+                {
+                    public const string PropertyReached = "property_reached";
+                }
             }
 
             /// <summary>
-            ///     Represents GameService SetProperty Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.SetProperty(Object)" />
+            ///     Represents All GameService Errors in Realtime Requests
             /// </summary>
-            public class SetProperty
+            public static class Realtime
             {
-                public const string CapacityError = "capacity_error";                
-            }
+                /// <summary>
+                ///     Represents GameService AutoMatch Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveRT.AutoMatch" />
+                /// </summary>
+                public class AutoMatch
+                {
+                    public const string PlanLimit = "plan_limit";
+                    public const string InvalidID = "INVALID_ID";
+                }
 
+                /// <summary>
+                ///     Represents GameService CancelAutoMatch Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveRT.CancelAutoMatch" />
+                /// </summary>
+                public class CancelAutoMatch
+                {
+                    public const string NotInWaitingQueue = "not_in_q";
+                }
+
+                /// <summary>
+                ///     Represents GameService CreateRoom Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveRT.CreateRoom" />
+                /// </summary>
+                public class CreateRoom
+                {
+                    public const string PlanLimit = "plan_limit";
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService GetAvailableRooms Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveRT.GetAvailableRooms" />
+                /// </summary>
+                public class GetAvailableRooms
+                {
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService JoinRoom Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveRT.JoinRoom" />
+                /// </summary>
+                public class JoinRoom
+                {
+                    public const string InvalidID = "INVALID_ID";
+                    public const string WrongPassword = "wrong_password";
+                    public const string RoomIsFull = "room_full";
+                }
+
+                /// <summary>
+                ///     Represents GameService InviteUser Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveRT.InviteUser" />
+                /// </summary>
+                public class InviteUser
+                {
+                    public const string InvalidID = "INVALID_ID";
+                    public const string RoomIsFull = "room_full";
+                    public const string PermissionDenied = "permission_denid";
+
+                }
+
+                /// <summary>
+                ///     Represents GameService GetInviteInbox Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveRT.GetInviteInbox" />
+                /// </summary>
+                public class GetInviteInbox
+                {
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService AcceptInvite Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="GSLiveRT.AcceptInvite" />
+                /// </summary>
+                public class AcceptInvite
+                {
+                    public const string InvalidID = "INVALID_ID";
+                }
+
+                /// <summary>
+                ///     Represents GameService Instantitate Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Instantitate" />
+                /// </summary>
+                public class Instantitate
+                {
+                    public const string CapacityError = "capacity_error";
+                }
+
+                /// <summary>
+                ///     Represents GameService RunFunction Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="RunFunction" />
+                /// </summary>
+                public class RunFunction
+                {
+                    public const string CapacityError = "capacity_error";
+                }
+
+                /// <summary>
+                ///     Represents GameService SetProperty Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="SetProperty" />
+                /// </summary>
+                public class SetProperty
+                {
+                    public const string CapacityError = "capacity_error";
+                }
+            }
         }
     }
 }
