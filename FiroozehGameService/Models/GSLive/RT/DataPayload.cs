@@ -150,7 +150,7 @@ namespace FiroozehGameService.Models.GSLive.RT
         {
             return "DataPayload{ReceiverID='" + ReceiverId + '\'' +
                    ", SenderID='" + SenderId + '\'' +
-                   ", Payload='" + Payload + '\'' +
+                   ", Payload='" + Payload?.Length + '\'' +
                    '}';
         }
 
