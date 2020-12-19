@@ -122,6 +122,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnConnected(object sender, EventArgs e)
         {
             // Send Auth When Connected
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"OnConnected","RealTimeHandler GProtocol Connected");
             Request(AuthorizationHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
         }
 
@@ -140,9 +141,9 @@ namespace FiroozehGameService.Handlers.RealTime
             PingUtil.Init();
             ObserverCompacterUtil.Init();
 
-            // Get SnapShot After Auth
+            // Get Only in First Connect
+            if (PlayerHash != 0) return;
             Request(SnapShotHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
-
             GsSerializer.CurrentPlayerJoinRoom?.Invoke(this, null);
         }
 
@@ -215,7 +216,7 @@ namespace FiroozehGameService.Handlers.RealTime
                 if (_isDisposed) return;
                 var packet = (Packet) e.Packet;
                 packet.ClientReceiveTime = e.Time;
-                
+
                 GameService.SynchronizationContext?.Send(delegate
                 {
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType);
