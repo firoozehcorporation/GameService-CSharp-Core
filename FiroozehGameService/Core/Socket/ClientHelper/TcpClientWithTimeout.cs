@@ -42,10 +42,10 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
         private readonly string _hostname;
         private readonly int _port;
         private readonly int _timeoutWaitMilliseconds;
+        private const int TimeoutThreadWaitMilliseconds = 5000;
         private bool _connected;
         private TcpClient _connection;
         private Exception _exception;
-        private readonly CancellationTokenSource _cancellationToken;
 
 
         internal TcpClientWithTimeout(string hostname, int port,int timeoutWaitMilliseconds)
@@ -53,42 +53,45 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             _hostname = hostname;
             _port = port;
             _timeoutWaitMilliseconds = timeoutWaitMilliseconds;
-            _cancellationToken = new CancellationTokenSource();
         }
 
         internal async Task Connect(GSLiveType type)
         {
-            // kick off the thread that tries to connect
             _connected = false;
             _exception = null;
 
+            LogUtil.Log(this, "Wait " + _timeoutWaitMilliseconds + " Before Connect");
+            DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Wait " + _timeoutWaitMilliseconds + " Before Connect");
+               
+            await Task.Delay(_timeoutWaitMilliseconds);
 
-            await Task.Run(async () => { await BeginConnect(); },_cancellationToken.Token);
+            var thread = new Thread(BeginConnect) {IsBackground = true};
+            thread.Start();
 
+            thread.Join(TimeoutThreadWaitMilliseconds);
+            
             if (_connected)
             {
+                thread.Abort();
                 CoreEventHandlers.OnTcpClientConnected?.Invoke(type,_connection);
                 return;
             }
 
             if (_exception != null)
             {
+                thread.Abort();
                 CoreEventHandlers.OnGsTcpClientError?.Invoke(type, new GameServiceException(_exception.Message));
                 return;
             }
             
+            thread.Abort();
             CoreEventHandlers.OnGsTcpClientError?.Invoke(type,new GameServiceException( $"TcpClient connection to {_hostname}:{_port} timed out"));
         }
 
-        private async Task BeginConnect()
+        private void BeginConnect()
         {
             try
             {
-                LogUtil.Log(this, "Wait " + _timeoutWaitMilliseconds + " Before Connect");
-                DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Wait " + _timeoutWaitMilliseconds + " Before Connect");
-               
-                await Task.Delay(_timeoutWaitMilliseconds);
-                
                 LogUtil.Log(this, "Connect To " + _hostname);
                 DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Connect To " + _hostname);
                 
@@ -98,10 +101,6 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             catch (Exception ex)
             {
                 _exception = ex;
-            }
-            finally
-            {
-                _cancellationToken?.Cancel(false);
             }
         }
     }
