@@ -63,12 +63,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Constructor","TurnBasedHandler Init");
         }
 
-        private async void KeepAliveChecker(object sender, EventArgs e)
-        {
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"KeepAliveChecker","TurnBasedHandler -> Send KeepAlive Done");
-            await RequestAsync(KeepAliveHandler.Signature, null, true,true);
-        }
-
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
         {
             if((GSLiveType) sender != GSLiveType.TurnBased) return;
@@ -76,6 +70,8 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError");
 
+            if(PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null,ReconnectStatus.Connecting);
+                
             _retryConnectCounter++;
             
             if (_retryConnectCounter >= TurnBasedConst.MaxRetryConnect)
@@ -126,6 +122,9 @@ namespace FiroozehGameService.Handlers.TurnBased
         private static void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
+            
+            // this is Reconnect
+            if(PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null,ReconnectStatus.Connected);
             PlayerHash = (string) playerHash;
             
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnAuth","TurnBasedHandler Auth Done");
@@ -145,7 +144,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             _requestHandlers.Add(GetMemberHandler.Signature, new GetMemberHandler());
             _requestHandlers.Add(LeaveRoomHandler.Signature, new LeaveRoomHandler());
             _requestHandlers.Add(PingPongHandler.Signature, new PingPongHandler());
-            _requestHandlers.Add(KeepAliveHandler.Signature, new KeepAliveHandler());
             _requestHandlers.Add(ChooseNextHandler.Signature, new ChooseNextHandler());
             _requestHandlers.Add(CompleteHandler.Signature, new CompleteHandler());
             _requestHandlers.Add(CurrentTurnHandler.Signature, new CurrentTurnHandler());

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using FiroozehGameService.Core.GSLive;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.RT;
@@ -44,7 +45,12 @@ namespace FiroozehGameService.Handlers
         /// </summary>
         public static EventHandler<JoinEvent> JoinedRoom;
 
+        /// <summary>
+        ///     Calls When Current Player Try To Reconnect to Server
+        /// </summary>
+        public static EventHandler<ReconnectStatus> Reconnected;
 
+        
         /// <summary>
         ///     Calls When SomeOne Left the Current Room
         ///     This Event Handler Called By Following Function :

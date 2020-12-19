@@ -97,7 +97,6 @@
         <Compile Include="Handlers\Command\RequestHandlers\InviteUserHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\IRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\JoinRoomHandler.cs"/>
-        <Compile Include="Handlers\Command\RequestHandlers\KeepAliveHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\PingPongHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\AuthResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\AutoMatchResponseHandler.cs"/>
@@ -163,7 +162,6 @@
         <Compile Include="Handlers\TurnBased\RequestHandlers\VoteHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\GetMembersHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\IRequestHandler.cs"/>
-        <Compile Include="Handlers\TurnBased\RequestHandlers\KeepAliveHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\LeaveRoomHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\PropertyHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\PingPongHandler.cs"/>
@@ -235,6 +233,7 @@
         <Compile Include="Models\Enums\GSLive\Command\AutoMatchCancel.cs"/>
         <Compile Include="Models\Enums\GSLive\GSLiveType.cs"/>
         <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
+        <Compile Include="Models\Enums\GSLive\ReconnectStatus.cs"/>
         <Compile Include="Models\Enums\GSLive\RT\MessageType.cs"/>
         <Compile Include="Models\Enums\GSLive\TB\PropertyAction.cs"/>
         <Compile Include="Models\Enums\GSLive\TB\PropertyType.cs"/>

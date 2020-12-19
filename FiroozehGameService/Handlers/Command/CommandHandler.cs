@@ -63,13 +63,7 @@ namespace FiroozehGameService.Handlers.Command
 
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"Constructor","CommandHandler Initialized");
         }
-
-        private async void KeepAliveChecker(object sender, EventArgs e)
-        {
-            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command,"KeepAliveChecker","CommandHandler -> Send KeepAlive Done");
-            await RequestAsync(KeepAliveHandler.Signature, null, true,true);
-        }
-
+        
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
         {
             if((GSLiveType) sender != GSLiveType.Command) return;
@@ -141,8 +135,6 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(InviteUserHandler.Signature, new InviteUserHandler());
             _requestHandlers.Add(JoinRoomHandler.Signature, new JoinRoomHandler());
             _requestHandlers.Add(PingPongHandler.Signature, new PingPongHandler());
-            _requestHandlers.Add(KeepAliveHandler.Signature,new KeepAliveHandler());
-
 
             _requestHandlers.Add(GetChannelRecentMessagesRequestHandler.Signature,
                 new GetChannelRecentMessagesRequestHandler());

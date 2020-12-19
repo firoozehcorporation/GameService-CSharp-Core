@@ -129,6 +129,10 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
+            
+            // this is Reconnect
+            if(PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null,ReconnectStatus.Connected);
+            
             PlayerHash = (ulong) playerHash;
             
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"OnAuth","RealTimeHandler Auth Done");
@@ -198,7 +202,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnError(object sender, ErrorArg e)
         {
             DebugUtil.LogError<RealTimeHandler>(DebugLocation.RealTime,"OnError",e.Error);
-            
+            if(PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null,ReconnectStatus.Connecting);
             if (_isDisposed) return;
             Init();
         }
