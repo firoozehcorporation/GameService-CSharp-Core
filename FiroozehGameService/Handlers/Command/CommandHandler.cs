@@ -130,22 +130,6 @@ namespace FiroozehGameService.Handlers.Command
 
         private void InitRequestMessageHandlers()
         {
-            // this implementation not working on IL2CPP
-
-            /*var baseInterface = typeof(IRequestHandler);
-            var subclassTypes = Assembly
-                .GetAssembly(baseInterface)
-                .GetTypes()
-                .Where(t => t.GetInterfaces().Contains(baseInterface) && !t.IsInterface && !t.IsAbstract);
-
-            foreach (var type in subclassTypes)
-            {
-                var p = (string) type.GetProperty("Signature", BindingFlags.Public | BindingFlags.Static)
-                    .GetValue(null);
-                _requestHandlers.Add(p, (IRequestHandler) Activator.CreateInstance(type));
-            }
-            */
-
             _requestHandlers.Add(AcceptInviteHandler.Signature, new AcceptInviteHandler());
             _requestHandlers.Add(AuthorizationHandler.Signature, new AuthorizationHandler());
             _requestHandlers.Add(AutoMatchHandler.Signature, new AutoMatchHandler());
@@ -174,22 +158,6 @@ namespace FiroozehGameService.Handlers.Command
 
         private void InitResponseMessageHandlers()
         {
-            // this implementation not working on IL2CPP
-
-            /*var baseInterface = typeof(IResponseHandler);
-            var subclassTypes = Assembly
-                .GetAssembly(baseInterface)
-                .GetTypes()
-                .Where(t => t.GetInterfaces().Contains(baseInterface) && !t.IsInterface && !t.IsAbstract);
-
-            foreach (var type in subclassTypes)
-            {
-                var p = (int) type.GetProperty("ActionCommand", BindingFlags.Public | BindingFlags.Static)
-                    .GetValue(null);
-                _responseHandlers.Add(p, (IResponseHandler) Activator.CreateInstance(type));
-            }
-            */
-
             _responseHandlers.Add(AuthResponseHandler.ActionCommand, new AuthResponseHandler());
             _responseHandlers.Add(AutoMatchResponseHandler.ActionCommand, new AutoMatchResponseHandler());
             _responseHandlers.Add(CancelAutoMatchResponseHandler.ActionCommand, new CancelAutoMatchResponseHandler());
