@@ -228,6 +228,15 @@ namespace FiroozehGameService.Models.Consts
             {
                 public const string DeviceNotfound = "device_notfound";
             }
+            
+            /// <summary>
+            ///     Represents GameService GetCurrentGame HTTP Errors
+            ///     Errors that occur in the following Functions:
+            ///     <see cref="GameService.GetCurrentGame" />
+            /// </summary>
+            public class GetCurrentGame
+            {
+            }
         }
 
         /// <summary>

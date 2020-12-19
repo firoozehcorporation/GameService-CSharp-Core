@@ -47,7 +47,7 @@ namespace FiroozehGameService.Models.Consts
 
         public const string GetEvents = BaseUrl2 + "/v1/events/";
         
-        public const string GetCurrentGame = BaseUrl2 + "/v1/currentgame/";
+        public const string GetCurrentGame = BaseUrl2 + "/v1/currentgame";
 
 
         public const string Friends = BaseUrl2 + "/v1/friends/";
