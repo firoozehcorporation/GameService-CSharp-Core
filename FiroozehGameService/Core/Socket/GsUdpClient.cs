@@ -51,11 +51,9 @@ namespace FiroozehGameService.Core.Socket
             {
                 if (Client == null) CreateInstance();
                 Client?.Connect(Convert.FromBase64String(Area.ConnectToken));
-                LogUtil.Log(this, "GsUdpClient Init");
             }
             catch (Exception e)
             {
-                LogUtil.Log(this, "GsUdpClient Err : " + e);
                 e.LogException<GsUdpClient>(DebugLocation.RealTime, "Init");
             }
         }
@@ -69,14 +67,11 @@ namespace FiroozehGameService.Core.Socket
                 Client.OnStateChanged += ClientOnOnStateChanged;
                 Client.OnMessageReceived += ClientOnOnMessageReceived;
 
-                LogUtil.Log(this, "GsUdpClient Created");
                 DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime,"CreateInstance","GsUdpClient Created");
             }
             else
-            {
-                LogUtil.LogError(this, "Token Is NULL");
                 DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime,"CreateInstance","Token Is NULL");
-            }
+            
         }
 
 
@@ -92,10 +87,6 @@ namespace FiroozehGameService.Core.Socket
 
         private void ClientOnOnStateChanged(ClientState state)
         {
-            LogUtil.Log(this, "Client_OnStateChanged : " + state);
-            DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime,"ClientOnOnStateChanged",state.ToString());
-
-
             switch (state)
             {
                 case ClientState.Connected:
@@ -136,22 +127,16 @@ namespace FiroozehGameService.Core.Socket
                 if (!canSendBigSize)
                     if (!PacketUtil.CheckPacketSize(buffer))
                     {
-                        LogUtil.LogError(this,
-                            "this Packet Is Too Big!,Max Packet Size is " + RealTimeConst.MaxPacketSize + " bytes.");
                         throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " +
                                                        RealTimeConst.MaxPacketSize + " bytes.")
                             .LogException<GsUdpClient>(DebugLocation.RealTime,"Send");
                     }
                 
-                LogUtil.Log(this, "RealTime Send Payload Len : " + buffer.Length);
-
                 Client?.Send(buffer, buffer.Length);
             }
             else
-            {
-                LogUtil.LogError(this, "Client not Connected!");
                 DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime,"Send","Client not Connected!");
-            }
+            
         }
 
         internal override void StopReceiving()

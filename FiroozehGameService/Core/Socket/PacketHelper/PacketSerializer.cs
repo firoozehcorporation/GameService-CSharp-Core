@@ -21,6 +21,7 @@
 
 
 using System;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Utils;
 
@@ -36,7 +37,7 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             }
             catch (Exception e)
             {
-                LogUtil.LogError(this, "PacketSerializer Err :" + e.Message);
+                DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "Serialize",e.Message);
                 return null;
             }
         }

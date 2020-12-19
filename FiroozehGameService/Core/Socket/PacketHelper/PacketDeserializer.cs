@@ -42,7 +42,6 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             }
             catch (Exception e)
             {
-                LogUtil.LogError(this, "PacketDeserializer Err : " + e.Message);
                 DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "DeserializeTypeOne",e.Message);
                 return null;
             }
@@ -56,7 +55,6 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             }
             catch (Exception e)
             {
-                LogUtil.LogError(this, "PacketDeserializer Err : " + e.Message);
                 DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "DeserializeTypeTwo",e.Message);
                 return null;
             }

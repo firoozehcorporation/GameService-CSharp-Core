@@ -60,7 +60,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
-            LogUtil.Log(this, "TurnBasedHandler Init");
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Constructor","TurnBasedHandler Init");
         }
 
@@ -75,20 +74,17 @@ namespace FiroozehGameService.Handlers.TurnBased
             if((GSLiveType) sender != GSLiveType.TurnBased) return;
             if (_isDisposed) return;
 
-            LogUtil.LogError(this, "TurnBasedHandler -> OnGsTcpClientError : " + exception);
             exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError");
 
             _retryConnectCounter++;
             
             if (_retryConnectCounter >= TurnBasedConst.MaxRetryConnect)
             {
-                LogUtil.Log(this, "TurnBasedHandler Reached to MaxRetryConnect , so dispose TurnBased...");
                 DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError","TurnBasedHandler Reached to MaxRetryConnect , so dispose TurnBased...");
                 Dispose();
                 return;
             }
             
-            LogUtil.Log(this, "TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError","TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
 
             await Init();
@@ -98,7 +94,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             if((GSLiveType) sender != GSLiveType.TurnBased) return;
 
-            LogUtil.Log(this, "TurnBasedHandler -> Connected,Waiting for Handshakes...");
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientConnected","TurnBasedHandler -> Connected,Waiting for Handshakes...");
 
             
@@ -107,7 +102,6 @@ namespace FiroozehGameService.Handlers.TurnBased
          
             _retryConnectCounter = 0;
             
-            LogUtil.Log(this, "TurnBasedHandler Init done"); 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientConnected","TurnBasedHandler Init done");
         }
 
@@ -115,7 +109,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             if (_isDisposed)
             {
-                LogUtil.Log(this, "TurnBasedHandler Already Disposed!");
                 DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Dispose","TurnBasedHandler Already Disposed");
                 return;
             }
@@ -127,7 +120,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             _cancellationToken?.Cancel(true);
             CoreEventHandlers.Dispose?.Invoke(this, null);
             
-            LogUtil.Log(this, "TurnBasedHandler Dispose");
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Dispose","TurnBasedHandler Dispose Done");
         }
 
@@ -136,7 +128,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = (string) playerHash;
             
-            LogUtil.Log(null, "TurnBasedHandler OnAuth");
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnAuth","TurnBasedHandler Auth Done");
         }
 
@@ -145,7 +136,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             if (sender.GetType() != typeof(PingResponseHandler)) return;
             await RequestAsync(PingPongHandler.Signature, isCritical: true);
             
-            LogUtil.Log(null, "TurnBasedHandler OnPing");
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnPing","TurnBasedHandler Ping Called");
         }
 
@@ -254,7 +244,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             try
             {
                 var packet = (Packet) e.Packet;
-                LogUtil.Log(this, "TurnBasedHandler OnDataReceived < " + packet);
                 
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.TurnBased))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
@@ -264,7 +253,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             }
             catch (Exception exception)
             {
-                LogUtil.LogError(this, "TurnBasedHandler OnDataReceived ERR : " + exception);
                 exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased,"OnDataReceived");
             }
         }

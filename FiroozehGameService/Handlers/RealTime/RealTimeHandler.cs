@@ -59,7 +59,6 @@ namespace FiroozehGameService.Handlers.RealTime
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
-            LogUtil.Log(this, "RealTimeHandler init");
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Constructor","RealTimeHandler init");
         }
 
@@ -67,7 +66,6 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (_isDisposed)
             {
-                LogUtil.Log(this, "RealTimeHandler Already Disposed!");
                 DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Dispose","RealTimeHandler Already Disposed");
                 return;
             }
@@ -83,7 +81,6 @@ namespace FiroozehGameService.Handlers.RealTime
             ObserverCompacterUtil.Dispose();
             
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Dispose","RealTimeHandler Dispose Done");
-            LogUtil.Log(this, "RealTime Dispose");
 
             GsSerializer.CurrentPlayerLeftRoom?.Invoke(this, null);
             CoreEventHandlers.Dispose?.Invoke(this, null);
@@ -120,7 +117,6 @@ namespace FiroozehGameService.Handlers.RealTime
 
             var diff = PingUtil.Diff(currentTime, sendTime.Value);
             PingUtil.SetLastPing(diff);
-            LogUtil.Log(this, "Ping Realtime : " + diff);
         }
 
         private void OnConnected(object sender, EventArgs e)
@@ -135,7 +131,6 @@ namespace FiroozehGameService.Handlers.RealTime
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
             PlayerHash = (ulong) playerHash;
             
-            LogUtil.Log(null, "RealTime OnAuth");
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"OnAuth","RealTimeHandler Auth Done");
 
             PingUtil.Init();
@@ -234,8 +229,6 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void OnError(object sender, ErrorArg e)
         {
-            
-            LogUtil.Log(this, "RealTime Error");
             DebugUtil.LogError<RealTimeHandler>(DebugLocation.RealTime,"OnError",e.Error);
             
             if (_isDisposed) return;
@@ -257,7 +250,6 @@ namespace FiroozehGameService.Handlers.RealTime
             }
             catch (Exception exception)
             {
-                LogUtil.LogError(this, "RealtimeHandler OnDataReceived ERR : " + exception);
                 exception.LogException<RealTimeHandler>(DebugLocation.RealTime,"OnDataReceived");
             }
         }

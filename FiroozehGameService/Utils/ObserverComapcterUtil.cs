@@ -21,7 +21,9 @@
 
 using System;
 using System.Collections.Generic;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Utils.Serializer;
 
@@ -57,7 +59,7 @@ namespace FiroozehGameService.Utils
                 && _sendQueue.Count <= MaxQueueSize)
                 _sendQueue?.Enqueue(payload);
             else
-                LogUtil.LogError(null, "Send Queue is Full!");
+                DebugUtil.LogError(typeof(ObserverCompacterUtil),DebugLocation.RealTime,"AddToQueue",new GameServiceException("Send Queue is Full"));
         }
 
 

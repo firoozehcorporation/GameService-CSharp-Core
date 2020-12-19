@@ -60,7 +60,6 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             _connected = false;
             _exception = null;
 
-            LogUtil.Log(this, "Wait " + _timeoutWaitMilliseconds + " Before Connect");
             DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Wait " + _timeoutWaitMilliseconds + " Before Connect");
                
             await Task.Delay(_timeoutWaitMilliseconds);
@@ -92,7 +91,6 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
         {
             try
             {
-                LogUtil.Log(this, "Connect To " + _hostname);
                 DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Connect To " + _hostname);
                 
                 _connection = new TcpClient(_hostname,_port);

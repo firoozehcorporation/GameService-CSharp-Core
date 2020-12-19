@@ -55,7 +55,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
             }
             catch (Exception e)
             {
-                LogUtil.LogError(this, e.Message);
+                e.LogException<PublicMessageResponseHandler>(DebugLocation.RealTime,"HandleResponse");
             }
         }
     }

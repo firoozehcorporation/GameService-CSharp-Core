@@ -109,9 +109,6 @@ namespace FiroozehGameService.Core.ApiWebRequest
             StringContent content = null;
             if (body != null) content = new StringContent(body, Encoding.UTF8, "application/json");
 
-            LogUtil.Log(null, "GSWebRequest -> URL: " + url + ", method: " + method + ", " +
-                              "Body: " + body);
-
             DebugUtil.LogNormal(typeof(GsWebRequest), DebugLocation.Http, "DoRequest", "GSWebRequest -> URL: " + url);
 
 

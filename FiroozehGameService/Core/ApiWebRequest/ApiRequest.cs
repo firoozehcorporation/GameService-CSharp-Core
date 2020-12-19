@@ -294,10 +294,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<MemberInfo> EditCurrentPlayer(EditUserProfile editUserProfile)
         {
             if (editUserProfile.Logo != null)
-            {
-                var result = await ImageUtil.UploadProfileImage(editUserProfile.Logo);
-                LogUtil.Log(null, result.Url);
-            }
+                await ImageUtil.UploadProfileImage(editUserProfile.Logo);
 
             var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
             {
@@ -754,9 +751,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
                 var party = JsonConvert.DeserializeObject<Party>(await reader.ReadToEndAsync());
                 if (option.Logo == null) return party;
-                var result = await ImageUtil.UploadPartyLogo(option.Logo, party.Id);
-                LogUtil.Log(null, result.Url);
-
+                await ImageUtil.UploadPartyLogo(option.Logo, party.Id);
                 return party;
             }
         }
@@ -881,10 +876,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<Party> EditParty(string partyId, SocialOptions.PartyOption option)
         {
             if (option.Logo != null)
-            {
-                var result = await ImageUtil.UploadPartyLogo(option.Logo, partyId);
-                LogUtil.Log(null, result.Url);
-            }
+                await ImageUtil.UploadPartyLogo(option.Logo, partyId);
 
             var body = JsonConvert.SerializeObject(new CreateParty
             {
