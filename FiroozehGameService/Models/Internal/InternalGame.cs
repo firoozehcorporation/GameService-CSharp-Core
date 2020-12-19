@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.Internal
 {
     [Serializable]
-    internal class Game
+    internal class InternalGame
     {
         [JsonProperty("_id")] public string _Id;
 

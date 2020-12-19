@@ -39,6 +39,7 @@ using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
+using Game = FiroozehGameService.Models.BasicApi.Game;
 using Party = FiroozehGameService.Models.BasicApi.Social.Party;
 
 namespace FiroozehGameService.Core.ApiWebRequest
@@ -230,6 +231,20 @@ namespace FiroozehGameService.Core.ApiWebRequest
                         .Member;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetCurrentPlayer");
+            }
+        }
+        
+        
+        internal static async Task<Game> GetCurrentGame()
+        {
+            var response = await GsWebRequest.Get(Api.GetCurrentGame, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Game>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetCurrentGame");
             }
         }
 

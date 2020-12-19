@@ -236,7 +236,7 @@ namespace FiroozehGameService.Handlers.Command
 
         public static string PlayerHash { private set; get; }
 
-        public static string GameId => GameService.CurrentGame?._Id;
+        public static string GameId => GameService.CurrentInternalGame?._Id;
         public static string UserToken => GameService.UserToken;
 
         public static bool IsAvailable =>

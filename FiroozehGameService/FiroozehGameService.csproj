@@ -197,10 +197,12 @@
         <Compile Include="Models\BasicApi\Error.cs"/>
         <Compile Include="Models\BasicApi\FaaS\FaaSCore.cs"/>
         <Compile Include="Models\BasicApi\FaaS\FaaSResponse.cs"/>
+        <Compile Include="Models\BasicApi\Game.cs"/>
         <Compile Include="Models\BasicApi\LeaderBoard.cs"/>
         <Compile Include="Models\BasicApi\LeaderBoardDetails.cs"/>
         <Compile Include="Models\BasicApi\Login.cs"/>
         <Compile Include="Models\BasicApi\MemberInfo.cs"/>
+        <Compile Include="Models\BasicApi\Publisher.cs"/>
         <Compile Include="Models\BasicApi\Results.cs"/>
         <Compile Include="Models\BasicApi\SaveDetails.cs"/>
         <Compile Include="Models\BasicApi\Score.cs"/>
@@ -286,7 +288,7 @@
         <Compile Include="Models\Internal\ChangePassword.cs"/>
         <Compile Include="Models\Internal\CreateParty.cs"/>
         <Compile Include="Models\Internal\EditUserProfile.cs"/>
-        <Compile Include="Models\Internal\Game.cs"/>
+        <Compile Include="Models\Internal\InternalGame.cs"/>
         <Compile Include="Models\Internal\GSTime.cs"/>
         <Compile Include="Models\Internal\ImageUploadResult.cs"/>
         <Compile Include="Models\Internal\PacketBinary.cs"/>

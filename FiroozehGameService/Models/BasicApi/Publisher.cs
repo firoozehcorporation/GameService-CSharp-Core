@@ -1,5 +1,5 @@
-// <copyright file="Login.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+﻿// <copyright file="Publisher.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,19 +19,29 @@
 * @author Alireza Ghodrati
 */
 
-
 using System;
 using FiroozehGameService.Models.Internal;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
 {
+    /// <summary>
+    ///     Represents Publisher Data Model In Game Service Basic API
+    /// </summary>
     [Serializable]
-    internal class Login
+    public class Publisher
     {
-        [JsonProperty("command")] public CommandInfo CommandInfo;
-        [JsonProperty("game")] public InternalGame Game;
-        [JsonProperty("status")] public bool Status;
-        [JsonProperty("token")] public string Token;
+        /// <summary>
+        ///     Gets the Game Name.
+        /// </summary>
+        /// <value>the Game Name</value>
+        [JsonProperty("name")] public string Name;
+
+
+        /// <summary>
+        ///     Gets the Game Cover URL.
+        /// </summary>
+        /// <value>the Game Cover URL</value>
+        [JsonProperty("logo")] public string Image;
     }
 }

@@ -36,7 +36,7 @@ using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
-using Game = FiroozehGameService.Models.Internal.Game;
+using Game = FiroozehGameService.Models.BasicApi.Game;
 
 namespace FiroozehGameService.Core
 {
@@ -353,6 +353,18 @@ namespace FiroozehGameService.Core
         {
             return await TimeUtil.GetCurrentTime();
         }
+        
+        
+        
+        /// <summary>
+        ///     This command Gets The Current Game
+        /// </summary>
+        /// <value> return The Current Game</value>
+        public static async Task<Game> GetCurrentGame()
+        {
+            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetCurrentGame");
+            return await ApiRequest.GetCurrentGame();
+        }
 
 
         /// <summary>
@@ -560,7 +572,7 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
-            CurrentGame = auth.Game;
+            CurrentInternalGame = auth.Game;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -582,7 +594,7 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
-            CurrentGame = auth.Game;
+            CurrentInternalGame = auth.Game;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -607,7 +619,7 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
-            CurrentGame = auth.Game;
+            CurrentInternalGame = auth.Game;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -638,7 +650,7 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
-            CurrentGame = auth.Game;
+            CurrentInternalGame = auth.Game;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -660,7 +672,7 @@ namespace FiroozehGameService.Core
             UserToken = login.Token;
             var auth = await ApiRequest.Authorize();
             PlayToken = auth.Token;
-            CurrentGame = auth.Game;
+            CurrentInternalGame = auth.Game;
             _isAvailable = true;
             IsGuest = true;
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
@@ -685,7 +697,7 @@ namespace FiroozehGameService.Core
             var auth = await ApiRequest.Authorize();
             CommandInfo = auth.CommandInfo;
             PlayToken = auth.Token;
-            CurrentGame = auth.Game;
+            CurrentInternalGame = auth.Game;
             _isAvailable = true;
             IsGuest = false;
             await Core.GSLive.GSLive.Init();
@@ -719,7 +731,7 @@ namespace FiroozehGameService.Core
         public static void Logout()
         {
             UserToken = null;
-            CurrentGame = null;
+            CurrentInternalGame = null;
             PlayToken = null;
             CommandInfo = null;
             _isAvailable = false;
@@ -735,7 +747,7 @@ namespace FiroozehGameService.Core
         
         internal static string UserToken;
         internal static string PlayToken;
-        internal static Game CurrentGame;
+        internal static InternalGame CurrentInternalGame;
         internal static CommandInfo CommandInfo;
         internal static bool IsGuest;
         internal static SynchronizationContext SynchronizationContext;
