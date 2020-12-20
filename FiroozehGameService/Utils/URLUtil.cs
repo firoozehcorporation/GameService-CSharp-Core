@@ -30,10 +30,14 @@ namespace FiroozehGameService.Utils
 {
     internal static class UrlUtil
     {
-        internal static string ParseBucketUrl(string bucketId, BucketOption[] options)
+        internal static string ParseBucketUrl(string bucketId,bool isGlobal,BucketOption[] options)
         {
             var first = true;
-            var url = Api.Bucket + bucketId;
+            string url;
+            
+            if(isGlobal) url = Api.BucketNonPermission + bucketId;
+            else url = Api.Bucket + bucketId;
+            
             if (options == null) return url;
 
             url += "?";
@@ -41,14 +45,12 @@ namespace FiroozehGameService.Utils
             foreach (var option in options)
                 if (first)
                 {
-                    // To Remove first &
                     url += option.GetParsedData().Substring(1);
                     first = false;
                 }
                 else
-                {
                     url += option.GetParsedData();
-                }
+                
 
             return url;
         }

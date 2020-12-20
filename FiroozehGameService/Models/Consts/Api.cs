@@ -43,6 +43,8 @@ namespace FiroozehGameService.Models.Consts
         public const string Achievements = BaseUrl2 + "/v1/achievement/";
         public const string LeaderBoard = BaseUrl2 + "/v1/leaderboard/";
         public const string Bucket = BaseUrl2 + "/v1/bucket/";
+        public const string BucketNonPermission = BaseUrl2 + "/bucket/";
+
 
 
         public const string GetEvents = BaseUrl2 + "/v1/events/";

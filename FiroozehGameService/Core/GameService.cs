@@ -259,13 +259,15 @@ namespace FiroozehGameService.Core
         ///     This command will return all information about the bucket with a specific ID
         /// </summary>
         /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To get Detail</param>
+        /// <param name="isGlobal">(Optional)If this Option Enabled, You Can Get Bucket Items Without Login</param>
         /// <param name="options">(Optional)The Bucket Options</param>
         /// <value> return List of all Bucket Items</value>
-        public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId, BucketOption[] options = null)
+        public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId,bool isGlobal = false,BucketOption[] options = null)
             where TBucket : BucketCore
         {
+            if (!isGlobal && !IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
-            return await ApiRequest.GetBucketItems<TBucket>(bucketId, options);
+            return await ApiRequest.GetBucketItems<TBucket>(bucketId,isGlobal,options);
         }
 
 
@@ -274,13 +276,15 @@ namespace FiroozehGameService.Core
         /// </summary>
         /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To get Detail</param>
         /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To get Detail</param>
+        /// <param name="isGlobal">(Optional)If this Option Enabled, You Can Get Bucket Items Without Login</param>
         /// <value> return a Bucket Item</value>
-        public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId)
+        public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId,bool isGlobal = false)
             where TBucket : BucketCore
         {
+            if (!isGlobal && !IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
             if (string.IsNullOrEmpty(itemId)) throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
-            return await ApiRequest.GetBucketItem<TBucket>(bucketId, itemId);
+            return await ApiRequest.GetBucketItem<TBucket>(bucketId, itemId,isGlobal);
         }
 
 

@@ -334,9 +334,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId, BucketOption[] options)
+        internal static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId,bool isGlobal,BucketOption[] options)
         {
-            var url = UrlUtil.ParseBucketUrl(bucketId, options);
+            var url = UrlUtil.ParseBucketUrl(bucketId,isGlobal,options);
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -349,9 +349,12 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId)
+        internal static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId,bool isGlobal)
         {
-            var url = Api.Bucket + bucketId + '/' + itemId;
+            string url;
+            if (isGlobal) url = Api.BucketNonPermission + bucketId + '/' + itemId;
+            else url = Api.Bucket + bucketId + '/' + itemId;
+            
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))

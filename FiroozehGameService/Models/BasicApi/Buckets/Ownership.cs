@@ -43,7 +43,7 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
         public Ownership(BucketOwnershipTypes ownershipTypes, string ownerUserId = null)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("Ownership BucketOption Not Working Before Login")
+                throw new GameServiceException("Ownership BucketOption Not Working In Global Mode")
                     .LogException<Ownership>(DebugLocation.Internal, "Constructor");
             
             _ownerUserId = ownershipTypes == BucketOwnershipTypes.Another && string.IsNullOrEmpty(ownerUserId)
