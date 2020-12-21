@@ -64,6 +64,13 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Device Operating System</value>
         [JsonProperty("OperatingSystem")] public string OperatingSystem;
+        
+        
+        /// <summary>
+        ///     returns true if the Active Device For Current Player
+        /// </summary>
+        /// <value>returns true if the Active Device For Current Player</value>
+        [JsonProperty("is_current")] public bool IsCurrentDevice;
 
 
         /// <summary>
