@@ -105,10 +105,10 @@ namespace FiroozehGameService.Models.GSLive
 
 
         /// <summary>
-        ///     Gets the Room Variables.
+        ///     Gets the Room Properties.
         /// </summary>
-        /// <value>the Room Variables</value>
-        [JsonProperty("11")] public Dictionary<string,string> Variables;
+        /// <value>the Room Properties</value>
+        [JsonProperty("11")] public Dictionary<string,string> Properties;
         
         
         /// <summary>
