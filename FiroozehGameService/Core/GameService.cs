@@ -267,6 +267,7 @@ namespace FiroozehGameService.Core
         {
             if (!isGlobal && !IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
             if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
+            if (!ValidationUtil.ValidateBuckets(options)) throw new GameServiceException("Invalid BucketOptions").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
             return await ApiRequest.GetBucketItems<TBucket>(bucketId,isGlobal,options);
         }
 
@@ -725,7 +726,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "6.0.0";
+            return "6.0.1";
         }
 
 

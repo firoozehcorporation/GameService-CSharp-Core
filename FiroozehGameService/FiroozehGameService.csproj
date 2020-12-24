@@ -326,6 +326,7 @@
         <Compile Include="Utils\Serializer\Utils\TypeUtil.cs"/>
         <Compile Include="Utils\TimeUtil.cs"/>
         <Compile Include="Utils\URLUtil.cs"/>
+        <Compile Include="Utils\ValidationUtil.cs"/>
     </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
