@@ -20,6 +20,7 @@
 */
 
 
+using System;
 using System.Collections.Generic;
 using FiroozehGameService.Models.BasicApi.Buckets;
 
@@ -39,7 +40,7 @@ namespace FiroozehGameService.Utils
             foreach (var option in options)
             {
                 if (option.GetType() == typeof(Constraint)) constraintSet++;
-                if (option.GetType() == typeof(FindByElement<>)) findByElementSet++;
+                if (option.GetType().Name == typeof(FindByElement<>).Name) findByElementSet++;
                 if (option.GetType() == typeof(Ownership)) ownerShipSet++;
                 if (option.GetType() == typeof(SortByElement)) sortByElementSet++;
             }
