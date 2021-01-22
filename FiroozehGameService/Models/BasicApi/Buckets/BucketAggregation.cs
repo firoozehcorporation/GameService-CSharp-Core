@@ -141,12 +141,7 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
             {
                 var data = new List<Dictionary<string, object>>();
 
-                if (_matchAggregation == null)
-                    throw new GameServiceException("MatchAggregation must be set")
-                        .LogException<BucketAggregationBuilder>(DebugLocation.Internal, "GenerateAggregation");
-
-                data.AddRange(_matchAggregation.GetAggregation());
-
+                if (_matchAggregation != null) data.AddRange(_matchAggregation.GetAggregation());
                 if (_sortAggregation != null) data.AddRange(_sortAggregation.GetAggregation());
                 if (_constraintAggregation != null) data.AddRange(_constraintAggregation.GetAggregation());
                 if (_projectAggregation != null) data.AddRange(_projectAggregation.GetAggregation());
