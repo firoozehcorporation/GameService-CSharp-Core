@@ -45,7 +45,6 @@ namespace FiroozehGameService.Models.Consts
         public const string LeaderBoard = BaseUrl2 + "/v1/leaderboard/";
         public const string Bucket = DBaaS + "/v1/bucket/";
         public const string BucketNonPermission = DBaaS + "/bucket/";
-        public const string BucketWithAggregation = DBaaS + "/v1/bucket/";
 
 
         public const string GetEvents = BaseUrl2 + "/v1/events/";

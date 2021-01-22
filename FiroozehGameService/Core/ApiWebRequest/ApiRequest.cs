@@ -353,16 +353,16 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<BucketResult<TBucket>> GetBucketItems<TBucket>(BucketAggregation aggregation)
         {
-            /*var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Post(Api.Bucket + aggregation.Builder.BucketId + "/aggregation",
+                aggregation.Builder.AggregationData, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<List<TBucket>>(await reader.ReadToEndAsync());
+                    return JsonConvert.DeserializeObject<BucketResult<TBucket>>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetBucketItems");
-            }*/
-            return null;
+            }
         }
 
 

@@ -33,6 +33,8 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
     [Serializable]
     public class BucketAggregation
     {
+        internal BucketAggregationBuilder Builder;
+
         private BucketAggregation()
         {
         }
@@ -46,20 +48,28 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
             return new BucketAggregationBuilder(bucketId);
         }
 
+        internal static BucketAggregation From(BucketAggregationBuilder builder)
+        {
+            return new BucketAggregation {Builder = builder};
+        }
+
         /// <summary>
         ///     Represents BucketAggregationBuilder Model In Game Service Basic API
         /// </summary>
         public class BucketAggregationBuilder
         {
-            private string _bucketId;
+            internal readonly string BucketId;
+
+
             private ConstraintAggregation _constraintAggregation;
             private MatchAggregation _matchAggregation;
             private ProjectAggregation _projectAggregation;
             private SortAggregation _sortAggregation;
+            internal string AggregationData;
 
             internal BucketAggregationBuilder(string bucketId)
             {
-                _bucketId = bucketId;
+                BucketId = bucketId;
             }
 
             /// <summary>
@@ -125,8 +135,10 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
             }
 
 
-            // TODO Check Depth
-            internal string GenerateAggregation()
+            /// <summary>
+            ///     Build This BucketAggregationBuilder
+            /// </summary>
+            public BucketAggregation Build()
             {
                 var data = new List<KeyValuePair<string, object>>();
 
@@ -140,8 +152,11 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
                 if (_constraintAggregation != null) data.AddRange(_constraintAggregation.GetAggregation());
                 if (_projectAggregation != null) data.AddRange(_projectAggregation.GetAggregation());
 
+                AggregationData = JsonConvert.SerializeObject(data);
+                DebugUtil.LogNormal<BucketAggregationBuilder>(DebugLocation.Internal, "Build",
+                    "AggregationData -> " + AggregationData);
 
-                return JsonConvert.SerializeObject(data);
+                return From(this);
             }
         }
     }
