@@ -186,12 +186,24 @@
         <Compile Include="Handlers\TurnBased\TurnBasedHandler.cs"/>
         <Compile Include="Models\BasicApi\Achievement.cs"/>
         <Compile Include="Models\BasicApi\ActiveDevice.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Aggregations\AggregationCore.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Aggregations\ConstraintAggregation.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Aggregations\MatchAggregation.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Aggregations\ProjectAggregation.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Aggregations\SortAggregation.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\BucketAggregation.cs"/>
         <Compile Include="Models\BasicApi\Buckets\BucketCore.cs"/>
-        <Compile Include="Models\BasicApi\Buckets\BucketOption.cs"/>
-        <Compile Include="Models\BasicApi\Buckets\Constraint.cs"/>
-        <Compile Include="Models\BasicApi\Buckets\FindByElement.cs"/>
-        <Compile Include="Models\BasicApi\Buckets\Ownership.cs"/>
-        <Compile Include="Models\BasicApi\Buckets\SortByElement.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Matcher\MatcherCore.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Matcher\NumberMatcher.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Matcher\ObjectMatcher.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Operators\And.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Operators\Or.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Options\BucketOption.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Options\Constraint.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Options\FindByElement.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Options\Ownership.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\Options\SortByElement.cs"/>
+        <Compile Include="Models\BasicApi\Buckets\‌BucketResult.cs"/>
         <Compile Include="Models\BasicApi\CommandInfo.cs"/>
         <Compile Include="Models\BasicApi\EditUserProfile.cs"/>
         <Compile Include="Models\BasicApi\Error.cs"/>
@@ -226,8 +238,10 @@
         <Compile Include="Models\Consts\GameServiceErrors.cs"/>
         <Compile Include="Models\Consts\RealTimeConst.cs"/>
         <Compile Include="Models\Consts\TurnBasedConst.cs"/>
-        <Compile Include="Models\Enums\BucketOwnershipTypes.cs"/>
-        <Compile Include="Models\Enums\BucketSortOrder.cs"/>
+        <Compile Include="Models\Enums\Buckets\BucketOwnershipTypes.cs"/>
+        <Compile Include="Models\Enums\Buckets\BucketSortOrder.cs"/>
+        <Compile Include="Models\Enums\Buckets\NumberMatcherTypes.cs"/>
+        <Compile Include="Models\Enums\Buckets\ObjectMatcherTypes.cs"/>
         <Compile Include="Models\Enums\DebugLocation.cs"/>
         <Compile Include="Models\Enums\EventAction.cs"/>
         <Compile Include="Models\Enums\GProtocolSendType.cs"/>
@@ -326,7 +340,7 @@
         <Compile Include="Utils\Serializer\Utils\TypeUtil.cs"/>
         <Compile Include="Utils\TimeUtil.cs"/>
         <Compile Include="Utils\URLUtil.cs"/>
-        <Compile Include="Utils\ValidationUtil.cs"/>
+        <Compile Include="Utils\BucketUtil.cs"/>
     </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -23,7 +23,7 @@ using FiroozehGameService.Utils;
 */
 
 
-namespace FiroozehGameService.Models.BasicApi.Buckets
+namespace FiroozehGameService.Models.BasicApi.Buckets.Options
 {
     /// <summary>
     ///     Represents ElementOptionData Model In Game Service Basic API
@@ -42,9 +42,13 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
         public FindByElement(string name, T value)
         {
             _name = string.IsNullOrEmpty(name)
-                ? throw new GameServiceException("Name Cant Be EmptyOrNull").LogException<FindByElement<T>>(DebugLocation.Internal,"Constructor")
+                ? throw new GameServiceException("Name Cant Be EmptyOrNull").LogException<FindByElement<T>>(
+                    DebugLocation.Internal, "Constructor")
                 : _name = name;
-            _value = value == null ? throw new GameServiceException("Value Cant Be Null").LogException<SortByElement>(DebugLocation.Internal,"Constructor") : _value = value;
+            _value = value == null
+                ? throw new GameServiceException("Value Cant Be Null").LogException<FindByElement<T>>(
+                    DebugLocation.Internal, "Constructor")
+                : _value = value;
         }
 
         internal override string GetParsedData()

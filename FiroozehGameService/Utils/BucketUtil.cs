@@ -1,4 +1,4 @@
-// <copyright file="ValidationUtil.cs" company="Firoozeh Technology LTD">
+// <copyright file="BucketUtil.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,16 +22,19 @@
 
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Models.BasicApi.Buckets;
+using FiroozehGameService.Models.BasicApi.Buckets.Options;
+using FiroozehGameService.Models.Enums.Buckets;
 
 namespace FiroozehGameService.Utils
 {
-    internal static class ValidationUtil
+    internal static class BucketUtil
     {
+        private const short MaxDepth = 10;
+
         internal static bool ValidateBuckets(IEnumerable<BucketOption> options)
         {
             if (options == null) return true;
-            
+
             var constraintSet = 0;
             var findByElementSet = 0;
             var ownerShipSet = 0;
@@ -49,6 +52,34 @@ namespace FiroozehGameService.Utils
                    (findByElementSet == 0 || findByElementSet == 1) &&
                    (ownerShipSet == 0 || ownerShipSet == 1) &&
                    (sortByElementSet == 0 || sortByElementSet == 1);
+        }
+
+        internal static string ToStringType(this NumberMatcherTypes numberMatcherTypes)
+        {
+            switch (numberMatcherTypes)
+            {
+                case NumberMatcherTypes.GraterThan: return "->gt";
+                case NumberMatcherTypes.GraterThanOrEqual: return "->gte";
+                case NumberMatcherTypes.LessThan: return "->lt";
+                case NumberMatcherTypes.LessThanOrEqual: return "->lte";
+                default: throw new ArgumentOutOfRangeException(nameof(numberMatcherTypes), numberMatcherTypes, null);
+            }
+        }
+
+        internal static string ToStringType(this ObjectMatcherTypes objectMatcher)
+        {
+            switch (objectMatcher)
+            {
+                case ObjectMatcherTypes.Equal: return "->eq";
+                case ObjectMatcherTypes.NotEqual: return "->neq";
+                default: throw new ArgumentOutOfRangeException(nameof(objectMatcher), objectMatcher, null);
+            }
+        }
+
+        internal static bool ValidateNumber(object numberValue)
+        {
+            return numberValue is byte || numberValue is short || numberValue is int || numberValue is long ||
+                   numberValue is float || numberValue is double || numberValue is decimal;
         }
     }
 }

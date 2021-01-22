@@ -29,6 +29,7 @@ using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
+using FiroozehGameService.Models.BasicApi.Buckets.Options;
 using FiroozehGameService.Models.BasicApi.FaaS;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
@@ -51,27 +52,33 @@ namespace FiroozehGameService.Core
         /// <param name="configuration">(NOTNULL)configuration For Initialize Game Service</param>
         public static void ConfigurationInstance(GameServiceClientConfiguration configuration)
         {
-            if (configuration == null) throw new GameServiceException("Configuration Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"ConfigurationInstance");
+            if (configuration == null)
+                throw new GameServiceException("Configuration Cant Be Null").LogException(typeof(GameService),
+                    DebugLocation.Internal, "ConfigurationInstance");
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             SynchronizationContext = SynchronizationContext.Current;
 
-            if (IsAuthenticated()) throw new GameServiceException("Must Logout First To ReConfiguration").LogException(typeof(GameService),DebugLocation.Internal,"ConfigurationInstance");
+            if (IsAuthenticated())
+                throw new GameServiceException("Must Logout First To ReConfiguration").LogException(typeof(GameService),
+                    DebugLocation.Internal, "ConfigurationInstance");
             Configuration = configuration;
             _downloadManager = new DownloadManager(Configuration);
-            
+
             GSLive = new GSLive.GSLive();
             Social = new Social.Social();
         }
-        
-        
+
+
         /// <summary>
         ///     Set configuration For Game Service Debug System
         /// </summary>
         /// <param name="configuration">(NOTNULL)configuration For Game Service Debug System</param>
         public static void ConfigurationDebug(GameServiceDebugConfiguration configuration)
         {
-            DebugConfiguration = configuration ?? throw new GameServiceException("Configuration Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"ConfigurationDebug");
+            DebugConfiguration = configuration ??
+                                 throw new GameServiceException("Configuration Cant Be Null").LogException(
+                                     typeof(GameService), DebugLocation.Internal, "ConfigurationDebug");
         }
 
         /// <summary>
@@ -81,7 +88,9 @@ namespace FiroozehGameService.Core
         /// <value> GetLeaderBoards List </value>
         public static async Task<List<LeaderBoard>> GetLeaderBoards()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetLeaderBoards");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetLeaderBoards");
             return await ApiRequest.GetLeaderBoard();
         }
 
@@ -92,7 +101,9 @@ namespace FiroozehGameService.Core
         /// <value> GetAchievements List </value>
         public static async Task<List<Achievement>> GetAchievements()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetAchievements");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetAchievements");
             return await ApiRequest.GetAchievements();
         }
 
@@ -105,7 +116,9 @@ namespace FiroozehGameService.Core
         /// <value> return SaveDetails </value>
         public static async Task<SaveDetails> SaveGame(string saveGameName, object saveGameObj)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"SaveGame");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SaveGame");
             return await ApiRequest.SaveGame(saveGameName, saveGameObj);
         }
 
@@ -120,9 +133,15 @@ namespace FiroozehGameService.Core
         public static async Task<SubmitScoreResponse> SubmitScore(
             string leaderBoardId, int scoreValue)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"SubmitScore");
-            if (string.IsNullOrEmpty(leaderBoardId)) throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"SubmitScore");
-            if (scoreValue <= 0) throw new GameServiceException("Invalid ScoreValue").LogException(typeof(GameService),DebugLocation.Internal,"SubmitScore");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SubmitScore");
+            if (string.IsNullOrEmpty(leaderBoardId))
+                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SubmitScore");
+            if (scoreValue <= 0)
+                throw new GameServiceException("Invalid ScoreValue").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SubmitScore");
             return await ApiRequest.SubmitScore(leaderBoardId, scoreValue);
         }
 
@@ -135,8 +154,12 @@ namespace FiroozehGameService.Core
         /// <value> return unlocked Achievement </value>
         public static async Task<Achievement> UnlockAchievement(string achievementId)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"UnlockAchievement");
-            if (string.IsNullOrEmpty(achievementId)) throw new GameServiceException("AchievementId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"UnlockAchievement");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UnlockAchievement");
+            if (string.IsNullOrEmpty(achievementId))
+                throw new GameServiceException("AchievementId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UnlockAchievement");
             return await ApiRequest.UnlockAchievement(achievementId);
         }
 
@@ -147,7 +170,9 @@ namespace FiroozehGameService.Core
         /// <value> return Player Last Save </value>
         public static async Task<T> GetSaveGame<T>()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetSaveGame");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetSaveGame");
             return await ApiRequest.GetSaveGame<T>();
         }
 
@@ -160,11 +185,18 @@ namespace FiroozehGameService.Core
         /// <param name="scoreLimit">(Min = 10,Max = 50) The Score List Limits</param>
         /// <param name="onlyFriends"> if this option Enabled , returns the Friends Score </param>
         /// <value> return LeaderBoardDetails </value>
-        public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId, int scoreLimit = 10,bool onlyFriends = false)
+        public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId, int scoreLimit = 10,
+            bool onlyFriends = false)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetLeaderBoardDetails");
-            if (string.IsNullOrEmpty(leaderBoardId)) throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetLeaderBoardDetails");
-            if (scoreLimit < 10 || scoreLimit > 50) throw new GameServiceException("Invalid Limit Value").LogException(typeof(GameService),DebugLocation.Internal,"GetLeaderBoardDetails");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetLeaderBoardDetails");
+            if (string.IsNullOrEmpty(leaderBoardId))
+                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetLeaderBoardDetails");
+            if (scoreLimit < 10 || scoreLimit > 50)
+                throw new GameServiceException("Invalid Limit Value").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetLeaderBoardDetails");
             return await ApiRequest.GetLeaderBoardDetails(leaderBoardId, scoreLimit, onlyFriends);
         }
 
@@ -177,8 +209,12 @@ namespace FiroozehGameService.Core
         /// <value> return Score </value>
         public static async Task<Score> GetCurrentPlayerScore(string leaderBoardId)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetCurrentPlayerScore");
-            if (string.IsNullOrEmpty(leaderBoardId)) throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetCurrentPlayerScore");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetCurrentPlayerScore");
+            if (string.IsNullOrEmpty(leaderBoardId))
+                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetCurrentPlayerScore");
             return await ApiRequest.GetCurrentPlayerScore(leaderBoardId);
         }
 
@@ -189,7 +225,9 @@ namespace FiroozehGameService.Core
         /// <value> return CurrentPlayer Data </value>
         public static async Task<Member> GetCurrentPlayer()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetCurrentPlayer");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetCurrentPlayer");
             return await ApiRequest.GetCurrentPlayer();
         }
 
@@ -202,8 +240,12 @@ namespace FiroozehGameService.Core
         [Obsolete("This Method is Deprecated,Use GetMemberData() Instead")]
         public static async Task<User> GetUserData(string userId)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetUserData");
-            if (string.IsNullOrEmpty(userId)) throw new GameServiceException("userId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetUserData");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetUserData");
+            if (string.IsNullOrEmpty(userId))
+                throw new GameServiceException("userId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetUserData");
             return await ApiRequest.GetUserData(userId);
         }
 
@@ -215,8 +257,12 @@ namespace FiroozehGameService.Core
         /// <value> return Member Data </value>
         public static async Task<Member> GetMemberData(string memberId)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetMemberData");
-            if (string.IsNullOrEmpty(memberId)) throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetMemberData");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetMemberData");
+            if (string.IsNullOrEmpty(memberId))
+                throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetMemberData");
             return await ApiRequest.GetMemberData(memberId);
         }
 
@@ -227,7 +273,9 @@ namespace FiroozehGameService.Core
         /// <value> return Member Data </value>
         public static async Task<MemberInfo> GetLastLoginMemberInfo()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetLastLoginMemberInfo");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetLastLoginMemberInfo");
             return await ApiRequest.GetLastLoginMemberInfo();
         }
 
@@ -238,8 +286,12 @@ namespace FiroozehGameService.Core
         /// <value> return Edited Current Member Info Data </value>
         public static async Task<MemberInfo> EditCurrentPlayerProfile(EditUserProfile profile)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"EditCurrentPlayerProfile");
-            if (profile == null) throw new GameServiceException("profile Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"EditCurrentPlayerProfile");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "EditCurrentPlayerProfile");
+            if (profile == null)
+                throw new GameServiceException("profile Cant Be Null").LogException(typeof(GameService),
+                    DebugLocation.Internal, "EditCurrentPlayerProfile");
             return await ApiRequest.EditCurrentPlayer(profile);
         }
 
@@ -250,7 +302,9 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> RemoveLastSave()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"RemoveLastSave");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "RemoveLastSave");
             return await ApiRequest.RemoveLastSave();
         }
 
@@ -262,13 +316,39 @@ namespace FiroozehGameService.Core
         /// <param name="isGlobal">(Optional)If this Option Enabled, You Can Get Bucket Items Without Login</param>
         /// <param name="options">(Optional)The Bucket Options</param>
         /// <value> return List of all Bucket Items</value>
-        public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId,bool isGlobal = false,BucketOption[] options = null)
+        [Obsolete("This Method is Deprecated,Use GetBucketItems(BucketAggregation) Instead")]
+        public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId, bool isGlobal = false,
+            BucketOption[] options = null)
             where TBucket : BucketCore
         {
-            if (!isGlobal && !IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
-            if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
-            if (!ValidationUtil.ValidateBuckets(options)) throw new GameServiceException("Invalid BucketOptions").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItems");
-            return await ApiRequest.GetBucketItems<TBucket>(bucketId,isGlobal,options);
+            if (!isGlobal && !IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetBucketItems");
+            if (string.IsNullOrEmpty(bucketId))
+                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetBucketItems");
+            if (!BucketUtil.ValidateBuckets(options))
+                throw new GameServiceException("Invalid BucketOptions").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetBucketItems");
+            return await ApiRequest.GetBucketItems<TBucket>(bucketId, isGlobal, options);
+        }
+
+
+        /// <summary>
+        ///     This command will return all information about the bucket with a specific ID and Aggregations
+        /// </summary>
+        /// <param name="aggregation">(NotNULL)The aggregation of Bucket you Want To get Detail</param>
+        /// <value> return the BucketResult</value>
+        public static async Task<BucketResult<TBucket>> GetBucketItems<TBucket>(BucketAggregation aggregation)
+            where TBucket : BucketCore
+        {
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetBucketItems");
+            if (aggregation == null)
+                throw new GameServiceException("Aggregation Cant Be Null").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetBucketItems");
+            return await ApiRequest.GetBucketItems<TBucket>(aggregation);
         }
 
 
@@ -279,13 +359,19 @@ namespace FiroozehGameService.Core
         /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To get Detail</param>
         /// <param name="isGlobal">(Optional)If this Option Enabled, You Can Get Bucket Items Without Login</param>
         /// <value> return a Bucket Item</value>
-        public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId,bool isGlobal = false)
+        public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId, bool isGlobal = false)
             where TBucket : BucketCore
         {
-            if (!isGlobal && !IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
-            if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
-            if (string.IsNullOrEmpty(itemId)) throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetBucketItem");
-            return await ApiRequest.GetBucketItem<TBucket>(bucketId, itemId,isGlobal);
+            if (!isGlobal && !IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetBucketItem");
+            if (string.IsNullOrEmpty(bucketId))
+                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetBucketItem");
+            if (string.IsNullOrEmpty(itemId))
+                throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetBucketItem");
+            return await ApiRequest.GetBucketItem<TBucket>(bucketId, itemId, isGlobal);
         }
 
 
@@ -299,10 +385,18 @@ namespace FiroozehGameService.Core
         public static async Task<TBucket> UpdateBucketItem<TBucket>(string bucketId, string itemId,
             TBucket editedBucket) where TBucket : BucketCore
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"UpdateBucketItem");
-            if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"UpdateBucketItem");
-            if (string.IsNullOrEmpty(itemId)) throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"UpdateBucketItem");
-            if (editedBucket == null) throw new GameServiceException("EditedBucket Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"UpdateBucketItem");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UpdateBucketItem");
+            if (string.IsNullOrEmpty(bucketId))
+                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UpdateBucketItem");
+            if (string.IsNullOrEmpty(itemId))
+                throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UpdateBucketItem");
+            if (editedBucket == null)
+                throw new GameServiceException("EditedBucket Cant Be Null").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UpdateBucketItem");
             return await ApiRequest.UpdateBucketItem(bucketId, itemId, editedBucket);
         }
 
@@ -315,9 +409,15 @@ namespace FiroozehGameService.Core
         public static async Task<TBucket> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
             where TBucket : BucketCore
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"AddBucketItem");
-            if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"AddBucketItem");
-            if (newBucket == null) throw new GameServiceException("NewBucket Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"AddBucketItem");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "AddBucketItem");
+            if (string.IsNullOrEmpty(bucketId))
+                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "AddBucketItem");
+            if (newBucket == null)
+                throw new GameServiceException("NewBucket Cant Be Null").LogException(typeof(GameService),
+                    DebugLocation.Internal, "AddBucketItem");
             return await ApiRequest.AddBucketItem(bucketId, newBucket);
         }
 
@@ -329,8 +429,12 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> DeleteBucketItems(string bucketId)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"DeleteBucketItems");
-            if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"DeleteBucketItems");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DeleteBucketItems");
+            if (string.IsNullOrEmpty(bucketId))
+                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DeleteBucketItems");
             return await ApiRequest.DeleteBucketItems(bucketId);
         }
 
@@ -343,9 +447,15 @@ namespace FiroozehGameService.Core
         /// <value> return true if Remove Successfully </value>
         public static async Task<bool> DeleteBucketItem(string bucketId, string itemId)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"DeleteBucketItem");
-            if (string.IsNullOrEmpty(bucketId)) throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"DeleteBucketItem");
-            if (string.IsNullOrEmpty(itemId)) throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"DeleteBucketItem");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DeleteBucketItem");
+            if (string.IsNullOrEmpty(bucketId))
+                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DeleteBucketItem");
+            if (string.IsNullOrEmpty(itemId))
+                throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DeleteBucketItem");
             return await ApiRequest.DeleteBucketItem(bucketId, itemId);
         }
 
@@ -358,16 +468,17 @@ namespace FiroozehGameService.Core
         {
             return await TimeUtil.GetCurrentTime();
         }
-        
-        
-        
+
+
         /// <summary>
         ///     This command Gets The Current Game
         /// </summary>
         /// <value> return The Current Game</value>
         public static async Task<Game> GetCurrentGame()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetCurrentGame");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetCurrentGame");
             return await ApiRequest.GetCurrentGame();
         }
 
@@ -378,7 +489,9 @@ namespace FiroozehGameService.Core
         /// <value> return The Status</value>
         public static async Task<bool> CanLoginWithPhoneNumber()
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"CanLoginWithPhoneNumber");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "CanLoginWithPhoneNumber");
             return await ApiRequest.CheckPhoneLoginStatus();
         }
 
@@ -389,8 +502,12 @@ namespace FiroozehGameService.Core
         /// <param name="assetTag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
         public static async Task<AssetInfo> GetAssetInfo(string assetTag)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"GetAssetInfo");
-            if (string.IsNullOrEmpty(assetTag)) throw new GameServiceException("assetTag Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"GetAssetInfo");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetAssetInfo");
+            if (string.IsNullOrEmpty(assetTag))
+                throw new GameServiceException("assetTag Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetAssetInfo");
             return await ApiRequest.GetAssetInfo(Configuration.ClientId, assetTag);
         }
 
@@ -401,12 +518,18 @@ namespace FiroozehGameService.Core
         /// </summary>
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
         /// <param name="dirPath">(Not NULL)Specifies the Download File Directory Path </param>
-        [Obsolete("This Method is Deprecated,Use DownloadAsset(AssetInfo info, string dirPath) Instead")]
+        [Obsolete("This Method is Deprecated,Use DownloadAsset(AssetInfo,string) Instead")]
         public static async Task DownloadAsset(string tag, string dirPath)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(string,string)");
-            if (string.IsNullOrEmpty(tag)) throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(string,string)");
-            if (string.IsNullOrEmpty(dirPath)) throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(string,string)");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(string,string)");
+            if (string.IsNullOrEmpty(tag))
+                throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(string,string)");
+            if (string.IsNullOrEmpty(dirPath))
+                throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(string,string)");
             await _downloadManager.StartDownload(tag, dirPath);
         }
 
@@ -416,11 +539,15 @@ namespace FiroozehGameService.Core
         ///     Set DownloadManager Event Handlers To Get Download Status
         /// </summary>
         /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
-        [Obsolete("This Method is Deprecated,Use DownloadAsset(AssetInfo info) Instead")]
+        [Obsolete("This Method is Deprecated,Use DownloadAsset(AssetInfo) Instead")]
         public static async Task DownloadAsset(string tag)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(string)");
-            if (string.IsNullOrEmpty(tag)) throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(string)");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(string)");
+            if (string.IsNullOrEmpty(tag))
+                throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(string)");
             await _downloadManager.StartDownload(tag);
         }
 
@@ -433,9 +560,15 @@ namespace FiroozehGameService.Core
         /// <param name="dirPath">(Not NULL)Specifies the Download File Directory Path </param>
         public static void DownloadAsset(AssetInfo info, string dirPath)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(info,string)");
-            if (info == null) throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(info,string)");
-            if (string.IsNullOrEmpty(dirPath)) throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(info,string)");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(info,string)");
+            if (info == null)
+                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(info,string)");
+            if (string.IsNullOrEmpty(dirPath))
+                throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(info,string)");
             _downloadManager.StartDownloadWithInfo(info, dirPath);
         }
 
@@ -447,8 +580,12 @@ namespace FiroozehGameService.Core
         /// <param name="info">(Not NULL)Specifies the Asset Info</param>
         public static async Task DownloadAsset(AssetInfo info)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(info)");
-            if (info == null) throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"DownloadAsset(info)");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(info)");
+            if (info == null)
+                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
+                    DebugLocation.Internal, "DownloadAsset(info)");
             await _downloadManager.StartDownloadWithInfo(info);
         }
 
@@ -458,7 +595,9 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static void CancelAllDownloadAsset()
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"CancelAllDownloadAsset");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "CancelAllDownloadAsset");
             _downloadManager?.CancelAllDownloads();
         }
 
@@ -468,8 +607,12 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static void CancelDownloadAsset(string tag)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"CancelDownloadAsset(string)");
-            if (string.IsNullOrEmpty(tag)) throw new GameServiceException("Asset Tag Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"CancelDownloadAsset(string)");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "CancelDownloadAsset(string)");
+            if (string.IsNullOrEmpty(tag))
+                throw new GameServiceException("Asset Tag Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "CancelDownloadAsset(string)");
             _downloadManager.CancelDownload(tag);
         }
 
@@ -479,8 +622,12 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static void CancelDownloadAsset(AssetInfo info)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"CancelDownloadAsset(info)");
-            if (info == null) throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),DebugLocation.Internal,"CancelDownloadAsset(info)");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "CancelDownloadAsset(info)");
+            if (info == null)
+                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
+                    DebugLocation.Internal, "CancelDownloadAsset(info)");
             _downloadManager?.CancelDownload(info);
         }
 
@@ -497,12 +644,16 @@ namespace FiroozehGameService.Core
             object functionParameters = null, bool isPublic = false)
             where TFaaS : FaaSCore
         {
-            if (!isPublic && !IsAuthenticated()) throw new GameServiceException("You Must Login First In Private Mode").LogException(typeof(GameService),DebugLocation.Internal,"ExecuteCloudFunction");
-            if (string.IsNullOrEmpty(functionId)) throw new GameServiceException("functionId Cant Be NullOrEmpty").LogException(typeof(GameService),DebugLocation.Internal,"ExecuteCloudFunction");
+            if (!isPublic && !IsAuthenticated())
+                throw new GameServiceException("You Must Login First In Private Mode").LogException(typeof(GameService),
+                    DebugLocation.Internal, "ExecuteCloudFunction");
+            if (string.IsNullOrEmpty(functionId))
+                throw new GameServiceException("functionId Cant Be NullOrEmpty").LogException(typeof(GameService),
+                    DebugLocation.Internal, "ExecuteCloudFunction");
             return await ApiRequest.ExecuteCloudFunction<TFaaS>(functionId, functionParameters, isPublic);
         }
-        
-        
+
+
         /// <summary>
         ///     Get All Active Devices
         ///     You Can Get Active Devices to Revoke Some Devices Access
@@ -510,11 +661,13 @@ namespace FiroozehGameService.Core
         /// <value> return Active Devices </value>
         public static async Task<List<ActiveDevice>> GetActiveDevices()
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"GetActiveDevices");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "GetActiveDevices");
             return await ApiRequest.GetActiveDevices();
         }
 
-        
+
         /// <summary>
         ///     Revoke a Active Device with deviceId
         ///     You Can Get Active Devices to Revoke Some Devices Access
@@ -522,24 +675,34 @@ namespace FiroozehGameService.Core
         /// <param name="deviceId">(NOTNULL)Specifies the device Id that you want to revoke</param>
         public static async Task<bool> RevokeActiveDevice(string deviceId)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"RevokeActiveDevice");
-            if (string.IsNullOrEmpty(deviceId)) throw new GameServiceException("deviceId Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"RevokeActiveDevice");
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "RevokeActiveDevice");
+            if (string.IsNullOrEmpty(deviceId))
+                throw new GameServiceException("deviceId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "RevokeActiveDevice");
             return await ApiRequest.RevokeDevice(deviceId);
         }
-        
-        
+
+
         /// <summary>
         ///     Change Password With CurrentPassword and New One
         /// </summary>
         /// <param name="currentPassword">(NOTNULL)Specifies the Current Password </param>
         /// <param name="newPassword">(NOTNULL)Specifies the New Password </param>
-        public static async Task<bool> ChangePassword(string currentPassword,string newPassword)
+        public static async Task<bool> ChangePassword(string currentPassword, string newPassword)
         {
-            if (!IsAuthenticated()) throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),DebugLocation.Internal,"ChangePassword");
-            if (string.IsNullOrEmpty(currentPassword)) throw new GameServiceException("currentPassword Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"ChangePassword");
-            if (string.IsNullOrEmpty(newPassword)) throw new GameServiceException("newPassword Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"ChangePassword");
-            
-            return await ApiRequest.ChangePassword(currentPassword,newPassword);
+            if (!IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                    DebugLocation.Internal, "ChangePassword");
+            if (string.IsNullOrEmpty(currentPassword))
+                throw new GameServiceException("currentPassword Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "ChangePassword");
+            if (string.IsNullOrEmpty(newPassword))
+                throw new GameServiceException("newPassword Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "ChangePassword");
+
+            return await ApiRequest.ChangePassword(currentPassword, newPassword);
         }
 
 
@@ -551,9 +714,15 @@ namespace FiroozehGameService.Core
         /// <value> return true if Send Successfully </value>
         public static async Task<bool> SendLoginCodeWithSms(string phoneNumber)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"SendLoginCodeWithSms");
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),DebugLocation.Internal,"SendLoginCodeWithSms");
-            if (string.IsNullOrEmpty(phoneNumber)) throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"SendLoginCodeWithSms");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SendLoginCodeWithSms");
+            if (!NetworkUtil.IsConnected())
+                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SendLoginCodeWithSms");
+            if (string.IsNullOrEmpty(phoneNumber))
+                throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SendLoginCodeWithSms");
             if (IsAuthenticated()) Logout();
             return await ApiRequest.SendLoginCodeWithSms(phoneNumber);
         }
@@ -566,10 +735,18 @@ namespace FiroozehGameService.Core
         /// <value> return UserToken if Login Successfully </value>
         public static async Task<string> Login(string email, string password)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"Login");
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),DebugLocation.Internal,"Login");
-            if (string.IsNullOrEmpty(email)) throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"Login");
-            if (string.IsNullOrEmpty(password)) throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"Login");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "Login");
+            if (!NetworkUtil.IsConnected())
+                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                    DebugLocation.Internal, "Login");
+            if (string.IsNullOrEmpty(email))
+                throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "Login");
+            if (string.IsNullOrEmpty(password))
+                throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "Login");
             if (IsAuthenticated()) Logout();
 
             var login = await ApiRequest.Login(email, password);
@@ -590,9 +767,15 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task Login(string userToken)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"UserTokenLogin");
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),DebugLocation.Internal,"UserTokenLogin");
-            if (string.IsNullOrEmpty(userToken)) throw new GameServiceException("UserToken Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"UserTokenLogin");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UserTokenLogin");
+            if (!NetworkUtil.IsConnected())
+                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UserTokenLogin");
+            if (string.IsNullOrEmpty(userToken))
+                throw new GameServiceException("UserToken Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "UserTokenLogin");
             if (IsAuthenticated()) Logout();
 
             UserToken = userToken;
@@ -614,9 +797,15 @@ namespace FiroozehGameService.Core
         /// <value> return UserToken if Login Successfully </value>
         public static async Task<string> LoginWithGoogle(string idToken)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"LoginWithGoogle");
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),DebugLocation.Internal,"LoginWithGoogle");
-            if (string.IsNullOrEmpty(idToken)) throw new GameServiceException("IdToken Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"LoginWithGoogle");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginWithGoogle");
+            if (!NetworkUtil.IsConnected())
+                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginWithGoogle");
+            if (string.IsNullOrEmpty(idToken))
+                throw new GameServiceException("IdToken Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginWithGoogle");
             if (IsAuthenticated()) Logout();
 
             var login = await ApiRequest.LoginWithGoogle(idToken);
@@ -643,11 +832,21 @@ namespace FiroozehGameService.Core
         /// <value> return UserToken if Login Successfully </value>
         public static async Task<string> LoginWithPhoneNumber(string nickName, string phoneNumber, string smsCode)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"LoginWithPhoneNumber");
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),DebugLocation.Internal,"LoginWithPhoneNumber");
-            if (string.IsNullOrEmpty(nickName)) throw new GameServiceException("nickName Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"LoginWithPhoneNumber");
-            if (string.IsNullOrEmpty(phoneNumber)) throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"LoginWithPhoneNumber");
-            if (string.IsNullOrEmpty(smsCode)) throw new GameServiceException("smsCode Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"LoginWithPhoneNumber");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginWithPhoneNumber");
+            if (!NetworkUtil.IsConnected())
+                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginWithPhoneNumber");
+            if (string.IsNullOrEmpty(nickName))
+                throw new GameServiceException("nickName Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginWithPhoneNumber");
+            if (string.IsNullOrEmpty(phoneNumber))
+                throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginWithPhoneNumber");
+            if (string.IsNullOrEmpty(smsCode))
+                throw new GameServiceException("smsCode Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginWithPhoneNumber");
             if (IsAuthenticated()) Logout();
 
             var login = await ApiRequest.LoginWithPhoneNumber(nickName, phoneNumber, smsCode);
@@ -669,8 +868,12 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static async Task Login()
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"LoginGuest");
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),DebugLocation.Internal,"LoginGuest");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginGuest");
+            if (!NetworkUtil.IsConnected())
+                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                    DebugLocation.Internal, "LoginGuest");
             if (IsAuthenticated()) Logout();
 
             var login = await ApiRequest.LoginAsGuest();
@@ -690,11 +893,21 @@ namespace FiroozehGameService.Core
         /// <value> return UserToken if SignUp Successfully </value>
         public static async Task<string> SignUp(string nickName, string email, string password)
         {
-            if (Configuration == null) throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),DebugLocation.Internal,"SignUp");
-            if (!NetworkUtil.IsConnected()) throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),DebugLocation.Internal,"SignUp");
-            if (string.IsNullOrEmpty(nickName)) throw new GameServiceException("NickName Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"SignUp");
-            if (string.IsNullOrEmpty(email)) throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"SignUp");
-            if (string.IsNullOrEmpty(password)) throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(typeof(GameService),DebugLocation.Internal,"SignUp");
+            if (Configuration == null)
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SignUp");
+            if (!NetworkUtil.IsConnected())
+                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SignUp");
+            if (string.IsNullOrEmpty(nickName))
+                throw new GameServiceException("NickName Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SignUp");
+            if (string.IsNullOrEmpty(email))
+                throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SignUp");
+            if (string.IsNullOrEmpty(password))
+                throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(typeof(GameService),
+                    DebugLocation.Internal, "SignUp");
             if (IsAuthenticated()) Logout();
 
             var login = await ApiRequest.SignUp(nickName, email, password);
@@ -749,7 +962,7 @@ namespace FiroozehGameService.Core
 
         private const string Tag = "FiroozehGameService";
         private static bool _isAvailable;
-        
+
         internal static string UserToken;
         internal static string PlayToken;
         internal static InternalGame CurrentInternalGame;
@@ -761,21 +974,21 @@ namespace FiroozehGameService.Core
 
 
         /// <summary>
-        /// Returns Debug Data
+        ///     Returns Debug Data
         /// </summary>
         public static EventHandler<Debug> OnDebugReceived;
 
         /// <summary>
-        /// The GameService GsLive System (like TurnBased , RealTime , ...)
+        ///     The GameService GsLive System (like TurnBased , RealTime , ...)
         /// </summary>
         public static GSLive.GSLive GSLive { get; private set; }
-        
+
         /// <summary>
-        /// The GameService Social System (like Friends , Parties)
+        ///     The GameService Social System (like Friends , Parties)
         /// </summary>
         public static Social.Social Social { get; private set; }
 
-        
+
         private static DownloadManager _downloadManager;
 
         #endregion

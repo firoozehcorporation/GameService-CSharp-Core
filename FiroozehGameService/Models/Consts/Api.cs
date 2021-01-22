@@ -27,6 +27,7 @@ namespace FiroozehGameService.Models.Consts
         public const string BaseUrl1 = "https://gamesservice.ir";
         public const string BaseUrl2 = "https://api.gamesservice.ir";
         public const string FaaS = "https://faas.gamesservice.ir/";
+        public const string DBaaS = "https://dbaas.gamesservice.ir";
 
 
         public const string LoginUser = BaseUrl2 + "/auth/app/login";
@@ -42,13 +43,13 @@ namespace FiroozehGameService.Models.Consts
         public const string SaveGame = BaseUrl2 + "/v1/savegame/";
         public const string Achievements = BaseUrl2 + "/v1/achievement/";
         public const string LeaderBoard = BaseUrl2 + "/v1/leaderboard/";
-        public const string Bucket = BaseUrl2 + "/v1/bucket/";
-        public const string BucketNonPermission = BaseUrl2 + "/bucket/";
-
+        public const string Bucket = DBaaS + "/v1/bucket/";
+        public const string BucketNonPermission = DBaaS + "/bucket/";
+        public const string BucketWithAggregation = DBaaS + "/v1/bucket/";
 
 
         public const string GetEvents = BaseUrl2 + "/v1/events/";
-        
+
         public const string GetCurrentGame = BaseUrl2 + "/v1/currentgame";
 
 

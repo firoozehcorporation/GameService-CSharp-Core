@@ -17,6 +17,7 @@
 using System;
 using FiroozehGameService.Core;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.Enums.Buckets;
 using FiroozehGameService.Utils;
 
 /**
@@ -24,7 +25,7 @@ using FiroozehGameService.Utils;
 */
 
 
-namespace FiroozehGameService.Models.BasicApi.Buckets
+namespace FiroozehGameService.Models.BasicApi.Buckets.Options
 {
     /// <summary>
     ///     Represents OwnershipOptionData Model In Game Service Basic API
@@ -45,12 +46,12 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("Ownership BucketOption Not Working In Global Mode")
                     .LogException<Ownership>(DebugLocation.Internal, "Constructor");
-            
+
             _ownerUserId = ownershipTypes == BucketOwnershipTypes.Another && string.IsNullOrEmpty(ownerUserId)
                 ? throw new GameServiceException("OwnerUserId Cant Be EmptyOrNull When OwnershipType is Another")
-                    .LogException<Ownership>(DebugLocation.Internal,"Constructor")
+                    .LogException<Ownership>(DebugLocation.Internal, "Constructor")
                 : _ownerUserId = ownerUserId;
-           
+
             _ownershipTypes = ownershipTypes;
         }
 

@@ -1,4 +1,4 @@
-// <copyright file="BucketOwnershipTypes.cs" company="Firoozeh Technology LTD">
+// <copyright file="BucketSortOrder.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,21 +21,22 @@ using System;
 */
 
 
-namespace FiroozehGameService.Models.Enums
+namespace FiroozehGameService.Models.Enums.Buckets
 {
     /// <summary>
-    ///     Represents BucketOwnershipTypes Model In Game Service Basic API
+    ///     Represents BucketSortOrder Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public enum BucketOwnershipTypes
+    public enum BucketSortOrder
     {
         /// <summary>
-        /// Sets The Current Member OwnerShip
+        ///     Use it When Need Ascending Sort
         /// </summary>
-        Me,
+        Ascending = 1,
+
         /// <summary>
-        /// Sets The Other Member OwnerShip
+        ///     Use it When Need Descending Sort
         /// </summary>
-        Another
+        Descending = -1
     }
 }

@@ -1,4 +1,4 @@
-// <copyright file="SortByElement.cs" company="Firoozeh Technology LTD">
+// <copyright file="SortAggregation.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,40 +16,47 @@
 
 
 using System;
+using System.Collections.Generic;
 using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Models.Enums.Buckets;
 using FiroozehGameService.Utils;
 
 /**
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameService.Models.BasicApi.Buckets
+namespace FiroozehGameService.Models.BasicApi.Buckets.Aggregations
 {
     /// <summary>
-    ///     Represents SortByOptionData Model In Game Service Basic API
+    ///     Represents SortAggregation Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public class SortByElement : BucketOption
+    public class SortAggregation : AggregationCore
     {
         private string _elementName;
         private BucketSortOrder _sortOrder;
 
         /// <summary>
-        ///     the SortByElement BucketOption
+        ///     the SortAggregation BucketOption
         /// </summary>
         /// <param name="elementName">the name of Element you want to Sort by it</param>
         /// <param name="sortOrder">the sortOrder you want to Sort by it</param>
-        public SortByElement(string elementName, BucketSortOrder sortOrder)
+        public SortAggregation(string elementName, BucketSortOrder sortOrder)
         {
             _elementName = string.IsNullOrEmpty(elementName)
-                ? throw new GameServiceException("ElementName Cant Be EmptyOrNull").LogException<SortByElement>(DebugLocation.Internal,"Constructor")
+                ? throw new GameServiceException("ElementName Cant Be EmptyOrNull").LogException<SortAggregation>(
+                    DebugLocation.Internal, "Constructor")
                 : _elementName = elementName;
             _sortOrder = sortOrder;
         }
 
-        internal override string GetParsedData()
+        internal override List<KeyValuePair<string, object>> GetAggregation()
         {
-            return "&sortby=" + _elementName + "&sort=" + (int) _sortOrder;
+            var order = _sortOrder == BucketSortOrder.Ascending ? "ASC" : "DESC";
+            return new List<KeyValuePair<string, object>>
+            {
+                new KeyValuePair<string, object>("->sort", new KeyValuePair<string, string>(_elementName, order))
+            };
         }
     }
 }

@@ -1,4 +1,4 @@
-// <copyright file="BucketOption.cs" company="Firoozeh Technology LTD">
+// <copyright file="AggregationCore.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,20 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 
 /**
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameService.Models.BasicApi.Buckets
+namespace FiroozehGameService.Models.BasicApi.Buckets.Aggregations
 {
     /// <summary>
-    ///     Represents BucketOption Model In Game Service Basic API
+    ///     Represents AggregationCore Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public abstract class BucketOption
+    public abstract class AggregationCore
     {
-        internal abstract string GetParsedData();
+        internal abstract List<KeyValuePair<string, object>> GetAggregation();
     }
 }

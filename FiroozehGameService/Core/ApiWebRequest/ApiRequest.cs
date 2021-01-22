@@ -29,6 +29,7 @@ using FiroozehGameService.Core.Social;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Buckets;
+using FiroozehGameService.Models.BasicApi.Buckets.Options;
 using FiroozehGameService.Models.BasicApi.FaaS;
 using FiroozehGameService.Models.BasicApi.Social;
 using FiroozehGameService.Models.BasicApi.TResponse;
@@ -233,8 +234,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetCurrentPlayer");
             }
         }
-        
-        
+
+
         internal static async Task<Game> GetCurrentGame()
         {
             var response = await GsWebRequest.Get(Api.GetCurrentGame, CreatePlayTokenHeader());
@@ -334,9 +335,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId,bool isGlobal,BucketOption[] options)
+        internal static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId, bool isGlobal,
+            BucketOption[] options)
         {
-            var url = UrlUtil.ParseBucketUrl(bucketId,isGlobal,options);
+            var url = UrlUtil.ParseBucketUrl(bucketId, isGlobal, options);
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
@@ -349,12 +351,27 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId,bool isGlobal)
+        internal static async Task<BucketResult<TBucket>> GetBucketItems<TBucket>(BucketAggregation aggregation)
+        {
+            /*var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<List<TBucket>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetBucketItems");
+            }*/
+            return null;
+        }
+
+
+        internal static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId, bool isGlobal)
         {
             string url;
             if (isGlobal) url = Api.BucketNonPermission + bucketId + '/' + itemId;
             else url = Api.Bucket + bucketId + '/' + itemId;
-            
+
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
