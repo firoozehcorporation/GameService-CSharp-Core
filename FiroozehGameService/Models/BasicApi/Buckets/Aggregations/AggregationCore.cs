@@ -29,6 +29,6 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Aggregations
     [Serializable]
     public abstract class AggregationCore
     {
-        internal abstract List<KeyValuePair<string, object>> GetAggregation();
+        internal abstract List<Dictionary<string, object>> GetAggregation();
     }
 }

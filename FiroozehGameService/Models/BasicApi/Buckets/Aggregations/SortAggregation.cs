@@ -50,12 +50,12 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Aggregations
             _sortOrder = sortOrder;
         }
 
-        internal override List<KeyValuePair<string, object>> GetAggregation()
+        internal override List<Dictionary<string, object>> GetAggregation()
         {
             var order = _sortOrder == BucketSortOrder.Ascending ? "ASC" : "DESC";
-            return new List<KeyValuePair<string, object>>
+            return new List<Dictionary<string, object>>
             {
-                new KeyValuePair<string, object>("->sort", new KeyValuePair<string, string>(_elementName, order))
+                new Dictionary<string, object> {{"->sort", new Dictionary<string, string> {{_elementName, order}}}}
             };
         }
     }

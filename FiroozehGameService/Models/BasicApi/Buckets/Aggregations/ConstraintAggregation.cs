@@ -52,12 +52,12 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Aggregations
                 : _limit = limit;
         }
 
-        internal override List<KeyValuePair<string, object>> GetAggregation()
+        internal override List<Dictionary<string, object>> GetAggregation()
         {
-            return new List<KeyValuePair<string, object>>
+            return new List<Dictionary<string, object>>
             {
-                new KeyValuePair<string, object>("->skip", _skip),
-                new KeyValuePair<string, object>("->limit", _limit)
+                new Dictionary<string, object> {{"->skip", _skip}},
+                new Dictionary<string, object> {{"->limit", _limit}}
             };
         }
     }

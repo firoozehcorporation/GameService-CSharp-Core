@@ -40,18 +40,16 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Aggregations
         /// <param name="rowNames">Set the Row Names to Project them</param>
         public ProjectAggregation(params string[] rowNames)
         {
-            if (_rowNames == null)
-                throw new GameServiceException("RowNames Cant Be Null").LogException<ProjectAggregation>(
-                    DebugLocation.Internal, "Constructor");
-
-            _rowNames = rowNames;
+            _rowNames = rowNames ??
+                        throw new GameServiceException("RowNames Cant Be Null").LogException<ProjectAggregation>(
+                            DebugLocation.Internal, "Constructor");
         }
 
-        internal override List<KeyValuePair<string, object>> GetAggregation()
+        internal override List<Dictionary<string, object>> GetAggregation()
         {
-            return new List<KeyValuePair<string, object>>
+            return new List<Dictionary<string, object>>
             {
-                new KeyValuePair<string, object>("->project", _rowNames)
+                new Dictionary<string, object> {{"->project", _rowNames}}
             };
         }
     }

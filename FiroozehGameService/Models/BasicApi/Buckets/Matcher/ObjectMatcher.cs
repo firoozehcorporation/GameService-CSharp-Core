@@ -57,9 +57,9 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Matcher
             _type = matcherType;
         }
 
-        internal override KeyValuePair<string, List<object>> GetMatcher()
+        internal override Dictionary<string, List<object>> GetMatcher()
         {
-            return new KeyValuePair<string, List<object>>(_type.ToStringType(), new List<object> {_name, _value});
+            return new Dictionary<string, List<object>> {{_type.ToStringType(), new List<object> {_name, _value}}};
         }
     }
 }

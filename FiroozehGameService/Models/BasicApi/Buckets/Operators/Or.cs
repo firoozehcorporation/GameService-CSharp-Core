@@ -37,21 +37,26 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Operators
         private MatcherCore[] _matchers;
 
         /// <summary>
-        ///     the Or Aggregation
+        ///     the Or Operator Aggregation
         /// </summary>
         /// <param name="matchers">the matchers That you Want Match Them With Or Operator</param>
         public Or(params MatcherCore[] matchers)
         {
-            _matchers = matchers == null
-                ? throw new GameServiceException("Matchers Cant Be Null").LogException<Or>(DebugLocation.Internal,
-                    "Constructor")
-                : _matchers = matchers;
+            if (matchers == null)
+                throw new GameServiceException("Matchers Cant Be Null").LogException<Or>(DebugLocation.Internal,
+                    "Constructor");
+            if (matchers.Length < 2)
+                throw new GameServiceException("Or Operator Must Have Two or More Matchers").LogException<Or>(
+                    DebugLocation.Internal,
+                    "Constructor");
+
+            _matchers = matchers;
         }
 
-        internal override KeyValuePair<string, List<object>> GetMatcher()
+        internal override Dictionary<string, List<object>> GetMatcher()
         {
             var matchersData = _matchers.Select(matcher => matcher.GetMatcher()).Cast<object>().ToList();
-            return new KeyValuePair<string, List<object>>("-or", matchersData);
+            return new Dictionary<string, List<object>> {{"->or", matchersData}};
         }
     }
 }

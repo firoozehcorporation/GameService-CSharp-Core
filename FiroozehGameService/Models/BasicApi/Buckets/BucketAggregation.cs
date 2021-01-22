@@ -60,7 +60,6 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
         {
             internal readonly string BucketId;
 
-
             private ConstraintAggregation _constraintAggregation;
             private MatchAggregation _matchAggregation;
             private ProjectAggregation _projectAggregation;
@@ -140,7 +139,7 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
             /// </summary>
             public BucketAggregation Build()
             {
-                var data = new List<KeyValuePair<string, object>>();
+                var data = new List<Dictionary<string, object>>();
 
                 if (_matchAggregation == null)
                     throw new GameServiceException("MatchAggregation must be set")
@@ -152,10 +151,7 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
                 if (_constraintAggregation != null) data.AddRange(_constraintAggregation.GetAggregation());
                 if (_projectAggregation != null) data.AddRange(_projectAggregation.GetAggregation());
 
-                AggregationData = JsonConvert.SerializeObject(data);
-                DebugUtil.LogNormal<BucketAggregationBuilder>(DebugLocation.Internal, "Build",
-                    "AggregationData -> " + AggregationData);
-
+                AggregationData = JsonConvert.SerializeObject(data, Formatting.Indented);
                 return From(this);
             }
         }

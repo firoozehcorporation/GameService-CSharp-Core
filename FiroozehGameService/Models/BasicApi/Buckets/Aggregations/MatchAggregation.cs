@@ -47,11 +47,11 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Aggregations
                 : _matcher = matcher;
         }
 
-        internal override List<KeyValuePair<string, object>> GetAggregation()
+        internal override List<Dictionary<string, object>> GetAggregation()
         {
-            return new List<KeyValuePair<string, object>>
+            return new List<Dictionary<string, object>>
             {
-                new KeyValuePair<string, object>("->match", _matcher.GetMatcher())
+                new Dictionary<string, object> {{"->match", _matcher.GetMatcher()}}
             };
         }
     }

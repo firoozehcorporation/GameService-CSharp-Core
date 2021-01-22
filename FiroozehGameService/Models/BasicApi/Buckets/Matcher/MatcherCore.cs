@@ -29,6 +29,6 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Matcher
     [Serializable]
     public abstract class MatcherCore
     {
-        internal abstract KeyValuePair<string, List<object>> GetMatcher();
+        internal abstract Dictionary<string, List<object>> GetMatcher();
     }
 }

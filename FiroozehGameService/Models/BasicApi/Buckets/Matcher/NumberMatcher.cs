@@ -51,8 +51,8 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Matcher
                     DebugLocation.Internal, "Constructor")
                 : _name = name;
 
-            if (!BucketUtil.ValidateNumber(_numberValue))
-                throw new GameServiceException("numberValue Must Be Have Number Type").LogException<NumberMatcher>(
+            if (!BucketUtil.ValidateNumber(numberValue))
+                throw new GameServiceException("NumberValue Must Be Have Number Type").LogException<NumberMatcher>(
                     DebugLocation.Internal, "Constructor");
 
             _numberValue = numberValue == null
@@ -62,9 +62,10 @@ namespace FiroozehGameService.Models.BasicApi.Buckets.Matcher
             _type = matcherType;
         }
 
-        internal override KeyValuePair<string, List<object>> GetMatcher()
+        internal override Dictionary<string, List<object>> GetMatcher()
         {
-            return new KeyValuePair<string, List<object>>(_type.ToStringType(), new List<object> {_name, _numberValue});
+            return new Dictionary<string, List<object>>
+                {{_type.ToStringType(), new List<object> {_name, _numberValue}}};
         }
     }
 }
