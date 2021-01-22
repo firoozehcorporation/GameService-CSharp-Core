@@ -151,7 +151,7 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
                 if (_constraintAggregation != null) data.AddRange(_constraintAggregation.GetAggregation());
                 if (_projectAggregation != null) data.AddRange(_projectAggregation.GetAggregation());
 
-                AggregationData = JsonConvert.SerializeObject(data, Formatting.Indented);
+                AggregationData = JsonConvert.SerializeObject(data);
                 return From(this);
             }
         }

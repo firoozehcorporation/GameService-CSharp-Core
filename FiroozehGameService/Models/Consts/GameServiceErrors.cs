@@ -91,7 +91,6 @@ namespace FiroozehGameService.Models.Consts
             }
 
 
-
             /// <inheritdoc />
             /// <summary>
             ///     Represents GameService GetLastLoginMemberInfo HTTP Errors
@@ -183,6 +182,10 @@ namespace FiroozehGameService.Models.Consts
                 public const string PlanLimit = "plan_limit";
                 public const string AccountNotfound = "account_notfound";
                 public const string InvalidStructure = "invalid_structure";
+
+                public const string objectNotfound = "object_notfound";
+                public const string colNotfound = "col_notfound";
+                public const string operationLimited = "operation_limited";
             }
 
 
@@ -206,7 +209,6 @@ namespace FiroozehGameService.Models.Consts
                 public const string UserNotFound = "user_notfound";
                 public const string SamePassword = "same_password";
                 public const string WrongPassword = "wrong_password";
-
             }
 
             /// <summary>
@@ -216,7 +218,6 @@ namespace FiroozehGameService.Models.Consts
             /// </summary>
             public class GetActiveDevices
             {
-
             }
 
             /// <summary>
@@ -228,7 +229,7 @@ namespace FiroozehGameService.Models.Consts
             {
                 public const string DeviceNotfound = "device_notfound";
             }
-            
+
             /// <summary>
             ///     Represents GameService GetCurrentGame HTTP Errors
             ///     Errors that occur in the following Functions:
@@ -278,7 +279,6 @@ namespace FiroozehGameService.Models.Consts
                 {
                     public const string NotFriendBefore = "not_friend_before";
                 }
-
             }
 
 
@@ -513,7 +513,6 @@ namespace FiroozehGameService.Models.Consts
             /// </summary>
             public static class TurnBase
             {
-
                 /// <summary>
                 ///     Represents GameService AutoMatch Errors
                 ///     Errors that occur in the following Functions:
@@ -578,7 +577,6 @@ namespace FiroozehGameService.Models.Consts
                     public const string InvalidID = "INVALID_ID";
                     public const string RoomIsFull = "room_full";
                     public const string PermissionDenied = "permission_denid";
-
                 }
 
                 /// <summary>
@@ -681,7 +679,6 @@ namespace FiroozehGameService.Models.Consts
                     public const string InvalidID = "INVALID_ID";
                     public const string RoomIsFull = "room_full";
                     public const string PermissionDenied = "permission_denid";
-
                 }
 
                 /// <summary>
