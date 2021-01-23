@@ -75,7 +75,7 @@ namespace FiroozehGameService.Models.BasicApi.Buckets
             ///     Set MatchAggregation For this BucketAggregationBuilder
             /// </summary>
             /// <returns></returns>
-            public BucketAggregationBuilder Match(MatchAggregation aggregation)
+            public BucketAggregationBuilder WithMatch(MatchAggregation aggregation)
             {
                 if (_matchAggregation != null)
                     throw new GameServiceException("MatchAggregation Has Already Been Set")
