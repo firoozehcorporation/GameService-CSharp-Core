@@ -39,6 +39,7 @@ namespace FiroozehGameService.Handlers
         internal static EventHandler<GameServiceException> OnGsTcpClientError;
         internal static EventHandler<StartPayload> GsLiveSystemStarted;
         internal static EventHandler<APacket> Ping;
+        internal static EventHandler OnLeftDispose;
         internal static EventHandler Dispose;
 
         /// <summary>

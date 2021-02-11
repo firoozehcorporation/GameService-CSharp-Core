@@ -53,23 +53,25 @@ namespace FiroozehGameService.Handlers.RealTime
             CoreEventHandlers.OnMemberId += OnMemberId;
             CoreEventHandlers.GProtocolConnected += OnConnected;
             CoreEventHandlers.Ping += Ping;
+            CoreEventHandlers.OnLeftDispose += OnLeftDispose;
             PingUtil.RequestPing += RequestPing;
             ObserverCompacterUtil.SendObserverEventHandler += SendObserverEventHandler;
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
-            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Constructor","RealTimeHandler init");
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Constructor", "RealTimeHandler init");
         }
 
         public void Dispose()
         {
             if (_isDisposed)
             {
-                DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Dispose","RealTimeHandler Already Disposed");
+                DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Dispose",
+                    "RealTimeHandler Already Disposed");
                 return;
             }
-            
+
             _isDisposed = true;
             PlayerHash = 0;
 
@@ -79,11 +81,20 @@ namespace FiroozehGameService.Handlers.RealTime
             PingUtil.Dispose();
 
             ObserverCompacterUtil.Dispose();
-            
-            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"Dispose","RealTimeHandler Dispose Done");
+
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Dispose", "RealTimeHandler Dispose Done");
 
             GsSerializer.CurrentPlayerLeftRoom?.Invoke(this, null);
             CoreEventHandlers.Dispose?.Invoke(this, null);
+        }
+
+        private void OnLeftDispose(object sender, EventArgs e)
+        {
+            if (sender.GetType() != typeof(LeaveRoomResponseHandler)) return;
+
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnLeftDispose",
+                "Current Player Left From Server, so dispose Realtime...");
+            Dispose();
         }
 
 
@@ -100,7 +111,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void RequestPing(object sender, EventArgs e)
         {
-            if(IsAvailable) Request(GetPingHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
+            if (IsAvailable) Request(GetPingHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
         }
 
         internal static short GetPing()
@@ -108,7 +119,7 @@ namespace FiroozehGameService.Handlers.RealTime
             return (short) PingUtil.GetLastPing();
         }
 
-        private void Ping(object sender, APacket packet)
+        private static void Ping(object sender, APacket packet)
         {
             if (sender.GetType() != typeof(PingResponseHandler)) return;
             var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -122,7 +133,8 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnConnected(object sender, EventArgs e)
         {
             // Send Auth When Connected
-            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"OnConnected","RealTimeHandler GProtocol Connected");
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnConnected",
+                "RealTimeHandler GProtocol Connected");
             Request(AuthorizationHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
         }
 
@@ -130,13 +142,11 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
-            
+
             // this is Reconnect
-            if(PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null,ReconnectStatus.Connected);
-            
+            if (PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
+
             PlayerHash = (ulong) playerHash;
-            
-            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime,"OnAuth","RealTimeHandler Auth Done");
 
             PingUtil.Init();
             ObserverCompacterUtil.Init();
@@ -145,6 +155,8 @@ namespace FiroozehGameService.Handlers.RealTime
             if (PlayerHash != 0) return;
             Request(SnapShotHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
             GsSerializer.CurrentPlayerJoinRoom?.Invoke(this, null);
+
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnAuth", "RealTimeHandler Auth Done");
         }
 
         private void InitRequestMessageHandlers()
@@ -195,15 +207,16 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) _udpClient.Send(packet, type, canSendBigSize);
-            else throw new GameServiceException("GameService Not Available")
-                .LogException<RealTimeHandler>(DebugLocation.RealTime,"Send");
+            else
+                throw new GameServiceException("GameService Not Available")
+                    .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");
         }
 
 
         private void OnError(object sender, ErrorArg e)
         {
-            DebugUtil.LogError<RealTimeHandler>(DebugLocation.RealTime,"OnError",e.Error);
-            if(PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null,ReconnectStatus.Connecting);
+            DebugUtil.LogError<RealTimeHandler>(DebugLocation.RealTime, "OnError", e.Error);
+            if (PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
             if (_isDisposed) return;
             Init();
         }
@@ -216,15 +229,14 @@ namespace FiroozehGameService.Handlers.RealTime
                 if (_isDisposed) return;
                 var packet = (Packet) e.Packet;
                 packet.ClientReceiveTime = e.Time;
-                
-                GameService.SynchronizationContext?.Send(delegate
-                {
-                    _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType);
-                }, null);
+
+                GameService.SynchronizationContext?.Send(
+                    delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType); },
+                    null);
             }
             catch (Exception exception)
             {
-                exception.LogException<RealTimeHandler>(DebugLocation.RealTime,"OnDataReceived");
+                exception.LogException<RealTimeHandler>(DebugLocation.RealTime, "OnDataReceived");
             }
         }
 

@@ -32,8 +32,10 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            TurnBasedEventHandlers.LeftRoom?.Invoke(this,
-                JsonConvert.DeserializeObject<Member>(packet.Data));
+            var member = JsonConvert.DeserializeObject<Member>(packet.Data);
+
+            TurnBasedEventHandlers.LeftRoom?.Invoke(this, member);
+            if (member.User.IsMe) CoreEventHandlers.OnLeftDispose?.Invoke(this, null);
         }
     }
 }

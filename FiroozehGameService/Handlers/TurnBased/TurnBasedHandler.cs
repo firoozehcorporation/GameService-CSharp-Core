@@ -53,6 +53,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             // Set Internal Event Handlers
             CoreEventHandlers.Ping += OnPing;
             CoreEventHandlers.Authorized += OnAuth;
+            CoreEventHandlers.OnLeftDispose += OnLeftDispose;
             CoreEventHandlers.OnGsTcpClientConnected += OnGsTcpClientConnected;
             CoreEventHandlers.OnGsTcpClientError += OnGsTcpClientError;
 
@@ -60,52 +61,15 @@ namespace FiroozehGameService.Handlers.TurnBased
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Constructor","TurnBasedHandler Init");
-        }
-
-        private async void OnGsTcpClientError(object sender, GameServiceException exception)
-        {
-            if((GSLiveType) sender != GSLiveType.TurnBased) return;
-            if (_isDisposed) return;
-
-            exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError");
-
-            if(PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null,ReconnectStatus.Connecting);
-                
-            _retryConnectCounter++;
-            
-            if (_retryConnectCounter >= TurnBasedConst.MaxRetryConnect)
-            {
-                DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError","TurnBasedHandler Reached to MaxRetryConnect , so dispose TurnBased...");
-                Dispose();
-                return;
-            }
-            
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientError","TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
-
-            await Init();
-        }
-
-        private async void OnGsTcpClientConnected(object sender, TcpClient e)
-        {
-            if((GSLiveType) sender != GSLiveType.TurnBased) return;
-
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientConnected","TurnBasedHandler -> Connected,Waiting for Handshakes...");
-
-            
-            Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
-            await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
-         
-            _retryConnectCounter = 0;
-            
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnGsTcpClientConnected","TurnBasedHandler Init done");
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "Constructor", "TurnBasedHandler Init");
         }
 
         public void Dispose()
         {
             if (_isDisposed)
             {
-                DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Dispose","TurnBasedHandler Already Disposed");
+                DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "Dispose",
+                    "TurnBasedHandler Already Disposed");
                 return;
             }
 
@@ -115,27 +79,78 @@ namespace FiroozehGameService.Handlers.TurnBased
             _observer?.Dispose();
             _cancellationToken?.Cancel(true);
             CoreEventHandlers.Dispose?.Invoke(this, null);
-            
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"Dispose","TurnBasedHandler Dispose Done");
+
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "Dispose", "TurnBasedHandler Dispose Done");
+        }
+
+        private void OnLeftDispose(object sender, EventArgs e)
+        {
+            if (sender.GetType() != typeof(LeaveRoomResponseHandler)) return;
+
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnLeftDispose",
+                "Current Player Left From Server, so dispose TurnBased...");
+            Dispose();
+        }
+
+        private async void OnGsTcpClientError(object sender, GameServiceException exception)
+        {
+            if ((GSLiveType) sender != GSLiveType.TurnBased) return;
+            if (_isDisposed) return;
+
+            exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientError");
+
+            if (PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+
+            _retryConnectCounter++;
+
+            if (_retryConnectCounter >= TurnBasedConst.MaxRetryConnect)
+            {
+                DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientError",
+                    "TurnBasedHandler Reached to MaxRetryConnect , so dispose TurnBased...");
+                Dispose();
+                return;
+            }
+
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientError",
+                "TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+
+            await Init();
+        }
+
+        private async void OnGsTcpClientConnected(object sender, TcpClient e)
+        {
+            if ((GSLiveType) sender != GSLiveType.TurnBased) return;
+
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
+                "TurnBasedHandler -> Connected,Waiting for Handshakes...");
+
+
+            Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+            await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
+
+            _retryConnectCounter = 0;
+
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
+                "TurnBasedHandler Init done");
         }
 
         private static void OnAuth(object sender, object playerHash)
         {
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
-            
+
             // this is Reconnect
-            if(PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null,ReconnectStatus.Connected);
+            if (PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
             PlayerHash = (string) playerHash;
-            
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnAuth","TurnBasedHandler Auth Done");
+
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnAuth", "TurnBasedHandler Auth Done");
         }
 
         private async void OnPing(object sender, APacket packet)
         {
             if (sender.GetType() != typeof(PingResponseHandler)) return;
             await RequestAsync(PingPongHandler.Signature, isCritical: true);
-            
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased,"OnPing","TurnBasedHandler Ping Called");
+
+            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnPing", "TurnBasedHandler Ping Called");
         }
 
         private void InitRequestMessageHandlers()
@@ -178,9 +193,10 @@ namespace FiroozehGameService.Handlers.TurnBased
             Send(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
         }
 
-        public async Task RequestAsync(string handlerName, object payload = null, bool isCritical = false,bool dontCheckAvailability = false)
+        public async Task RequestAsync(string handlerName, object payload = null, bool isCritical = false,
+            bool dontCheckAvailability = false)
         {
-            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload), isCritical,dontCheckAvailability);
+            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload), isCritical, dontCheckAvailability);
         }
 
 
@@ -197,12 +213,13 @@ namespace FiroozehGameService.Handlers.TurnBased
             _tcpClient.Send(packet);
         }
 
-        private async Task SendAsync(Packet packet, bool isCritical = false,bool dontCheckAvailability = false)
+        private async Task SendAsync(Packet packet, bool isCritical = false, bool dontCheckAvailability = false)
         {
             if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) await _tcpClient.SendAsync(packet);
-            else if(!dontCheckAvailability) throw new GameServiceException("GameService Not Available")
-                .LogException<TurnBasedHandler>(DebugLocation.TurnBased,"SendAsync");
+            else if (!dontCheckAvailability)
+                throw new GameServiceException("GameService Not Available")
+                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "SendAsync");
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)
@@ -210,7 +227,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             try
             {
                 var packet = (Packet) e.Packet;
-                
+
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.TurnBased))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
                 else
@@ -219,7 +236,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             }
             catch (Exception exception)
             {
-                exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased,"OnDataReceived");
+                exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased, "OnDataReceived");
             }
         }
 
