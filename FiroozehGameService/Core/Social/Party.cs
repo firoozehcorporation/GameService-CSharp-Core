@@ -96,6 +96,24 @@ namespace FiroozehGameService.Core.Social
 
 
         /// <summary>
+        ///     Delete The Party With PartyID
+        ///     NOTE : Only Creator or Admins Can Call This Function
+        /// </summary>
+        /// <param name="partyId">(NOTNULL)the Party id</param>
+        public async Task<bool> DeleteParty(string partyId)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
+                    "DeleteParty");
+            if (string.IsNullOrEmpty(partyId))
+                throw new GameServiceException("partyId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
+                    "DeleteParty");
+
+            return await ApiRequest.DeleteParty(partyId);
+        }
+
+
+        /// <summary>
         ///     Edit Party Data With Option Like : Name , description , logo
         ///     NOTE : Only Creator or Admins Can Call This Function
         /// </summary>

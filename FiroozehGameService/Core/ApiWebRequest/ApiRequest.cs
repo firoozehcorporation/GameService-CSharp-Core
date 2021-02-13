@@ -1004,7 +1004,21 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "SendJoinRequestToParty");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "LeftParty");
+            }
+        }
+
+
+        internal static async Task<bool> DeleteParty(string partyId)
+        {
+            var response = await GsWebRequest.Delete(Api.Parties + partyId + "/delete", CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteParty");
             }
         }
 
@@ -1019,7 +1033,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetPartyInfo");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "AddFriendToParty");
             }
         }
 
