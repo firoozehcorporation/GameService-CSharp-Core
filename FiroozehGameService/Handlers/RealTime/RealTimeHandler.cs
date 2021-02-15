@@ -146,13 +146,12 @@ namespace FiroozehGameService.Handlers.RealTime
             // this is Reconnect
             if (PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
 
-            PlayerHash = (ulong) playerHash;
-
-            PingUtil.Init();
-            ObserverCompacterUtil.Init();
-
             // Get Only in First Connect
             if (PlayerHash != 0) return;
+
+            PlayerHash = (ulong) playerHash;
+            PingUtil.Init();
+            ObserverCompacterUtil.Init();
             Request(SnapShotHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
             GsSerializer.CurrentPlayerJoinRoom?.Invoke(this, null);
 
