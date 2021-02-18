@@ -508,9 +508,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
-        internal static async Task<bool> DeleteAllTableItems(string bucketId)
+        internal static async Task<bool> DeleteAllTableItems(string tableId)
         {
-            var url = Api.Table + bucketId;
+            var url = Api.Table + tableId;
 
             var response = await GsWebRequest.Delete(url, CreatePlayTokenHeader());
 
@@ -520,13 +520,13 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteBucketItems");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteAllTableItems");
             }
         }
 
-        internal static async Task<bool> DeleteTableItem(string bucketId, string itemId)
+        internal static async Task<bool> DeleteTableItem(string tableId, string itemId)
         {
-            var url = Api.Table + bucketId + '/' + itemId;
+            var url = Api.Table + tableId + '/' + itemId;
 
             var response = await GsWebRequest.Delete(url, CreatePlayTokenHeader());
 
@@ -536,7 +536,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<TSave>(await reader.ReadToEndAsync())
                         .Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteBucketItem");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteTableItem");
             }
         }
 

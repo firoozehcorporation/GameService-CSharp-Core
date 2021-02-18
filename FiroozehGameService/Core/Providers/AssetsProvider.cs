@@ -41,10 +41,10 @@ namespace FiroozehGameService.Core.Providers
         public async Task<AssetInfo> GetAssetInfo(string assetTag)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "GetAssetInfo");
             if (string.IsNullOrEmpty(assetTag))
-                throw new GameServiceException("assetTag Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("assetTag Cant Be EmptyOrNull").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "GetAssetInfo");
             return await ApiRequest.GetAssetInfo(Configuration.ClientId, assetTag);
         }
@@ -52,13 +52,14 @@ namespace FiroozehGameService.Core.Providers
         public async Task DownloadAsset(string tag, string dirPath)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(string,string)");
             if (string.IsNullOrEmpty(tag))
-                throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(string,string)");
             if (string.IsNullOrEmpty(dirPath))
-                throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(
+                    typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(string,string)");
             await DownloadManager.StartDownload(tag, dirPath);
         }
@@ -66,10 +67,10 @@ namespace FiroozehGameService.Core.Providers
         public async Task DownloadAsset(string tag)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(string)");
             if (string.IsNullOrEmpty(tag))
-                throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(string)");
             await DownloadManager.StartDownload(tag);
         }
@@ -77,13 +78,14 @@ namespace FiroozehGameService.Core.Providers
         public void DownloadAsset(AssetInfo info, string dirPath)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(info,string)");
             if (info == null)
-                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
+                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(info,string)");
             if (string.IsNullOrEmpty(dirPath))
-                throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(
+                    typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(info,string)");
             DownloadManager.StartDownloadWithInfo(info, dirPath);
         }
@@ -91,10 +93,10 @@ namespace FiroozehGameService.Core.Providers
         public async Task DownloadAsset(AssetInfo info)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(info)");
             if (info == null)
-                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
+                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "DownloadAsset(info)");
             await DownloadManager.StartDownloadWithInfo(info);
         }
@@ -102,7 +104,7 @@ namespace FiroozehGameService.Core.Providers
         public void CancelAllDownloadAsset()
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "CancelAllDownloadAsset");
             DownloadManager?.CancelAllDownloads();
         }
@@ -110,10 +112,10 @@ namespace FiroozehGameService.Core.Providers
         public void CancelDownloadAsset(string tag)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "CancelDownloadAsset(string)");
             if (string.IsNullOrEmpty(tag))
-                throw new GameServiceException("Asset Tag Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("Asset Tag Cant Be EmptyOrNull").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "CancelDownloadAsset(string)");
             DownloadManager?.CancelDownload(tag);
         }
@@ -121,10 +123,10 @@ namespace FiroozehGameService.Core.Providers
         public void CancelDownloadAsset(AssetInfo info)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "CancelDownloadAsset(info)");
             if (info == null)
-                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
+                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(AssetsProvider),
                     DebugLocation.Internal, "CancelDownloadAsset(info)");
             DownloadManager?.CancelDownload(info);
         }

@@ -39,7 +39,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<List<LeaderBoard>> GetLeaderBoards()
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(LeaderboardProvider),
                     DebugLocation.Internal, "GetLeaderBoards");
             return await ApiRequest.GetLeaderBoard();
         }
@@ -47,13 +47,14 @@ namespace FiroozehGameService.Core.Providers
         public async Task<SubmitScoreResponse> SubmitScore(string leaderBoardId, int scoreValue)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(LeaderboardProvider),
                     DebugLocation.Internal, "SubmitScore");
             if (string.IsNullOrEmpty(leaderBoardId))
-                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(
+                    typeof(LeaderboardProvider),
                     DebugLocation.Internal, "SubmitScore");
             if (scoreValue <= 0)
-                throw new GameServiceException("Invalid ScoreValue").LogException(typeof(GameService),
+                throw new GameServiceException("Invalid ScoreValue").LogException(typeof(LeaderboardProvider),
                     DebugLocation.Internal, "SubmitScore");
             return await ApiRequest.SubmitScore(leaderBoardId, scoreValue);
         }
@@ -62,13 +63,14 @@ namespace FiroozehGameService.Core.Providers
             bool onlyFriends = false)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(LeaderboardProvider),
                     DebugLocation.Internal, "GetLeaderBoardDetails");
             if (string.IsNullOrEmpty(leaderBoardId))
-                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(
+                    typeof(LeaderboardProvider),
                     DebugLocation.Internal, "GetLeaderBoardDetails");
             if (scoreLimit < 10 || scoreLimit > 50)
-                throw new GameServiceException("Invalid Limit Value").LogException(typeof(GameService),
+                throw new GameServiceException("Invalid Limit Value").LogException(typeof(LeaderboardProvider),
                     DebugLocation.Internal, "GetLeaderBoardDetails");
             return await ApiRequest.GetLeaderBoardDetails(leaderBoardId, scoreLimit, onlyFriends);
         }
@@ -76,10 +78,11 @@ namespace FiroozehGameService.Core.Providers
         public async Task<Score> GetCurrentPlayerScore(string leaderBoardId)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(LeaderboardProvider),
                     DebugLocation.Internal, "GetCurrentPlayerScore");
             if (string.IsNullOrEmpty(leaderBoardId))
-                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(
+                    typeof(LeaderboardProvider),
                     DebugLocation.Internal, "GetCurrentPlayerScore");
             return await ApiRequest.GetCurrentPlayerScore(leaderBoardId);
         }

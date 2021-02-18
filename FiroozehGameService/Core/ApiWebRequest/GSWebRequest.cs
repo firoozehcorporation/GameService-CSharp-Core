@@ -20,6 +20,7 @@
 */
 
 
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -33,7 +34,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
     internal static class GsWebRequest
     {
         private static HttpRequestObserver _observer = new HttpRequestObserver();
-        private static HttpClient _client = new HttpClient();
+        private static HttpClient _client = new HttpClient {Timeout = TimeSpan.FromSeconds(5)};
         private static readonly string UserAgent = "UnitySDK-" + GameService.Version();
 
         internal static async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers = null)
@@ -110,7 +111,6 @@ namespace FiroozehGameService.Core.ApiWebRequest
             if (body != null) content = new StringContent(body, Encoding.UTF8, "application/json");
 
             DebugUtil.LogNormal(typeof(GsWebRequest), DebugLocation.Http, "DoRequest", "GSWebRequest -> URL: " + url);
-
 
             switch (method)
             {

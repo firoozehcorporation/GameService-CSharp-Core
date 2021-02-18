@@ -43,7 +43,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<Game> GetCurrentGame()
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(DataProvider),
                     DebugLocation.Internal, "GetCurrentGame");
             return await ApiRequest.GetCurrentGame();
         }

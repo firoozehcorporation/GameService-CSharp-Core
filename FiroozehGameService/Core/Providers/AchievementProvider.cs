@@ -39,7 +39,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<List<Achievement>> GetAchievements()
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(AchievementProvider),
                     DebugLocation.Internal, "GetAchievements");
             return await ApiRequest.GetAchievements();
         }
@@ -47,10 +47,11 @@ namespace FiroozehGameService.Core.Providers
         public async Task<Achievement> UnlockAchievement(string achievementId)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(AchievementProvider),
                     DebugLocation.Internal, "UnlockAchievement");
             if (string.IsNullOrEmpty(achievementId))
-                throw new GameServiceException("AchievementId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("AchievementId Cant Be EmptyOrNull").LogException(
+                    typeof(AchievementProvider),
                     DebugLocation.Internal, "UnlockAchievement");
             return await ApiRequest.UnlockAchievement(achievementId);
         }

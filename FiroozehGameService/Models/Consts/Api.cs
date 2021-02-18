@@ -27,7 +27,7 @@ namespace FiroozehGameService.Models.Consts
         public const string BaseUrl1 = "https://gamesservice.ir";
         public const string BaseUrl2 = "https://api.gamesservice.ir";
         public const string FaaS = "https://faas.gamesservice.ir/";
-        public const string DBaaS = "https://dbaas.gamesservice.ir";
+        private const string DBaaS = "https://dbaas.gamesservice.ir";
 
 
         public const string LoginUser = BaseUrl2 + "/auth/app/login";

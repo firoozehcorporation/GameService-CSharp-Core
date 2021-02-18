@@ -40,13 +40,13 @@ namespace FiroozehGameService.Core.Providers
             TableOption[] options = null) where TItem : TableItemHelper
         {
             if (!isGlobal && !GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "GetTableItems");
             if (string.IsNullOrEmpty(tableId))
-                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "GetTableItems");
             if (!DBaaSUtil.ValidateOptions(options))
-                throw new GameServiceException("Invalid TabletOptions").LogException(typeof(GameService),
+                throw new GameServiceException("Invalid TabletOptions").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "GetTableItems");
             return await ApiRequest.GetTableItems<TItem>(tableId, isGlobal, options);
         }
@@ -55,10 +55,10 @@ namespace FiroozehGameService.Core.Providers
             where TItem : TableItemHelper
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "GetTableItems");
             if (aggregation == null)
-                throw new GameServiceException("Aggregation Cant Be Null").LogException(typeof(GameService),
+                throw new GameServiceException("Aggregation Cant Be Null").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "GetTableItems");
             return await ApiRequest.GetTableItems<TItem>(aggregation);
         }
@@ -67,13 +67,13 @@ namespace FiroozehGameService.Core.Providers
             where TItem : TableItemHelper
         {
             if (!isGlobal && !GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "GetTableItem");
             if (string.IsNullOrEmpty(tableId))
-                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "GetTableItem");
             if (string.IsNullOrEmpty(itemId))
-                throw new GameServiceException("TableItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableItemId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "GetTableItem");
             return await ApiRequest.GetTableItem<TItem>(tableId, itemId, isGlobal);
         }
@@ -82,16 +82,16 @@ namespace FiroozehGameService.Core.Providers
             where TItem : TableItemHelper
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "UpdateTableItem");
             if (string.IsNullOrEmpty(tableId))
-                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "UpdateTableItem");
             if (string.IsNullOrEmpty(itemId))
-                throw new GameServiceException("TableItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableItemId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "UpdateTableItem");
             if (editedItem == null)
-                throw new GameServiceException("EditedItem Cant Be Null").LogException(typeof(GameService),
+                throw new GameServiceException("EditedItem Cant Be Null").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "UpdateTableItem");
             return await ApiRequest.UpdateTableItem(tableId, itemId, editedItem);
         }
@@ -99,13 +99,13 @@ namespace FiroozehGameService.Core.Providers
         public async Task<TItem> AddItemToTable<TItem>(string tableId, TItem newItem) where TItem : TableItemHelper
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "AddItemToTable");
             if (string.IsNullOrEmpty(tableId))
-                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "AddItemToTable");
             if (newItem == null)
-                throw new GameServiceException("NewItem Cant Be Null").LogException(typeof(GameService),
+                throw new GameServiceException("NewItem Cant Be Null").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "AddItemToTable");
             return await ApiRequest.AddItemToTable(tableId, newItem);
         }
@@ -113,10 +113,10 @@ namespace FiroozehGameService.Core.Providers
         public async Task<bool> DeleteAllTableItems(string tableId)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "DeleteAllTableItems");
             if (string.IsNullOrEmpty(tableId))
-                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "DeleteAllTableItems");
             return await ApiRequest.DeleteAllTableItems(tableId);
         }
@@ -124,13 +124,13 @@ namespace FiroozehGameService.Core.Providers
         public async Task<bool> DeleteTableItem(string tableId, string itemId)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "DeleteTableItem");
             if (string.IsNullOrEmpty(tableId))
-                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "DeleteTableItem");
             if (string.IsNullOrEmpty(itemId))
-                throw new GameServiceException("TableItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("TableItemId Cant Be EmptyOrNull").LogException(typeof(DBaaSProvider),
                     DebugLocation.Internal, "DeleteTableItem");
             return await ApiRequest.DeleteTableItem(tableId, itemId);
         }

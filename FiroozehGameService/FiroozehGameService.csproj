@@ -243,7 +243,7 @@
         <Compile Include="Models\BasicApi\Social\PartyMember.cs"/>
         <Compile Include="Models\BasicApi\SubmitScoreResponse.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TAchievement.cs"/>
-        <Compile Include="Models\BasicApi\TResponse\ItemT.cs"/>
+        <Compile Include="Models\BasicApi\TResponse\TItem.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TLeaderBoard.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TMember.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TSave.cs"/>

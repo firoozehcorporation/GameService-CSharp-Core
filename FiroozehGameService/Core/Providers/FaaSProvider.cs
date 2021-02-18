@@ -38,11 +38,12 @@ namespace FiroozehGameService.Core.Providers
             object functionParameters = null, bool isPublic = false) where TFaaS : FaaSCore
         {
             if (!isPublic && !GameService.IsAuthenticated())
-                throw new GameServiceException("You Must Login First In Private Mode").LogException(typeof(GameService),
-                    DebugLocation.Internal, "ExecuteCloudFunction");
+                throw new GameServiceException("You Must Login First In Private Mode").LogException(
+                    typeof(FaaSProvider),
+                    DebugLocation.Internal, "ExecuteFunction");
             if (string.IsNullOrEmpty(functionId))
-                throw new GameServiceException("functionId Cant Be NullOrEmpty").LogException(typeof(GameService),
-                    DebugLocation.Internal, "ExecuteCloudFunction");
+                throw new GameServiceException("functionId Cant Be NullOrEmpty").LogException(typeof(FaaSProvider),
+                    DebugLocation.Internal, "ExecuteFunction");
             return await ApiRequest.ExecuteCloudFunction<TFaaS>(functionId, functionParameters, isPublic);
         }
     }

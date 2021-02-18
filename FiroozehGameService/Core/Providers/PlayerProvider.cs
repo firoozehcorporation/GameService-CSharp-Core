@@ -39,7 +39,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<Member> GetCurrentPlayer()
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "GetCurrentPlayer");
             return await ApiRequest.GetCurrentPlayer();
         }
@@ -47,10 +47,10 @@ namespace FiroozehGameService.Core.Providers
         public async Task<User> GetUserData(string userId)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "GetUserData");
             if (string.IsNullOrEmpty(userId))
-                throw new GameServiceException("userId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("userId Cant Be EmptyOrNull").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "GetUserData");
             return await ApiRequest.GetUserData(userId);
         }
@@ -58,10 +58,10 @@ namespace FiroozehGameService.Core.Providers
         public async Task<Member> GetMemberData(string memberId)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "GetMemberData");
             if (string.IsNullOrEmpty(memberId))
-                throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "GetMemberData");
             return await ApiRequest.GetMemberData(memberId);
         }
@@ -69,7 +69,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<MemberInfo> GetLastLoginMemberInfo()
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "GetLastLoginMemberInfo");
             return await ApiRequest.GetLastLoginMemberInfo();
         }
@@ -77,10 +77,10 @@ namespace FiroozehGameService.Core.Providers
         public async Task<MemberInfo> EditCurrentPlayerProfile(EditUserProfile profile)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "EditCurrentPlayerProfile");
             if (profile == null)
-                throw new GameServiceException("profile Cant Be Null").LogException(typeof(GameService),
+                throw new GameServiceException("profile Cant Be Null").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "EditCurrentPlayerProfile");
             return await ApiRequest.EditCurrentPlayer(profile);
         }
@@ -88,13 +88,14 @@ namespace FiroozehGameService.Core.Providers
         public async Task<bool> ChangePassword(string currentPassword, string newPassword)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "ChangePassword");
             if (string.IsNullOrEmpty(currentPassword))
-                throw new GameServiceException("currentPassword Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("currentPassword Cant Be EmptyOrNull").LogException(
+                    typeof(PlayerProvider),
                     DebugLocation.Internal, "ChangePassword");
             if (string.IsNullOrEmpty(newPassword))
-                throw new GameServiceException("newPassword Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("newPassword Cant Be EmptyOrNull").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "ChangePassword");
 
             return await ApiRequest.ChangePassword(currentPassword, newPassword);
@@ -103,7 +104,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<List<ActiveDevice>> GetActiveDevices()
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "GetActiveDevices");
             return await ApiRequest.GetActiveDevices();
         }
@@ -111,10 +112,10 @@ namespace FiroozehGameService.Core.Providers
         public async Task<bool> RevokeActiveDevice(string deviceId)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "RevokeActiveDevice");
             if (string.IsNullOrEmpty(deviceId))
-                throw new GameServiceException("deviceId Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("deviceId Cant Be EmptyOrNull").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "RevokeActiveDevice");
             return await ApiRequest.RevokeDevice(deviceId);
         }

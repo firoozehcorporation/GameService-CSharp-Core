@@ -37,7 +37,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<SaveDetails> SaveGame(string saveGameName, object saveGameObj)
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(SaveProvider),
                     DebugLocation.Internal, "SaveGame");
             return await ApiRequest.SaveGame(saveGameName, saveGameObj);
         }
@@ -45,7 +45,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<T> GetSaveGame<T>()
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(SaveProvider),
                     DebugLocation.Internal, "GetSaveGame");
             return await ApiRequest.GetSaveGame<T>();
         }
@@ -53,7 +53,7 @@ namespace FiroozehGameService.Core.Providers
         public async Task<bool> RemoveLastSave()
         {
             if (!GameService.IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
+                throw new GameServiceException("GameService Not Available").LogException(typeof(SaveProvider),
                     DebugLocation.Internal, "RemoveLastSave");
             return await ApiRequest.RemoveLastSave();
         }

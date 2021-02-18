@@ -40,16 +40,18 @@ namespace FiroozehGameService.Core.Providers
         public async Task<string> Login(string email, string password)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
             if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
             if (string.IsNullOrEmpty(email))
-                throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
             if (string.IsNullOrEmpty(password))
-                throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
             if (GameService.IsAuthenticated()) GameService.Logout();
 
@@ -70,20 +72,24 @@ namespace FiroozehGameService.Core.Providers
         public async Task<string> LoginOrSignUpWithSms(string nickName, string phoneNumber, string smsCode)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
+                throw new GameServiceException("You Must Configuration First").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginOrSignUpWithSms");
             if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
+                throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginOrSignUpWithSms");
             if (string.IsNullOrEmpty(nickName))
-                throw new GameServiceException("nickName Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
+                throw new GameServiceException("nickName Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginOrSignUpWithSms");
             if (string.IsNullOrEmpty(phoneNumber))
-                throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
+                throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginOrSignUpWithSms");
             if (string.IsNullOrEmpty(smsCode))
-                throw new GameServiceException("smsCode Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
+                throw new GameServiceException("smsCode Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginOrSignUpWithSms");
             if (GameService.IsAuthenticated()) GameService.Logout();
 
             var login = await ApiRequest.LoginWithPhoneNumber(nickName, phoneNumber, smsCode);
@@ -101,13 +107,15 @@ namespace FiroozehGameService.Core.Providers
         public async Task LoginWithToken(string userToken)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginWithToken");
             if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginWithToken");
             if (string.IsNullOrEmpty(userToken))
-                throw new GameServiceException("UserToken Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("UserToken Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginWithToken");
             if (GameService.IsAuthenticated()) GameService.Logout();
 
@@ -124,13 +132,15 @@ namespace FiroozehGameService.Core.Providers
         public async Task<string> LoginOrSignUpWithGoogle(string googleIdToken)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithGoogle");
             if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithGoogle");
             if (string.IsNullOrEmpty(googleIdToken))
-                throw new GameServiceException("IdToken Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("IdToken Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithGoogle");
             if (GameService.IsAuthenticated()) GameService.Logout();
 
@@ -150,19 +160,22 @@ namespace FiroozehGameService.Core.Providers
         public async Task<string> SignUp(string nickName, string email, string password)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
             if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
             if (string.IsNullOrEmpty(nickName))
-                throw new GameServiceException("NickName Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("NickName Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
             if (string.IsNullOrEmpty(email))
-                throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
             if (string.IsNullOrEmpty(password))
-                throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
             if (GameService.IsAuthenticated()) GameService.Logout();
 
@@ -181,7 +194,8 @@ namespace FiroozehGameService.Core.Providers
         public async Task<bool> CheckSmsStatus()
         {
             if (GameService.Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "CheckSmsStatus");
             return await ApiRequest.CheckPhoneLoginStatus();
         }
@@ -189,13 +203,15 @@ namespace FiroozehGameService.Core.Providers
         public async Task<bool> SendLoginCodeSms(string phoneNumber)
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SendLoginCodeSms");
             if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SendLoginCodeSms");
             if (string.IsNullOrEmpty(phoneNumber))
-                throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(typeof(GameService),
+                throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SendLoginCodeSms");
             if (GameService.IsAuthenticated()) GameService.Logout();
             return await ApiRequest.SendLoginCodeWithSms(phoneNumber);
@@ -204,10 +220,11 @@ namespace FiroozehGameService.Core.Providers
         public async Task LoginAsGuest()
         {
             if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
+                throw new GameServiceException("You Must Configuration First").LogException(
+                    typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginAsGuest");
             if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
+                throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginAsGuest");
             if (GameService.IsAuthenticated()) GameService.Logout();
 
