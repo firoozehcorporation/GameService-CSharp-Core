@@ -22,7 +22,7 @@
 
 using System.Collections.Specialized;
 using System.Linq;
-using FiroozehGameService.Models.BasicApi.Buckets.Options;
+using FiroozehGameService.Models.BasicApi.DBaaS.Options;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Internal;
 
@@ -30,13 +30,13 @@ namespace FiroozehGameService.Utils
 {
     internal static class UrlUtil
     {
-        internal static string ParseBucketUrl(string bucketId, bool isGlobal, BucketOption[] options)
+        internal static string ParseDBaaSUrl(string bucketId, bool isGlobal, TableOption[] options)
         {
             var first = true;
             string url;
 
-            if (isGlobal) url = Api.BucketNonPermission + bucketId;
-            else url = Api.Bucket + bucketId;
+            if (isGlobal) url = Api.TableNonPermission + bucketId;
+            else url = Api.Table + bucketId;
 
             if (options == null) return url;
 

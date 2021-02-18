@@ -20,29 +20,22 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
-using FiroozehGameService.Handlers;
+using FiroozehGameService.Core.Providers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
-using FiroozehGameService.Models.BasicApi.Buckets;
-using FiroozehGameService.Models.BasicApi.Buckets.Options;
-using FiroozehGameService.Models.BasicApi.FaaS;
+using FiroozehGameService.Models.BasicApi.Providers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
-using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
-using EditUserProfile = FiroozehGameService.Models.BasicApi.EditUserProfile;
-using Game = FiroozehGameService.Models.BasicApi.Game;
 
 namespace FiroozehGameService.Core
 {
     /// <summary>
-    ///     Represents Game Service Main Initializer
+    ///     Represents Game Service Main Class
     /// </summary>
     public static class GameService
     {
@@ -62,8 +55,19 @@ namespace FiroozehGameService.Core
             if (IsAuthenticated())
                 throw new GameServiceException("Must Logout First To ReConfiguration").LogException(typeof(GameService),
                     DebugLocation.Internal, "ConfigurationInstance");
+
             Configuration = configuration;
-            _downloadManager = new DownloadManager(Configuration);
+            DownloadManager = new DownloadManager(Configuration);
+
+            Achievement = new AchievementProvider();
+            Assets = new AssetsProvider();
+            Data = new DataProvider();
+            DBaaS = new DBaaSProvider();
+            FaaS = new FaaSProvider();
+            Leaderboard = new LeaderboardProvider();
+            LoginOrSignUp = new LoginOrSignUpProvider();
+            Player = new PlayerProvider();
+            Save = new SaveProvider();
 
             GSLive = new GSLive.GSLive();
             Social = new Social.Social();
@@ -81,847 +85,6 @@ namespace FiroozehGameService.Core
                                      typeof(GameService), DebugLocation.Internal, "ConfigurationDebug");
         }
 
-        /// <summary>
-        ///     With this command you can get  list of all your game LeaderBoard
-        ///     that you have registered in the Developer panel
-        /// </summary>
-        /// <value> GetLeaderBoards List </value>
-        public static async Task<List<LeaderBoard>> GetLeaderBoards()
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetLeaderBoards");
-            return await ApiRequest.GetLeaderBoard();
-        }
-
-        /// <summary>
-        ///     With this command you can get list of all your game achievements
-        ///     that you have registered in the Developer panel.
-        /// </summary>
-        /// <value> GetAchievements List </value>
-        public static async Task<List<Achievement>> GetAchievements()
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetAchievements");
-            return await ApiRequest.GetAchievements();
-        }
-
-
-        /// <summary>
-        ///     With this command you can save your Current Status in Game
-        /// </summary>
-        /// <param name="saveGameName">saveGameName</param>
-        /// <param name="saveGameObj">the Object that you Want To Save it</param>
-        /// <value> return SaveDetails </value>
-        public static async Task<SaveDetails> SaveGame(string saveGameName, object saveGameObj)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SaveGame");
-            return await ApiRequest.SaveGame(saveGameName, saveGameObj);
-        }
-
-
-        /// <summary>
-        ///     This command allows you to Submit Player Score with the ID of the leaderBoard
-        ///     you have Registered in the Developer panel
-        /// </summary>
-        /// <param name="leaderBoardId">(Not NULL)leaderBoardId</param>
-        /// <param name="scoreValue">scoreValue(The value must not exceed the maximum value Registered in the Developer Panel)</param>
-        /// <value> return SubmitScore </value>
-        public static async Task<SubmitScoreResponse> SubmitScore(
-            string leaderBoardId, int scoreValue)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SubmitScore");
-            if (string.IsNullOrEmpty(leaderBoardId))
-                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SubmitScore");
-            if (scoreValue <= 0)
-                throw new GameServiceException("Invalid ScoreValue").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SubmitScore");
-            return await ApiRequest.SubmitScore(leaderBoardId, scoreValue);
-        }
-
-
-        /// <summary>
-        ///     With this command you can Unlock achievement with the achievement ID
-        ///     you registered in the Developer panel.
-        /// </summary>
-        /// <param name="achievementId">(Not NULL)The ID of Achievement you Want To Unlock it</param>
-        /// <value> return unlocked Achievement </value>
-        public static async Task<Achievement> UnlockAchievement(string achievementId)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UnlockAchievement");
-            if (string.IsNullOrEmpty(achievementId))
-                throw new GameServiceException("AchievementId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UnlockAchievement");
-            return await ApiRequest.UnlockAchievement(achievementId);
-        }
-
-
-        /// <summary>
-        ///     This command will get you the last save you saved
-        /// </summary>
-        /// <value> return Player Last Save </value>
-        public static async Task<T> GetSaveGame<T>()
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetSaveGame");
-            return await ApiRequest.GetSaveGame<T>();
-        }
-
-
-        /// <summary>
-        ///     With this command you can get a LeaderBoardDetails with the ID of the LeaderBoard list
-        ///     you registered in the Developer panel.
-        /// </summary>
-        /// <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Detail</param>
-        /// <param name="scoreLimit">(Min = 10,Max = 50) The Score List Limits</param>
-        /// <param name="onlyFriends"> if this option Enabled , returns the Friends Score </param>
-        /// <value> return LeaderBoardDetails </value>
-        public static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId, int scoreLimit = 10,
-            bool onlyFriends = false)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetLeaderBoardDetails");
-            if (string.IsNullOrEmpty(leaderBoardId))
-                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetLeaderBoardDetails");
-            if (scoreLimit < 10 || scoreLimit > 50)
-                throw new GameServiceException("Invalid Limit Value").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetLeaderBoardDetails");
-            return await ApiRequest.GetLeaderBoardDetails(leaderBoardId, scoreLimit, onlyFriends);
-        }
-
-
-        /// <summary>
-        ///     With this command you can get Current Player Score with the ID of the LeaderBoard id
-        ///     you registered in the Developer panel.
-        /// </summary>
-        /// <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Score</param>
-        /// <value> return Score </value>
-        public static async Task<Score> GetCurrentPlayerScore(string leaderBoardId)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetCurrentPlayerScore");
-            if (string.IsNullOrEmpty(leaderBoardId))
-                throw new GameServiceException("LeaderBoardId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetCurrentPlayerScore");
-            return await ApiRequest.GetCurrentPlayerScore(leaderBoardId);
-        }
-
-
-        /// <summary>
-        ///     With this command you can get information about the current player is playing
-        /// </summary>
-        /// <value> return CurrentPlayer Data </value>
-        public static async Task<Member> GetCurrentPlayer()
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetCurrentPlayer");
-            return await ApiRequest.GetCurrentPlayer();
-        }
-
-
-        /// <summary>
-        ///     With this command you can get a User Data with the User ID
-        /// </summary>
-        /// <param name="userId">(Not NULL)The ID of User you Want To get Detail</param>
-        /// <value> return User Data </value>
-        [Obsolete("This Method is Deprecated,Use GetMemberData() Instead")]
-        public static async Task<User> GetUserData(string userId)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetUserData");
-            if (string.IsNullOrEmpty(userId))
-                throw new GameServiceException("userId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetUserData");
-            return await ApiRequest.GetUserData(userId);
-        }
-
-
-        /// <summary>
-        ///     With this command you can get a Member Data with the Member ID
-        /// </summary>
-        /// <param name="memberId">(Not NULL)The ID of Member you Want To get Detail</param>
-        /// <value> return Member Data </value>
-        public static async Task<Member> GetMemberData(string memberId)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetMemberData");
-            if (string.IsNullOrEmpty(memberId))
-                throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetMemberData");
-            return await ApiRequest.GetMemberData(memberId);
-        }
-
-
-        /// <summary>
-        ///     With this command you can get The Last Login Member Info
-        /// </summary>
-        /// <value> return Member Data </value>
-        public static async Task<MemberInfo> GetLastLoginMemberInfo()
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetLastLoginMemberInfo");
-            return await ApiRequest.GetLastLoginMemberInfo();
-        }
-
-
-        /// <summary>
-        ///     With this command you can Edit information about the current player is playing
-        /// </summary>
-        /// <value> return Edited Current Member Info Data </value>
-        public static async Task<MemberInfo> EditCurrentPlayerProfile(EditUserProfile profile)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "EditCurrentPlayerProfile");
-            if (profile == null)
-                throw new GameServiceException("profile Cant Be Null").LogException(typeof(GameService),
-                    DebugLocation.Internal, "EditCurrentPlayerProfile");
-            return await ApiRequest.EditCurrentPlayer(profile);
-        }
-
-
-        /// <summary>
-        ///     This command can remove the last current user saved
-        /// </summary>
-        /// <value> return true if Remove Successfully </value>
-        public static async Task<bool> RemoveLastSave()
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "RemoveLastSave");
-            return await ApiRequest.RemoveLastSave();
-        }
-
-
-        /// <summary>
-        ///     This command will return all information about the bucket with a specific ID
-        /// </summary>
-        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To get Detail</param>
-        /// <param name="isGlobal">(Optional)If this Option Enabled, You Can Get Bucket Items Without Login</param>
-        /// <param name="options">(Optional)The Bucket Options</param>
-        /// <value> return List of all Bucket Items</value>
-        [Obsolete("This Method is Deprecated,Use GetBucketItems(BucketAggregation) Instead")]
-        public static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId, bool isGlobal = false,
-            BucketOption[] options = null)
-            where TBucket : BucketCore
-        {
-            if (!isGlobal && !IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetBucketItems");
-            if (string.IsNullOrEmpty(bucketId))
-                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetBucketItems");
-            if (!BucketUtil.ValidateBuckets(options))
-                throw new GameServiceException("Invalid BucketOptions").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetBucketItems");
-            return await ApiRequest.GetBucketItems<TBucket>(bucketId, isGlobal, options);
-        }
-
-
-        /// <summary>
-        ///     This command will return all information about the bucket with a specific ID and Aggregations
-        /// </summary>
-        /// <param name="aggregation">(NotNULL)The aggregation of Bucket you Want To get Detail</param>
-        /// <value> return the BucketResult</value>
-        public static async Task<BucketResult<TBucket>> GetBucketItems<TBucket>(BucketAggregation aggregation)
-            where TBucket : BucketCore
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetBucketItems");
-            if (aggregation == null)
-                throw new GameServiceException("Aggregation Cant Be Null").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetBucketItems");
-            return await ApiRequest.GetBucketItems<TBucket>(aggregation);
-        }
-
-
-        /// <summary>
-        ///     This command returns one of the Specific bucket information with a specific ID
-        /// </summary>
-        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To get Detail</param>
-        /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To get Detail</param>
-        /// <param name="isGlobal">(Optional)If this Option Enabled, You Can Get Bucket Items Without Login</param>
-        /// <value> return a Bucket Item</value>
-        public static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId, bool isGlobal = false)
-            where TBucket : BucketCore
-        {
-            if (!isGlobal && !IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetBucketItem");
-            if (string.IsNullOrEmpty(bucketId))
-                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetBucketItem");
-            if (string.IsNullOrEmpty(itemId))
-                throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetBucketItem");
-            return await ApiRequest.GetBucketItem<TBucket>(bucketId, itemId, isGlobal);
-        }
-
-
-        /// <summary>
-        ///     This command will edit one of the bucket information with a specific ID
-        /// </summary>
-        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To Edit Details</param>
-        /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To Edit Details</param>
-        /// <param name="editedBucket">(Not NULL)The Object of BucketItem you Want To Edit Detail</param>
-        /// <value> return Edited Bucket Item</value>
-        public static async Task<TBucket> UpdateBucketItem<TBucket>(string bucketId, string itemId,
-            TBucket editedBucket) where TBucket : BucketCore
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UpdateBucketItem");
-            if (string.IsNullOrEmpty(bucketId))
-                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UpdateBucketItem");
-            if (string.IsNullOrEmpty(itemId))
-                throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UpdateBucketItem");
-            if (editedBucket == null)
-                throw new GameServiceException("EditedBucket Cant Be Null").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UpdateBucketItem");
-            return await ApiRequest.UpdateBucketItem(bucketId, itemId, editedBucket);
-        }
-
-        /// <summary>
-        ///     This command will Add new bucket information with a specific ID
-        /// </summary>
-        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To Add Item</param>
-        /// <param name="newBucket">(Not NULL)The Object of BucketItem you Want To Add</param>
-        /// <value> return Added Bucket Item</value>
-        public static async Task<TBucket> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
-            where TBucket : BucketCore
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "AddBucketItem");
-            if (string.IsNullOrEmpty(bucketId))
-                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "AddBucketItem");
-            if (newBucket == null)
-                throw new GameServiceException("NewBucket Cant Be Null").LogException(typeof(GameService),
-                    DebugLocation.Internal, "AddBucketItem");
-            return await ApiRequest.AddBucketItem(bucketId, newBucket);
-        }
-
-
-        /// <summary>
-        ///     This command will delete All of the bucket Items information with a specific ID
-        /// </summary>
-        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To Delete All Items</param>
-        /// <value> return true if Remove Successfully </value>
-        public static async Task<bool> DeleteBucketItems(string bucketId)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DeleteBucketItems");
-            if (string.IsNullOrEmpty(bucketId))
-                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DeleteBucketItems");
-            return await ApiRequest.DeleteBucketItems(bucketId);
-        }
-
-
-        /// <summary>
-        ///     This command will delete one of the bucket information with a specific ID
-        /// </summary>
-        /// <param name="bucketId">(Not NULL)The ID of Bucket you Want To Delete one of Items</param>
-        /// <param name="itemId">(Not NULL)The ID of BucketItem you Want To Delete it</param>
-        /// <value> return true if Remove Successfully </value>
-        public static async Task<bool> DeleteBucketItem(string bucketId, string itemId)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DeleteBucketItem");
-            if (string.IsNullOrEmpty(bucketId))
-                throw new GameServiceException("BucketId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DeleteBucketItem");
-            if (string.IsNullOrEmpty(itemId))
-                throw new GameServiceException("BucketItemId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DeleteBucketItem");
-            return await ApiRequest.DeleteBucketItem(bucketId, itemId);
-        }
-
-
-        /// <summary>
-        ///     This command Gets The Current Times
-        /// </summary>
-        /// <value> return The Current Times</value>
-        public static async Task<GSTime> GetCurrentTime()
-        {
-            return await TimeUtil.GetCurrentTime();
-        }
-
-
-        /// <summary>
-        ///     This command Gets The Current Game
-        /// </summary>
-        /// <value> return The Current Game</value>
-        public static async Task<Game> GetCurrentGame()
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetCurrentGame");
-            return await ApiRequest.GetCurrentGame();
-        }
-
-
-        /// <summary>
-        ///     This command Check Can Login With Phone Number
-        /// </summary>
-        /// <value> return The Status</value>
-        public static async Task<bool> CanLoginWithPhoneNumber()
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "CanLoginWithPhoneNumber");
-            return await ApiRequest.CheckPhoneLoginStatus();
-        }
-
-
-        /// <summary>
-        ///     Gets Asset Info With AssetTag
-        /// </summary>
-        /// <param name="assetTag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
-        public static async Task<AssetInfo> GetAssetInfo(string assetTag)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetAssetInfo");
-            if (string.IsNullOrEmpty(assetTag))
-                throw new GameServiceException("assetTag Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetAssetInfo");
-            return await ApiRequest.GetAssetInfo(Configuration.ClientId, assetTag);
-        }
-
-
-        /// <summary>
-        ///     Download Asset With Tag
-        ///     Set DownloadManager Event Handlers To Get Download Status
-        /// </summary>
-        /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
-        /// <param name="dirPath">(Not NULL)Specifies the Download File Directory Path </param>
-        [Obsolete("This Method is Deprecated,Use DownloadAsset(AssetInfo,string) Instead")]
-        public static async Task DownloadAsset(string tag, string dirPath)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(string,string)");
-            if (string.IsNullOrEmpty(tag))
-                throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(string,string)");
-            if (string.IsNullOrEmpty(dirPath))
-                throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(string,string)");
-            await _downloadManager.StartDownload(tag, dirPath);
-        }
-
-
-        /// <summary>
-        ///     Download Asset With Tag
-        ///     Set DownloadManager Event Handlers To Get Download Status
-        /// </summary>
-        /// <param name="tag">(Not NULL)Specifies the Asset tag that Set in Developers Panel.</param>
-        [Obsolete("This Method is Deprecated,Use DownloadAsset(AssetInfo) Instead")]
-        public static async Task DownloadAsset(string tag)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(string)");
-            if (string.IsNullOrEmpty(tag))
-                throw new GameServiceException("DownloadTag Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(string)");
-            await _downloadManager.StartDownload(tag);
-        }
-
-
-        /// <summary>
-        ///     Download Asset With AssetInfo
-        ///     Set DownloadManager Event Handlers To Get Download Status
-        /// </summary>
-        /// <param name="info">(Not NULL)Specifies the Asset info</param>
-        /// <param name="dirPath">(Not NULL)Specifies the Download File Directory Path </param>
-        public static void DownloadAsset(AssetInfo info, string dirPath)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(info,string)");
-            if (info == null)
-                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(info,string)");
-            if (string.IsNullOrEmpty(dirPath))
-                throw new GameServiceException("DownloadDirPath Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(info,string)");
-            _downloadManager.StartDownloadWithInfo(info, dirPath);
-        }
-
-
-        /// <summary>
-        ///     Download Asset With AssetInfo
-        ///     Set DownloadManager Event Handlers To Get Download Status
-        /// </summary>
-        /// <param name="info">(Not NULL)Specifies the Asset Info</param>
-        public static async Task DownloadAsset(AssetInfo info)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(info)");
-            if (info == null)
-                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
-                    DebugLocation.Internal, "DownloadAsset(info)");
-            await _downloadManager.StartDownloadWithInfo(info);
-        }
-
-
-        /// <summary>
-        ///     Cancel All Current Download Assets
-        /// </summary>
-        public static void CancelAllDownloadAsset()
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "CancelAllDownloadAsset");
-            _downloadManager?.CancelAllDownloads();
-        }
-
-
-        /// <summary>
-        ///     Cancel Download Asset With Asset Tag
-        /// </summary>
-        public static void CancelDownloadAsset(string tag)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "CancelDownloadAsset(string)");
-            if (string.IsNullOrEmpty(tag))
-                throw new GameServiceException("Asset Tag Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "CancelDownloadAsset(string)");
-            _downloadManager.CancelDownload(tag);
-        }
-
-
-        /// <summary>
-        ///     Cancel Download Asset With Asset Info
-        /// </summary>
-        public static void CancelDownloadAsset(AssetInfo info)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "CancelDownloadAsset(info)");
-            if (info == null)
-                throw new GameServiceException("AssetInfo Cant Be Null").LogException(typeof(GameService),
-                    DebugLocation.Internal, "CancelDownloadAsset(info)");
-            _downloadManager?.CancelDownload(info);
-        }
-
-
-        /// <summary>
-        ///     Execute Cloud Function
-        ///     note : if Function is public , You Can Call it without Login
-        /// </summary>
-        /// <param name="functionId">(NOTNULL)Specifies the Function Id that Set in Developers Panel</param>
-        /// <param name="functionParameters">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
-        /// <param name="isPublic">Specifies the Function Visibility Type that Set in Developers Panel</param>
-        /// <value> return Result in String </value>
-        public static async Task<FaaSResponse<TFaaS>> ExecuteCloudFunction<TFaaS>(string functionId,
-            object functionParameters = null, bool isPublic = false)
-            where TFaaS : FaaSCore
-        {
-            if (!isPublic && !IsAuthenticated())
-                throw new GameServiceException("You Must Login First In Private Mode").LogException(typeof(GameService),
-                    DebugLocation.Internal, "ExecuteCloudFunction");
-            if (string.IsNullOrEmpty(functionId))
-                throw new GameServiceException("functionId Cant Be NullOrEmpty").LogException(typeof(GameService),
-                    DebugLocation.Internal, "ExecuteCloudFunction");
-            return await ApiRequest.ExecuteCloudFunction<TFaaS>(functionId, functionParameters, isPublic);
-        }
-
-
-        /// <summary>
-        ///     Get All Active Devices
-        ///     You Can Get Active Devices to Revoke Some Devices Access
-        /// </summary>
-        /// <value> return Active Devices </value>
-        public static async Task<List<ActiveDevice>> GetActiveDevices()
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "GetActiveDevices");
-            return await ApiRequest.GetActiveDevices();
-        }
-
-
-        /// <summary>
-        ///     Revoke a Active Device with deviceId
-        ///     You Can Get Active Devices to Revoke Some Devices Access
-        /// </summary>
-        /// <param name="deviceId">(NOTNULL)Specifies the device Id that you want to revoke</param>
-        public static async Task<bool> RevokeActiveDevice(string deviceId)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "RevokeActiveDevice");
-            if (string.IsNullOrEmpty(deviceId))
-                throw new GameServiceException("deviceId Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "RevokeActiveDevice");
-            return await ApiRequest.RevokeDevice(deviceId);
-        }
-
-
-        /// <summary>
-        ///     Change Password With CurrentPassword and New One
-        /// </summary>
-        /// <param name="currentPassword">(NOTNULL)Specifies the Current Password </param>
-        /// <param name="newPassword">(NOTNULL)Specifies the New Password </param>
-        public static async Task<bool> ChangePassword(string currentPassword, string newPassword)
-        {
-            if (!IsAuthenticated())
-                throw new GameServiceException("GameService Not Available").LogException(typeof(GameService),
-                    DebugLocation.Internal, "ChangePassword");
-            if (string.IsNullOrEmpty(currentPassword))
-                throw new GameServiceException("currentPassword Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "ChangePassword");
-            if (string.IsNullOrEmpty(newPassword))
-                throw new GameServiceException("newPassword Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "ChangePassword");
-
-            return await ApiRequest.ChangePassword(currentPassword, newPassword);
-        }
-
-
-        /// <summary>
-        ///     Send Login Code With SMS , If you want to LoginWithPhoneNumber, You Must Call This Function first
-        ///     It May Throw Exception
-        ///     <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
-        /// </summary>
-        /// <value> return true if Send Successfully </value>
-        public static async Task<bool> SendLoginCodeWithSms(string phoneNumber)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SendLoginCodeWithSms");
-            if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SendLoginCodeWithSms");
-            if (string.IsNullOrEmpty(phoneNumber))
-                throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SendLoginCodeWithSms");
-            if (IsAuthenticated()) Logout();
-            return await ApiRequest.SendLoginCodeWithSms(phoneNumber);
-        }
-
-
-        /// <summary>
-        ///     Normal Login (InFirstOnly) To Game Service
-        ///     It May Throw Exception
-        /// </summary>
-        /// <value> return UserToken if Login Successfully </value>
-        public static async Task<string> Login(string email, string password)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "Login");
-            if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
-                    DebugLocation.Internal, "Login");
-            if (string.IsNullOrEmpty(email))
-                throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "Login");
-            if (string.IsNullOrEmpty(password))
-                throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "Login");
-            if (IsAuthenticated()) Logout();
-
-            var login = await ApiRequest.Login(email, password);
-            UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            CommandInfo = auth.CommandInfo;
-            PlayToken = auth.Token;
-            CurrentInternalGame = auth.Game;
-            _isAvailable = true;
-            IsGuest = false;
-            await Core.GSLive.GSLive.Init();
-            return UserToken;
-        }
-
-        /// <summary>
-        ///     Normal Login With UserToken To Game Service
-        ///     It May Throw Exception
-        /// </summary>
-        public static async Task Login(string userToken)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UserTokenLogin");
-            if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UserTokenLogin");
-            if (string.IsNullOrEmpty(userToken))
-                throw new GameServiceException("UserToken Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "UserTokenLogin");
-            if (IsAuthenticated()) Logout();
-
-            UserToken = userToken;
-            var auth = await ApiRequest.Authorize();
-            CommandInfo = auth.CommandInfo;
-            PlayToken = auth.Token;
-            CurrentInternalGame = auth.Game;
-            _isAvailable = true;
-            IsGuest = false;
-            await Core.GSLive.GSLive.Init();
-        }
-
-
-        /// <summary>
-        ///     Normal Login With GoogleSignInUser To Game Service
-        ///     It May Throw Exception
-        ///     <param name="idToken">(Not NULL)Specifies the idToken From GoogleSignInUser Class.</param>
-        /// </summary>
-        /// <value> return UserToken if Login Successfully </value>
-        public static async Task<string> LoginWithGoogle(string idToken)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithGoogle");
-            if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithGoogle");
-            if (string.IsNullOrEmpty(idToken))
-                throw new GameServiceException("IdToken Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithGoogle");
-            if (IsAuthenticated()) Logout();
-
-            var login = await ApiRequest.LoginWithGoogle(idToken);
-            UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            CommandInfo = auth.CommandInfo;
-            PlayToken = auth.Token;
-            CurrentInternalGame = auth.Game;
-            _isAvailable = true;
-            IsGuest = false;
-            await Core.GSLive.GSLive.Init();
-            return UserToken;
-        }
-
-
-        /// <summary>
-        ///     Normal Login With Phone Number To Game Service
-        ///     You Must Call SendLoginCodeWithSms First, to get SMS Code.
-        ///     It May Throw Exception
-        ///     <param name="nickName">(Not NULL)Specifies Nick Name </param>
-        ///     <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
-        ///     <param name="smsCode">(Not NULL)Specifies SMS Code</param>
-        /// </summary>
-        /// <value> return UserToken if Login Successfully </value>
-        public static async Task<string> LoginWithPhoneNumber(string nickName, string phoneNumber, string smsCode)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
-            if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
-            if (string.IsNullOrEmpty(nickName))
-                throw new GameServiceException("nickName Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
-            if (string.IsNullOrEmpty(phoneNumber))
-                throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
-            if (string.IsNullOrEmpty(smsCode))
-                throw new GameServiceException("smsCode Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginWithPhoneNumber");
-            if (IsAuthenticated()) Logout();
-
-            var login = await ApiRequest.LoginWithPhoneNumber(nickName, phoneNumber, smsCode);
-            UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            CommandInfo = auth.CommandInfo;
-            PlayToken = auth.Token;
-            CurrentInternalGame = auth.Game;
-            _isAvailable = true;
-            IsGuest = false;
-            await Core.GSLive.GSLive.Init();
-            return UserToken;
-        }
-
-
-        /// <summary>
-        ///     Login To Game Service As Guest
-        ///     It May Throw Exception
-        /// </summary>
-        public static async Task Login()
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginGuest");
-            if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
-                    DebugLocation.Internal, "LoginGuest");
-            if (IsAuthenticated()) Logout();
-
-            var login = await ApiRequest.LoginAsGuest();
-            UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            PlayToken = auth.Token;
-            CurrentInternalGame = auth.Game;
-            _isAvailable = true;
-            IsGuest = true;
-            CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
-        }
-
-        /// <summary>
-        ///     Normal SignUp To Game Service
-        ///     It May Throw Exception
-        /// </summary>
-        /// <value> return UserToken if SignUp Successfully </value>
-        public static async Task<string> SignUp(string nickName, string email, string password)
-        {
-            if (Configuration == null)
-                throw new GameServiceException("You Must Configuration First").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SignUp");
-            if (!NetworkUtil.IsConnected())
-                throw new GameServiceException("Network Unreachable").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SignUp");
-            if (string.IsNullOrEmpty(nickName))
-                throw new GameServiceException("NickName Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SignUp");
-            if (string.IsNullOrEmpty(email))
-                throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SignUp");
-            if (string.IsNullOrEmpty(password))
-                throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(typeof(GameService),
-                    DebugLocation.Internal, "SignUp");
-            if (IsAuthenticated()) Logout();
-
-            var login = await ApiRequest.SignUp(nickName, email, password);
-            UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            CommandInfo = auth.CommandInfo;
-            PlayToken = auth.Token;
-            CurrentInternalGame = auth.Game;
-            _isAvailable = true;
-            IsGuest = false;
-            await Core.GSLive.GSLive.Init();
-            return UserToken;
-        }
-
 
         /// <summary>
         ///     Check if Current User Authenticated
@@ -929,7 +92,7 @@ namespace FiroozehGameService.Core
         /// <value> return True if Current User Authenticated Before </value>
         public static bool IsAuthenticated()
         {
-            return _isAvailable;
+            return IsAvailable;
         }
 
 
@@ -939,7 +102,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "6.1.1";
+            return "7.0.0";
         }
 
 
@@ -952,22 +115,77 @@ namespace FiroozehGameService.Core
             CurrentInternalGame = null;
             PlayToken = null;
             CommandInfo = null;
-            _isAvailable = false;
+            IsAvailable = false;
             IsGuest = false;
             Core.GSLive.GSLive.Dispose();
             GsWebRequest.Dispose();
         }
 
-        #region GameServiceRegion
+        #region GameServiceProviderRegion
 
-        private const string Tag = "FiroozehGameService";
-        private static bool _isAvailable;
+        /// <summary>
+        ///     Represents Achievement Provider Model In Game Service Basic API
+        /// </summary>
+        public static IAchievementProvider Achievement { get; private set; }
+
+        /// <summary>
+        ///     Represents Leaderboard Provider Model In Game Service Basic API
+        /// </summary>
+        public static ILeaderboardProvider Leaderboard { get; private set; }
+
+        /// <summary>
+        ///     Represents Assets Provider Model In Game Service Basic API
+        /// </summary>
+        public static IAssetsProvider Assets { get; private set; }
+
+
+        /// <summary>
+        ///     Represents Data Provider In Game Service Basic API
+        /// </summary>
+        public static IDataProvider Data { get; private set; }
+
+
+        /// <summary>
+        ///     Represents DBaaS Provider Model In Game Service Basic API
+        /// </summary>
+        public static IDBaaSProvider DBaaS { get; private set; }
+
+
+        /// <summary>
+        ///     Represents FaaS Provider Model In Game Service Basic API
+        /// </summary>
+        public static IFaaSProvider FaaS { get; private set; }
+
+        /// <summary>
+        ///     Represents ILoginOrSignUpProvider Model In Game Service Basic API
+        /// </summary>
+        public static ILoginOrSignUpProvider LoginOrSignUp { get; private set; }
+
+
+        /// <summary>
+        ///     Represents Player Provider Model In Game Service Basic API
+        /// </summary>
+        public static IPlayerProvider Player { get; private set; }
+
+
+        /// <summary>
+        ///     Represents SaveGame Provider Data Model In Game Service Basic API
+        /// </summary>
+        public static ISaveProvider Save { get; private set; }
+
+        #endregion
+
+
+        #region GameServiceCoreRegion
+
+        internal static bool IsAvailable;
+        internal static bool IsGuest;
 
         internal static string UserToken;
         internal static string PlayToken;
+
         internal static InternalGame CurrentInternalGame;
         internal static CommandInfo CommandInfo;
-        internal static bool IsGuest;
         internal static SynchronizationContext SynchronizationContext;
         internal static GameServiceClientConfiguration Configuration { get; private set; }
         internal static GameServiceDebugConfiguration DebugConfiguration { get; private set; }
@@ -989,7 +207,7 @@ namespace FiroozehGameService.Core
         public static Social.Social Social { get; private set; }
 
 
-        private static DownloadManager _downloadManager;
+        internal static DownloadManager DownloadManager;
 
         #endregion
     }

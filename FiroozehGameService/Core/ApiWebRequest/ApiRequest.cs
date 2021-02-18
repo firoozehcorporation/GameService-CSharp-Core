@@ -28,8 +28,8 @@ using FiroozehGameService.Builder;
 using FiroozehGameService.Core.Social;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
-using FiroozehGameService.Models.BasicApi.Buckets;
-using FiroozehGameService.Models.BasicApi.Buckets.Options;
+using FiroozehGameService.Models.BasicApi.DBaaS;
+using FiroozehGameService.Models.BasicApi.DBaaS.Options;
 using FiroozehGameService.Models.BasicApi.FaaS;
 using FiroozehGameService.Models.BasicApi.Social;
 using FiroozehGameService.Models.BasicApi.TResponse;
@@ -335,51 +335,51 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<List<TBucket>> GetBucketItems<TBucket>(string bucketId, bool isGlobal,
-            BucketOption[] options)
+        internal static async Task<List<TItem>> GetTableItems<TItem>(string tableId, bool isGlobal,
+            TableOption[] options)
         {
-            var url = UrlUtil.ParseBucketUrl(bucketId, isGlobal, options);
+            var url = UrlUtil.ParseDBaaSUrl(tableId, isGlobal, options);
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<List<TBucket>>(await reader.ReadToEndAsync());
+                    return JsonConvert.DeserializeObject<List<TItem>>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetBucketItems");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetTableItems");
             }
         }
 
 
-        internal static async Task<BucketResult<TBucket>> GetBucketItems<TBucket>(BucketAggregation aggregation)
+        internal static async Task<DBaaSResult<TItem>> GetTableItems<TItem>(DBaaSAggregation aggregation)
         {
-            var response = await GsWebRequest.Post(Api.Bucket + aggregation.Builder.BucketId + "/aggregation",
+            var response = await GsWebRequest.Post(Api.Table + aggregation.Builder.tableId + "/aggregation",
                 aggregation.Builder.AggregationData, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<BucketResult<TBucket>>(await reader.ReadToEndAsync());
+                    return JsonConvert.DeserializeObject<DBaaSResult<TItem>>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetBucketItems");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetTableItems");
             }
         }
 
 
-        internal static async Task<TBucket> GetBucketItem<TBucket>(string bucketId, string itemId, bool isGlobal)
+        internal static async Task<TItem> GetTableItem<TItem>(string tableId, string itemId, bool isGlobal)
         {
             string url;
-            if (isGlobal) url = Api.BucketNonPermission + bucketId + '/' + itemId;
-            else url = Api.Bucket + bucketId + '/' + itemId;
+            if (isGlobal) url = Api.TableNonPermission + tableId + '/' + itemId;
+            else url = Api.Table + tableId + '/' + itemId;
 
             var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
+                    return JsonConvert.DeserializeObject<ItemT<TItem>>(await reader.ReadToEndAsync()).ItemData;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetBucketItem");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetTableItem");
             }
         }
 
@@ -454,11 +454,11 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<TBucket> UpdateBucketItem<TBucket>(string bucketId, string itemId,
-            TBucket editedBucket)
+        internal static async Task<TItem> UpdateTableItem<TItem>(string tableId, string itemId,
+            TItem editedItem)
         {
-            var url = Api.Bucket + bucketId + '/' + itemId;
-            var body = JsonConvert.SerializeObject(editedBucket, new JsonSerializerSettings
+            var url = Api.Table + tableId + '/' + itemId;
+            var body = JsonConvert.SerializeObject(editedItem, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -468,16 +468,16 @@ namespace FiroozehGameService.Core.ApiWebRequest
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
+                    return JsonConvert.DeserializeObject<ItemT<TItem>>(await reader.ReadToEndAsync()).ItemData;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "UpdateBucketItem");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "UpdateTableItem");
             }
         }
 
-        internal static async Task<TBucket> AddBucketItem<TBucket>(string bucketId, TBucket newBucket)
+        internal static async Task<TItem> AddItemToTable<TItem>(string tableId, TItem newItem)
         {
-            var url = Api.Bucket + bucketId;
-            var body = JsonConvert.SerializeObject(newBucket, new JsonSerializerSettings
+            var url = Api.Table + tableId;
+            var body = JsonConvert.SerializeObject(newItem, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             });
@@ -487,9 +487,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<BucketT<TBucket>>(await reader.ReadToEndAsync()).BucketData;
+                    return JsonConvert.DeserializeObject<ItemT<TItem>>(await reader.ReadToEndAsync()).ItemData;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "AddBucketItem");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "AddItemToTable");
             }
         }
 
@@ -508,9 +508,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
-        internal static async Task<bool> DeleteBucketItems(string bucketId)
+        internal static async Task<bool> DeleteAllTableItems(string bucketId)
         {
-            var url = Api.Bucket + bucketId;
+            var url = Api.Table + bucketId;
 
             var response = await GsWebRequest.Delete(url, CreatePlayTokenHeader());
 
@@ -524,9 +524,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
-        internal static async Task<bool> DeleteBucketItem(string bucketId, string itemId)
+        internal static async Task<bool> DeleteTableItem(string bucketId, string itemId)
         {
-            var url = Api.Bucket + bucketId + '/' + itemId;
+            var url = Api.Table + bucketId + '/' + itemId;
 
             var response = await GsWebRequest.Delete(url, CreatePlayTokenHeader());
 
