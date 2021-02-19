@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Core.GSLive;
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
@@ -39,9 +39,9 @@ namespace FiroozehGameService.Handlers
         ///     Calls When SomeOne Join To Current Room
         ///     It Maybe Current Player or Another
         ///     This Event Handler Called By Following Functions :
-        ///     <see cref="GSLiveTB.JoinRoom" />
-        ///     <see cref="GSLiveTB.CreateRoom" />
-        ///     <see cref="GSLiveTB.AutoMatch" />
+        ///     <see cref="GsLiveTurnBased.JoinRoom" />
+        ///     <see cref="GsLiveTurnBased.CreateRoom" />
+        ///     <see cref="GsLiveTurnBased.AutoMatch" />
         /// </summary>
         public static EventHandler<JoinEvent> JoinedRoom;
 
@@ -50,59 +50,56 @@ namespace FiroozehGameService.Handlers
         ///     Calls When Current Player Reconnect to Server
         /// </summary>
         public static EventHandler<ReconnectStatus> Reconnected;
-        
-        
+
+
         /// <summary>
         ///     Calls When SomeOne Left the Current Room
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveTB.LeaveRoom" />
+        ///     <see cref="GsLiveTurnBased.LeaveRoom" />
         /// </summary>
         public static EventHandler<Member> LeftRoom;
 
 
         /// <summary>
         ///     Returns New Turn With Data From Another Players When Call The Following Function :
-        ///     <see cref="GSLiveTB.TakeTurn" />
+        ///     <see cref="GsLiveTurnBased.TakeTurn" />
         /// </summary>
         public static EventHandler<Turn> TakeTurn;
 
 
         /// <summary>
         ///     Returns New Turn From Another Players When Call The Following Function :
-        ///     <see cref="GSLiveTB.ChooseNext" />
+        ///     <see cref="GsLiveTurnBased.ChooseNext" />
         /// </summary>
         public static EventHandler<Member> ChoosedNext;
-        
-        
+
+
         /// <summary>
         ///     Returns NewOrUpdate Property From Another Players When Call The Following Functions :
-        ///     <see cref="GSLiveTB.SetProperty" />
-        ///     <see cref="GSLiveTB.RemoveProperty" />
+        ///     <see cref="GsLiveTurnBased.SetProperty" />
+        ///     <see cref="GsLiveTurnBased.RemoveProperty" />
         /// </summary>
         public static EventHandler<PropertyPayload> PropertyUpdated;
-        
-        
-        
+
+
         /// <summary>
         ///     Returns Properties From Another Players When Call The Following Function :
-        ///     <see cref="GSLiveTB.GetMemberProperties" />
+        ///     <see cref="GsLiveTurnBased.GetMemberProperties" />
         /// </summary>
         public static EventHandler<List<PropertyData>> MemberPropertiesReceived;
-        
-        
-        
+
+
         /// <summary>
         ///     Returns Room Info When Call The Following Function :
-        ///     <see cref="GSLiveTB.GetCurrentRoomInfo" />
+        ///     <see cref="GsLiveTurnBased.GetCurrentRoomInfo" />
         /// </summary>
         public static EventHandler<RoomData> CurrentRoomInfoReceived;
-        
-        
-        
+
+
         /// <summary>
         ///     Calls When SomeOne Announced To Finish Game
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveTB.Vote" />
+        ///     <see cref="GsLiveTurnBased.Vote" />
         /// </summary>
         public static EventHandler<Vote> VoteReceived;
 
@@ -110,20 +107,20 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When The Game Is Finished
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveTB.Complete" />
+        ///     <see cref="GsLiveTurnBased.Complete" />
         /// </summary>
         public static EventHandler<Complete> Completed;
 
         /// <summary>
         ///     Returns Current Room Members Detail  When Call The Following Function :
-        ///     <see cref="GSLiveTB.GetRoomMembersDetail" />
+        ///     <see cref="GsLiveTurnBased.GetRoomMembersDetail" />
         /// </summary>
         public static EventHandler<List<Member>> RoomMembersDetailReceived;
 
 
         /// <summary>
         ///     Returns Current Turn Member Received When Call The Following Function :
-        ///     <see cref="GSLiveTB.GetCurrentTurnMember" />
+        ///     <see cref="GsLiveTurnBased.GetCurrentTurnMember" />
         /// </summary>
         public static EventHandler<Member> CurrentTurnMemberReceived;
     }

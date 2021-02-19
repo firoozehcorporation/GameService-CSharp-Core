@@ -28,7 +28,7 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 
-namespace FiroozehGameService.Core.Providers
+namespace FiroozehGameService.Core.Providers.BasicAPI
 {
     /// <summary>
     ///     Represents Assets Provider Model In Game Service Basic API

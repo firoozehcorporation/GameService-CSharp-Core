@@ -29,7 +29,7 @@ using FiroozehGameService.Models.BasicApi.Providers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Utils;
 
-namespace FiroozehGameService.Core.Providers
+namespace FiroozehGameService.Core.Providers.BasicAPI
 {
     /// <summary>
     ///     Represents Leaderboard Provider Model In Game Service Basic API

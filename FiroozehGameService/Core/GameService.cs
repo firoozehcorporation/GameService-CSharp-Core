@@ -23,12 +23,14 @@ using System;
 using System.Threading;
 using FiroozehGameService.Builder;
 using FiroozehGameService.Core.ApiWebRequest;
-using FiroozehGameService.Core.Providers;
+using FiroozehGameService.Core.Providers.BasicAPI;
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Providers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
+using FiroozehGameService.Models.GSLive.Providers;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 
@@ -69,7 +71,7 @@ namespace FiroozehGameService.Core
             Player = new PlayerProvider();
             Save = new SaveProvider();
 
-            GSLive = new GSLive.GSLive();
+            GSLive = new GsLive();
             Social = new Social.Social();
         }
 
@@ -117,7 +119,7 @@ namespace FiroozehGameService.Core
             CommandInfo = null;
             IsAvailable = false;
             IsGuest = false;
-            Core.GSLive.GSLive.Dispose();
+            GSLive?.Dispose();
             GsWebRequest.Dispose();
         }
 
@@ -199,7 +201,7 @@ namespace FiroozehGameService.Core
         /// <summary>
         ///     The GameService GsLive System (like TurnBased , RealTime , ...)
         /// </summary>
-        public static GSLive.GSLive GSLive { get; private set; }
+        public static GsLiveProvider GSLive { get; private set; }
 
         /// <summary>
         ///     The GameService Social System (like Friends , Parties)

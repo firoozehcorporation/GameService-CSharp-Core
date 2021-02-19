@@ -29,7 +29,7 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Utils;
 
-namespace FiroozehGameService.Core.Providers
+namespace FiroozehGameService.Core.Providers.BasicAPI
 {
     /// <summary>
     ///     Represents Player Provider Model In Game Service Basic API

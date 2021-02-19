@@ -16,7 +16,7 @@
 
 
 using FiroozehGameService.Core;
-using FiroozehGameService.Core.GSLive;
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.BasicApi;
 
@@ -479,7 +479,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService SubscribeChannel Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveChat.SubscribeChannel" />
+                ///     <see cref="GsLiveChat.SubscribeChannel" />
                 /// </summary>
                 public class SubscribeChannel
                 {
@@ -489,7 +489,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService SendChannelMessage Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveChat.SendChannelMessage" />
+                ///     <see cref="GsLiveChat.SendChannelMessage" />
                 /// </summary>
                 public class SendChannelMessage
                 {
@@ -499,7 +499,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService UnSubscribeChannel Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveChat.UnSubscribeChannel" />
+                ///     <see cref="GsLiveChat.UnSubscribeChannel" />
                 /// </summary>
                 public class UnSubscribeChannel
                 {
@@ -516,7 +516,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService AutoMatch Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.AutoMatch" />
+                ///     <see cref="GsLiveTurnBased.AutoMatch" />
                 /// </summary>
                 public class AutoMatch
                 {
@@ -527,7 +527,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService CancelAutoMatch Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.CancelAutoMatch" />
+                ///     <see cref="GsLiveTurnBased.CancelAutoMatch" />
                 /// </summary>
                 public class CancelAutoMatch
                 {
@@ -537,7 +537,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService CreateRoom Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.CreateRoom" />
+                ///     <see cref="GsLiveTurnBased.CreateRoom" />
                 /// </summary>
                 public class CreateRoom
                 {
@@ -548,7 +548,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService GetAvailableRooms Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.GetAvailableRooms" />
+                ///     <see cref="GsLiveTurnBased.GetAvailableRooms" />
                 /// </summary>
                 public class GetAvailableRooms
                 {
@@ -558,7 +558,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService JoinRoom Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.JoinRoom" />
+                ///     <see cref="GsLiveTurnBased.JoinRoom" />
                 /// </summary>
                 public class JoinRoom
                 {
@@ -570,7 +570,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService InviteUser Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.InviteUser" />
+                ///     <see cref="GsLiveTurnBased.InviteUser" />
                 /// </summary>
                 public class InviteUser
                 {
@@ -582,7 +582,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService GetInviteInbox Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.GetInviteInbox" />
+                ///     <see cref="GsLiveTurnBased.GetInviteInbox" />
                 /// </summary>
                 public class GetInviteInbox
                 {
@@ -592,7 +592,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService AcceptInvite Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.AcceptInvite" />
+                ///     <see cref="GsLiveTurnBased.AcceptInvite" />
                 /// </summary>
                 public class AcceptInvite
                 {
@@ -602,7 +602,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService SetProperty Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveTB.SetProperty" />
+                ///     <see cref="GsLiveTurnBased.SetProperty" />
                 /// </summary>
                 public class SetProperty
                 {
@@ -618,7 +618,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService AutoMatch Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveRT.AutoMatch" />
+                ///     <see cref="GsLiveRealTime.AutoMatch" />
                 /// </summary>
                 public class AutoMatch
                 {
@@ -629,7 +629,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService CancelAutoMatch Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveRT.CancelAutoMatch" />
+                ///     <see cref="GsLiveRealTime.CancelAutoMatch" />
                 /// </summary>
                 public class CancelAutoMatch
                 {
@@ -639,7 +639,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService CreateRoom Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveRT.CreateRoom" />
+                ///     <see cref="GsLiveRealTime.CreateRoom" />
                 /// </summary>
                 public class CreateRoom
                 {
@@ -650,7 +650,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService GetAvailableRooms Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveRT.GetAvailableRooms" />
+                ///     <see cref="GsLiveRealTime.GetAvailableRooms" />
                 /// </summary>
                 public class GetAvailableRooms
                 {
@@ -660,7 +660,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService JoinRoom Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveRT.JoinRoom" />
+                ///     <see cref="GsLiveRealTime.JoinRoom" />
                 /// </summary>
                 public class JoinRoom
                 {
@@ -672,7 +672,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService InviteUser Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveRT.InviteUser" />
+                ///     <see cref="GsLiveRealTime.InviteUser" />
                 /// </summary>
                 public class InviteUser
                 {
@@ -684,7 +684,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService GetInviteInbox Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveRT.GetInviteInbox" />
+                ///     <see cref="GsLiveRealTime.GetInviteInbox" />
                 /// </summary>
                 public class GetInviteInbox
                 {
@@ -694,7 +694,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService AcceptInvite Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GSLiveRT.AcceptInvite" />
+                ///     <see cref="GsLiveRealTime.AcceptInvite" />
                 /// </summary>
                 public class AcceptInvite
                 {

@@ -27,7 +27,7 @@ using FiroozehGameService.Models.BasicApi.Providers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Utils;
 
-namespace FiroozehGameService.Core.Providers
+namespace FiroozehGameService.Core.Providers.BasicAPI
 {
     /// <summary>
     ///     Represents SaveGame Provider Data Model In Game Service Basic API

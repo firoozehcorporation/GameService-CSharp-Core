@@ -28,7 +28,7 @@ using FiroozehGameService.Models.BasicApi.Providers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Utils;
 
-namespace FiroozehGameService.Core.Providers
+namespace FiroozehGameService.Core.Providers.BasicAPI
 {
     /// <summary>
     ///     Represents Achievement Data Model In Game Service Basic API
@@ -63,7 +63,7 @@ namespace FiroozehGameService.Core.Providers
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
-            await GSLive.GSLive.Init();
+            await GameService.GSLive.Init();
 
             return GameService.UserToken;
         }
@@ -100,7 +100,7 @@ namespace FiroozehGameService.Core.Providers
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
-            await GSLive.GSLive.Init();
+            await GameService.GSLive.Init();
             return GameService.UserToken;
         }
 
@@ -126,7 +126,7 @@ namespace FiroozehGameService.Core.Providers
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
-            await GSLive.GSLive.Init();
+            await GameService.GSLive.Init();
         }
 
         public async Task<string> LoginOrSignUpWithGoogle(string googleIdToken)
@@ -152,7 +152,8 @@ namespace FiroozehGameService.Core.Providers
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
-            await GSLive.GSLive.Init();
+            await GameService.GSLive.Init();
+
             return GameService.UserToken;
         }
 
@@ -187,7 +188,8 @@ namespace FiroozehGameService.Core.Providers
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
-            await GSLive.GSLive.Init();
+            await GameService.GSLive.Init();
+
             return GameService.UserToken;
         }
 

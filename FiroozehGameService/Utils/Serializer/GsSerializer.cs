@@ -21,7 +21,8 @@
 
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Core.GSLive;
+using FiroozehGameService.Core;
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
@@ -42,7 +43,7 @@ namespace FiroozehGameService.Utils.Serializer
         /// <summary>
         ///     Calls When SomeOne Send New Event In Current Room
         ///     This Event Handler Called By Following Functions :
-        ///     <see cref="GSLiveRT.SendEvent" />
+        ///     <see cref="GsLiveRealTime.SendEvent" />
         ///     NOTE : Do not use this EventHandler if you are using Real Time Utility
         ///     , as critical errors may occur.
         /// </summary>
@@ -52,7 +53,7 @@ namespace FiroozehGameService.Utils.Serializer
         /// <summary>
         ///     Calls When Server Send SnapShot In Current Room
         ///     This Event Handler Called By Following Functions :
-        ///     <see cref="GSLiveRT.SendEvent" />
+        ///     <see cref="GsLiveRealTime.SendEvent" />
         ///     NOTE : Do not use this EventHandler if you are using Real Time Utility
         ///     , as critical errors may occur.
         /// </summary>
@@ -62,7 +63,7 @@ namespace FiroozehGameService.Utils.Serializer
         /// <summary>
         ///     Calls When Current Player Left the Current Room
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveRT.LeaveRoom" />
+        ///     <see cref="GsLiveRealTime.LeaveRoom" />
         /// </summary>
         public static EventHandler CurrentPlayerLeftRoom;
 
@@ -70,7 +71,7 @@ namespace FiroozehGameService.Utils.Serializer
         /// <summary>
         ///     Calls When Current Player Left the Current Room
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveRT.JoinRoom" />
+        ///     <see cref="GsLiveRealTime.JoinRoom" />
         /// </summary>
         public static EventHandler CurrentPlayerJoinRoom;
 
@@ -124,7 +125,7 @@ namespace FiroozehGameService.Utils.Serializer
                 }
                 catch (Exception e)
                 {
-                    e.LogException(typeof(GsSerializer),DebugLocation.RealTime,"SerializeParams");
+                    e.LogException(typeof(GsSerializer), DebugLocation.RealTime, "SerializeParams");
                     return null;
                 }
             }
@@ -175,9 +176,9 @@ namespace FiroozehGameService.Utils.Serializer
             {
                 if (caller == null || buffer == null)
                     throw new GameServiceException("GsSerializer Err -> Caller or buffer Cant Be Null")
-                        .LogException(typeof(GsSerializer),DebugLocation.RealTime,"SendObject");
+                        .LogException(typeof(GsSerializer), DebugLocation.RealTime, "SendObject");
 
-                GSLiveRT.SendEvent(caller, buffer, GProtocolSendType.Reliable);
+                GameService.GSLive.RealTime().SendEvent(caller, buffer, GProtocolSendType.Reliable);
             }
 
 
@@ -193,9 +194,9 @@ namespace FiroozehGameService.Utils.Serializer
             {
                 if (buffer == null)
                     throw new GameServiceException("GsSerializer Err -> buffer Cant Be Null")
-                        .LogException(typeof(GsSerializer),DebugLocation.RealTime,"SendObserver");
+                        .LogException(typeof(GsSerializer), DebugLocation.RealTime, "SendObserver");
 
-                GSLiveRT.SendObserver(caller, buffer);
+                GameService.GSLive.RealTime().SendObserver(caller, buffer);
             }
 
 
@@ -210,7 +211,7 @@ namespace FiroozehGameService.Utils.Serializer
             {
                 if (serializable == null)
                     throw new GameServiceException("GsSerializer Err -> serializable cant be Null")
-                        .LogException(typeof(GsSerializer),DebugLocation.RealTime,"GetBuffer");
+                        .LogException(typeof(GsSerializer), DebugLocation.RealTime, "GetBuffer");
 
                 var writeStream = new GsWriteStream();
                 serializable.OnGsLiveWrite(writeStream);
@@ -277,7 +278,7 @@ namespace FiroozehGameService.Utils.Serializer
             {
                 if (buffer == null)
                     throw new GameServiceException("GsSerializer Err -> buffer cant be Null")
-                        .LogException(typeof(GsSerializer),DebugLocation.RealTime,"GetReadStream");
+                        .LogException(typeof(GsSerializer), DebugLocation.RealTime, "GetReadStream");
 
                 return SerializerUtil.Deserialize(buffer);
             }

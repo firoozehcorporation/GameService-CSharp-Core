@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Core.GSLive;
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Chat;
 
@@ -33,14 +33,14 @@ namespace FiroozehGameService.Handlers
     {
         /// <summary>
         ///     Calls When New Chat Received
-        ///     <see cref="GSLiveChat.SendChannelMessage" />
+        ///     <see cref="GsLiveChat.SendChannelMessage" />
         /// </summary>
         public static EventHandler<Chat> OnChatReceived;
 
         /// <summary>
         ///     Calls When Current Player Subscribe Channel
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveChat.SubscribeChannel" />
+        ///     <see cref="GsLiveChat.SubscribeChannel" />
         /// </summary>
         public static EventHandler<string> OnSubscribeChannel;
 
@@ -48,7 +48,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Current Player UnSubscribe Channel
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveChat.UnSubscribeChannel" />
+        ///     <see cref="GsLiveChat.UnSubscribeChannel" />
         /// </summary>
         public static EventHandler<string> OnUnSubscribeChannel;
 
@@ -56,7 +56,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Current Player Get Channels Subscribed List
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveChat.GetChannelsSubscribed" />
+        ///     <see cref="GsLiveChat.GetChannelsSubscribed" />
         /// </summary>
         public static EventHandler<List<string>> ChannelsSubscribed;
 
@@ -64,7 +64,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Current Player Get Channel Members List
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveChat.GetChannelMembers" />
+        ///     <see cref="GsLiveChat.GetChannelMembers" />
         /// </summary>
         public static EventHandler<List<Member>> ChannelsMembers;
 
@@ -72,7 +72,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Current Player Get Channel Recent Messages
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveChat.GetChannelRecentMessages" />
+        ///     <see cref="GsLiveChat.GetChannelRecentMessages" />
         /// </summary>
         public static EventHandler<List<Chat>> ChannelsRecentMessages;
 
@@ -82,7 +82,7 @@ namespace FiroozehGameService.Handlers
         ///     Pending Messages Saved when the Current Player is offline
         ///     You Can Get Them With this Function
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GSLiveChat.GetChannelRecentMessages" />
+        ///     <see cref="GsLiveChat.GetChannelRecentMessages" />
         /// </summary>
         public static EventHandler<List<Chat>> PendingMessages;
     }
