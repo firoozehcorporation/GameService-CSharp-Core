@@ -1,4 +1,4 @@
-﻿// <copyright file="IDBaaSProvider.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="ITableProvider.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,9 +27,9 @@ using FiroozehGameService.Models.BasicApi.DBaaS.Options;
 namespace FiroozehGameService.Models.BasicApi.Providers
 {
     /// <summary>
-    ///     Represents DBaaS Provider Model In Game Service Basic API
+    ///     Represents Table Provider Model In Game Service Basic API
     /// </summary>
-    public interface IDBaaSProvider
+    public interface ITableProvider
     {
         /// <summary>
         ///     This command will return all information about the Table with a specific ID
@@ -46,8 +46,8 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     This command will return all information about the Table with a specific ID and Aggregations
         /// </summary>
         /// <param name="aggregation">(NotNULL)The aggregation of Table you Want To get Detail</param>
-        /// <value> return the DBaaSResult</value>
-        Task<DBaaSResult<TItem>> GetTableItems<TItem>(DBaaSAggregation aggregation) where TItem : TableItemHelper;
+        /// <value> return the TableResult</value>
+        Task<TableResult<TItem>> GetTableItems<TItem>(TableAggregation aggregation) where TItem : TableItemHelper;
 
 
         /// <summary>

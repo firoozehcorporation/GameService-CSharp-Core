@@ -1,4 +1,4 @@
-// <copyright file="DBaaSResult.cs" company="Firoozeh Technology LTD">
+// <copyright file="TableResult.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,10 +27,10 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi.DBaaS
 {
     /// <summary>
-    ///     Represents DBaaS Result Data Model In Game Service Basic API
+    ///     Represents Table Result Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public class DBaaSResult<T>
+    public class TableResult<T>
     {
         /// <summary>
         ///     Gets the Results Count

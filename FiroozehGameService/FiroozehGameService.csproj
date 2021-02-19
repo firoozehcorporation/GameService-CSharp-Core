@@ -59,8 +59,8 @@
         <Compile Include="Core\Providers\BasicAPI\AchievementProvider.cs"/>
         <Compile Include="Core\Providers\BasicAPI\AssetsProvider.cs"/>
         <Compile Include="Core\Providers\BasicAPI\DataProvider.cs"/>
-        <Compile Include="Core\Providers\BasicAPI\DBaaSProvider.cs"/>
-        <Compile Include="Core\Providers\BasicAPI\FaaSProvider.cs"/>
+        <Compile Include="Core\Providers\BasicAPI\TableProvider.cs"/>
+        <Compile Include="Core\Providers\BasicAPI\CloudFunctionProvider.cs"/>
         <Compile Include="Core\Providers\BasicAPI\LeaderboardProvider.cs"/>
         <Compile Include="Core\Providers\BasicAPI\LoginOrSignUpProvider.cs"/>
         <Compile Include="Core\Providers\BasicAPI\PlayerProvider.cs"/>
@@ -200,7 +200,7 @@
         <Compile Include="Models\BasicApi\DBaaS\Aggregations\MatchAggregation.cs"/>
         <Compile Include="Models\BasicApi\DBaaS\Aggregations\ProjectAggregation.cs"/>
         <Compile Include="Models\BasicApi\DBaaS\Aggregations\SortAggregation.cs"/>
-        <Compile Include="Models\BasicApi\DBaaS\DBaaSAggregation.cs"/>
+        <Compile Include="Models\BasicApi\DBaaS\TableAggregation.cs"/>
         <Compile Include="Models\BasicApi\DBaaS\TableItemHelper.cs"/>
         <Compile Include="Models\BasicApi\DBaaS\Matcher\MatcherCore.cs"/>
         <Compile Include="Models\BasicApi\DBaaS\Matcher\NumberMatcher.cs"/>
@@ -212,7 +212,7 @@
         <Compile Include="Models\BasicApi\DBaaS\Options\FindByElement.cs"/>
         <Compile Include="Models\BasicApi\DBaaS\Options\Ownership.cs"/>
         <Compile Include="Models\BasicApi\DBaaS\Options\SortByElement.cs"/>
-        <Compile Include="Models\BasicApi\DBaaS\DBaaSResult.cs"/>
+        <Compile Include="Models\BasicApi\DBaaS\TableResult.cs"/>
         <Compile Include="Models\BasicApi\CommandInfo.cs"/>
         <Compile Include="Models\BasicApi\EditUserProfile.cs"/>
         <Compile Include="Models\BasicApi\Error.cs"/>
@@ -226,8 +226,8 @@
         <Compile Include="Models\BasicApi\Providers\IAchievementProvider.cs"/>
         <Compile Include="Models\BasicApi\Providers\IAssetsProvider.cs"/>
         <Compile Include="Models\BasicApi\Providers\IDataProvider.cs"/>
-        <Compile Include="Models\BasicApi\Providers\IDBaaSProvider.cs"/>
-        <Compile Include="Models\BasicApi\Providers\IFaaSProvider.cs"/>
+        <Compile Include="Models\BasicApi\Providers\ITableProvider.cs"/>
+        <Compile Include="Models\BasicApi\Providers\ICloudFunctionProvider.cs"/>
         <Compile Include="Models\BasicApi\Providers\ILeaderboardProvider.cs"/>
         <Compile Include="Models\BasicApi\Providers\ILoginOrSignUpProvider.cs"/>
         <Compile Include="Models\BasicApi\Providers\IPlayerProvider.cs"/>
@@ -243,7 +243,7 @@
         <Compile Include="Models\BasicApi\Social\PartyMember.cs"/>
         <Compile Include="Models\BasicApi\Social\Providers\FriendProvider.cs"/>
         <Compile Include="Models\BasicApi\Social\Providers\PartyProvider.cs"/>
-        <Compile Include="Models\BasicApi\Social\Providers\SocialProvider.cs"/>
+        <Compile Include="Models\BasicApi\Social\Providers\ISocialProvider.cs"/>
         <Compile Include="Models\BasicApi\SubmitScoreResponse.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TAchievement.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TItem.cs"/>

@@ -26,6 +26,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Utils;
 
@@ -34,7 +35,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
     internal static class GsWebRequest
     {
         private static HttpRequestObserver _observer = new HttpRequestObserver();
-        private static HttpClient _client = new HttpClient {Timeout = TimeSpan.FromSeconds(5)};
+        private static HttpClient _client = new HttpClient {Timeout = TimeSpan.FromSeconds(15)};
         private static readonly string UserAgent = "UnitySDK-" + GameService.Version();
 
         internal static async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers = null)
@@ -112,18 +113,27 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             DebugUtil.LogNormal(typeof(GsWebRequest), DebugLocation.Http, "DoRequest", "GSWebRequest -> URL: " + url);
 
-            switch (method)
+            try
             {
-                case GsWebRequestMethod.Get:
-                    return await httpClient.GetAsync(url);
-                case GsWebRequestMethod.Post:
-                    return await httpClient.PostAsync(url, content);
-                case GsWebRequestMethod.Put:
-                    return await httpClient.PutAsync(url, content);
-                case GsWebRequestMethod.Delete:
-                    return await httpClient.DeleteAsync(url);
-                default:
-                    throw new GameServiceException();
+                switch (method)
+                {
+                    case GsWebRequestMethod.Get:
+                        return await httpClient.GetAsync(url);
+                    case GsWebRequestMethod.Post:
+                        return await httpClient.PostAsync(url, content);
+                    case GsWebRequestMethod.Put:
+                        return await httpClient.PutAsync(url, content);
+                    case GsWebRequestMethod.Delete:
+                        return await httpClient.DeleteAsync(url);
+                    default:
+                        throw new GameServiceException();
+                }
+            }
+            catch (Exception e)
+            {
+                if (e is OperationCanceledException)
+                    throw new GameServiceException(GameServiceErrors.Http.Internal.Timeout);
+                throw;
             }
         }
     }

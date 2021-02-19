@@ -65,8 +65,8 @@ namespace FiroozehGameService.Core
             Achievement = new AchievementProvider();
             Assets = new AssetsProvider();
             Data = new DataProvider();
-            DBaaS = new DBaaSProvider();
-            FaaS = new FaaSProvider();
+            Table = new TableProvider();
+            CloudFunction = new CloudFunctionProvider();
             Leaderboard = new LeaderboardProvider();
             LoginOrSignUp = new LoginOrSignUpProvider();
             Player = new PlayerProvider();
@@ -149,15 +149,15 @@ namespace FiroozehGameService.Core
 
 
         /// <summary>
-        ///     Represents DBaaS Provider Model In Game Service Basic API
+        ///     Represents Table Provider Model In Game Service Basic API
         /// </summary>
-        public static IDBaaSProvider DBaaS { get; private set; }
+        public static ITableProvider Table { get; private set; }
 
 
         /// <summary>
-        ///     Represents FaaS Provider Model In Game Service Basic API
+        ///     Represents CloudFunction Provider Model In Game Service Basic API
         /// </summary>
-        public static IFaaSProvider FaaS { get; private set; }
+        public static ICloudFunctionProvider CloudFunction { get; private set; }
 
         /// <summary>
         ///     Represents ILoginOrSignUpProvider Model In Game Service Basic API

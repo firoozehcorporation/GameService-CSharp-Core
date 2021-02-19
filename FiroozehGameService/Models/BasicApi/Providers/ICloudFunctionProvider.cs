@@ -1,4 +1,4 @@
-﻿// <copyright file="IFaaSProvider.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="ICloudFunctionProvider.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
     /// <summary>
     ///     Represents FaaS Provider Model In Game Service Basic API
     /// </summary>
-    public interface IFaaSProvider
+    public interface ICloudFunctionProvider
     {
         /// <summary>
         ///     Execute Function

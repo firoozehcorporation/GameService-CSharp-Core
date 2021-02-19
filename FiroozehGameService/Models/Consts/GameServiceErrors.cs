@@ -45,6 +45,7 @@ namespace FiroozehGameService.Models.Consts
                 public const string InternalError = "internal_error";
                 public const string InvalidInput = "invalid_input";
                 public const string Limited = "Limited";
+                public const string Timeout = "request_timeout";
             }
 
 

@@ -351,7 +351,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<DBaaSResult<TItem>> GetTableItems<TItem>(DBaaSAggregation aggregation)
+        internal static async Task<TableResult<TItem>> GetTableItems<TItem>(TableAggregation aggregation)
         {
             var response = await GsWebRequest.Post(Api.Table + aggregation.Builder.tableId + "/aggregation",
                 aggregation.Builder.AggregationData, CreatePlayTokenHeader());
@@ -359,7 +359,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<DBaaSResult<TItem>>(await reader.ReadToEndAsync());
+                    return JsonConvert.DeserializeObject<TableResult<TItem>>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetTableItems");
             }
