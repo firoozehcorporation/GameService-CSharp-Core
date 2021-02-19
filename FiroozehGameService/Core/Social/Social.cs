@@ -25,38 +25,35 @@ using System.Threading.Tasks;
 using FiroozehGameService.Core.ApiWebRequest;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi.Social;
+using FiroozehGameService.Models.BasicApi.Social.Providers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.Social
 {
-    /// <summary>
-    ///     Represents GameService Social System
-    /// </summary>
-    public class Social
+    internal class Social : SocialProvider
     {
-        /// <summary>
-        ///     The GameService Friend System
-        /// </summary>
-        public Friend Friend;
-
-        /// <summary>
-        ///     The GameService Party System
-        /// </summary>
-        public Party Party;
+        private readonly Friend _friend;
+        private readonly Party _party;
 
         internal Social()
         {
-            Friend = new Friend();
-            Party = new Party();
+            _party = new Party();
+            _friend = new Friend();
+        }
+
+        public override FriendProvider Friend()
+        {
+            return _friend;
+        }
+
+        public override PartyProvider Party()
+        {
+            return _party;
         }
 
 
-        /// <summary>
-        ///     With this command you can get All Event Data
-        /// </summary>
-        /// <returns>returns all Events</returns>
-        public async Task<List<Event>> GetAllEvents()
+        public override async Task<List<Event>> GetAllEvents()
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException(typeof(Social),

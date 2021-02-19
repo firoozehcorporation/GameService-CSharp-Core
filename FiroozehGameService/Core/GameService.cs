@@ -28,6 +28,7 @@ using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Providers;
+using FiroozehGameService.Models.BasicApi.Social.Providers;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Providers;
@@ -175,10 +176,27 @@ namespace FiroozehGameService.Core
         /// </summary>
         public static ISaveProvider Save { get; private set; }
 
+
+        /// <summary>
+        ///     The GameService GsLive System Provider (like TurnBased , RealTime , ...)
+        /// </summary>
+        public static GsLiveProvider GSLive { get; private set; }
+
+        /// <summary>
+        ///     The GameService Social System Provider (like Friends , Parties)
+        /// </summary>
+        public static SocialProvider Social { get; private set; }
+
         #endregion
 
 
         #region GameServiceCoreRegion
+
+        /// <summary>
+        ///     Returns Debug Data
+        /// </summary>
+        public static EventHandler<Debug> OnDebugReceived;
+
 
         internal static bool IsAvailable;
         internal static bool IsGuest;
@@ -191,23 +209,6 @@ namespace FiroozehGameService.Core
         internal static SynchronizationContext SynchronizationContext;
         internal static GameServiceClientConfiguration Configuration { get; private set; }
         internal static GameServiceDebugConfiguration DebugConfiguration { get; private set; }
-
-
-        /// <summary>
-        ///     Returns Debug Data
-        /// </summary>
-        public static EventHandler<Debug> OnDebugReceived;
-
-        /// <summary>
-        ///     The GameService GsLive System (like TurnBased , RealTime , ...)
-        /// </summary>
-        public static GsLiveProvider GSLive { get; private set; }
-
-        /// <summary>
-        ///     The GameService Social System (like Friends , Parties)
-        /// </summary>
-        public static Social.Social Social { get; private set; }
-
 
         internal static DownloadManager DownloadManager;
 

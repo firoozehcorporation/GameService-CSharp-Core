@@ -241,6 +241,9 @@
         <Compile Include="Models\BasicApi\Social\Party.cs"/>
         <Compile Include="Models\BasicApi\Social\PartyInfo.cs"/>
         <Compile Include="Models\BasicApi\Social\PartyMember.cs"/>
+        <Compile Include="Models\BasicApi\Social\Providers\FriendProvider.cs"/>
+        <Compile Include="Models\BasicApi\Social\Providers\PartyProvider.cs"/>
+        <Compile Include="Models\BasicApi\Social\Providers\SocialProvider.cs"/>
         <Compile Include="Models\BasicApi\SubmitScoreResponse.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TAchievement.cs"/>
         <Compile Include="Models\BasicApi\TResponse\TItem.cs"/>
