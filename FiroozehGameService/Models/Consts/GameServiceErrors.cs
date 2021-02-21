@@ -15,15 +15,13 @@
 // </copyright>
 
 
-using FiroozehGameService.Core;
-using FiroozehGameService.Core.Providers.GSLive;
-using FiroozehGameService.Handlers;
-using FiroozehGameService.Models.BasicApi;
-
 /**
 * @author Alireza Ghodrati
 */
 
+
+using FiroozehGameService.Core.Providers.GSLive;
+using FiroozehGameService.Handlers;
 
 namespace FiroozehGameService.Models.Consts
 {
@@ -52,11 +50,6 @@ namespace FiroozehGameService.Models.Consts
             /// <inheritdoc />
             /// <summary>
             ///     Represents GameService Authorize HTTP Errors
-            ///     Errors that occur in the following Functions :
-            ///     <see cref="Login" />
-            ///     <see cref="Login" />
-            ///     <see cref="Login" />
-            ///     <see cref="GameService.SignUp(string,string,string)" />
             /// </summary>
             public class Authorize : Internal
             {
@@ -79,11 +72,6 @@ namespace FiroozehGameService.Models.Consts
             /// <inheritdoc />
             /// <summary>
             ///     Represents GameService LoginOrSignUp HTTP Errors
-            ///     Errors that occur in the following Functions :
-            ///     <see cref="GameService.Login()" />
-            ///     <see cref="GameService.Login(string)" />
-            ///     <see cref="GameService.Login(string,string)" />
-            ///     <see cref="GameService.SignUp(string,string,string)" />
             /// </summary>
             public class LoginOrSignUp : Authorize
             {
@@ -95,8 +83,6 @@ namespace FiroozehGameService.Models.Consts
             /// <inheritdoc />
             /// <summary>
             ///     Represents GameService GetLastLoginMemberInfo HTTP Errors
-            ///     Errors that occur in the following Functions :
-            ///     <see cref="GameService.GetLastLoginMemberInfo" />
             /// </summary>
             public class GetLastLoginMemberInfo : Authorize
             {
@@ -110,9 +96,6 @@ namespace FiroozehGameService.Models.Consts
             /// <summary>
             ///     Represents GameService Save HTTP Errors
             ///     Errors that occur in the following Functions :
-            ///     <see cref="GameService.SaveGame(string,object)" />
-            ///     <see cref="GameService.GetSaveGame{T}()" />
-            ///     <see cref="GameService.RemoveLastSave()" />
             /// </summary>
             public class Save : Internal
             {
@@ -123,9 +106,6 @@ namespace FiroozehGameService.Models.Consts
             /// <inheritdoc />
             /// <summary>
             ///     Represents GameService Achievement HTTP Errors
-            ///     Errors that occur in the following Functions :
-            ///     <see cref="GameService.GetAchievements()" />
-            ///     <see cref="GameService.UnlockAchievement(string)" />
             /// </summary>
             public class Achievement : Internal
             {
@@ -138,11 +118,6 @@ namespace FiroozehGameService.Models.Consts
             /// <inheritdoc />
             /// <summary>
             ///     Represents GameService Leaderboard HTTP Errors
-            ///     Errors that occur in the following Functions :
-            ///     <see cref="GameService.GetLeaderBoards()" />
-            ///     <see cref="GameService.GetLeaderBoardDetails" />
-            ///     <see cref="GameService.GetCurrentPlayerScore" />
-            ///     <see cref="GameService.SubmitScore(string,int)" />
             /// </summary>
             public class Leaderboard : Internal
             {
@@ -154,9 +129,6 @@ namespace FiroozehGameService.Models.Consts
 
             /// <summary>
             ///     Represents GameService DownloadAssets HTTP Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.DownloadAsset(string,string)" />
-            ///     <see cref="GameService.DownloadAsset(string)" />
             ///     And You Can Handle Them in <see cref="DownloadEventHandlers.DownloadError" />
             /// </summary>
             public class DownloadAssets
@@ -167,18 +139,11 @@ namespace FiroozehGameService.Models.Consts
 
 
             /// <summary>
-            ///     Represents GameService Bucket HTTP Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.AddBucketItem{TBucket}" />
-            ///     <see cref="GameService.GetBucketItem{TBucket}" />
-            ///     <see cref="GameService.GetBucketItems{TBucket}" />
-            ///     <see cref="GameService.DeleteBucketItem" />
-            ///     <see cref="GameService.DeleteBucketItems" />
-            ///     <see cref="GameService.UpdateBucketItem{TBucket}" />
+            ///     Represents GameService Table HTTP Errors
             /// </summary>
-            public class Bucket : Internal
+            public class Table : Internal
             {
-                public const string BucketNotfound = "bucket_notfound";
+                public const string TableNotfound = "bucket_notfound";
                 public const string PermissionDenied = "permission_denied";
                 public const string PlanLimit = "plan_limit";
                 public const string AccountNotfound = "account_notfound";
@@ -192,8 +157,6 @@ namespace FiroozehGameService.Models.Consts
 
             /// <summary>
             ///     Represents GameService EditCurrentPlayer HTTP Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.EditCurrentPlayerProfile(EditUserProfile)" />
             /// </summary>
             public class EditCurrentPlayer
             {
@@ -202,8 +165,6 @@ namespace FiroozehGameService.Models.Consts
 
             /// <summary>
             ///     Represents GameService ChangePassword HTTP Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.ChangePassword(string, string)" />
             /// </summary>
             public class ChangePassword
             {
@@ -213,31 +174,11 @@ namespace FiroozehGameService.Models.Consts
             }
 
             /// <summary>
-            ///     Represents GameService GetActiveDevices HTTP Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.GetActiveDevices()" />
-            /// </summary>
-            public class GetActiveDevices
-            {
-            }
-
-            /// <summary>
             ///     Represents GameService RevokeActiveDevice HTTP Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.RevokeActiveDevice(string)" />
             /// </summary>
             public class RevokeActiveDevice
             {
                 public const string DeviceNotfound = "device_notfound";
-            }
-
-            /// <summary>
-            ///     Represents GameService GetCurrentGame HTTP Errors
-            ///     Errors that occur in the following Functions:
-            ///     <see cref="GameService.GetCurrentGame" />
-            /// </summary>
-            public class GetCurrentGame
-            {
             }
         }
 
@@ -480,7 +421,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService SubscribeChannel Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GsLiveChat.SubscribeChannel" />
+                ///     <see cref="SubscribeChannel" />
                 /// </summary>
                 public class SubscribeChannel
                 {
@@ -490,7 +431,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService SendChannelMessage Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GsLiveChat.SendChannelMessage" />
+                ///     <see cref="SendChannelMessage" />
                 /// </summary>
                 public class SendChannelMessage
                 {
@@ -500,7 +441,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService UnSubscribeChannel Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GsLiveChat.UnSubscribeChannel" />
+                ///     <see cref="UnSubscribeChannel" />
                 /// </summary>
                 public class UnSubscribeChannel
                 {
