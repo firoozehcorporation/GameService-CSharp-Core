@@ -33,13 +33,13 @@ namespace FiroozehGameService.Models.BasicApi.Social.Providers
         /// <summary>
         ///     The GameService Friend System Provider
         /// </summary>
-        public abstract FriendProvider Friend();
+        public abstract FriendProvider Friends();
 
 
         /// <summary>
         ///     The GameService Party System
         /// </summary>
-        public abstract PartyProvider Party();
+        public abstract PartyProvider Parties();
 
 
         /// <summary>
