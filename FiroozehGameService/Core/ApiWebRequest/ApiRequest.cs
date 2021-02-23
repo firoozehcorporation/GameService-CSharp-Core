@@ -995,7 +995,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<bool> LeftParty(string partyId)
+        internal static async Task<bool> LeaveParty(string partyId)
         {
             var response = await GsWebRequest.Delete(Api.Parties + partyId, CreatePlayTokenHeader());
 

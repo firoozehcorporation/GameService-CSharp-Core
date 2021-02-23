@@ -48,10 +48,10 @@ namespace FiroozehGameService.Models.BasicApi.Social.Providers
 
 
         /// <summary>
-        ///     Left The Party With PartyID
+        ///     Leave The Party With PartyID
         /// </summary>
         /// <param name="partyId">(NOTNULL)the Party id</param>
-        public abstract Task<bool> LeftParty(string partyId);
+        public abstract Task<bool> LeaveParty(string partyId);
 
 
         /// <summary>

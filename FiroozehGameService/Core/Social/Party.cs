@@ -63,16 +63,16 @@ namespace FiroozehGameService.Core.Social
         }
 
 
-        public override async Task<bool> LeftParty(string partyId)
+        public override async Task<bool> LeaveParty(string partyId)
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
-                    "LeftParty");
+                    "LeaveParty");
             if (string.IsNullOrEmpty(partyId))
                 throw new GameServiceException("partyId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
-                    "LeftParty");
+                    "LeaveParty");
 
-            return await ApiRequest.LeftParty(partyId);
+            return await ApiRequest.LeaveParty(partyId);
         }
 
 
