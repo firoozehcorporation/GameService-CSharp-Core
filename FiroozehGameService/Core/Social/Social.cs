@@ -42,12 +42,12 @@ namespace FiroozehGameService.Core.Social
             _friend = new Friend();
         }
 
-        public override FriendProvider Friend()
+        public override FriendProvider Friends()
         {
             return _friend;
         }
 
-        public override PartyProvider Party()
+        public override PartyProvider Parties()
         {
             return _party;
         }
