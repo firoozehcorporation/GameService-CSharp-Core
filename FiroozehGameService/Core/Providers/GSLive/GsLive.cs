@@ -64,6 +64,11 @@ namespace FiroozehGameService.Core.Providers.GSLive
             return _chat;
         }
 
+        public override short GetPing()
+        {
+            return CommandHandler.GetPing();
+        }
+
         public override bool IsCommandAvailable()
         {
             return CommandHandler.IsAvailable;

@@ -48,9 +48,10 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionChatRoomDetails = 19;
         internal const int ActionGetLastChats = 20;
         internal const int ActionGetPendingChats = 21;
-        
-        internal const int ActionKeepAlive = byte.MaxValue;
 
+        internal const int ActionMirror = 99;
+
+        internal const int ActionKeepAlive = byte.MaxValue;
 
 
         internal const int Error = 100;

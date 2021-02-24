@@ -55,6 +55,13 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
+        ///     Get The Ping
+        /// </summary>
+        /// <returns>returns The Ping</returns>
+        public abstract short GetPing();
+
+
+        /// <summary>
         ///     check if Command Services are Available
         /// </summary>
         /// <returns>returns true if Command Services are Available</returns>

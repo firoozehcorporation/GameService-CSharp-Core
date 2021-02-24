@@ -67,11 +67,12 @@ namespace FiroozehGameService.Core.Socket
                 Client.OnStateChanged += ClientOnOnStateChanged;
                 Client.OnMessageReceived += ClientOnOnMessageReceived;
 
-                DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime,"CreateInstance","GsUdpClient Created");
+                DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "CreateInstance", "GsUdpClient Created");
             }
             else
-                DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime,"CreateInstance","Token Is NULL");
-            
+            {
+                DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime, "CreateInstance", "Token Is NULL");
+            }
         }
 
 
@@ -120,23 +121,19 @@ namespace FiroozehGameService.Core.Socket
             if (Client?.State == ClientState.Connected)
             {
                 packet.SendType = type;
-                if (packet.Action == RealTimeConst.ActionPing)
-                    packet.ClientSendTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 var buffer = PacketSerializable.Serialize(packet);
 
-                if (!canSendBigSize)
-                    if (!PacketUtil.CheckPacketSize(buffer))
-                    {
-                        throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " +
-                                                       RealTimeConst.MaxPacketSize + " bytes.")
-                            .LogException<GsUdpClient>(DebugLocation.RealTime,"Send");
-                    }
-                
+                if (!canSendBigSize && !PacketUtil.CheckPacketSize(buffer))
+                    throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " +
+                                                   RealTimeConst.MaxPacketSize + " bytes.")
+                        .LogException<GsUdpClient>(DebugLocation.RealTime, "Send");
+
                 Client?.Send(buffer, buffer.Length);
             }
             else
-                DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime,"Send","Client not Connected!");
-            
+            {
+                DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime, "Send", "Client not Connected!");
+            }
         }
 
         internal override void StopReceiving()
@@ -147,7 +144,7 @@ namespace FiroozehGameService.Core.Socket
             }
             catch (Exception e)
             {
-                e.LogException<GsUdpClient>(DebugLocation.RealTime,"StopReceiving");
+                e.LogException<GsUdpClient>(DebugLocation.RealTime, "StopReceiving");
             }
 
             Client = null;

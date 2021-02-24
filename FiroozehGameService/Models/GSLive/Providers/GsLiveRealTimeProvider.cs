@@ -150,10 +150,6 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="limit">(Max = 15) The Result Limits</param>
         public abstract Task FindMember(string query, int limit = 10);
 
-        /// <summary>
-        ///     Get The Ping
-        /// </summary>
-        public abstract short GetPing();
 
         internal abstract void SendEvent(byte[] caller, byte[] data, GProtocolSendType sendType);
 

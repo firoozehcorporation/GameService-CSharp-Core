@@ -40,10 +40,10 @@ namespace FiroozehGameService.Core.Socket
     {
         private const short CommandTimeOutWait = 700;
         private const short TurnTimeOutWait = 500;
-        
+
         private TcpClient _client;
         private NetworkStream _clientStream;
-        
+
 
         public GsTcpClient(Area area = null)
         {
@@ -55,23 +55,27 @@ namespace FiroozehGameService.Core.Socket
 
         private async void KeepAliveCaller(object sender, byte[] payload)
         {
+            if (Type == GSLiveType.Command) return;
+
             await SendAsync(payload);
         }
 
         private void OnTcpClientConnected(object sender, TcpClient client)
         {
-            if(Type != (GSLiveType) sender) return;
-            
+            if (Type != (GSLiveType) sender) return;
+
             _client = client;
             _clientStream = _client.GetStream();
             OperationCancellationToken = new CancellationTokenSource();
             IsAvailable = true;
-            
-            DebugUtil.LogNormal<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,"OnTcpClientConnected","GsTcpClient -> Init Done");
 
-            CoreEventHandlers.OnGsTcpClientConnected?.Invoke(sender,client);
+            DebugUtil.LogNormal<GsTcpClient>(
+                Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "OnTcpClientConnected",
+                "GsTcpClient -> Init Done");
+
+            CoreEventHandlers.OnGsTcpClientConnected?.Invoke(sender, client);
         }
-        
+
 
         internal override async Task Init(CommandInfo info)
         {
@@ -84,24 +88,29 @@ namespace FiroozehGameService.Core.Socket
                 var port = CommandInfo?.Port ?? Area.Port;
                 var timeOutWait = CommandInfo == null ? TurnTimeOutWait : CommandTimeOutWait;
 
-                DebugUtil.LogNormal<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,"Init","GsTcpClient -> Init Started...");
+                DebugUtil.LogNormal<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Init",
+                    "GsTcpClient -> Init Started...");
 
-                
-                await new TcpClientWithTimeout(ip, port,timeOutWait).Connect(Type);
+
+                await new TcpClientWithTimeout(ip, port, timeOutWait).Connect(Type);
             }
             catch (Exception e)
             {
-                e.LogException<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Init");
+                e.LogException<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Init");
             }
         }
-        
+
 
         internal override async Task StartReceiving()
         {
-            DebugUtil.LogNormal<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,"StartReceiving","GsTcpClient -> StartReceiving");
-            
+            DebugUtil.LogNormal<GsTcpClient>(
+                Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StartReceiving",
+                "GsTcpClient -> StartReceiving");
+
             KeepAliveUtil?.Start();
-           
+
             while (IsAvailable)
                 try
                 {
@@ -122,8 +131,10 @@ namespace FiroozehGameService.Core.Socket
                 }
                 catch (Exception e)
                 {
-                    e.LogException<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StartReceiving");
-                    
+                    e.LogException<GsTcpClient>(
+                        Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
+                        "StartReceiving");
+
                     if (!(e is OperationCanceledException || e is ObjectDisposedException ||
                           e is ArgumentOutOfRangeException))
                         OnClosed(new ErrorArg {Error = e.ToString()});
@@ -154,12 +165,13 @@ namespace FiroozehGameService.Core.Socket
             }
             catch (Exception e)
             {
-                e.LogException<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
+                e.LogException<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
                 OnClosed(new ErrorArg {Error = e.ToString()});
-            }   
+            }
         }
-        
-        
+
+
         internal override async Task SendAsync(Packet packet)
         {
             try
@@ -173,7 +185,8 @@ namespace FiroozehGameService.Core.Socket
             }
             catch (Exception e)
             {
-                e.LogException<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
+                e.LogException<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
                 OnClosed(new ErrorArg {Error = e.ToString()});
             }
         }
@@ -192,14 +205,17 @@ namespace FiroozehGameService.Core.Socket
                 _client?.GetStream().Close();
                 _client?.Close();
                 _client = null;
-                
+
                 OperationCancellationToken = null;
-                
-                DebugUtil.LogNormal<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,"StopReceiving","GsTcpClient -> StopReceiving Done");
+
+                DebugUtil.LogNormal<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StopReceiving",
+                    "GsTcpClient -> StopReceiving Done");
             }
             catch (Exception e)
             {
-                e.LogException<GsTcpClient>(Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StopReceiving");
+                e.LogException<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StopReceiving");
             }
         }
     }

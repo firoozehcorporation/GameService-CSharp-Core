@@ -52,9 +52,7 @@ namespace FiroozehGameService.Handlers.RealTime
             CoreEventHandlers.Authorized += OnAuth;
             CoreEventHandlers.OnMemberId += OnMemberId;
             CoreEventHandlers.GProtocolConnected += OnConnected;
-            CoreEventHandlers.Ping += Ping;
             CoreEventHandlers.OnLeftDispose += OnLeftDispose;
-            PingUtil.RequestPing += RequestPing;
             ObserverCompacterUtil.SendObserverEventHandler += SendObserverEventHandler;
 
             InitRequestMessageHandlers();
@@ -78,7 +76,6 @@ namespace FiroozehGameService.Handlers.RealTime
 
             _udpClient?.StopReceiving();
             _observer?.Dispose();
-            PingUtil.Dispose();
 
             ObserverCompacterUtil.Dispose();
 
@@ -108,28 +105,6 @@ namespace FiroozehGameService.Handlers.RealTime
             MemberId = id;
         }
 
-
-        private void RequestPing(object sender, EventArgs e)
-        {
-            if (IsAvailable) Request(GetPingHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
-        }
-
-        internal static short GetPing()
-        {
-            return (short) PingUtil.GetLastPing();
-        }
-
-        private static void Ping(object sender, APacket packet)
-        {
-            if (sender.GetType() != typeof(PingResponseHandler)) return;
-            var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            var sendTime = (packet as Packet)?.ClientSendTime;
-            if (sendTime == null) return;
-
-            var diff = PingUtil.Diff(currentTime, sendTime.Value);
-            PingUtil.SetLastPing(diff);
-        }
-
         private void OnConnected(object sender, EventArgs e)
         {
             // Send Auth When Connected
@@ -144,13 +119,14 @@ namespace FiroozehGameService.Handlers.RealTime
             if (sender.GetType() != typeof(AuthResponseHandler)) return;
 
             // this is Reconnect
-            if (PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
-
-            // Get Only in First Connect
-            if (PlayerHash != 0) return;
+            if (PlayerHash != 0)
+            {
+                RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
+                return;
+            }
 
             PlayerHash = (ulong) playerHash;
-            PingUtil.Init();
+
             ObserverCompacterUtil.Init();
             Request(SnapShotHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
             GsSerializer.CurrentPlayerJoinRoom?.Invoke(this, null);

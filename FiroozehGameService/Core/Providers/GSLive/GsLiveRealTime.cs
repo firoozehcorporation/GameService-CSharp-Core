@@ -25,7 +25,6 @@ using System.Text;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
-using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
@@ -288,21 +287,6 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(FindMemberHandler.Signature,
                 new RoomDetail {Max = limit, UserOrMemberId = query});
-        }
-
-        /// <summary>
-        ///     Get The Ping
-        /// </summary>
-        public override short GetPing()
-        {
-            if (GameService.IsGuest)
-                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "GetPing");
-            if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "GetPing");
-
-            return RealTimeHandler.GetPing();
         }
 
 
