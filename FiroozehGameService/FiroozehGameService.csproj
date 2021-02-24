@@ -275,6 +275,7 @@
         <Compile Include="Models\Enums\GSLive\TB\PropertyAction.cs"/>
         <Compile Include="Models\Enums\GSLive\TB\PropertyType.cs"/>
         <Compile Include="Models\Enums\GsWebRequestMethod.cs"/>
+        <Compile Include="Models\Enums\LeaderboardOrderTypes.cs"/>
         <Compile Include="Models\Enums\LogType.cs"/>
         <Compile Include="Models\EventArgs\Debug.cs"/>
         <Compile Include="Models\EventArgs\DownloadCancelledArgs.cs"/>

@@ -1004,7 +1004,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
-                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "LeftParty");
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "LeaveParty");
             }
         }
 

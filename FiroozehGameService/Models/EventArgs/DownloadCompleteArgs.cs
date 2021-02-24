@@ -30,7 +30,7 @@ namespace FiroozehGameService.Models.EventArgs
     {
         /// <summary>
         ///     Gets the Downloaded Asset As Bytes
-        ///     Notes : Only Available When Use this Function <see cref="GameService.DownloadAsset(string)" />
+        ///     Notes : Only Available When Use this Function <see cref="GameService.Assets.DownloadAsset(string)" />
         /// </summary>
         /// <value>the Downloaded Assets As Bytes</value>
         public byte[] DownloadedAssetAsBytes { internal set; get; }
@@ -38,7 +38,7 @@ namespace FiroozehGameService.Models.EventArgs
 
         /// <summary>
         ///     Gets the Downloaded Asset Path
-        ///     Notes : Only Available When Use this Function <see cref="GameService.DownloadAsset(string,string)" />
+        ///     Notes : Only Available When Use this Function <see cref="GameService.Assets.DownloadAsset(string,string)" />
         /// </summary>
         /// <value>the Downloaded Asset Path </value>
         public string DownloadedAssetPath { internal set; get; }

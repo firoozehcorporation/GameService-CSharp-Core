@@ -32,15 +32,7 @@ namespace FiroozehGameService.Models.BasicApi
         ///     Gets the Achievement Description.
         /// </summary>
         /// <value>the Achievement Description</value>
-        [JsonProperty("desc")] public string Desc;
-
-
-        /// <summary>
-        ///     Gets the Status of Earned Achievement
-        ///     if the status is True You Earned this Achievement Before
-        /// </summary>
-        /// <value>the Status of Earned Achievement</value>
-        [JsonProperty("earned")] public bool Earned;
+        [JsonProperty("desc")] public string Description;
 
 
         /// <summary>
@@ -54,6 +46,14 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Achievement Cover URL</value>
         [JsonProperty("image")] public string Image;
+
+
+        /// <summary>
+        ///     Gets the Status of Earned Achievement
+        ///     if the status is True You Earned this Achievement Before
+        /// </summary>
+        /// <value>the Status of Earned Achievement</value>
+        [JsonProperty("earned")] public bool IsUnlocked;
 
 
         /// <summary>
@@ -90,12 +90,12 @@ namespace FiroozehGameService.Models.BasicApi
             return "Achievement{" +
                    "name='" + Name + '\'' +
                    ", key='" + Key + '\'' +
-                   ", desc='" + Desc + '\'' +
+                   ", Description='" + Description + '\'' +
                    ", point=" + Point +
                    ", image='" + Image + '\'' +
                    ", status=" + Status +
                    ", game='" + Game + '\'' +
-                   ", earned=" + Earned +
+                   ", IsUnlocked=" + IsUnlocked +
                    '}';
         }
     }

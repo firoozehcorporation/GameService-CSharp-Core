@@ -20,6 +20,7 @@
 */
 
 using System;
+using FiroozehGameService.Models.Enums;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
@@ -30,6 +31,12 @@ namespace FiroozehGameService.Models.BasicApi
     [Serializable]
     public class LeaderBoard
     {
+        /// <summary>
+        ///     Gets the LeaderBoard Description.
+        /// </summary>
+        /// <value>the LeaderBoard Description</value>
+        [JsonProperty("desc")] public string Description;
+
         /// <summary>
         ///     Gets the LeaderBoard Form Value.
         ///     this Value Sets In GameService Developers Panel.
@@ -71,7 +78,7 @@ namespace FiroozehGameService.Models.BasicApi
         ///     this Type Sets In GameService Developers Panel.
         /// </summary>
         /// <value>the LeaderBoard Order Type</value>
-        [JsonProperty("order")] public int Order;
+        [JsonProperty("order")] public LeaderboardOrderTypes OrderType;
 
 
         /// <summary>
@@ -97,9 +104,10 @@ namespace FiroozehGameService.Models.BasicApi
                    ", key='" + Key + '\'' +
                    ", status=" + Status +
                    ", image='" + Image + '\'' +
+                   ", Description='" + Description + '\'' +
                    ", from=" + From +
                    ", to=" + To +
-                   ", order=" + Order +
+                   ", OrderType=" + OrderType +
                    ", game='" + Game + '\'' +
                    '}';
         }
