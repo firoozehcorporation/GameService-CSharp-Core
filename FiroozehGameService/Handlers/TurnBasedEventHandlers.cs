@@ -76,7 +76,7 @@ namespace FiroozehGameService.Handlers
 
         /// <summary>
         ///     Returns NewOrUpdate Property From Another Players When Call The Following Functions :
-        ///     <see cref="GsLiveTurnBased.SetProperty" />
+        ///     <see cref="GsLiveTurnBased.SetOrUpdateProperty" />
         ///     <see cref="GsLiveTurnBased.RemoveProperty" />
         /// </summary>
         public static EventHandler<PropertyPayload> PropertyUpdated;

@@ -75,7 +75,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         ///     put the next player ID in the function entry
         ///     You can use this function several times
         /// </summary>
-        /// <param name="data">(NULLABLE)Room's Role </param>
+        /// <param name="data">(NULLABLE) Data to Send </param>
         /// <param name="whoIsNext">(NULLABLE) Next Player's ID </param>
         public abstract Task TakeTurn(string data = null, string whoIsNext = null);
 
@@ -91,10 +91,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <summary>
         ///     Every Member can Set Properties to Sync Data With EachOthers
         /// </summary>
-        /// <param name="key">(NOTNULL)  The Key Value</param>
-        /// <param name="value">(NOTNULL) The Value of Key </param>
         /// <param name="type">The Type of Property </param>
-        public abstract Task SetProperty(PropertyType type, string key, string value);
+        /// <param name="propertyData">(NOTNULL) The property Data</param>
+        public abstract Task SetOrUpdateProperty(PropertyType type, KeyValuePair<string, string> propertyData);
 
 
         /// <summary>

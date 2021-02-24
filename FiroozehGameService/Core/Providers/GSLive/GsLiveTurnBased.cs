@@ -132,7 +132,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
         }
 
 
-        public override async Task SetProperty(PropertyType type, string key, string value)
+        public override async Task SetOrUpdateProperty(PropertyType type, KeyValuePair<string, string> propertyData)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveTurnBased>(
@@ -141,11 +141,11 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveTurnBased>(
                     DebugLocation.TurnBased, "SetProperty");
 
-            if (string.IsNullOrEmpty(key))
-                throw new GameServiceException("Key Cant Be EmptyOrNull").LogException<GsLiveTurnBased>(
+            if (string.IsNullOrEmpty(propertyData.Key))
+                throw new GameServiceException("property Key Cant Be EmptyOrNull").LogException<GsLiveTurnBased>(
                     DebugLocation.TurnBased, "SetProperty");
-            if (string.IsNullOrEmpty(value))
-                throw new GameServiceException("Value Cant Be EmptyOrNull").LogException<GsLiveTurnBased>(
+            if (string.IsNullOrEmpty(propertyData.Value))
+                throw new GameServiceException("property Value Cant Be EmptyOrNull").LogException<GsLiveTurnBased>(
                     DebugLocation.TurnBased, "SetProperty");
 
             await GameService.GSLive.GetGsHandler().TurnBasedHandler.RequestAsync(PropertyHandler.Signature,
@@ -154,7 +154,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     Action = type == PropertyType.Member
                         ? InternalPropertyAction.MemberSetOrUpdate
                         : InternalPropertyAction.RoomSetOrUpdate,
-                    Id = key, Data = value
+                    Id = propertyData.Key, Data = propertyData.Value
                 });
         }
 

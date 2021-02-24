@@ -554,7 +554,7 @@ namespace FiroozehGameService.Models.Consts
                 /// <summary>
                 ///     Represents GameService SetProperty Errors
                 ///     Errors that occur in the following Functions:
-                ///     <see cref="GsLiveTurnBased.SetProperty" />
+                ///     <see cref="GsLiveTurnBased.SetOrUpdateProperty" />
                 /// </summary>
                 public class SetProperty
                 {

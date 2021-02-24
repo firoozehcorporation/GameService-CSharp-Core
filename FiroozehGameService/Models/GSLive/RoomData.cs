@@ -31,16 +31,29 @@ namespace FiroozehGameService.Models.GSLive
     public class RoomData
     {
         /// <summary>
+        ///     Gets the Room Create Time.
+        /// </summary>
+        /// <value>the Room Create Time</value>
+        [JsonProperty("13")] public DateTimeOffset CreateTime;
+
+        /// <summary>
         ///     Gets the Room Creator Id.
         /// </summary>
         /// <value>the Room Creator Id</value>
-        [JsonProperty("4")] public string Creator;
+        [JsonProperty("4")] public string CreatorId;
 
         /// <summary>
         ///     Gets the Current Room id.
         /// </summary>
         /// <value>the Room id</value>
         [JsonProperty("1")] public string Id;
+
+
+        /// <summary>
+        ///     Gets the Room Persist Status.
+        /// </summary>
+        /// <value>the Room Persist Status</value>
+        [JsonProperty("12")] public bool IsPersist;
 
 
         /// <summary>
@@ -90,31 +103,17 @@ namespace FiroozehGameService.Models.GSLive
 
 
         /// <summary>
+        ///     Gets the Room Properties.
+        /// </summary>
+        /// <value>the Room Properties</value>
+        [JsonProperty("11")] public Dictionary<string, string> Properties;
+
+
+        /// <summary>
         ///     Gets the Room Role Value.
         ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
         /// </summary>
         /// <value>the Room Role Value</value>
         [JsonProperty("7")] public string Role;
-
-
-        /// <summary>
-        ///     Gets the Room Persist Status.
-        /// </summary>
-        /// <value>the Room Persist Status</value>
-        [JsonProperty("12")] public bool IsPersist;
-
-
-        /// <summary>
-        ///     Gets the Room Properties.
-        /// </summary>
-        /// <value>the Room Properties</value>
-        [JsonProperty("11")] public Dictionary<string,string> Properties;
-        
-        
-        /// <summary>
-        ///     Gets the Room Create Time.
-        /// </summary>
-        /// <value>the Room Create Time</value>
-        [JsonProperty("13")] public DateTimeOffset CreateTime;
     }
 }
