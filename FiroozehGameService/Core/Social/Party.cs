@@ -27,6 +27,7 @@ using FiroozehGameService.Models;
 using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.BasicApi.Social;
 using FiroozehGameService.Models.BasicApi.Social.Providers;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.Internal;
@@ -164,6 +165,38 @@ namespace FiroozehGameService.Core.Social
             return await ApiRequest.SetOrUpdateMemberVariable(partyId, variable);
         }
 
+        public override async Task<string> GetMemberVariable(string partyId, string variableKey)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
+                    "GetMemberVariable");
+            if (string.IsNullOrEmpty(partyId))
+                throw new GameServiceException("partyId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
+                    "GetMemberVariable");
+            if (string.IsNullOrEmpty(variableKey))
+                throw new GameServiceException("variableKey Cant Be EmptyOrNull").LogException<Party>(
+                    DebugLocation.Party,
+                    "GetMemberVariable");
+
+            var variables = await ApiRequest.GetMemberVariables(partyId);
+            if (!variables.ContainsKey(variableKey))
+                throw new GameServiceException(GameServiceErrors.Social.Party.GetMemberVariables.VariableKeyNotfound);
+
+            return variables[variableKey];
+        }
+
+        public override async Task<Dictionary<string, string>> GetMemberVariables(string partyId)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
+                    "GetMemberVariables");
+            if (string.IsNullOrEmpty(partyId))
+                throw new GameServiceException("partyId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
+                    "GetMemberVariables");
+
+            return await ApiRequest.GetMemberVariables(partyId);
+        }
+
 
         public override async Task<PartyData> DeleteVariable(string partyId, string variableKey)
         {
@@ -220,6 +253,39 @@ namespace FiroozehGameService.Core.Social
                     "DeleteMemberVariables");
 
             return await ApiRequest.DeleteMemberVariables(partyId);
+        }
+
+        public override async Task<bool> DeleteMemberVariable(string partyId, string memberId, string variableKey)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
+                    "DeleteMemberVariable");
+            if (string.IsNullOrEmpty(partyId))
+                throw new GameServiceException("partyId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
+                    "DeleteMemberVariable");
+            if (string.IsNullOrEmpty(memberId))
+                throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
+                    "DeleteMemberVariable");
+            if (string.IsNullOrEmpty(variableKey))
+                throw new GameServiceException("variableKey Cant Be EmptyOrNull").LogException<Party>(
+                    DebugLocation.Party, "DeleteMemberVariable");
+
+            return await ApiRequest.DeleteMemberVariable(partyId, memberId, variableKey);
+        }
+
+        public override async Task<bool> DeleteMemberVariables(string partyId, string memberId)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException<Party>(DebugLocation.Party,
+                    "DeleteMemberVariables");
+            if (string.IsNullOrEmpty(partyId))
+                throw new GameServiceException("partyId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
+                    "DeleteMemberVariables");
+            if (string.IsNullOrEmpty(memberId))
+                throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException<Party>(DebugLocation.Party,
+                    "DeleteMemberVariable");
+
+            return await ApiRequest.DeleteMemberVariables(partyId, memberId);
         }
 
 

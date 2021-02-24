@@ -387,6 +387,16 @@ namespace FiroozehGameService.Models.Consts
                 {
                     public const string MemberNotfound = "member_notfound";
                 }
+
+                /// <summary>
+                ///     Represents GameService GetMemberVariables HTTP Errors
+                ///     Errors that occur in the following Functions:
+                ///     <see cref="Core.Social.Party.DeleteMemberVariables" />
+                /// </summary>
+                public class GetMemberVariables
+                {
+                    public const string VariableKeyNotfound = "variableKey_notfound";
+                }
             }
         }
 

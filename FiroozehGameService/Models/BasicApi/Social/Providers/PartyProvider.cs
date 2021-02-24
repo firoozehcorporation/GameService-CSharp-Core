@@ -104,6 +104,20 @@ namespace FiroozehGameService.Models.BasicApi.Social.Providers
         /// </param>
         public abstract Task<bool> SetOrUpdateMemberVariable(string partyId, KeyValuePair<string, string> variable);
 
+        /// <summary>
+        ///     Get Current Member Variable with Variable Key
+        /// </summary>
+        /// <param name="partyId">(NOTNULL)The Party id</param>
+        /// <param name="variableKey">(NOTNULL)The Variable Key</param>
+        public abstract Task<string> GetMemberVariable(string partyId, string variableKey);
+
+
+        /// <summary>
+        ///     Get Current Member Variables
+        /// </summary>
+        /// <param name="partyId">(NOTNULL)The Party id</param>
+        public abstract Task<Dictionary<string, string>> GetMemberVariables(string partyId);
+
 
         /// <summary>
         ///     Delete Party Variable with Variable Key
@@ -137,6 +151,25 @@ namespace FiroozehGameService.Models.BasicApi.Social.Providers
         /// </summary>
         /// <param name="partyId">(NOTNULL)The Party id</param>
         public abstract Task<bool> DeleteMemberVariables(string partyId);
+
+
+        /// <summary>
+        ///     Delete Party Current Member Variable with Variable Key By Admins Or Creator
+        ///     NOTE : Only Admins Or Creator Can Call This Function
+        /// </summary>
+        /// <param name="partyId">(NOTNULL)The Party id</param>
+        /// <param name="memberId">(NOTNULL)The Member id</param>
+        /// <param name="variableKey">(NOTNULL)The Variable Key</param>
+        public abstract Task<bool> DeleteMemberVariable(string partyId, string memberId, string variableKey);
+
+
+        /// <summary>
+        ///     Delete Party Current Member Variables with Variable Key By Admins Or Creator
+        ///     NOTE : Only Admins Or Creator Can Call This Function
+        /// </summary>
+        /// <param name="partyId">(NOTNULL)The Party id</param>
+        /// <param name="memberId">(NOTNULL)The Member id</param>
+        public abstract Task<bool> DeleteMemberVariables(string partyId, string memberId);
 
 
         /// <summary>

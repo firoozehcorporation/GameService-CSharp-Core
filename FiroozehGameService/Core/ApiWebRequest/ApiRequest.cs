@@ -838,7 +838,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 Name = valuePair.Key,
                 Value = valuePair.Value
-            });
+            }, new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore});
 
             var response =
                 await GsWebRequest.Put(Api.Parties + partyId + "/values/member", body, CreatePlayTokenHeader());
@@ -880,6 +880,22 @@ namespace FiroozehGameService.Core.ApiWebRequest
             }
         }
 
+
+        internal static async Task<bool> DeleteMemberVariable(string partyId, string memberId, string variableKey)
+        {
+            var response = await GsWebRequest.Delete(
+                Api.Parties + partyId + "/member/" + memberId + "/values/" + variableKey,
+                CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteMemberVariable");
+            }
+        }
+
         internal static async Task<Party> DeleteVariables(string partyId)
         {
             var response = await GsWebRequest.Delete(Api.Parties + partyId + "/values", CreatePlayTokenHeader());
@@ -897,6 +913,21 @@ namespace FiroozehGameService.Core.ApiWebRequest
         internal static async Task<bool> DeleteMemberVariables(string partyId)
         {
             var response = await GsWebRequest.Delete(Api.Parties + partyId + "/values/member", CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync()).Status;
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "DeleteMemberVariables");
+            }
+        }
+
+
+        internal static async Task<bool> DeleteMemberVariables(string partyId, string memberId)
+        {
+            var response = await GsWebRequest.Delete(Api.Parties + partyId + "/member/" + memberId + "/values",
+                CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -1049,6 +1080,20 @@ namespace FiroozehGameService.Core.ApiWebRequest
                     return JsonConvert.DeserializeObject<List<Member>>(await reader.ReadToEndAsync());
                 throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetPartyPendingRequests");
+            }
+        }
+
+
+        internal static async Task<Dictionary<string, string>> GetMemberVariables(string partyId)
+        {
+            var response = await GsWebRequest.Get(Api.Parties + partyId + "/values/member", CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<Dictionary<string, string>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "GetMemberVariables");
             }
         }
 
