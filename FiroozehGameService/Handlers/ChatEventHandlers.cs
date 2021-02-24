@@ -66,7 +66,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChat.GetChannelMembers" />
         /// </summary>
-        public static EventHandler<List<Member>> ChannelsMembers;
+        public static EventHandler<List<Member>> ChannelMembers;
 
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChat.GetChannelRecentMessages" />
         /// </summary>
-        public static EventHandler<List<Chat>> ChannelsRecentMessages;
+        public static EventHandler<List<Chat>> ChannelRecentMessages;
 
 
         /// <summary>
