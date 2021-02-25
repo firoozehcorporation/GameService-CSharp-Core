@@ -82,8 +82,7 @@ namespace FiroozehGameService.Handlers.Command
             var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             var lastCurrentTime = long.Parse(packet.Data);
 
-            var diff = PingUtil.Diff(currentTime, lastCurrentTime);
-            PingUtil.SetLastPing(diff);
+            PingUtil.SetLastPing(currentTime, lastCurrentTime);
         }
 
         private async void RequestPing(object sender, EventArgs e)

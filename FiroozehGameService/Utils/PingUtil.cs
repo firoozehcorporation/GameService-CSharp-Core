@@ -27,7 +27,8 @@ namespace FiroozehGameService.Utils
     internal static class PingUtil
     {
         private const int Interval = 2000;
-        private static long _lastPing = -1;
+        private const float Wq = 0.2f;
+        private static long _lastPing = 50;
         internal static EventHandler RequestPing;
         private static Timer _timer;
 
@@ -48,14 +49,11 @@ namespace FiroozehGameService.Utils
             return _lastPing;
         }
 
-        internal static void SetLastPing(long ping)
+        internal static void SetLastPing(long one, long two)
         {
-            _lastPing = ping;
-        }
-
-        internal static long Diff(long one, long two)
-        {
-            return Math.Abs(one - two);
+            var diff = Math.Abs(one - two);
+            var newPing = (1 - Wq) * _lastPing + Wq * diff;
+            _lastPing = (long) newPing;
         }
 
         internal static void Dispose()
