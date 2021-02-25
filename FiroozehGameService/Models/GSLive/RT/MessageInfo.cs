@@ -50,7 +50,7 @@ namespace FiroozehGameService.Models.GSLive.RT
         ///     you can use it to calculate Ping Time
         /// </summary>
         /// <value>Server RTT Time</value>
-        public long RoundTripTime { get; internal set; }
+        public short RoundTripTime { get; internal set; }
 
 
         /// <summary>

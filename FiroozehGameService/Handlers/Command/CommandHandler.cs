@@ -211,7 +211,7 @@ namespace FiroozehGameService.Handlers.Command
 
         internal static short GetPing()
         {
-            return (short) PingUtil.GetLastPing();
+            return PingUtil.GetLastPing();
         }
 
         internal void Request(string handlerName, object payload = null, bool isCritical = false)

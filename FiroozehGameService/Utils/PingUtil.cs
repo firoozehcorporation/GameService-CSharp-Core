@@ -28,9 +28,10 @@ namespace FiroozehGameService.Utils
     {
         private const int Interval = 2000;
         private const float Wq = 0.2f;
-        private static long _lastPing = 50;
-        internal static EventHandler RequestPing;
+        private static short _lastPing = 60;
         private static Timer _timer;
+
+        internal static EventHandler RequestPing;
 
 
         internal static void Init()
@@ -44,7 +45,7 @@ namespace FiroozehGameService.Utils
             _timer.Elapsed += (sender, args) => { RequestPing?.Invoke(null, null); };
         }
 
-        internal static long GetLastPing()
+        internal static short GetLastPing()
         {
             return _lastPing;
         }
@@ -53,7 +54,7 @@ namespace FiroozehGameService.Utils
         {
             var diff = Math.Abs(one - two);
             var newPing = (1 - Wq) * _lastPing + Wq * diff;
-            _lastPing = (long) newPing;
+            _lastPing = (short) newPing;
         }
 
         internal static void Dispose()
