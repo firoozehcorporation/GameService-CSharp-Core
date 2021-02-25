@@ -83,9 +83,6 @@ namespace FiroozehGameService.Handlers.Command
             var lastCurrentTime = long.Parse(packet.Data);
 
             var diff = PingUtil.Diff(currentTime, lastCurrentTime);
-
-            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnMirror", "PingUtil : " + diff);
-
             PingUtil.SetLastPing(diff);
         }
 

@@ -26,12 +26,11 @@ namespace FiroozehGameService.Utils
 {
     internal static class PingUtil
     {
-        
-        private const int Interval = 1000;
+        private const int Interval = 2000;
         private static long _lastPing = -1;
         internal static EventHandler RequestPing;
         private static Timer _timer;
-        
+
 
         internal static void Init()
         {
