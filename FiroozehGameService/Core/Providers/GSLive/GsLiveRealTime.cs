@@ -20,8 +20,6 @@
 */
 
 
-using System;
-using System.Text;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
@@ -110,43 +108,6 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(GetRoomsHandler.Signature,
                 new RoomDetail {Role = role, GsLiveType = (int) GSLiveType.RealTime});
-        }
-
-
-        [Obsolete("This Method is Deprecated,Use SendPublicMessage(byte[] data, GProtocolSendType sendType) Instead")]
-        public override void SendPublicMessage(string data, GProtocolSendType sendType)
-        {
-            if (GameService.IsGuest)
-                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "SendPublicMessage");
-            if (string.IsNullOrEmpty(data))
-                throw new GameServiceException("data Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "SendPublicMessage");
-            if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "SendPublicMessage");
-
-            GameService.GSLive.GetGsHandler().RealTimeHandler.Request(SendPublicMessageHandler.Signature, sendType,
-                new DataPayload {Payload = Encoding.UTF8.GetBytes(data)});
-        }
-
-
-        [Obsolete("This Method is Deprecated,Use SendPrivateMessage(string receiverId, byte[] data) Instead")]
-        public override void SendPrivateMessage(string receiverId, string data)
-        {
-            if (GameService.IsGuest)
-                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "SendPrivateMessage");
-            if (string.IsNullOrEmpty(receiverId) && string.IsNullOrEmpty(data))
-                throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "SendPrivateMessage");
-            if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "SendPrivateMessage");
-
-            GameService.GSLive.GetGsHandler().RealTimeHandler.Request(SendPrivateMessageHandler.Signature,
-                GProtocolSendType.Reliable,
-                new DataPayload {ReceiverId = receiverId, Payload = Encoding.UTF8.GetBytes(data)});
         }
 
 

@@ -20,7 +20,6 @@
 */
 
 
-using System;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Models.Enums;
@@ -72,24 +71,6 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="role">(NOTNULL)Room's Role </param>
         public abstract Task GetAvailableRooms(string role);
-
-
-        /// <summary>
-        ///     Send A Data To All Players in Room.
-        /// </summary>
-        /// <param name="data">(NOTNULL) Data To BroadCast </param>
-        /// <param name="sendType">Send Type </param>
-        [Obsolete("This Method is Deprecated,Use SendPublicMessage(byte[] data, GProtocolSendType sendType) Instead")]
-        public abstract void SendPublicMessage(string data, GProtocolSendType sendType);
-
-
-        /// <summary>
-        ///     Send A Data To Specific Player in Room.
-        /// </summary>
-        /// <param name="receiverId">(NOTNULL) (Type : MemberID)Player's ID</param>
-        /// <param name="data">(NOTNULL) Data for Send</param>
-        [Obsolete("This Method is Deprecated,Use SendPrivateMessage(string receiverId, byte[] data) Instead")]
-        public abstract void SendPrivateMessage(string receiverId, string data);
 
 
         /// <summary>
