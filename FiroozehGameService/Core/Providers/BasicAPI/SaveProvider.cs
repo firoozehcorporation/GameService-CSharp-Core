@@ -39,6 +39,17 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException(typeof(SaveProvider),
                     DebugLocation.Internal, "SaveGame");
+
+            if (string.IsNullOrEmpty(saveGameName))
+                throw new GameServiceException("saveGameName Cant Be EmptyOrNull").LogException(
+                    typeof(SaveProvider),
+                    DebugLocation.Internal, "SaveGame");
+
+            if (saveGameObj == null)
+                throw new GameServiceException("saveGameObj Cant Be Null").LogException(
+                    typeof(SaveProvider),
+                    DebugLocation.Internal, "SaveGame");
+
             return await ApiRequest.SaveGame(saveGameName, saveGameObj);
         }
 

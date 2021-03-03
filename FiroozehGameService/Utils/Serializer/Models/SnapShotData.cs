@@ -40,9 +40,15 @@ namespace FiroozehGameService.Utils.Serializer.Models
 
 
         /// <summary>
-        ///     SnapShot Property Type
+        ///     SnapShot Member Property Type
         /// </summary>
-        Property = 0x2
+        MemberProperty = 0x2,
+
+
+        /// <summary>
+        ///     SnapShot Room Property Type
+        /// </summary>
+        RoomProperty = 0x3
     }
 
     /// <summary>
