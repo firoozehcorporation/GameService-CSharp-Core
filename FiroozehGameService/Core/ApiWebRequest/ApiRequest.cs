@@ -590,7 +590,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
             {
                 if (response.IsSuccessStatusCode)
                     return JsonConvert.DeserializeObject<FaaSResponse<TFaaS>>(await reader.ReadToEndAsync());
-                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                throw new GameServiceException(JsonConvert.DeserializeObject<FaaSResponse<TFaaS>>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "ExecuteCloudFunction");
             }
         }
