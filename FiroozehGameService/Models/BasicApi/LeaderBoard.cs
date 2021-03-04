@@ -51,6 +51,12 @@ namespace FiroozehGameService.Models.BasicApi
         /// <value>the Game id</value>
         [JsonProperty("game")] public string Game;
 
+        /// <summary>
+        ///     Gets the LeaderBoard id.
+        /// </summary>
+        /// <value>the LeaderBoard id</value>
+        [JsonProperty("_id")] public string Id;
+
 
         /// <summary>
         ///     Gets the LeaderBoard Cover URL.

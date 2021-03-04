@@ -42,6 +42,12 @@ namespace FiroozehGameService.Models.BasicApi
         [JsonProperty("game")] public string Game;
 
         /// <summary>
+        ///     Gets the Achievement id.
+        /// </summary>
+        /// <value>the Achievement id</value>
+        [JsonProperty("_id")] public string Id;
+
+        /// <summary>
         ///     Gets the Achievement Cover URL.
         /// </summary>
         /// <value>the Achievement Cover URL</value>
