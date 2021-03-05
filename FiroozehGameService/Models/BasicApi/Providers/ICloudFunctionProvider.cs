@@ -34,10 +34,10 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     note : if Function is public , You Can Call it without Login
         /// </summary>
         /// <param name="functionId">(NOTNULL)Specifies the Function Id that Set in Developers Panel</param>
-        /// <param name="functionParameters">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
+        /// <param name="functionInputClass">(NULLABLE)Specifies the Function Input Parameter Class that Set in Developers Panel</param>
         /// <param name="isPublic">Specifies the Function Visibility Type that Set in Developers Panel</param>
         /// <value> return Result in String </value>
-        Task<FaaSResponse<TFaaS>> ExecuteFunction<TFaaS>(string functionId, object functionParameters = null,
-            bool isPublic = false) where TFaaS : FaaSCore;
+        Task<FaaSResponse<TOutput>> ExecuteFunction<TOutput, TInput>(string functionId, TInput functionInputClass,
+            bool isPublic = false) where TInput : FaaSCore where TOutput : FaaSCore;
     }
 }

@@ -570,10 +570,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<FaaSResponse<TFaaS>> ExecuteCloudFunction<TFaaS>(string functionId,
-            object functionParameters, bool isPublic)
+        internal static async Task<FaaSResponse<TOutput>> ExecuteCloudFunction<TOutput, TInput>(string functionId,
+            TInput functionInputClass, bool isPublic) where TInput : FaaSCore where TOutput : FaaSCore
         {
-            var body = JsonConvert.SerializeObject(functionParameters, new JsonSerializerSettings
+            var body = JsonConvert.SerializeObject(functionInputClass, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
                 DefaultValueHandling = DefaultValueHandling.Ignore
@@ -589,8 +589,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
                 if (response.IsSuccessStatusCode)
-                    return JsonConvert.DeserializeObject<FaaSResponse<TFaaS>>(await reader.ReadToEndAsync());
-                throw new GameServiceException(JsonConvert.DeserializeObject<FaaSResponse<TFaaS>>(await reader.ReadToEndAsync())
+                    return JsonConvert.DeserializeObject<FaaSResponse<TOutput>>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert
+                    .DeserializeObject<FaaSResponse<TOutput>>(await reader.ReadToEndAsync())
                     .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "ExecuteCloudFunction");
             }
         }

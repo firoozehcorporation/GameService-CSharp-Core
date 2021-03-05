@@ -25,30 +25,34 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi.FaaS
 {
     /// <summary>
-    /// Represents FaaSResponse Data Model In Game Service Basic API
+    ///     Represents FaaSResponse Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
-    public class FaaSResponse<TFaaS>
+    public class FaaSResponse<TOutput>
     {
         /// <summary>
-        /// Gets the FaaSResponse Status
+        ///     Gets the FaaSResponse Status
         /// </summary>
-        [JsonProperty("status")] public bool Status { get; set; }
+        [JsonProperty("status")]
+        public bool Status { get; set; }
 
         /// <summary>
-        /// Gets the Error Message
-        /// Message Available When status is false
+        ///     Gets the Error Message
+        ///     Message Available When status is false
         /// </summary>
-        [JsonProperty("message")] public string Message { get; set; }
+        [JsonProperty("message")]
+        public string Message { get; set; }
 
         /// <summary>
-        /// Gets the Response Object
+        ///     Gets the Response Object
         /// </summary>
-        [JsonProperty("response")] public TFaaS Response { get; set; }
+        [JsonProperty("response")]
+        public TOutput Response { get; set; }
 
         /// <summary>
-        /// Gets the Function ExecutionTime
+        ///     Gets the Function ExecutionTime
         /// </summary>
-        [JsonProperty("execution_time")] public long ExecutionTime { set; get; }
+        [JsonProperty("execution_time")]
+        public long ExecutionTime { set; get; }
     }
 }

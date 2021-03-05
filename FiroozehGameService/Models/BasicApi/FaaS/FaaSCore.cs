@@ -25,7 +25,7 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.BasicApi.FaaS
 {
     /// <summary>
-    /// Represents FaaSCore Data Model In Game Service Basic API
+    ///     Represents FaaSCore Data Model In Game Service Basic API
     /// </summary>
     [Serializable]
     public class FaaSCore
@@ -34,6 +34,7 @@ namespace FiroozehGameService.Models.BasicApi.FaaS
         ///     Gets the Function ID.
         /// </summary>
         /// <value>the Function ID</value>
-        [JsonProperty("id")] public string Id;
+        [JsonProperty("function_id")]
+        public string FunctionId { get; internal set; }
     }
 }
