@@ -45,7 +45,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     This command will return all information about the Table with a specific ID and Aggregations
         /// </summary>
-        /// <param name="aggregation">(NotNULL)The aggregation of Table you Want To get Detail</param>
+        /// <param name="aggregation">(NOTNULL)The aggregation of Table you Want To get Detail</param>
         /// <value> return the TableResult</value>
         Task<TableResult<TItem>> GetTableItems<TItem>(TableAggregation aggregation) where TItem : TableItemHelper;
 
@@ -53,8 +53,8 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     This command returns one of the Specific Table information with a specific ID
         /// </summary>
-        /// <param name="tableId">(Not NULL)The ID of Table you Want To get Detail</param>
-        /// <param name="itemId">(Not NULL)The ID of TableItem you Want To get Detail</param>
+        /// <param name="tableId">(NOTNULL)The ID of Table you Want To get Detail</param>
+        /// <param name="itemId">(NOTNULL)The ID of TableItem you Want To get Detail</param>
         /// <param name="isGlobal">(Optional)If this Option Enabled, You Can Get Table Items Without Login</param>
         /// <value> return a Table Item</value>
         Task<TItem> GetTableItem<TItem>(string tableId, string itemId, bool isGlobal = false)
@@ -64,9 +64,9 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     This command will edit one of the Table information with a specific ID
         /// </summary>
-        /// <param name="tableId">(Not NULL)The ID of Table you Want To Edit Details</param>
-        /// <param name="itemId">(Not NULL)The ID of TableItem you Want To Edit Details</param>
-        /// <param name="editedItem">(Not NULL)The Object of TableItem you Want To Edit Detail</param>
+        /// <param name="tableId">(NOTNULL)The ID of Table you Want To Edit Details</param>
+        /// <param name="itemId">(NOTNULL)The ID of TableItem you Want To Edit Details</param>
+        /// <param name="editedItem">(NOTNULL)The Object of TableItem you Want To Edit Detail</param>
         /// <value> return Edited Table Item</value>
         Task<TItem> UpdateTableItem<TItem>(string tableId, string itemId, TItem editedItem)
             where TItem : TableItemHelper;
@@ -75,8 +75,8 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     This command will Add new Table information with a specific ID
         /// </summary>
-        /// <param name="tableId">(Not NULL)The ID of Table you Want To Add Item</param>
-        /// <param name="newItem">(Not NULL)The Object of TableItem you Want To Add</param>
+        /// <param name="tableId">(NOTNULL)The ID of Table you Want To Add Item</param>
+        /// <param name="newItem">(NOTNULL)The Object of TableItem you Want To Add</param>
         /// <value> return Added Table Item</value>
         Task<TItem> AddItemToTable<TItem>(string tableId, TItem newItem) where TItem : TableItemHelper;
 
@@ -84,7 +84,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     This command will delete All of the Table Items information with a specific ID
         /// </summary>
-        /// <param name="tableId">(Not NULL)The ID of Table you Want To Delete All Items</param>
+        /// <param name="tableId">(NOTNULL)The ID of Table you Want To Delete All Items</param>
         /// <value> return true if Remove Successfully </value>
         Task<bool> DeleteAllTableItems(string tableId);
 
@@ -92,8 +92,8 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     This command will delete one of the Table information with a specific ID
         /// </summary>
-        /// <param name="tableId">(Not NULL)The ID of Table you Want To Delete one of Items</param>
-        /// <param name="itemId">(Not NULL)The ID of TableItem you Want To Delete it</param>
+        /// <param name="tableId">(NOTNULL)The ID of Table you Want To Delete one of Items</param>
+        /// <param name="itemId">(NOTNULL)The ID of TableItem you Want To Delete it</param>
         /// <value> return true if Remove Successfully </value>
         Task<bool> DeleteTableItem(string tableId, string itemId);
     }

@@ -41,7 +41,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     This command allows you to Submit Player Score with the ID of the leaderBoard
         ///     you have Registered in the Developer panel
         /// </summary>
-        /// <param name="leaderBoardId">(Not NULL)leaderBoardId</param>
+        /// <param name="leaderBoardId">(NOTNULL)leaderBoardId</param>
         /// <param name="scoreValue">scoreValue(The value must not exceed the maximum value Registered in the Developer Panel)</param>
         /// <value> return SubmitScore </value>
         Task<SubmitScoreResponse> SubmitScore(string leaderBoardId, int scoreValue);
@@ -51,7 +51,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     With this command you can get a LeaderBoardDetails with the ID of the LeaderBoard list
         ///     you registered in the Developer panel.
         /// </summary>
-        /// <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Detail</param>
+        /// <param name="leaderBoardId">(NOTNULL)The ID of leaderBoard you Want To get Detail</param>
         /// <param name="scoreLimit">(Min = 10,Max = 50) The Score List Limits</param>
         /// <param name="onlyFriends"> if this option Enabled , returns the Friends Score </param>
         /// <value> return LeaderBoardDetails </value>
@@ -63,7 +63,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     With this command you can get Current Player Score with the ID of the LeaderBoard id
         ///     you registered in the Developer panel.
         /// </summary>
-        /// <param name="leaderBoardId">(Not NULL)The ID of leaderBoard you Want To get Score</param>
+        /// <param name="leaderBoardId">(NOTNULL)The ID of leaderBoard you Want To get Score</param>
         /// <value> return Score </value>
         Task<Score> GetCurrentPlayerScore(string leaderBoardId);
     }

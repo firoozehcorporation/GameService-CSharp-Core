@@ -31,7 +31,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     With this command you can save your Current Status in Game
         /// </summary>
-        /// <param name="saveGameName">saveGameName</param>
+        /// <param name="saveGameName">(NOTNULL)saveGameName</param>
         /// <param name="saveGameObj">the Object that you Want To Save it</param>
         /// <value> return SaveDetails </value>
         Task<SaveDetails> SaveGame(string saveGameName, object saveGameObj);

@@ -32,6 +32,8 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     Normal Login (InFirstOnly) To Game Service
         ///     It May Throw Exception
         /// </summary>
+        /// <param name="email">(NOTNULL)Specifies the Email </param>
+        /// <param name="password">(NOTNULL)Specifies the Password</param>
         /// <value> return UserToken if Login Successfully </value>
         Task<string> Login(string email, string password);
 
@@ -40,9 +42,9 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     Normal Login(or signUp) With Phone Number To Game Service
         ///     You Must Call SendLoginCodeWithSms First, to get SMS Code.
         ///     It May Throw Exception
-        ///     <param name="nickName">(Not NULL)Specifies Nick Name </param>
-        ///     <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
-        ///     <param name="smsCode">(Not NULL)Specifies SMS Code</param>
+        ///     <param name="nickName">(NOTNULL)Specifies Nick Name </param>
+        ///     <param name="phoneNumber">(NOTNULL)Specifies the Phone Number</param>
+        ///     <param name="smsCode">(NOTNULL)Specifies SMS Code</param>
         /// </summary>
         /// <value> return UserToken if Login Successfully </value>
         Task<string> LoginOrSignUpWithSms(string nickName, string phoneNumber, string smsCode);
@@ -51,6 +53,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     Normal Login With UserToken To Game Service
         ///     It May Throw Exception
+        ///     <param name="userToken">(NOTNULL)Specifies the User Token </param>
         /// </summary>
         Task LoginWithToken(string userToken);
 
@@ -58,7 +61,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     Normal Login(or signUp) With GoogleSignInUser To Game Service
         ///     It May Throw Exception
-        ///     <param name="googleIdToken">(Not NULL)Specifies the idToken From GoogleSignInUser Class.</param>
+        ///     <param name="googleIdToken">(NOTNULL)Specifies the idToken From GoogleSignInUser Class.</param>
         /// </summary>
         /// <value> return UserToken if Login Successfully </value>
         Task<string> LoginOrSignUpWithGoogle(string googleIdToken);
@@ -82,7 +85,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     Send Login Code With SMS , If you want to LoginWithPhoneNumber, You Must Call This Function first
         ///     It May Throw Exception
-        ///     <param name="phoneNumber">(Not NULL)Specifies the Phone Number</param>
+        ///     <param name="phoneNumber">(NOTNULL)Specifies the Phone Number</param>
         /// </summary>
         /// <value> return true if Send Successfully </value>
         Task<bool> SendLoginCodeSms(string phoneNumber);

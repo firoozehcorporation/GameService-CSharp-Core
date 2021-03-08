@@ -41,7 +41,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     With this command you can get a User Data with the User ID
         /// </summary>
-        /// <param name="userId">(Not NULL)The ID of User you Want To get Detail</param>
+        /// <param name="userId">(NOTNULL)The ID of User you Want To get Detail</param>
         /// <value> return User Data </value>
         [Obsolete("This Method is Deprecated,Use GetMemberData() Instead")]
         Task<User> GetUserData(string userId);
@@ -50,7 +50,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     With this command you can get a Member Data with the Member ID
         /// </summary>
-        /// <param name="memberId">(Not NULL)The ID of Member you Want To get Detail</param>
+        /// <param name="memberId">(NOTNULL)The ID of Member you Want To get Detail</param>
         /// <value> return Member Data </value>
         Task<Member> GetMemberData(string memberId);
 
