@@ -38,10 +38,10 @@ namespace FiroozehGameService.Models.BasicApi.Providers
 
 
         /// <summary>
-        ///     This command allows you to Submit Player Score with the ID of the leaderBoard
+        ///     This command allows you to Submit Player Score with the Id of the leaderBoard
         ///     you have Registered in the Developer panel
         /// </summary>
-        /// <param name="leaderBoardId">(NOTNULL)leaderBoardId</param>
+        /// <param name="leaderBoardId">(NOTNULL) leaderBoard Id </param>
         /// <param name="scoreValue">scoreValue(The value must not exceed the maximum value Registered in the Developer Panel)</param>
         /// <value> return SubmitScore </value>
         Task<SubmitScoreResponse> SubmitScore(string leaderBoardId, int scoreValue);

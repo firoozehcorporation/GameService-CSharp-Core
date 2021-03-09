@@ -178,7 +178,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<List<LeaderBoard>> GetLeaderBoard()
         {
-            var response = await GsWebRequest.Get(Api.LeaderBoard, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.GetLeaderBoard, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -193,7 +193,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<List<Achievement>> GetAchievements()
         {
-            var response = await GsWebRequest.Get(Api.Achievements, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.GetAchievements, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -252,7 +252,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<Score> GetCurrentPlayerScore(string leaderBoardId)
         {
-            var response = await GsWebRequest.Get(Api.LeaderBoard + leaderBoardId + "/me", CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.UseLeaderBoard + leaderBoardId + "/me", CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -384,10 +384,10 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardKey, int scoreLimit = 10,
+        internal static async Task<LeaderBoardDetails> GetLeaderBoardDetails(string leaderBoardId, int scoreLimit = 10,
             bool onlyFriends = false)
         {
-            var url = Api.LeaderBoard + leaderBoardKey;
+            var url = Api.UseLeaderBoard + leaderBoardId;
             if (onlyFriends) url += "/friends";
             url += "?limit=" + scoreLimit;
 
@@ -420,9 +420,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<SubmitScoreResponse> SubmitScore(string leaderBoardKey, int scoreValue)
+        internal static async Task<SubmitScoreResponse> SubmitScore(string leaderBoardId, int scoreValue)
         {
-            var url = Api.LeaderBoard + leaderBoardKey;
+            var url = Api.UseLeaderBoard + leaderBoardId;
             var body = JsonConvert.SerializeObject(CreateSubmitScoreDictionary(scoreValue));
 
             var response = await GsWebRequest.Post(url, body, CreatePlayTokenHeader());
@@ -438,9 +438,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<Achievement> UnlockAchievement(string achievementKey)
+        internal static async Task<Achievement> UnlockAchievement(string achievementId)
         {
-            var url = Api.Achievements + achievementKey;
+            var url = Api.UnlockAchievements + achievementId;
             var response = await GsWebRequest.Post(url, headers: CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))

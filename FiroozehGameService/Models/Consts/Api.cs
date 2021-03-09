@@ -41,8 +41,11 @@ namespace FiroozehGameService.Models.Consts
 
 
         public const string SaveGame = BaseUrl2 + "/v1/savegame/";
-        public const string Achievements = BaseUrl2 + "/v1/achievement/";
-        public const string LeaderBoard = BaseUrl2 + "/v1/leaderboard/";
+        public const string GetAchievements = BaseUrl2 + "/v1/achievement/";
+        public const string UnlockAchievements = BaseUrl2 + "/v2/achievement/";
+        public const string GetLeaderBoard = BaseUrl2 + "/v1/leaderboard/";
+        public const string UseLeaderBoard = BaseUrl2 + "/v2/leaderboard/";
+
         public const string Table = DBaaS + "/v1/bucket/";
         public const string TableNonPermission = DBaaS + "/bucket/";
 

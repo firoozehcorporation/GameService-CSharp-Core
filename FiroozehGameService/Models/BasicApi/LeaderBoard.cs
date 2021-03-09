@@ -106,6 +106,7 @@ namespace FiroozehGameService.Models.BasicApi
         public override string ToString()
         {
             return "LeaderBoard{" +
+                   "id='" + Id + '\'' +
                    "name='" + Name + '\'' +
                    ", key='" + Key + '\'' +
                    ", status=" + Status +
