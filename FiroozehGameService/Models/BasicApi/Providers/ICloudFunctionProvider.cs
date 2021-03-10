@@ -38,6 +38,6 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <param name="isPublic">if isPublic enabled, You can Call Function Without Login</param>
         /// <value> return Result in String </value>
         Task<FaaSResponse<TOutput>> ExecuteFunction<TOutput, TInput>(string functionName, TInput functionInputClass,
-            bool isPublic = false) where TInput : FaaSCore where TOutput : FaaSCore;
+            bool isPublic = false);
     }
 }

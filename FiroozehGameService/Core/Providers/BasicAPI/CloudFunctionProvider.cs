@@ -35,7 +35,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
     internal class CloudFunctionProvider : ICloudFunctionProvider
     {
         public async Task<FaaSResponse<TOutput>> ExecuteFunction<TOutput, TInput>(string functionName,
-            TInput functionInputClass, bool isPublic = false) where TOutput : FaaSCore where TInput : FaaSCore
+            TInput functionInputClass, bool isPublic = false)
         {
             if (!isPublic && !GameService.IsAuthenticated())
                 throw new GameServiceException("You Must Login First In Private Mode").LogException(
