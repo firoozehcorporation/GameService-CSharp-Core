@@ -34,20 +34,19 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
     /// </summary>
     internal class CloudFunctionProvider : ICloudFunctionProvider
     {
-        public async Task<FaaSResponse<TOutput>> ExecuteFunction<TOutput, TInput>(string functionId,
+        public async Task<FaaSResponse<TOutput>> ExecuteFunction<TOutput, TInput>(string functionName,
             TInput functionInputClass, bool isPublic = false) where TOutput : FaaSCore where TInput : FaaSCore
         {
             if (!isPublic && !GameService.IsAuthenticated())
                 throw new GameServiceException("You Must Login First In Private Mode").LogException(
                     typeof(CloudFunctionProvider),
                     DebugLocation.Internal, "ExecuteFunction");
-            if (string.IsNullOrEmpty(functionId))
-                throw new GameServiceException("functionId Cant Be NullOrEmpty").LogException(
+            if (string.IsNullOrEmpty(functionName))
+                throw new GameServiceException("functionName Cant Be NullOrEmpty").LogException(
                     typeof(CloudFunctionProvider),
                     DebugLocation.Internal, "ExecuteFunction");
 
-            functionInputClass.FunctionId = functionId;
-            return await ApiRequest.ExecuteCloudFunction<TOutput, TInput>(functionId, functionInputClass, isPublic);
+            return await ApiRequest.ExecuteCloudFunction<TOutput, TInput>(functionName, functionInputClass, isPublic);
         }
     }
 }

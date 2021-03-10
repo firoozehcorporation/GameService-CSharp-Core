@@ -571,7 +571,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
 
         internal static async Task<FaaSResponse<TOutput>> ExecuteCloudFunction<TOutput, TInput>(string functionId,
-            TInput functionInputClass, bool isPublic) where TInput : FaaSCore where TOutput : FaaSCore
+            TInput functionInputClass, bool isPublic)
         {
             var body = JsonConvert.SerializeObject(functionInputClass, new JsonSerializerSettings
             {
