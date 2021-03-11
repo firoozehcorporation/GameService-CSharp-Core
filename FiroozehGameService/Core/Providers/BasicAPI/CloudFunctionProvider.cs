@@ -37,10 +37,17 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
         public async Task<FaaSResponse<TOutput>> ExecuteFunction<TOutput, TInput>(string functionName,
             TInput functionInputClass, bool isPublic = false) where TInput : FaaSCore where TOutput : FaaSCore
         {
+            
+            if (isPublic && GameService.Configuration == null)
+                throw new GameServiceException("You Must Config First In public Mode").LogException(
+                    typeof(CloudFunctionProvider),
+                    DebugLocation.Internal, "ExecuteFunction");
+            
             if (!isPublic && !GameService.IsAuthenticated())
                 throw new GameServiceException("You Must Login First In Private Mode").LogException(
                     typeof(CloudFunctionProvider),
                     DebugLocation.Internal, "ExecuteFunction");
+            
             if (string.IsNullOrEmpty(functionName))
                 throw new GameServiceException("functionName Cant Be NullOrEmpty").LogException(
                     typeof(CloudFunctionProvider),

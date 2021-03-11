@@ -581,9 +581,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             HttpResponseMessage response;
             if (isPublic)
-                response = await GsWebRequest.Post(Api.FaaS + functionId, body);
+                response = await GsWebRequest.Post(Api.FaaS + Configuration.ClientId + "/" + functionId, body);
             else
-                response = await GsWebRequest.Post(Api.FaaS + functionId, body, CreatePlayTokenHeader());
+                response = await GsWebRequest.Post(Api.FaaS + Configuration.ClientId + "/" + functionId, body, CreatePlayTokenHeader());
 
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
