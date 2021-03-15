@@ -31,23 +31,25 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         /// <summary>
         ///     With this command you can save your Current Status in Game
         /// </summary>
-        /// <param name="saveGameName">(NOTNULL)saveGameName</param>
-        /// <param name="saveGameObj">the Object that you Want To Save it</param>
+        /// <param name="saveName">(NOTNULL)the Name that you Want To Save it</param>
+        /// <param name="saveObj">(NOTNULL)the Object that you Want To Save it</param>
         /// <value> return SaveDetails </value>
-        Task<SaveDetails> SaveGame(string saveGameName, object saveGameObj);
+        Task<SaveDetails> SaveGame(string saveName, object saveObj);
 
 
         /// <summary>
-        ///     This command will get you the last save you saved
+        ///     This command will get you save by Name
         /// </summary>
-        /// <value> return Player Last Save </value>
-        Task<T> GetSaveGame<T>();
+        /// <param name="saveName">(NOTNULL)the Name that you want to get it</param>
+        /// <value> return Player Save </value>
+        Task<T> GetSaveGame<T>(string saveName);
 
 
         /// <summary>
-        ///     This command can remove the last current user saved
+        ///     This command will remove save
         /// </summary>
+        /// <param name="saveName">(NOTNULL)the Name that you want to remove it</param>
         /// <value> return true if Remove Successfully </value>
-        Task<bool> RemoveLastSave();
+        Task<bool> RemoveSave(string saveName);
     }
 }

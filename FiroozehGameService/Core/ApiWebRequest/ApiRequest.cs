@@ -206,10 +206,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<T> GetSaveGame<T>()
+        internal static async Task<T> GetSaveGame<T>(string saveName)
         {
-            const string url = Api.SaveGame;
-            var response = await GsWebRequest.Get(url, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Get(Api.SaveGame + saveName, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -494,9 +493,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
-        internal static async Task<bool> RemoveLastSave()
+        internal static async Task<bool> RemoveSave(string saveName)
         {
-            var response = await GsWebRequest.Delete(Api.SaveGame, CreatePlayTokenHeader());
+            var response = await GsWebRequest.Delete(Api.SaveGame + saveName, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
             {
@@ -583,7 +582,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
             if (isPublic)
                 response = await GsWebRequest.Post(Api.FaaS + Configuration.ClientId + "/" + functionId, body);
             else
-                response = await GsWebRequest.Post(Api.FaaS + Configuration.ClientId + "/" + functionId, body, CreatePlayTokenHeader());
+                response = await GsWebRequest.Post(Api.FaaS + Configuration.ClientId + "/" + functionId, body,
+                    CreatePlayTokenHeader());
 
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))

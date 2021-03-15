@@ -34,39 +34,52 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
     /// </summary>
     internal class SaveProvider : ISaveProvider
     {
-        public async Task<SaveDetails> SaveGame(string saveGameName, object saveGameObj)
+        public async Task<SaveDetails> SaveGame(string saveName, object saveObj)
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException(typeof(SaveProvider),
                     DebugLocation.Internal, "SaveGame");
 
-            if (string.IsNullOrEmpty(saveGameName))
-                throw new GameServiceException("saveGameName Cant Be EmptyOrNull").LogException(
+            if (string.IsNullOrEmpty(saveName))
+                throw new GameServiceException("saveName Cant Be EmptyOrNull").LogException(
                     typeof(SaveProvider),
                     DebugLocation.Internal, "SaveGame");
 
-            if (saveGameObj == null)
-                throw new GameServiceException("saveGameObj Cant Be Null").LogException(
+            if (saveObj == null)
+                throw new GameServiceException("saveObj Cant Be Null").LogException(
                     typeof(SaveProvider),
                     DebugLocation.Internal, "SaveGame");
 
-            return await ApiRequest.SaveGame(saveGameName, saveGameObj);
+            return await ApiRequest.SaveGame(saveName, saveObj);
         }
 
-        public async Task<T> GetSaveGame<T>()
+        public async Task<T> GetSaveGame<T>(string saveName)
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException(typeof(SaveProvider),
                     DebugLocation.Internal, "GetSaveGame");
-            return await ApiRequest.GetSaveGame<T>();
+
+            if (string.IsNullOrEmpty(saveName))
+                throw new GameServiceException("saveName Cant Be EmptyOrNull").LogException(
+                    typeof(SaveProvider),
+                    DebugLocation.Internal, "GetSaveGame");
+
+            return await ApiRequest.GetSaveGame<T>(saveName);
         }
 
-        public async Task<bool> RemoveLastSave()
+        public async Task<bool> RemoveSave(string saveName)
         {
             if (!GameService.IsAuthenticated())
                 throw new GameServiceException("GameService Not Available").LogException(typeof(SaveProvider),
                     DebugLocation.Internal, "RemoveLastSave");
-            return await ApiRequest.RemoveLastSave();
+
+            if (string.IsNullOrEmpty(saveName))
+                throw new GameServiceException("saveName Cant Be EmptyOrNull").LogException(
+                    typeof(SaveProvider),
+                    DebugLocation.Internal, "RemoveSave");
+
+
+            return await ApiRequest.RemoveSave(saveName);
         }
     }
 }
