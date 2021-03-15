@@ -100,6 +100,7 @@ namespace FiroozehGameService.Models.Consts
             public class Save : Internal
             {
                 public const string SaveNotfound = "save_notfound";
+                public const string SaveLimit = "save_limited";
             }
 
 
