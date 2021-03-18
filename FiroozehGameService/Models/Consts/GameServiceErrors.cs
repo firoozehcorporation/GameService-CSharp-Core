@@ -181,6 +181,18 @@ namespace FiroozehGameService.Models.Consts
             {
                 public const string DeviceNotfound = "device_notfound";
             }
+
+            /// <summary>
+            ///     Represents GameService CloudComputing HTTP Errors
+            /// </summary>
+            public class CloudComputing : Internal
+            {
+                public const string InvalidRequest = "invalid_request";
+                public const string FunctionNotPublic = "function_not_public";
+                public const string FunctionTimeout = "function_timeout";
+                public const string InvalidStructure = "invalid_structure";
+                public const string ApplicationNotFound = "no_running_application";
+            }
         }
 
         /// <summary>
