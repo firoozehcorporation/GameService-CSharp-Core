@@ -32,7 +32,7 @@ namespace FiroozehGameService.Utils
             try
             {
                 using (var client = new WebClient())
-                using (client.OpenRead(Api.BaseUrl1))
+                using (client.OpenRead(Api.CurrentTime))
                 {
                     return true;
                 }
