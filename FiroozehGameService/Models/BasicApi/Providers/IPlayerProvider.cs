@@ -66,6 +66,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     With this command you can Edit information about the current player is playing
         /// </summary>
         /// <value> return Edited Current Member Info Data </value>
+        /// <param name="profile">(NOTNULL)Specifies EditUserProfile Class </param>
         Task<MemberInfo> EditCurrentPlayerProfile(EditUserProfile profile);
 
 
