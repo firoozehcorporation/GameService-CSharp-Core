@@ -181,7 +181,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private void Send(Packet packet, GProtocolSendType type, bool isCritical = false, bool canSendBigSize = false)
         {
             if (!_observer.Increase(isCritical)) return;
-            if (IsAvailable) _udpClient.Send(packet, type, canSendBigSize);
+            if (IsAvailable) _udpClient.Send(packet, type, canSendBigSize, isCritical);
             else
                 throw new GameServiceException("GameService Not Available")
                     .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");

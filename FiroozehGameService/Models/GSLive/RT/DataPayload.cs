@@ -20,11 +20,9 @@
 */
 
 
-
 using System;
 using System.Text;
-using GProtocol.Utils;
-using GProtocol.Utils.IO;
+using FiroozehGameService.Utils.Serializer.Utils.IO;
 
 namespace FiroozehGameService.Models.GSLive.RT
 {

@@ -28,8 +28,7 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Utils.Serializer.Abstracts;
 using FiroozehGameService.Utils.Serializer.Helpers;
 using FiroozehGameService.Utils.Serializer.Models;
-using GProtocol.Utils;
-using GProtocol.Utils.IO;
+using FiroozehGameService.Utils.Serializer.Utils.IO;
 
 namespace FiroozehGameService.Utils.Serializer.Utils
 {
@@ -147,7 +146,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
                         {
                             throw new GameServiceException("SerializerUtil -> The Type " + obj.GetType() +
                                                            " is Not Supported")
-                                .LogException(typeof(SerializerUtil),DebugLocation.RealTime,"GetInfos");
+                                .LogException(typeof(SerializerUtil), DebugLocation.RealTime, "GetInfos");
                         }
 
                         break;
@@ -157,7 +156,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
 
             if (bufferSize >= ushort.MaxValue)
                 throw new GameServiceException("SerializerUtil -> The Buffer is Too Large!")
-                    .LogException(typeof(SerializerUtil),DebugLocation.RealTime,"GetInfos");
+                    .LogException(typeof(SerializerUtil), DebugLocation.RealTime, "GetInfos");
 
             return Tuple.Create((ushort) bufferSize, infos);
         }
@@ -433,7 +432,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
 
             if (values.Count > ushort.MaxValue)
                 throw new GameServiceException("GetBuffer Err -> String Array is Too Large!")
-                    .LogException(typeof(SerializerUtil),DebugLocation.RealTime,"GetBuffer");
+                    .LogException(typeof(SerializerUtil), DebugLocation.RealTime, "GetBuffer");
 
             var count = BitConverter.GetBytes((ushort) values.Count);
             buffer.AddRange(count);
@@ -442,7 +441,7 @@ namespace FiroozehGameService.Utils.Serializer.Utils
             {
                 if (value.Length > ushort.MaxValue)
                     throw new GameServiceException("GetBuffer Err -> String Array Element is Too Large!")
-                        .LogException(typeof(SerializerUtil),DebugLocation.RealTime,"GetBuffer");
+                        .LogException(typeof(SerializerUtil), DebugLocation.RealTime, "GetBuffer");
 
                 var len = BitConverter.GetBytes((ushort) value.Length);
                 var data = GetBuffer(value, true);

@@ -35,10 +35,7 @@
       <DocumentationFile>bin\Release\FiroozehGameService.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="BCCrypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\GProtocol\BCCrypto.dll</HintPath>
-      </Reference>
-      <Reference Include="GProtocol, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null">
+      <Reference Include="GProtocol, Version=2.0.0.1, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
       </Reference>
       <Reference Include="mscorlib"/>
@@ -364,6 +361,9 @@
         <Compile Include="Utils\Serializer\Models\SnapShotData.cs"/>
         <Compile Include="Utils\Serializer\Models\Types.cs"/>
         <Compile Include="Utils\Serializer\Utils\HashUtil.cs"/>
+        <Compile Include="Utils\Serializer\Utils\IO\BufferPool.cs"/>
+        <Compile Include="Utils\Serializer\Utils\IO\ByteArrayReader.cs"/>
+        <Compile Include="Utils\Serializer\Utils\IO\ByteStream.cs"/>
         <Compile Include="Utils\Serializer\Utils\SerializerUtil.cs"/>
         <Compile Include="Utils\Serializer\Utils\TypeUtil.cs"/>
         <Compile Include="Utils\TimeUtil.cs"/>

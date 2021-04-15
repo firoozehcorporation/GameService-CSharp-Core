@@ -29,6 +29,7 @@ namespace FiroozehGameService.Models.GSLive.Command
     internal class Area
     {
         [JsonProperty("4")] public string Cert;
+        [JsonProperty("5")] public byte ChannelId;
         [JsonProperty("3")] public string ConnectToken;
         [JsonProperty("0")] public string Ip;
         [JsonProperty("2")] public int Port;
@@ -42,6 +43,7 @@ namespace FiroozehGameService.Models.GSLive.Command
                    ", Port='" + Port + '\'' +
                    ", ConnectToken='" + ConnectToken + '\'' +
                    ", Cert='" + Cert + '\'' +
+                   ", ChannelId='" + ChannelId + '\'' +
                    '}';
         }
     }

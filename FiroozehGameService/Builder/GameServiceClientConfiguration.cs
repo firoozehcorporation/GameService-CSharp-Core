@@ -24,6 +24,7 @@ using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
+using GProtocol.Models;
 
 namespace FiroozehGameService.Builder
 {
@@ -34,28 +35,37 @@ namespace FiroozehGameService.Builder
     {
         internal readonly string ClientId;
         internal readonly string ClientSecret;
+        internal readonly PlatformType PlatformType;
         internal readonly SystemInfo SystemInfo;
 
         /// <summary>
-        /// Set GameServiceClientConfiguration Values
+        ///     Set GameServiceClientConfiguration Values
         /// </summary>
         /// <param name="clientId">Set The ClientId From Developers Panel</param>
         /// <param name="clientSecret">Set The ClientSecret From Developers Panel</param>
         /// <param name="systemInfo">Set systemInfo</param>
+        /// <param name="platformType">Set The Type of Running Platform</param>
         /// <exception cref="GameServiceException">May GameServiceException Occur</exception>
-        public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo)
+        public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo,
+            PlatformType platformType = PlatformType.Default)
         {
             ClientId = string.IsNullOrEmpty(clientId)
-                ? throw new GameServiceException("ClientId Cant Be Empty").LogException<GameServiceClientConfiguration>(DebugLocation.Internal,"Constructor")
+                ? throw new GameServiceException("ClientId Cant Be Empty").LogException<GameServiceClientConfiguration>(
+                    DebugLocation.Internal, "Constructor")
                 : ClientId = clientId;
             ClientSecret = string.IsNullOrEmpty(clientSecret)
-                ? throw new GameServiceException("ClientSecret Cant Be Empty").LogException<GameServiceClientConfiguration>(DebugLocation.Internal,"Constructor")
+                ? throw new GameServiceException("ClientSecret Cant Be Empty")
+                    .LogException<GameServiceClientConfiguration>(DebugLocation.Internal, "Constructor")
                 : ClientSecret = clientSecret;
             SystemInfo = systemInfo == null
-                ? throw new GameServiceException("SystemInfo Cant Be NULL").LogException<GameServiceClientConfiguration>(DebugLocation.Internal,"Constructor")
+                ? throw new GameServiceException("SystemInfo Cant Be NULL")
+                    .LogException<GameServiceClientConfiguration>(DebugLocation.Internal, "Constructor")
                 : SystemInfo = systemInfo;
             if (systemInfo.DeviceUniqueId == null)
-                throw new GameServiceException("DeviceUniqueId In SystemInfo Cant Be NULL").LogException<GameServiceClientConfiguration>(DebugLocation.Internal,"Constructor");
+                throw new GameServiceException("DeviceUniqueId In SystemInfo Cant Be NULL")
+                    .LogException<GameServiceClientConfiguration>(DebugLocation.Internal, "Constructor");
+
+            PlatformType = platformType;
         }
     }
 }

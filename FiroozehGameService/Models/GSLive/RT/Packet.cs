@@ -23,8 +23,7 @@
 using System;
 using System.Text;
 using FiroozehGameService.Models.Enums;
-using GProtocol.Utils;
-using GProtocol.Utils.IO;
+using FiroozehGameService.Utils.Serializer.Utils.IO;
 
 namespace FiroozehGameService.Models.GSLive.RT
 {

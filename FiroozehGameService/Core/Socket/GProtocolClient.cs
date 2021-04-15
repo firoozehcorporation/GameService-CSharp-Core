@@ -24,7 +24,7 @@ using FiroozehGameService.Core.Socket.PacketHelper;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
-using GProtocol.Public;
+using GClient = GProtocol.GProtocolClient;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Core.Socket
@@ -34,7 +34,9 @@ namespace FiroozehGameService.Core.Socket
         internal abstract void Init();
         internal abstract void CreateInstance();
         internal abstract void StopReceiving();
-        internal abstract void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false);
+
+        internal abstract void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false,
+            bool isCritical = false);
 
 
         protected void OnDataReceived(SocketDataReceived arg)
@@ -49,7 +51,7 @@ namespace FiroozehGameService.Core.Socket
 
         #region GProtocolClient
 
-        protected Client Client;
+        protected GClient Client;
         protected Area Area;
 
         protected readonly ISerializer PacketSerializable = new PacketSerializer();

@@ -28,7 +28,9 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
-using GProtocol.Public;
+using GProtocol.Models;
+using GProtocol.Utils;
+using GClient = GProtocol.GProtocolClient;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Core.Socket
@@ -50,7 +52,7 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 if (Client == null) CreateInstance();
-                Client?.Connect(Convert.FromBase64String(Area.ConnectToken));
+                Client?.Connect(Area.Ip, (ushort) Area.Port);
             }
             catch (Exception e)
             {
@@ -62,10 +64,13 @@ namespace FiroozehGameService.Core.Socket
         {
             if (Area?.ConnectToken != null)
             {
-                Client = new Client();
+                // TODO Added Token and ChannelId
+                Client = new GClient(Area.ChannelId, Area.ConnectToken, GameService.Configuration.PlatformType);
 
-                Client.OnStateChanged += ClientOnOnStateChanged;
-                Client.OnMessageReceived += ClientOnOnMessageReceived;
+                Client.OnConnect += OnConnect;
+                Client.OnDisconnect += OnDisconnect;
+                Client.OnTimeout += OnTimeout;
+                Client.OnReceive += OnReceive;
 
                 DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "CreateInstance", "GsUdpClient Created");
             }
@@ -75,64 +80,82 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-
-        private void ClientOnOnMessageReceived(byte[] payload, int payloadsize)
+        private static void OnConnect(object sender, EventArgs e)
         {
+            IsAvailable = true;
+            CoreEventHandlers.GProtocolConnected?.Invoke(null, null);
+        }
+
+
+        private void OnTimeout(object sender, EventArgs args)
+        {
+            try
+            {
+                IsAvailable = false;
+                Client?.Disconnect(0);
+                Client?.Dispose();
+                Client = null;
+
+                OnClosed(new ErrorArg {Error = "Client Timeout"});
+            }
+            catch (Exception e)
+            {
+                e.LogException<GsUdpClient>(DebugLocation.RealTime, "OnTimeout");
+            }
+        }
+
+        private static void OnDisconnect(object sender, EventArgs e)
+        {
+            DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "OnDisconnect", "GsUdpClient Disconnected");
+        }
+
+        private void OnReceive(object sender, ReceiveData data)
+        {
+            var buffer = data.Packet.Payload;
             OnDataReceived(new SocketDataReceived
             {
-                Packet = PacketDeserializer.Deserialize(payload, 0, payloadsize),
+                Packet = PacketDeserializer.Deserialize(buffer, 0, buffer.Length),
                 Time = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
             });
         }
 
 
-        private void ClientOnOnStateChanged(ClientState state)
+        internal override void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false,
+            bool isCritical = false)
         {
-            switch (state)
+            try
             {
-                case ClientState.Connected:
-                    IsAvailable = true;
-                    CoreEventHandlers.GProtocolConnected?.Invoke(null, null);
-                    break;
-                case ClientState.InvalidConnectToken:
-                case ClientState.ConnectionTimedOut:
-                case ClientState.ChallengeResponseTimedOut:
-                case ClientState.ConnectionRequestTimedOut:
-                case ClientState.ConnectionDenied:
-                    IsAvailable = false;
-                    Client?.Disconnect();
-                    Client = null;
+                if (Client?.GetStatus() == PeerState.Connected)
+                {
+                    packet.SendType = type;
+                    var buffer = PacketSerializable.Serialize(packet);
 
-                    OnClosed(new ErrorArg {Error = state.ToString()});
-                    break;
-                case ClientState.ConnectTokenExpired:
-                case ClientState.Disconnected:
-                case ClientState.SendingConnectionRequest:
-                case ClientState.SendingChallengeResponse:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+                    if (!canSendBigSize && !PacketUtil.CheckPacketSize(buffer))
+                        throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " +
+                                                       RealTimeConst.MaxPacketSize + " bytes.")
+                            .LogException<GsUdpClient>(DebugLocation.RealTime, "Send");
+
+                    switch (type)
+                    {
+                        case GProtocolSendType.UnReliable:
+                            Client?.SendUnReliable(buffer);
+                            break;
+                        case GProtocolSendType.Reliable:
+                            if (isCritical) Client?.SendCommand(buffer);
+                            else Client?.SendReliable(buffer);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                    }
+                }
+                else
+                {
+                    DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime, "Send", "Client not Connected!");
+                }
             }
-        }
-
-
-        internal override void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false)
-        {
-            if (Client?.State == ClientState.Connected)
+            catch (Exception e)
             {
-                packet.SendType = type;
-                var buffer = PacketSerializable.Serialize(packet);
-
-                if (!canSendBigSize && !PacketUtil.CheckPacketSize(buffer))
-                    throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " +
-                                                   RealTimeConst.MaxPacketSize + " bytes.")
-                        .LogException<GsUdpClient>(DebugLocation.RealTime, "Send");
-
-                Client?.Send(buffer, buffer.Length);
-            }
-            else
-            {
-                DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime, "Send", "Client not Connected!");
+                e.LogException<GsUdpClient>(DebugLocation.RealTime, "Send");
             }
         }
 
@@ -140,7 +163,8 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                Client?.Disconnect();
+                Client?.Disconnect(0);
+                Client?.Dispose();
             }
             catch (Exception e)
             {
