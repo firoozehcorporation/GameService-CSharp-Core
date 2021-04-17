@@ -65,7 +65,7 @@ namespace FiroozehGameService.Core.Socket
             if (Area?.ConnectToken != null)
             {
                 // TODO Added Token and ChannelId
-                Client = new GClient(Area.ChannelId, Area.ConnectToken, GameService.Configuration.PlatformType);
+                Client = new GClient(Area.ChannelId, GameService.Configuration.PlatformType);
 
                 Client.OnConnect += OnConnect;
                 Client.OnDisconnect += OnDisconnect;
