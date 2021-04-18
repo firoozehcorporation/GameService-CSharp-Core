@@ -136,7 +136,6 @@
         <Compile Include="Handlers\RealTime\RequestHandlers\BaseRequestHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\NewEventHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\GetMembersHandler.cs"/>
-        <Compile Include="Handlers\RealTime\RequestHandlers\GetPingHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\IRequestHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\ObserverHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\RoomInfoHandler.cs"/>
@@ -155,7 +154,6 @@
         <Compile Include="Handlers\RealTime\ResponseHandlers\MemberDetailsResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\NewEventResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\ObserverResponseHandler.cs"/>
-        <Compile Include="Handlers\RealTime\ResponseHandlers\PingResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PrivateMessageResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\PublicMessageResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\RoomInfoResponseHandler.cs"/>

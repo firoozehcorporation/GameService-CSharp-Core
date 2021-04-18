@@ -139,7 +139,6 @@ namespace FiroozehGameService.Handlers.RealTime
             _requestHandlers.Add(AuthorizationHandler.Signature, new AuthorizationHandler());
             _requestHandlers.Add(GetMemberHandler.Signature, new GetMemberHandler());
             _requestHandlers.Add(LeaveRoomHandler.Signature, new LeaveRoomHandler());
-            _requestHandlers.Add(GetPingHandler.Signature, new GetPingHandler());
             _requestHandlers.Add(SendPrivateMessageHandler.Signature, new SendPrivateMessageHandler());
             _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
             _requestHandlers.Add(NewEventHandler.Signature, new NewEventHandler());
@@ -154,7 +153,6 @@ namespace FiroozehGameService.Handlers.RealTime
             _responseHandlers.Add(ErrorResponseHandler.ActionCommand, new ErrorResponseHandler());
             _responseHandlers.Add(JoinRoomResponseHandler.ActionCommand, new JoinRoomResponseHandler());
             _responseHandlers.Add(LeaveRoomResponseHandler.ActionCommand, new LeaveRoomResponseHandler());
-            _responseHandlers.Add(PingResponseHandler.ActionCommand, new PingResponseHandler());
             _responseHandlers.Add(MemberDetailsResponseHandler.ActionCommand, new MemberDetailsResponseHandler());
             _responseHandlers.Add(PrivateMessageResponseHandler.ActionCommand, new PrivateMessageResponseHandler());
             _responseHandlers.Add(PublicMessageResponseHandler.ActionCommand, new PublicMessageResponseHandler());
