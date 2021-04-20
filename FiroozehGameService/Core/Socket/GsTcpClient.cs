@@ -202,7 +202,6 @@ namespace FiroozehGameService.Core.Socket
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
 
-                _client?.GetStream().Close();
                 _client?.Close();
                 _client = null;
 
@@ -212,10 +211,9 @@ namespace FiroozehGameService.Core.Socket
                     Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StopReceiving",
                     "GsTcpClient -> StopReceiving Done");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                e.LogException<GsTcpClient>(
-                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StopReceiving");
+                // ignored
             }
         }
     }
