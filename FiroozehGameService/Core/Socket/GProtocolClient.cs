@@ -38,6 +38,10 @@ namespace FiroozehGameService.Core.Socket
         internal abstract void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false,
             bool isCritical = false);
 
+        internal abstract int GetRtt();
+
+        internal abstract long GetPacketLost();
+
 
         protected void OnDataReceived(SocketDataReceived arg)
         {

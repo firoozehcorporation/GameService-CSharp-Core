@@ -175,6 +175,19 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.Init();
         }
 
+        internal static int GetRoundTripTime()
+        {
+            if (_udpClient == null) return -1;
+            return _udpClient.GetRtt();
+        }
+
+
+        internal static long GetPacketLost()
+        {
+            if (_udpClient == null) return -1;
+            return _udpClient.GetPacketLost();
+        }
+
 
         private void Send(Packet packet, GProtocolSendType type, bool isCritical = false, bool canSendBigSize = false)
         {
@@ -216,7 +229,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
         #region RTHandlerRegion
 
-        private static GsUdpClient _udpClient;
+        private static GProtocolClient _udpClient;
         public static Room CurrentRoom;
 
         private readonly GsLiveSystemObserver _observer;

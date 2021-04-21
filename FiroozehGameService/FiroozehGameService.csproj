@@ -72,7 +72,7 @@
         <Compile Include="Core\Social\Social.cs"/>
         <Compile Include="Core\Socket\ClientHelper\TcpClientWithTimeout.cs"/>
         <Compile Include="Core\Socket\GProtocolClient.cs"/>
-        <Compile Include="Core\Socket\GsSocketClient.cs"/>
+        <Compile Include="Core\Socket\GTcpClient.cs"/>
         <Compile Include="Core\Socket\GsTcpClient.cs"/>
         <Compile Include="Core\Socket\GsUdpClient.cs"/>
         <Compile Include="Core\Socket\PacketHelper\IDeserializer.cs"/>

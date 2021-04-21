@@ -40,7 +40,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 {
     internal class TurnBasedHandler : IDisposable
     {
-        public TurnBasedHandler(StartPayload payload)
+        internal TurnBasedHandler(StartPayload payload)
         {
             CurrentRoom = payload.Room;
             _tcpClient = new GsTcpClient(payload.Area);
@@ -242,7 +242,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         #region TBHandlerRegion
 
-        private static GsTcpClient _tcpClient;
+        private static GTcpClient _tcpClient;
         public static Room CurrentRoom;
         private readonly GsLiveSystemObserver _observer;
         private CancellationTokenSource _cancellationToken;

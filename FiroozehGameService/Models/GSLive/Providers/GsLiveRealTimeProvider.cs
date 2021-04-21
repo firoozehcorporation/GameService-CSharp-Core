@@ -132,6 +132,20 @@ namespace FiroozehGameService.Models.GSLive.Providers
         public abstract Task FindMember(string query, int limit = 10);
 
 
+        /// <summary>
+        ///     Get Current RoundTripTime(RTT)
+        ///     NOTE : You Must Join To RealTime Servers To Get Valid Data, Otherwise Return -1
+        /// </summary>
+        public abstract int GetRoundTripTime();
+
+
+        /// <summary>
+        ///     Get Current PacketLost
+        ///     NOTE : You Must Join To RealTime Servers To Get Valid Data, Otherwise Return -1
+        /// </summary>
+        public abstract long GetPacketLost();
+
+
         internal abstract void SendEvent(byte[] caller, byte[] data, GProtocolSendType sendType);
 
         internal abstract void SendObserver(byte[] caller, byte[] data);

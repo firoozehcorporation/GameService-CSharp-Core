@@ -159,6 +159,32 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
+        internal override int GetRtt()
+        {
+            try
+            {
+                if (Client == null) return -1;
+                return (int) Client.GetRtt();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
+        internal override long GetPacketLost()
+        {
+            try
+            {
+                if (Client == null) return -1;
+                return (long) Client.GetPacketLost();
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
+        }
+
         internal override void StopReceiving()
         {
             try

@@ -41,7 +41,7 @@ namespace FiroozehGameService.Handlers.Command
 {
     internal class CommandHandler : IDisposable
     {
-        public CommandHandler()
+        internal CommandHandler()
         {
             _tcpClient = new GsTcpClient();
             _tcpClient.DataReceived += OnDataReceived;
@@ -260,7 +260,7 @@ namespace FiroozehGameService.Handlers.Command
 
         #region Fields
 
-        private static GsTcpClient _tcpClient;
+        private static GTcpClient _tcpClient;
         private readonly GsLiveSystemObserver _observer;
         private CancellationTokenSource _cancellationToken;
         private int _retryConnectCounter;

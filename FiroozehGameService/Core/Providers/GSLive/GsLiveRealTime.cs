@@ -23,6 +23,7 @@
 using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
@@ -248,6 +249,41 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(FindMemberHandler.Signature,
                 new RoomDetail {Max = limit, UserOrMemberId = query});
+        }
+
+        /// <summary>
+        ///     Get Current RoundTripTime(RTT)
+        ///     NOTE : You Must Join To RealTime Servers To Get Valid Data, Otherwise Return -1
+        /// </summary>
+        public override int GetRoundTripTime()
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "GetRoundTripTime");
+
+            if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "GetRoundTripTime");
+
+            return RealTimeHandler.GetRoundTripTime();
+        }
+
+
+        /// <summary>
+        ///     Get Current PacketLost
+        ///     NOTE : You Must Join To RealTime Servers To Get Valid Data, Otherwise Return -1
+        /// </summary>
+        public override long GetPacketLost()
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "GetPacketLost");
+
+            if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "GetPacketLost");
+
+            return RealTimeHandler.GetPacketLost();
         }
 
 
