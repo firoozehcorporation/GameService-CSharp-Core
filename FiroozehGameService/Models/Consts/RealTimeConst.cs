@@ -25,7 +25,6 @@ namespace FiroozehGameService.Models.Consts
     {
         // Packet Actions
         internal const int ActionAuth = 1;
-        internal const int ActionData = 2;
         internal const int ActionPublicMessage = 3;
         internal const int ActionPrivateMessage = 4;
         internal const int ActionJoin = 5;

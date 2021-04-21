@@ -32,11 +32,13 @@ namespace FiroozehGameService.Core.Socket
     internal abstract class GProtocolClient
     {
         internal abstract void Init();
+        
         internal abstract void CreateInstance();
+        
         internal abstract void StopReceiving();
 
         internal abstract void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false,
-            bool isCritical = false);
+            bool isCritical = false,bool isEvent = false);
 
         internal abstract int GetRtt();
 

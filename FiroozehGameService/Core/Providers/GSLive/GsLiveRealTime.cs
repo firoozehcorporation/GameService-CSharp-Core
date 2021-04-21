@@ -300,7 +300,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     DebugLocation.RealTime, "SendEvent");
 
             GameService.GSLive.GetGsHandler().RealTimeHandler.Request(NewEventHandler.Signature, sendType,
-                new DataPayload {Payload = data, ExtraData = caller}, true);
+                new DataPayload {Payload = data, ExtraData = caller}, false, true, true);
         }
 
 

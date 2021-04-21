@@ -42,8 +42,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
                     {
                         MessageType = MessageType.Public,
                         SendType = type,
-                        ClientReceiveTime = packet.ClientReceiveTime,
-                        RoundTripTime = PingUtil.GetLastPing()
+                        ClientReceiveTime = packet.ClientReceiveTime
                     },
                     Message = new Message
                     {
@@ -55,7 +54,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
             }
             catch (Exception e)
             {
-                e.LogException<PublicMessageResponseHandler>(DebugLocation.RealTime,"HandleResponse");
+                e.LogException<PublicMessageResponseHandler>(DebugLocation.RealTime, "HandleResponse");
             }
         }
     }

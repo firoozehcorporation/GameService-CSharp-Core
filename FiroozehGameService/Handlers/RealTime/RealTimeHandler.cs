@@ -164,9 +164,9 @@ namespace FiroozehGameService.Handlers.RealTime
 
 
         internal void Request(string handlerName, GProtocolSendType type, object payload = null,
-            bool isCritical = false, bool canSendBigSize = false)
+            bool isCritical = false, bool canSendBigSize = false,bool isEvent = false)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload), type, isCritical, canSendBigSize);
+            Send(_requestHandlers[handlerName]?.HandleAction(payload), type, isCritical, canSendBigSize,isEvent);
         }
 
 
@@ -189,10 +189,10 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        private void Send(Packet packet, GProtocolSendType type, bool isCritical = false, bool canSendBigSize = false)
+        private void Send(Packet packet, GProtocolSendType type, bool isCritical = false, bool canSendBigSize = false,bool isEvent = false)
         {
             if (!_observer.Increase(isCritical)) return;
-            if (IsAvailable) _udpClient.Send(packet, type, canSendBigSize, isCritical);
+            if (IsAvailable) _udpClient.Send(packet, type, canSendBigSize, isCritical, isEvent);
             else
                 throw new GameServiceException("GameService Not Available")
                     .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");

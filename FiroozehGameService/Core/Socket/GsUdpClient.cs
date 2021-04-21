@@ -64,8 +64,7 @@ namespace FiroozehGameService.Core.Socket
         {
             if (Area?.ConnectToken != null)
             {
-                // TODO Added Token and ChannelId
-                Client = new GClient(Area.ChannelId, GameService.Configuration.PlatformType);
+                Client = new GClient(GameService.Configuration.PlatformType);
 
                 Client.OnConnect += OnConnect;
                 Client.OnDisconnect += OnDisconnect;
@@ -121,7 +120,7 @@ namespace FiroozehGameService.Core.Socket
 
 
         internal override void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false,
-            bool isCritical = false)
+            bool isCritical = false,bool isEvent = false)
         {
             try
             {
@@ -142,7 +141,7 @@ namespace FiroozehGameService.Core.Socket
                             break;
                         case GProtocolSendType.Reliable:
                             if (isCritical) Client?.SendCommand(buffer);
-                            else Client?.SendReliable(buffer);
+                            else Client?.SendReliable(buffer,isEvent);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(type), type, null);

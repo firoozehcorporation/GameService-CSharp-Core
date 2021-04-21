@@ -39,8 +39,7 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
                 {
                     MessageType = MessageType.Private,
                     SendType = type,
-                    ClientReceiveTime = packet.ClientReceiveTime,
-                    RoundTripTime = PingUtil.GetLastPing()
+                    ClientReceiveTime = packet.ClientReceiveTime
                 },
                 Message = new Message
                 {

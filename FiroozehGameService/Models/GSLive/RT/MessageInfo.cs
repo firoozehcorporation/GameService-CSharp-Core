@@ -43,15 +43,7 @@ namespace FiroozehGameService.Models.GSLive.RT
         /// </summary>
         /// <value>the Type of Protocol Send Message </value>
         public GProtocolSendType SendType { get; internal set; }
-
-
-        /// <summary>
-        ///     Gets Server RTT Time
-        ///     you can use it to calculate Ping Time
-        /// </summary>
-        /// <value>Server RTT Time</value>
-        public short RoundTripTime { get; internal set; }
-
+        
 
         /// <summary>
         ///     Gets Client Packet Receive Time in Unix
