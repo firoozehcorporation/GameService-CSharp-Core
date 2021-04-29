@@ -131,13 +131,16 @@ namespace FiroozehGameService.Core.Socket
                 }
                 catch (Exception e)
                 {
-                    e.LogException<GsTcpClient>(
-                        Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
-                        "StartReceiving");
-
                     if (!(e is OperationCanceledException || e is ObjectDisposedException ||
                           e is ArgumentOutOfRangeException))
+                    {
+                        e.LogException<GsTcpClient>(
+                            Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
+                            "StartReceiving");
+
                         OnClosed(new ErrorArg {Error = e.ToString()});
+                    }
+
                     break;
                 }
         }

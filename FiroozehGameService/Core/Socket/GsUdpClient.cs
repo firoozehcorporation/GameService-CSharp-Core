@@ -52,6 +52,13 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 if (Client == null) CreateInstance();
+
+                // TODO Remove It and Add It From Command Server
+                Area.Port = 20000;
+                Area.Ip = "94.182.176.155";
+
+                DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "Init", Area.Ip + ":" + Area.Port);
+
                 Client?.Connect(Area.Ip, (ushort) Area.Port);
             }
             catch (Exception e)
@@ -66,10 +73,10 @@ namespace FiroozehGameService.Core.Socket
             {
                 Client = new GClient(GameService.Configuration.PlatformType);
 
-                Client.OnConnect += OnConnect;
-                Client.OnDisconnect += OnDisconnect;
-                Client.OnTimeout += OnTimeout;
-                Client.OnReceive += OnReceive;
+                GClient.OnConnect += OnConnect;
+                GClient.OnDisconnect += OnDisconnect;
+                GClient.OnTimeout += OnTimeout;
+                GClient.OnReceive += OnReceive;
 
                 DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "CreateInstance", "GsUdpClient Created");
             }
@@ -120,7 +127,7 @@ namespace FiroozehGameService.Core.Socket
 
 
         internal override void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false,
-            bool isCritical = false,bool isEvent = false)
+            bool isCritical = false, bool isEvent = false)
         {
             try
             {
@@ -141,7 +148,7 @@ namespace FiroozehGameService.Core.Socket
                             break;
                         case GProtocolSendType.Reliable:
                             if (isCritical) Client?.SendCommand(buffer);
-                            else Client?.SendReliable(buffer,isEvent);
+                            else Client?.SendReliable(buffer, isEvent);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(type), type, null);
