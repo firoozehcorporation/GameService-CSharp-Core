@@ -28,13 +28,15 @@ namespace FiroozehGameService.Models.GSLive.RT
     [Serializable]
     internal class AuthPayload : Payload
     {
+        [JsonProperty("3")] public string Hash;
         [JsonProperty("1")] public string RoomId;
         [JsonProperty("2")] public string Token;
 
-        public AuthPayload(string roomId, string token)
+        public AuthPayload(string roomId, string token, string hash)
         {
             RoomId = roomId;
             Token = token;
+            Hash = hash;
         }
 
 
@@ -42,7 +44,8 @@ namespace FiroozehGameService.Models.GSLive.RT
         {
             return "AuthPayload{" +
                    "RoomID='" + RoomId + '\'' +
-                   ", Hash='" + Token + '\'' +
+                   ", Token='" + Token + '\'' +
+                   ", Hash='" + Hash + '\'' +
                    '}';
         }
     }

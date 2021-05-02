@@ -41,6 +41,8 @@ namespace FiroozehGameService.Handlers.RealTime
         internal RealTimeHandler(StartPayload payload)
         {
             CurrentRoom = payload.Room;
+            AuthHash = payload.Area.Hash;
+
             _udpClient = new GsUdpClient(payload.Area);
             _udpClient.DataReceived += OnDataReceived;
             _udpClient.Error += OnError;
@@ -164,9 +166,9 @@ namespace FiroozehGameService.Handlers.RealTime
 
 
         internal void Request(string handlerName, GProtocolSendType type, object payload = null,
-            bool isCritical = false, bool canSendBigSize = false,bool isEvent = false)
+            bool isCritical = false, bool canSendBigSize = false, bool isEvent = false)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload), type, isCritical, canSendBigSize,isEvent);
+            Send(_requestHandlers[handlerName]?.HandleAction(payload), type, isCritical, canSendBigSize, isEvent);
         }
 
 
@@ -189,7 +191,8 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        private void Send(Packet packet, GProtocolSendType type, bool isCritical = false, bool canSendBigSize = false,bool isEvent = false)
+        private void Send(Packet packet, GProtocolSendType type, bool isCritical = false, bool canSendBigSize = false,
+            bool isEvent = false)
         {
             if (!_observer.Increase(isCritical)) return;
             if (IsAvailable) _udpClient.Send(packet, type, canSendBigSize, isCritical, isEvent);
@@ -236,10 +239,13 @@ namespace FiroozehGameService.Handlers.RealTime
         private bool _isDisposed;
 
 
-        public static string MemberId { private set; get; }
-        public static ulong PlayerHash { private set; get; }
-        public static string PlayToken => GameService.PlayToken;
-        public static bool IsAvailable => GsUdpClient.IsAvailable;
+        internal static string MemberId { private set; get; }
+        internal static ulong PlayerHash { private set; get; }
+
+        internal static string AuthHash { private set; get; }
+
+        internal static string PlayToken => GameService.PlayToken;
+        internal static bool IsAvailable => GsUdpClient.IsAvailable;
 
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
             new Dictionary<int, IResponseHandler>();

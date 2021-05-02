@@ -18,7 +18,6 @@
 * @author Alireza Ghodrati
 */
 
-using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
@@ -37,7 +36,8 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
                 0,
                 RealTimeConst.ActionAuth,
                 GProtocolSendType.Reliable, GetBuffer(JsonConvert.SerializeObject(
-                    new AuthPayload(RealTimeHandler.CurrentRoom?.Id, RealTimeHandler.PlayToken)
+                    new AuthPayload(RealTimeHandler.CurrentRoom?.Id, RealTimeHandler.PlayToken,
+                        RealTimeHandler.AuthHash)
                     , new JsonSerializerSettings
                     {
                         NullValueHandling = NullValueHandling.Ignore,
