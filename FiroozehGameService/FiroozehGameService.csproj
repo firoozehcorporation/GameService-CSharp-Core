@@ -349,6 +349,7 @@
         <Compile Include="Utils\NetworkUtil.cs"/>
         <Compile Include="Utils\PacketUtil.cs"/>
         <Compile Include="Utils\PingUtil.cs"/>
+        <Compile Include="Utils\RealtimeDataObserver.cs"/>
         <Compile Include="Utils\Serializer\Abstracts\BaseSerializer.cs"/>
         <Compile Include="Utils\Serializer\Abstracts\ObjectSerializer.cs"/>
         <Compile Include="Utils\Serializer\GsSerializer.cs"/>

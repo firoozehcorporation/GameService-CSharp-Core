@@ -48,6 +48,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.Error += OnError;
 
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
+            _dataObserver = new RealtimeDataObserver();
             _isDisposed = false;
 
             // Set Internal Event Handlers
@@ -56,6 +57,7 @@ namespace FiroozehGameService.Handlers.RealTime
             CoreEventHandlers.GProtocolConnected += OnConnected;
             CoreEventHandlers.OnLeftDispose += OnLeftDispose;
             ObserverCompacterUtil.SendObserverEventHandler += SendObserverEventHandler;
+            RealtimeDataObserver.Caller += DataGetter;
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
@@ -78,6 +80,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
             _udpClient?.StopReceiving();
             _observer?.Dispose();
+            _dataObserver?.Dispose();
 
             ObserverCompacterUtil.Dispose();
 
@@ -101,6 +104,14 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             Request(ObserverHandler.Signature, GProtocolSendType.UnReliable, data, canSendBigSize: true);
         }
+
+
+        private static void DataGetter(object sender, EventArgs e)
+        {
+            Rtt = _udpClient.GetRtt();
+            PacketLost = _udpClient.GetPacketLost();
+        }
+
 
         private static void OnMemberId(object sender, string id)
         {
@@ -180,14 +191,14 @@ namespace FiroozehGameService.Handlers.RealTime
         internal static int GetRoundTripTime()
         {
             if (_udpClient == null) return -1;
-            return _udpClient.GetRtt();
+            return Rtt;
         }
 
 
         internal static long GetPacketLost()
         {
             if (_udpClient == null) return -1;
-            return _udpClient.GetPacketLost();
+            return PacketLost;
         }
 
 
@@ -236,8 +247,13 @@ namespace FiroozehGameService.Handlers.RealTime
         public static Room CurrentRoom;
 
         private readonly GsLiveSystemObserver _observer;
+        private readonly RealtimeDataObserver _dataObserver;
         private bool _isDisposed;
 
+
+        private static int Rtt { set; get; }
+
+        private static long PacketLost { set; get; }
 
         internal static string MemberId { private set; get; }
         internal static ulong PlayerHash { private set; get; }

@@ -44,5 +44,6 @@ namespace FiroozehGameService.Models.Consts
         // Limit Checker
         internal const int RealTimeLimit = 15; // 15 Request per sec
         internal const int RestLimit = 1000; //  RestLimit per sec in long
+        internal const int DataGetter = 1000; //  Data like rtt and packet lost
     }
 }
