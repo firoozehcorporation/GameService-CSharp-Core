@@ -52,13 +52,8 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 if (Client == null) CreateInstance();
-
-                // TODO Remove It and Add It From Command Server
-                Area.Port = 20000;
-                Area.Ip = "94.182.176.155";
-
-                DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "Init", Area.Ip + ":" + Area.Port);
-
+                DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "Init",
+                    "Connecting to  " + Area.Ip + ":" + Area.Port);
                 Client?.Connect(Area.Ip, (ushort) Area.Port);
             }
             catch (Exception e)
