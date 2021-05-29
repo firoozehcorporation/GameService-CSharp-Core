@@ -48,15 +48,19 @@ namespace FiroozehGameService.Core.Socket
         public GsTcpClient(Area area = null)
         {
             Area = area;
-            KeepAliveUtil = new KeepAliveUtil(area == null ? CommandConst.KeepAliveTime : TurnBasedConst.KeepAliveTime);
-            CoreEventHandlers.OnTcpClientConnected += OnTcpClientConnected;
-            KeepAliveUtil.Caller += KeepAliveCaller;
+
+            if (area == null) CommandEventHandlers.CommandClientConnected += OnTcpClientConnected;
+            else
+            {
+                KeepAliveUtil = new KeepAliveUtil(TurnBasedConst.KeepAliveTime);
+
+                TurnBasedEventHandlers.TurnBasedClientConnected += OnTcpClientConnected;
+                KeepAliveUtil.Caller += KeepAliveCaller;
+            }
         }
 
         private async void KeepAliveCaller(object sender, byte[] payload)
         {
-            if (Type == GSLiveType.Command) return;
-
             await SendAsync(payload);
         }
 
@@ -67,13 +71,13 @@ namespace FiroozehGameService.Core.Socket
             _client = client;
             _clientStream = _client.GetStream();
             OperationCancellationToken = new CancellationTokenSource();
-            IsAvailable = true;
 
             DebugUtil.LogNormal<GsTcpClient>(
                 Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "OnTcpClientConnected",
                 "GsTcpClient -> Init Done");
 
-            CoreEventHandlers.OnGsTcpClientConnected?.Invoke(sender, client);
+            if (Area == null) CommandEventHandlers.GsCommandClientConnected?.Invoke(null, null);
+            else TurnBasedEventHandlers.GsTurnBasedClientConnected?.Invoke(null, null);
         }
 
 
@@ -111,7 +115,7 @@ namespace FiroozehGameService.Core.Socket
 
             KeepAliveUtil?.Start();
 
-            while (IsAvailable)
+            while (IsConnected())
                 try
                 {
                     BufferReceivedBytes += await _clientStream.ReadAsync(
@@ -194,30 +198,50 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-
         internal override void StopReceiving()
         {
             try
             {
                 KeepAliveUtil?.Dispose();
                 DataBuilder?.Clear();
-                IsAvailable = false;
+
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
 
                 _client?.Close();
-                _client = null;
-
-                OperationCancellationToken = null;
-
-                DebugUtil.LogNormal<GsTcpClient>(
-                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StopReceiving",
-                    "GsTcpClient -> StopReceiving Done");
             }
             catch (Exception)
             {
                 // ignored
             }
+            finally
+            {
+                KeepAliveUtil = null;
+                _client = null;
+                _clientStream = null;
+                OperationCancellationToken = null;
+                DataReceived = null;
+
+                try
+                {
+                    GC.SuppressFinalize(this);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                DebugUtil.LogNormal<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StopReceiving",
+                    "GsTcpClient -> StopReceiving Done");
+            }
+        }
+
+        internal override bool IsConnected()
+        {
+            var part1 = _client?.Client?.Poll(1000, SelectMode.SelectRead);
+            var part2 = _client?.Client?.Available == 0;
+            return part1 == false || part2 == false;
         }
     }
 }

@@ -34,13 +34,13 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
             if (packet.Message == "waiting_queue")
-                CommandEventHandler.AutoMatchUpdated?.Invoke(null, new AutoMatchEvent
+                CommandEventHandlers.AutoMatchUpdated?.Invoke(null, new AutoMatchEvent
                 {
                     Status = AutoMatchStatus.OnWaiting,
                     Players = new List<Member>()
                 });
             else
-                CommandEventHandler.AutoMatchUpdated?.Invoke(null, new AutoMatchEvent
+                CommandEventHandlers.AutoMatchUpdated?.Invoke(null, new AutoMatchEvent
                 {
                     Status = AutoMatchStatus.OnUserUpdated,
                     Players = JsonConvert.DeserializeObject<List<Member>>(packet.Data)

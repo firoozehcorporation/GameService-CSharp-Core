@@ -36,7 +36,7 @@ namespace FiroozehGameService.Core.Socket
 {
     internal abstract class GTcpClient
     {
-        public event EventHandler<SocketDataReceived> DataReceived;
+        internal EventHandler<SocketDataReceived> DataReceived;
 
         protected void OnDataReceived(SocketDataReceived arg)
         {
@@ -45,9 +45,11 @@ namespace FiroozehGameService.Core.Socket
 
         protected void OnClosed(ErrorArg errorArg)
         {
-            IsAvailable = false;
             DataBuilder?.Clear();
-            CoreEventHandlers.OnGsTcpClientError?.Invoke(Type, new GameServiceException(errorArg.Error));
+
+            if (Type == GSLiveType.Command)
+                CommandEventHandlers.GsCommandClientError?.Invoke(null, new GameServiceException(errorArg.Error));
+            else TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null, new GameServiceException(errorArg.Error));
         }
 
         internal abstract Task Init(CommandInfo info);
@@ -62,6 +64,8 @@ namespace FiroozehGameService.Core.Socket
 
         internal abstract void StopReceiving();
 
+        internal abstract bool IsConnected();
+
         #region Fields
 
         private const int BufferCapacity = 1024 * 128;
@@ -71,7 +75,6 @@ namespace FiroozehGameService.Core.Socket
         protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected KeepAliveUtil KeepAliveUtil;
         protected CancellationTokenSource OperationCancellationToken;
-        public bool IsAvailable;
 
 
         protected readonly byte[] Buffer = new byte[BufferCapacity];

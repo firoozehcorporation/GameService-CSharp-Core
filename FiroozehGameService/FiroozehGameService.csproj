@@ -148,7 +148,7 @@
         <Compile Include="Handlers\RealTime\ResponseHandlers\ErrorResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\IResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\RealTimeHandler.cs"/>
-        <Compile Include="Handlers\CommandEventHandler.cs"/>
+        <Compile Include="Handlers\CommandEventHandlers.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\JoinRoomResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\LeaveRoomResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\MemberDetailsResponseHandler.cs"/>

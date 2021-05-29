@@ -20,7 +20,6 @@
 
 
 using System;
-using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.RT;
@@ -34,12 +33,12 @@ namespace FiroozehGameService.Handlers.RealTime.RequestHandlers
 
         private static Packet DoAction(byte[] buffer)
         {
-            return new Packet(RealTimeHandler.PlayerHash, RealTimeConst.ActionObserver, GProtocolSendType.UnReliable, buffer);
+            return new Packet(RealTimeHandler.PlayerHash, RealTimeConst.ActionObserver, GProtocolSendType.UnReliable,
+                buffer);
         }
 
         protected override Packet DoAction(object payload)
         {
-            if (!RealTimeHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
             if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction(payload as byte[]);
         }

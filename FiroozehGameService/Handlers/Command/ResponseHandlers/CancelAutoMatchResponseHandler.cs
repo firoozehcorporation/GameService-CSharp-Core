@@ -30,7 +30,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CommandEventHandler.AutoMatchCanceled?.Invoke(this,
+            CommandEventHandlers.AutoMatchCanceled?.Invoke(this,
                 packet.Message == "leaved" ? AutoMatchCancel.Success : AutoMatchCancel.NotInQueue);
         }
     }

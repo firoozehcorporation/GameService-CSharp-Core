@@ -29,7 +29,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CoreEventHandlers.Ping?.Invoke(this, null);
+            TurnBasedEventHandlers.TurnBasedPing?.Invoke(null, null);
         }
     }
 }

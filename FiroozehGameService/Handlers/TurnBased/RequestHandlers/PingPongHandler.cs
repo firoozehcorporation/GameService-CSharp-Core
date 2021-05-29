@@ -20,7 +20,6 @@
 
 
 using System;
-using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
 
@@ -43,7 +42,6 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 
         protected override Packet DoAction(object payload)
         {
-            if (!TurnBasedHandler.IsAvailable) throw new GameServiceException("GSLiveRealTime Not Available yet");
             if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction();
         }

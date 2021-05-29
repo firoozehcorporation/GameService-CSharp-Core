@@ -30,7 +30,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CoreEventHandlers.Ping?.Invoke(this, null);
+            CommandEventHandlers.CommandPing?.Invoke(null, null);
         }
     }
 }

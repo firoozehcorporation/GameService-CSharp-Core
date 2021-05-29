@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core;
@@ -33,13 +32,12 @@ using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
-using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Handlers.Command
 {
-    internal class CommandHandler : IDisposable
+    internal class CommandHandler
     {
         internal CommandHandler()
         {
@@ -56,25 +54,56 @@ namespace FiroozehGameService.Handlers.Command
             InitResponseMessageHandlers();
 
             // Set Internal Event Handlers
-            CoreEventHandlers.Ping += OnPing;
-            CoreEventHandlers.Authorized += OnAuth;
-            CoreEventHandlers.OnMirror += OnMirror;
+            CommandEventHandlers.CommandPing += OnPing;
+            CommandEventHandlers.CommandAuthorized += OnAuth;
+            CommandEventHandlers.Mirror += OnMirror;
             PingUtil.RequestPing += RequestPing;
-            CoreEventHandlers.OnGsTcpClientConnected += OnGsTcpClientConnected;
-            CoreEventHandlers.OnGsTcpClientError += OnGsTcpClientError;
+            CommandEventHandlers.GsCommandClientConnected += OnGsTcpClientConnected;
+            CommandEventHandlers.GsCommandClientError += OnGsTcpClientError;
 
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "Constructor", "CommandHandler Initialized");
         }
 
         public void Dispose()
         {
-            _isDisposed = true;
-            _isFirstInit = false;
-            _tcpClient?.StopReceiving();
-            _observer?.Dispose();
-            PingUtil.Dispose();
-            _cancellationToken?.Cancel(false);
-            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "Dispose", "CommandHandler Dispose Done");
+            try
+            {
+                _isDisposed = true;
+                _isFirstInit = false;
+
+                _cancellationToken?.Cancel(false);
+                _observer?.Dispose();
+                PingUtil.Dispose();
+
+                _tcpClient?.StopReceiving();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
+                _tcpClient = null;
+                PlayerHash = null;
+
+                CommandEventHandlers.CommandAuthorized = null;
+                CommandEventHandlers.CommandClientConnected = null;
+                CommandEventHandlers.GsCommandClientConnected = null;
+                CommandEventHandlers.GsCommandClientError = null;
+                CommandEventHandlers.CommandPing = null;
+                CommandEventHandlers.Mirror = null;
+
+                try
+                {
+                    GC.SuppressFinalize(this);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "Dispose", "CommandHandler Dispose Done");
+            }
         }
 
         private static void OnMirror(object sender, Packet packet)
@@ -93,7 +122,6 @@ namespace FiroozehGameService.Handlers.Command
 
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
         {
-            if ((GSLiveType) sender != GSLiveType.Command) return;
             if (_isDisposed) return;
 
             exception.LogException<CommandHandler>(DebugLocation.Command, "OnGsTcpClientError");
@@ -106,39 +134,37 @@ namespace FiroozehGameService.Handlers.Command
             await Init();
         }
 
-        private async void OnGsTcpClientConnected(object sender, TcpClient e)
+        private async void OnGsTcpClientConnected(object sender, object e)
         {
-            if ((GSLiveType) sender != GSLiveType.Command) return;
-
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler -> Connected,Waiting for Handshakes...");
 
+            _retryConnectCounter = 0;
+
             Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
-            _retryConnectCounter = 0;
+
 
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler Init done");
         }
 
-        private void OnAuth(object sender, object playerHash)
+        private void OnAuth(object sender, string playerHash)
         {
-            if (sender.GetType() != typeof(AuthResponseHandler)) return;
-            PlayerHash = (string) playerHash;
+            PlayerHash = playerHash;
 
             if (_isFirstInit) return;
 
             _isFirstInit = true;
             PingUtil.Init();
 
-            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnAuth", "CommandHandler Auth Done");
+            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnAuth", "CommandHandler OnAuth Done");
 
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }
 
-        private async void OnPing(object sender, APacket packet)
+        private async void OnPing(object sender, object packet)
         {
-            if (sender.GetType() != typeof(PingResponseHandler)) return;
             await RequestAsync(PingPongHandler.Signature, isCritical: true);
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnPing", "CommandHandler Ping Called");
         }
@@ -235,8 +261,8 @@ namespace FiroozehGameService.Handlers.Command
         private async Task SendAsync(Packet packet, bool isCritical = false, bool dontCheckAvailability = false)
         {
             if (!_observer.Increase(isCritical)) return;
-            if (IsAvailable) await _tcpClient.SendAsync(packet);
-            else if (!dontCheckAvailability)
+            if (IsAvailable()) await _tcpClient.SendAsync(packet);
+            else if (!isCritical && !dontCheckAvailability)
                 throw new GameServiceException("GameService Not Available")
                     .LogException<CommandHandler>(DebugLocation.Command, "SendAsync");
         }
@@ -258,6 +284,12 @@ namespace FiroozehGameService.Handlers.Command
             }
         }
 
+        internal static bool IsAvailable()
+        {
+            return _tcpClient != null && _tcpClient.IsConnected();
+        }
+
+
         #region Fields
 
         private static GTcpClient _tcpClient;
@@ -267,13 +299,10 @@ namespace FiroozehGameService.Handlers.Command
         private bool _isDisposed;
         private bool _isFirstInit;
 
-        public static string PlayerHash { private set; get; }
+        internal static string PlayerHash { private set; get; }
 
-        public static string GameId => GameService.CurrentInternalGame?._Id;
-        public static string UserToken => GameService.UserToken;
-
-        public static bool IsAvailable =>
-            _tcpClient?.IsAvailable ?? false;
+        internal static string GameId => GameService.CurrentInternalGame?._Id;
+        internal static string UserToken => GameService.UserToken;
 
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
             new Dictionary<int, IResponseHandler>();

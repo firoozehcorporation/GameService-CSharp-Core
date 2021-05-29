@@ -1,4 +1,4 @@
-﻿// <copyright file="CommandEventHandler.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="CommandEventHandlers.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using FiroozehGameService.Core.Providers.GSLive;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive.Command;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
@@ -32,10 +34,19 @@ namespace FiroozehGameService.Handlers
 {
     /// <inheritdoc />
     /// <summary>
-    ///     Represents CommandEventHandler In MultiPlayer System
+    ///     Represents CommandEventHandlers In MultiPlayer System
     /// </summary>
-    public class CommandEventHandler : CoreEventHandlers
+    public class CommandEventHandlers : CoreEventHandlers
     {
+        internal static EventHandler<string> CommandAuthorized;
+        internal static EventHandler<TcpClient> CommandClientConnected;
+        internal static EventHandler<GameServiceException> GsCommandClientError;
+        internal static EventHandler CommandPing;
+        internal static EventHandler<Packet> Mirror;
+
+        internal static EventHandler GsCommandClientConnected;
+
+
         /// <summary>
         ///     Returns Available Rooms When Call The Following Functions :
         ///     <see cref="GsLiveRealTime.GetAvailableRooms" />

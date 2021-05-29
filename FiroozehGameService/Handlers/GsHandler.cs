@@ -22,11 +22,10 @@ using System;
 using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command;
 using FiroozehGameService.Handlers.RealTime;
-using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased;
-using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Utils.Serializer;
 
 namespace FiroozehGameService.Handlers
 {
@@ -40,58 +39,48 @@ namespace FiroozehGameService.Handlers
         }
 
 
-        private void OnDispose(object sender, EventArgs e)
+        private void OnDispose(object sender, GSLiveType type)
         {
-            if (sender.GetType() == typeof(RealTimeHandler))
-                RealTimeHandler = null;
-            else if (sender.GetType() == typeof(TurnBasedHandler))
-                TurnBasedHandler = null;
+            switch (type)
+            {
+                case GSLiveType.RealTime:
+                    RealTimeHandler?.Dispose();
+                    RealTimeHandler = null;
+                    GsSerializer.CurrentPlayerLeftRoom?.Invoke(this, null);
+                    break;
+                case GSLiveType.TurnBased:
+                    TurnBasedHandler?.Dispose();
+                    TurnBasedHandler = null;
+                    break;
+                case GSLiveType.NotSet:
+                case GSLiveType.Command:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
         }
 
         private async void OnJoinRoom(object sender, StartPayload startPayload)
         {
             switch (startPayload.Room.GsLiveType)
             {
-                case GSLiveType.NotSet:
-                    break;
                 case GSLiveType.TurnBased:
-                    await ConnectToTbServer(startPayload);
+                    TurnBasedHandler = new TurnBasedHandler(startPayload);
+                    await TurnBasedHandler.Init();
                     break;
                 case GSLiveType.RealTime:
-                    ConnectToRtServer(startPayload);
+                    RealTimeHandler = new RealTimeHandler(startPayload);
+                    RealTimeHandler.Init();
                     break;
+
                 case GSLiveType.Command:
+                case GSLiveType.NotSet:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void ConnectToRtServer(StartPayload payload)
-        {
-            if (RealTimeHandler != null && RealTimeHandler.IsAvailable)
-            {
-                RealTimeHandler.Request(LeaveRoomHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
-                RealTimeHandler.Dispose();
-                RealTimeHandler = null;
-            }
-
-            RealTimeHandler = new RealTimeHandler(payload);
-            RealTimeHandler.Init();
-        }
-
-        private async Task ConnectToTbServer(StartPayload payload)
-        {
-            if (TurnBasedHandler != null && TurnBasedHandler.IsAvailable)
-            {
-                await TurnBasedHandler.RequestAsync(TurnBased.RequestHandlers.LeaveRoomHandler.Signature, isCritical: true);
-                TurnBasedHandler.Dispose();
-                TurnBasedHandler = null;
-            }
-
-            TurnBasedHandler = new TurnBasedHandler(payload);
-            await TurnBasedHandler.Init();
-        }
 
         internal async Task Init()
         {
@@ -103,11 +92,27 @@ namespace FiroozehGameService.Handlers
             CommandHandler?.Dispose();
             RealTimeHandler?.Dispose();
             TurnBasedHandler?.Dispose();
+
+            CommandHandler = null;
+            RealTimeHandler = null;
+            TurnBasedHandler = null;
+
+            CoreEventHandlers.GsLiveSystemStarted = null;
+            CoreEventHandlers.Dispose = null;
+
+            try
+            {
+                GC.SuppressFinalize(this);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
         #region GsHandlerRegion
 
-        public CommandHandler CommandHandler { get; }
+        public CommandHandler CommandHandler { get; private set; }
         public RealTimeHandler RealTimeHandler { get; private set; }
         public TurnBasedHandler TurnBasedHandler { get; private set; }
 

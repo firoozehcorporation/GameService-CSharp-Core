@@ -37,7 +37,7 @@ using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
 namespace FiroozehGameService.Handlers.RealTime
 {
-    internal class RealTimeHandler : IDisposable
+    internal class RealTimeHandler
     {
         internal RealTimeHandler(StartPayload payload)
         {
@@ -51,12 +51,13 @@ namespace FiroozehGameService.Handlers.RealTime
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
             _dataObserver = new RealtimeDataObserver();
             _isDisposed = false;
+            PlayerHash = -1;
 
             // Set Internal Event Handlers
-            CoreEventHandlers.Authorized += OnAuth;
-            CoreEventHandlers.OnMemberId += OnMemberId;
-            CoreEventHandlers.GProtocolConnected += OnConnected;
-            CoreEventHandlers.OnLeftDispose += OnLeftDispose;
+            RealTimeEventHandlers.Authorized += OnAuth;
+            RealTimeEventHandlers.MemberId += OnMemberId;
+            RealTimeEventHandlers.GProtocolConnected += OnConnected;
+            RealTimeEventHandlers.LeftDispose += OnLeftDispose;
             ObserverCompacterUtil.SendObserverEventHandler += SendObserverEventHandler;
             RealtimeDataObserver.Caller += DataGetter;
 
@@ -66,38 +67,12 @@ namespace FiroozehGameService.Handlers.RealTime
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Constructor", "RealTimeHandler init");
         }
 
-        public void Dispose()
+        private static void OnLeftDispose(object sender, EventArgs e)
         {
-            if (_isDisposed)
-            {
-                DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Dispose",
-                    "RealTimeHandler Already Disposed");
-                return;
-            }
-
-            _isDisposed = true;
-            PlayerHash = 0;
-
-
-            _udpClient?.StopReceiving();
-            _observer?.Dispose();
-            _dataObserver?.Dispose();
-
-            ObserverCompacterUtil.Dispose();
-
-            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Dispose", "RealTimeHandler Dispose Done");
-
-            GsSerializer.CurrentPlayerLeftRoom?.Invoke(this, null);
-            CoreEventHandlers.Dispose?.Invoke(this, null);
-        }
-
-        private void OnLeftDispose(object sender, EventArgs e)
-        {
-            if (sender.GetType() != typeof(LeaveRoomResponseHandler)) return;
-
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnLeftDispose",
                 "Current Player Left From Server, so dispose Realtime...");
-            Dispose();
+
+            CoreEventHandlers.Dispose?.Invoke(null, GSLiveType.RealTime);
         }
 
 
@@ -121,32 +96,30 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void OnConnected(object sender, EventArgs e)
         {
-            // Send Auth When Connected
+            // Send OnAuth When Connected
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnConnected",
                 "RealTimeHandler GProtocol Connected");
             Request(AuthorizationHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
         }
 
 
-        private void OnAuth(object sender, object playerHash)
+        private void OnAuth(object sender, long playerHash)
         {
-            if (sender.GetType() != typeof(AuthResponseHandler)) return;
-
             // this is Reconnect
-            if (PlayerHash != 0)
+            if (PlayerHash != -1)
             {
                 RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
                 return;
             }
 
-            PlayerHash = (ulong) playerHash;
+            PlayerHash = playerHash;
             GsLiveRealTime.InAutoMatch = false;
 
             ObserverCompacterUtil.Init();
             Request(SnapShotHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
             GsSerializer.CurrentPlayerJoinRoom?.Invoke(this, null);
 
-            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnAuth", "RealTimeHandler Auth Done");
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnAuth", "RealTimeHandler OnAuth Done");
         }
 
         private void InitRequestMessageHandlers()
@@ -185,9 +158,58 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        internal static void Init()
+        internal void Init()
         {
             _udpClient.Init();
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                if (_isDisposed)
+                {
+                    DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Dispose",
+                        "RealTimeHandler Already Disposed");
+                    return;
+                }
+
+                _isDisposed = true;
+
+                _observer?.Dispose();
+                _dataObserver?.Dispose();
+                ObserverCompacterUtil.Dispose();
+
+                _udpClient?.StopReceiving();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
+                _udpClient = null;
+                CurrentRoom = null;
+                MemberId = null;
+                AuthHash = null;
+                PlayerHash = -1;
+
+                RealTimeEventHandlers.Authorized = null;
+                RealTimeEventHandlers.MemberId = null;
+                RealTimeEventHandlers.GProtocolConnected = null;
+                RealTimeEventHandlers.LeftDispose = null;
+
+                try
+                {
+                    GC.SuppressFinalize(this);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Dispose", "RealTimeHandler Dispose Done");
+            }
         }
 
         internal static int GetRoundTripTime()
@@ -208,7 +230,7 @@ namespace FiroozehGameService.Handlers.RealTime
             bool isEvent = false)
         {
             if (!_observer.Increase(isCritical)) return;
-            if (IsAvailable) _udpClient.Send(packet, type, canSendBigSize, isCritical, isEvent);
+            if (IsAvailable()) _udpClient.Send(packet, type, canSendBigSize, isCritical, isEvent);
             else
                 throw new GameServiceException("GameService Not Available")
                     .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");
@@ -218,7 +240,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnError(object sender, ErrorArg e)
         {
             DebugUtil.LogError<RealTimeHandler>(DebugLocation.RealTime, "OnError", e.Error);
-            if (PlayerHash != 0) RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+            if (PlayerHash != -1) RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
             if (_isDisposed) return;
             Init();
         }
@@ -242,11 +264,16 @@ namespace FiroozehGameService.Handlers.RealTime
             }
         }
 
+        internal static bool IsAvailable()
+        {
+            return _udpClient != null && _udpClient.IsConnected();
+        }
+
 
         #region RTHandlerRegion
 
         private static GProtocolClient _udpClient;
-        public static Room CurrentRoom;
+        internal static Room CurrentRoom;
 
         private readonly GsLiveSystemObserver _observer;
         private readonly RealtimeDataObserver _dataObserver;
@@ -258,12 +285,11 @@ namespace FiroozehGameService.Handlers.RealTime
         private static long PacketLost { set; get; }
 
         internal static string MemberId { private set; get; }
-        internal static ulong PlayerHash { private set; get; }
+        internal static long PlayerHash { private set; get; }
 
         internal static string AuthHash { private set; get; }
 
         internal static string PlayToken => GameService.PlayToken;
-        internal static bool IsAvailable => GsUdpClient.IsAvailable;
 
         private readonly Dictionary<int, IResponseHandler> _responseHandlers =
             new Dictionary<int, IResponseHandler>();

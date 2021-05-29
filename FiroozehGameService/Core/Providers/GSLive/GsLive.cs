@@ -71,17 +71,17 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
         public override bool IsCommandAvailable()
         {
-            return CommandHandler.IsAvailable;
+            return CommandHandler.IsAvailable();
         }
 
         public override bool IsRealTimeAvailable()
         {
-            return RealTimeHandler.IsAvailable;
+            return RealTimeHandler.IsAvailable();
         }
 
         public override bool IsTurnBasedAvailable()
         {
-            return TurnBasedHandler.IsAvailable;
+            return TurnBasedHandler.IsAvailable();
         }
 
         internal override void Dispose()

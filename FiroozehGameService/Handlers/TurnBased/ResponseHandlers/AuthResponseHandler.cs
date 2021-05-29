@@ -30,7 +30,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CoreEventHandlers.Authorized?.Invoke(this, packet.Token);
+            TurnBasedEventHandlers.TurnBasedAuthorized?.Invoke(this, packet.Token);
         }
     }
 }

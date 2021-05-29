@@ -40,12 +40,8 @@ namespace FiroozehGameService.Core.Socket
         public GsUdpClient(Area endpoint)
         {
             Area = endpoint;
-            IsAvailable = false;
             CreateInstance();
         }
-
-        internal static bool IsAvailable { get; private set; }
-
 
         internal override void Init()
         {
@@ -83,8 +79,7 @@ namespace FiroozehGameService.Core.Socket
 
         private static void OnConnect(object sender, EventArgs e)
         {
-            IsAvailable = true;
-            CoreEventHandlers.GProtocolConnected?.Invoke(null, null);
+            RealTimeEventHandlers.GProtocolConnected?.Invoke(null, null);
         }
 
 
@@ -92,7 +87,6 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                IsAvailable = false;
                 Client?.Disconnect(0);
                 Client?.Dispose();
                 Client = null;
@@ -126,7 +120,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                if (Client?.GetStatus() == PeerState.Connected)
+                if (IsConnected())
                 {
                     packet.SendType = type;
                     var buffer = PacketSerializable.Serialize(packet);
@@ -186,6 +180,11 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
+        internal override bool IsConnected()
+        {
+            return Client?.GetStatus() == PeerState.Connected;
+        }
+
         internal override void StopReceiving()
         {
             try
@@ -199,7 +198,6 @@ namespace FiroozehGameService.Core.Socket
             }
 
             Client = null;
-            IsAvailable = false;
         }
     }
 }

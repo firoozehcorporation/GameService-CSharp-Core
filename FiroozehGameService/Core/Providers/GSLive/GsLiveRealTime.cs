@@ -22,6 +22,7 @@
 
 using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
+using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
@@ -134,7 +135,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
             GameService.GSLive.GetGsHandler().RealTimeHandler.Request(LeaveRoomHandler.Signature,
                 GProtocolSendType.Reliable,
                 isCritical: true);
-            GameService.GSLive.GetGsHandler().RealTimeHandler.Dispose();
+
+            CoreEventHandlers.Dispose?.Invoke(null, GSLiveType.RealTime);
         }
 
 

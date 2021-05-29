@@ -39,16 +39,16 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
     /// </summary>
     internal class TcpClientWithTimeout
     {
+        private const int TimeoutThreadWaitMilliseconds = 5000;
         private readonly string _hostname;
         private readonly int _port;
         private readonly int _timeoutWaitMilliseconds;
-        private const int TimeoutThreadWaitMilliseconds = 5000;
         private bool _connected;
         private TcpClient _connection;
         private Exception _exception;
 
 
-        internal TcpClientWithTimeout(string hostname, int port,int timeoutWaitMilliseconds)
+        internal TcpClientWithTimeout(string hostname, int port, int timeoutWaitMilliseconds)
         {
             _hostname = hostname;
             _port = port;
@@ -60,40 +60,55 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             _connected = false;
             _exception = null;
 
-            DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Wait " + _timeoutWaitMilliseconds + " Before Connect");
-               
             await Task.Delay(_timeoutWaitMilliseconds);
 
             var thread = new Thread(BeginConnect) {IsBackground = true};
             thread.Start();
 
             thread.Join(TimeoutThreadWaitMilliseconds);
-            
+
             if (_connected)
             {
                 thread.Abort();
-                CoreEventHandlers.OnTcpClientConnected?.Invoke(type,_connection);
+
+                if (type == GSLiveType.Command) CommandEventHandlers.CommandClientConnected?.Invoke(type, _connection);
+                else TurnBasedEventHandlers.TurnBasedClientConnected?.Invoke(type, _connection);
+
                 return;
             }
 
             if (_exception != null)
             {
                 thread.Abort();
-                CoreEventHandlers.OnGsTcpClientError?.Invoke(type, new GameServiceException(_exception.Message));
+
+                if (type == GSLiveType.Command)
+                    CommandEventHandlers.GsCommandClientError?.Invoke(null,
+                        new GameServiceException(_exception.Message));
+                else
+                    TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null,
+                        new GameServiceException(_exception.Message));
+
                 return;
             }
-            
+
             thread.Abort();
-            CoreEventHandlers.OnGsTcpClientError?.Invoke(type,new GameServiceException( $"TcpClient connection to {_hostname}:{_port} timed out"));
+
+            if (type == GSLiveType.Command)
+                CommandEventHandlers.GsCommandClientError?.Invoke(null,
+                    new GameServiceException($"TcpClient connection to {_hostname}:{_port} timed out"));
+            else
+                TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null,
+                    new GameServiceException($"TcpClient connection to {_hostname}:{_port} timed out"));
         }
 
         private void BeginConnect()
         {
             try
             {
-                DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal,"BeginConnect","Connect To " + _hostname);
-                
-                _connection = new TcpClient(_hostname,_port);
+                DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal, "BeginConnect",
+                    "Connect To " + _hostname);
+
+                _connection = new TcpClient(_hostname, _port);
                 _connected = true;
             }
             catch (Exception ex)

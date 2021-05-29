@@ -15,9 +15,7 @@
 // </copyright>
 
 using System;
-using System.Net.Sockets;
-using FiroozehGameService.Models;
-using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 
 /**
@@ -31,17 +29,8 @@ namespace FiroozehGameService.Handlers
     /// </summary>
     public class CoreEventHandlers
     {
-        internal static EventHandler GProtocolConnected;
-        internal static EventHandler<object> Authorized;
-        internal static EventHandler<string> OnMemberId;
-        internal static EventHandler<TcpClient> OnGsTcpClientConnected;
-        internal static EventHandler<TcpClient> OnTcpClientConnected;
-        internal static EventHandler<GameServiceException> OnGsTcpClientError;
         internal static EventHandler<StartPayload> GsLiveSystemStarted;
-        internal static EventHandler<APacket> Ping;
-        internal static EventHandler<Packet> OnMirror;
-        internal static EventHandler OnLeftDispose;
-        internal static EventHandler Dispose;
+        internal static EventHandler<GSLiveType> Dispose;
 
         /// <summary>
         ///     Calls When Your Game Successfully Connected To GameService

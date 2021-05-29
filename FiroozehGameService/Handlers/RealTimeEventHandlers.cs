@@ -33,8 +33,15 @@ namespace FiroozehGameService.Handlers
     /// <summary>
     ///     Represents RealTimeEventHandlers In MultiPlayer System
     /// </summary>
-    public class RealTimeEventHandlers : CommandEventHandler
+    public class RealTimeEventHandlers : CommandEventHandlers
     {
+        internal static EventHandler<long> Authorized;
+        internal static EventHandler GProtocolConnected;
+        internal static EventHandler<string> MemberId;
+
+        internal static EventHandler LeftDispose;
+
+
         /// <summary>
         ///     Calls When SomeOne Join To Current Room
         ///     It Maybe Current Player or Another

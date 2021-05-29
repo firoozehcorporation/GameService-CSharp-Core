@@ -23,6 +23,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
+using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Models;
@@ -261,7 +262,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             await GameService.GSLive.GetGsHandler().TurnBasedHandler
                 .RequestAsync(LeaveRoomHandler.Signature, new DataPayload {NextId = whoIsNext});
-            GameService.GSLive.GetGsHandler().TurnBasedHandler?.Dispose();
+
+            CoreEventHandlers.Dispose?.Invoke(null, GSLiveType.TurnBased);
         }
 
 

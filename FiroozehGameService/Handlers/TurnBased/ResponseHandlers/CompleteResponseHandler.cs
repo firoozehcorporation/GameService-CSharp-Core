@@ -34,6 +34,8 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
         {
             TurnBasedEventHandlers.Completed?.Invoke(this,
                 JsonConvert.DeserializeObject<Complete>(packet.Data));
+
+            TurnBasedEventHandlers.LeftDispose?.Invoke(null, null);
         }
     }
 }

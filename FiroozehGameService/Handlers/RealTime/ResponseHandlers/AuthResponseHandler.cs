@@ -33,8 +33,8 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         {
             var memberId = GetStringFromBuffer(packet.Payload);
 
-            CoreEventHandlers.OnMemberId?.Invoke(this, memberId);
-            CoreEventHandlers.Authorized?.Invoke(this, packet.Hash);
+            RealTimeEventHandlers.MemberId?.Invoke(this, memberId);
+            RealTimeEventHandlers.Authorized?.Invoke(this, packet.Hash);
         }
     }
 }

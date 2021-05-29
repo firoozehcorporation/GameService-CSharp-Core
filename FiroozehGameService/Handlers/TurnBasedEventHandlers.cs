@@ -16,7 +16,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using FiroozehGameService.Core.Providers.GSLive;
+using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
@@ -33,8 +35,17 @@ namespace FiroozehGameService.Handlers
     /// <summary>
     ///     Represents TurnBasedEventHandlers In MultiPlayer System
     /// </summary>
-    public class TurnBasedEventHandlers : CommandEventHandler
+    public class TurnBasedEventHandlers : CommandEventHandlers
     {
+        internal static EventHandler<string> TurnBasedAuthorized;
+        internal static EventHandler<TcpClient> TurnBasedClientConnected;
+        internal static EventHandler<GameServiceException> GsTurnBasedClientError;
+        internal static EventHandler TurnBasedPing;
+
+        internal static EventHandler LeftDispose;
+        internal static EventHandler GsTurnBasedClientConnected;
+
+
         /// <summary>
         ///     Calls When SomeOne Join To Current Room
         ///     It Maybe Current Player or Another

@@ -30,7 +30,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CoreEventHandlers.Authorized?.Invoke(this, packet.Token);
+            CommandEventHandlers.CommandAuthorized?.Invoke(this, packet.Token);
         }
     }
 }
