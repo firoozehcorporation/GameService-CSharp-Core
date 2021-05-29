@@ -42,7 +42,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
         ///     Normal Login(or signUp) With Phone Number To Game Service
         ///     You Must Call SendLoginCodeWithSms First, to get SMS Code.
         ///     It May Throw Exception
-        ///     <param name="nickName">(NOTNULL)Specifies Nick Name </param>
+        ///     <param name="nickName">(NOTNULL)Specifies Nick Name (NOTE : Name Sets Only in FirstTime(Register)) </param>
         ///     <param name="phoneNumber">(NOTNULL)Specifies the Phone Number</param>
         ///     <param name="smsCode">(NOTNULL)Specifies SMS Code</param>
         /// </summary>

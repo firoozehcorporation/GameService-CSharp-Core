@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using FiroozehGameService.Core;
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.ResponseHandlers;
@@ -139,6 +140,7 @@ namespace FiroozehGameService.Handlers.RealTime
             }
 
             PlayerHash = (ulong) playerHash;
+            GsLiveRealTime.InAutoMatch = false;
 
             ObserverCompacterUtil.Init();
             Request(SnapShotHandler.Signature, GProtocolSendType.Reliable, isCritical: true);

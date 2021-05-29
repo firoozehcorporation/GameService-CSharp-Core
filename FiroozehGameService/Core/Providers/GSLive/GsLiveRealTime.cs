@@ -37,6 +37,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
 {
     internal class GsLiveRealTime : GsLiveRealTimeProvider
     {
+        internal static bool InAutoMatch;
+
         public override async Task CreateRoom(GSLiveOption.CreateRoomOption option)
         {
             if (GameService.IsGuest)
@@ -45,6 +47,17 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (option == null)
                 throw new GameServiceException("option Cant Be Null").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "CreateRoom");
+
+            if (InAutoMatch)
+                throw new GameServiceException("You Can't Create Room When You are In AutoMatch State")
+                    .LogException<GsLiveRealTime>(
+                        DebugLocation.RealTime, "CreateRoom");
+
+            if (GameService.GSLive.GetGsHandler().RealTimeHandler != null)
+                throw new GameServiceException("You Can't Connect To Multiple Rooms").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "CreateRoom");
+
+
             option.GsLiveType = GSLiveType.RealTime;
             await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(CreateRoomHandler.Signature, option);
         }
@@ -57,7 +70,19 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (option == null)
                 throw new GameServiceException("option Cant Be Null").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "AutoMatch");
+
+            if (InAutoMatch)
+                throw new GameServiceException("You Can't Do Multiple AutoMatch In SameTime")
+                    .LogException<GsLiveRealTime>(
+                        DebugLocation.RealTime, "AutoMatch");
+
+            if (GameService.GSLive.GetGsHandler().RealTimeHandler != null)
+                throw new GameServiceException("You Can't Connect To Multiple Rooms").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "AutoMatch");
+
+
             option.GsLiveType = GSLiveType.RealTime;
+            InAutoMatch = true;
             await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(AutoMatchHandler.Signature, option);
         }
 
@@ -66,6 +91,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "CancelAutoMatch");
+
+            InAutoMatch = false;
             await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(CancelAutoMatchHandler.Signature);
         }
 
@@ -75,9 +102,21 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "JoinRoom");
+
             if (string.IsNullOrEmpty(roomId))
                 throw new GameServiceException("roomId Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "JoinRoom");
+
+            if (InAutoMatch)
+                throw new GameServiceException("You Can't Join Room When You are in AutoMatch State")
+                    .LogException<GsLiveRealTime>(
+                        DebugLocation.RealTime, "JoinRoom");
+
+            if (GameService.GSLive.GetGsHandler().RealTimeHandler != null)
+                throw new GameServiceException("You Can't Connect To Multiple Rooms").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "JoinRoom");
+
+
             await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(JoinRoomHandler.Signature,
                 new RoomDetail {Id = roomId, Extra = extra, RoomPassword = password});
         }
@@ -87,14 +126,15 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "LeaveRoom");
+
             if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "LeaveRoom");
 
-            GameService.GSLive.GetGsHandler().RealTimeHandler?.Request(LeaveRoomHandler.Signature,
+            GameService.GSLive.GetGsHandler().RealTimeHandler.Request(LeaveRoomHandler.Signature,
                 GProtocolSendType.Reliable,
                 isCritical: true);
-            GameService.GSLive.GetGsHandler().RealTimeHandler?.Dispose();
+            GameService.GSLive.GetGsHandler().RealTimeHandler.Dispose();
         }
 
 
@@ -167,10 +207,10 @@ namespace FiroozehGameService.Core.Providers.GSLive
         public override void GetCurrentRoomInfo()
         {
             if (GameService.IsGuest)
-                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveTurnBased>(
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "GetCurrentRoomInfo");
             if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveTurnBased>(
+                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "GetCurrentRoomInfo");
 
             GameService.GSLive.GetGsHandler().RealTimeHandler
@@ -222,9 +262,21 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "AcceptInvite");
+
             if (string.IsNullOrEmpty(inviteId))
                 throw new GameServiceException("inviteId Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "AcceptInvite");
+
+            if (InAutoMatch)
+                throw new GameServiceException("You Can't Accept Invite When You are in AutoMatch State")
+                    .LogException<GsLiveRealTime>(
+                        DebugLocation.RealTime, "AcceptInvite");
+
+
+            if (GameService.GSLive.GetGsHandler().RealTimeHandler != null)
+                throw new GameServiceException("You Can't Connect To Multiple Rooms").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "AcceptInvite");
+
 
             await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(AcceptInviteHandler.Signature,
                 new RoomDetail {Invite = inviteId, Extra = extra, GsLiveType = (int) GSLiveType.RealTime});

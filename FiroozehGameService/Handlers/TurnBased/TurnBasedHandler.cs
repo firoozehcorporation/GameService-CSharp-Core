@@ -24,6 +24,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using FiroozehGameService.Core;
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Handlers.TurnBased.ResponseHandlers;
@@ -141,6 +142,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             // this is Reconnect
             if (PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
             PlayerHash = (string) playerHash;
+
+            GsLiveTurnBased.InAutoMatch = false;
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnAuth", "TurnBasedHandler Auth Done");
         }
