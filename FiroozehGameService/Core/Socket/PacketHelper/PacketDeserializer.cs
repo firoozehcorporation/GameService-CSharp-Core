@@ -20,7 +20,6 @@
 */
 
 
-
 using System;
 using System.Linq;
 using FiroozehGameService.Models.Enums;
@@ -42,20 +41,23 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             }
             catch (Exception e)
             {
-                DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "DeserializeTypeOne",e.Message);
+                DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "DeserializeTypeOne", e.Message);
                 return null;
             }
         }
 
-        public APacket Deserialize(string buffer)
+        public APacket Deserialize(string buffer, string key = null)
         {
             try
             {
-                return JsonConvert.DeserializeObject<Models.GSLive.Command.Packet>(buffer);
+                var packet = JsonConvert.DeserializeObject<Models.GSLive.Command.Packet>(buffer);
+                packet.DecryptPacket(key);
+
+                return packet;
             }
             catch (Exception e)
             {
-                DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "DeserializeTypeTwo",e.Message);
+                DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "DeserializeTypeTwo", e.Message);
                 return null;
             }
         }

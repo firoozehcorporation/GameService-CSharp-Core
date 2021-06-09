@@ -49,10 +49,15 @@ namespace FiroozehGameService.Core.Socket
         {
             Area = area;
 
-            if (area == null) CommandEventHandlers.CommandClientConnected += OnTcpClientConnected;
+            if (area == null)
+            {
+                CommandEventHandlers.CommandClientConnected += OnTcpClientConnected;
+            }
             else
             {
                 KeepAliveUtil = new KeepAliveUtil(TurnBasedConst.KeepAliveTime);
+                //TODO Add Cipher To Area
+                //Key = area.Cert;
 
                 TurnBasedEventHandlers.TurnBasedClientConnected += OnTcpClientConnected;
                 KeepAliveUtil.Caller += KeepAliveCaller;
@@ -87,6 +92,8 @@ namespace FiroozehGameService.Core.Socket
             {
                 CommandInfo = info;
                 Type = CommandInfo == null ? GSLiveType.TurnBased : GSLiveType.Command;
+
+                if (CommandInfo != null) Key = CommandInfo.Cipher;
 
                 var ip = CommandInfo == null ? Area.Ip : CommandInfo.Ip;
                 var port = CommandInfo?.Port ?? Area.Port;
@@ -129,7 +136,7 @@ namespace FiroozehGameService.Core.Socket
                     foreach (var packet in packets)
                         OnDataReceived(new SocketDataReceived
                         {
-                            Packet = PacketDeserializer.Deserialize(packet)
+                            Packet = PacketDeserializer.Deserialize(packet, Key)
                         });
                     BufferReceivedBytes = 0;
                 }
@@ -154,7 +161,7 @@ namespace FiroozehGameService.Core.Socket
         {
             Task.Run(() =>
             {
-                var buffer = PacketSerializer.Serialize(packet);
+                var buffer = PacketSerializer.Serialize(packet, Key);
                 _clientStream?.Write(buffer, 0, buffer.Length);
             }, OperationCancellationToken.Token);
         }
@@ -183,7 +190,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                var buffer = PacketSerializer.Serialize(packet);
+                var buffer = PacketSerializer.Serialize(packet, Key);
                 if (_clientStream != null)
                 {
                     await _clientStream.WriteAsync(buffer, 0, buffer.Length);
@@ -217,6 +224,7 @@ namespace FiroozehGameService.Core.Socket
             finally
             {
                 KeepAliveUtil = null;
+                Key = null;
                 _client = null;
                 _clientStream = null;
                 OperationCancellationToken = null;

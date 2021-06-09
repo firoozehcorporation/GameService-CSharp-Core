@@ -29,15 +29,15 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal class PacketSerializer : ISerializer
     {
-        public byte[] Serialize(APacket packet)
+        public byte[] Serialize(APacket packet, string key = null)
         {
             try
             {
-                return packet.Serialize();
+                return packet.Serialize(key);
             }
             catch (Exception e)
             {
-                DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "Serialize",e.Message);
+                DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "Serialize", e.Message);
                 return null;
             }
         }

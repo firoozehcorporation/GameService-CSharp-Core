@@ -20,6 +20,7 @@
 */
 
 using System;
+using FiroozehGameService.Utils;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.GSLive.Command
@@ -50,8 +51,10 @@ namespace FiroozehGameService.Models.GSLive.Command
                    '}';
         }
 
-        internal override byte[] Serialize()
+
+        internal override byte[] Serialize(string key = null)
         {
+            if (key != null) this.EncryptPacket(key);
             return ConvertToBytes(JsonConvert.SerializeObject(this, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore

@@ -71,6 +71,7 @@ namespace FiroozehGameService.Core.Socket
         private const int BufferCapacity = 1024 * 128;
         protected CommandInfo CommandInfo;
         protected Area Area;
+        protected string Key;
         protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected KeepAliveUtil KeepAliveUtil;

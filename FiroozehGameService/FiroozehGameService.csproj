@@ -340,6 +340,8 @@
         <Compile Include="Utils\ActionUtil.cs"/>
         <Compile Include="Utils\DebugUtil.cs"/>
         <Compile Include="Utils\DictionaryUtil.cs"/>
+        <Compile Include="Utils\EncryptionUtil.cs"/>
+        <Compile Include="Utils\Encryptor\RC4.cs"/>
         <Compile Include="Utils\EventCallerUtil.cs"/>
         <Compile Include="Utils\KeepAliveUtil.cs"/>
         <Compile Include="Utils\ObserverComapcterUtil.cs"/>
