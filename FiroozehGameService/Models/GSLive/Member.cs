@@ -20,7 +20,7 @@
 */
 
 using System;
-using FiroozehGameService.Core;
+using System.Collections.Generic;
 using FiroozehGameService.Models.BasicApi;
 using Newtonsoft.Json;
 
@@ -42,12 +42,33 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Member Extra</value>
         [JsonProperty("extra")] public string Extra;
 
+
+        /// <summary>
+        ///     Gets the Member Global Property.
+        /// </summary>
+        /// <value>the Member Global Property</value>
+        [JsonProperty("global_property")] public string GlobalProperty;
+
         /// <summary>
         ///     Gets the Member ID
         ///     You Can Use it In MultiPlayer Functions that Needs Member id
         /// </summary>
         /// <value>the Member ID</value>
         [JsonProperty("_id")] public string Id;
+
+
+        /// <summary>
+        ///     Gets the Member Online Status.
+        /// </summary>
+        /// <value>the Member Online Status</value>
+        [JsonProperty("is_online")] public bool IsOnline;
+
+
+        /// <summary>
+        ///     Gets the Member Label.
+        /// </summary>
+        /// <value>the Member Label</value>
+        [JsonProperty("label")] public string Label;
 
         /// <summary>
         ///     Gets the Member Logo URL.
@@ -62,19 +83,18 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Member Name</value>
         [JsonProperty("name")] public string Name;
 
+
+        /// <summary>
+        ///     Gets the Member Tags.
+        /// </summary>
+        /// <value>the Member Tags</value>
+        [JsonProperty("tags")] public List<string> Tags;
+
         /// <summary>
         ///     Gets the Member User Data
         /// </summary>
         /// <value>the Member User Data</value>
         [JsonProperty("user")] public User User;
-        
-        
-        /// <summary>
-        ///     Gets the Member Online Status.
-        ///     this Property Only Available in <see cref="GameService.GetMemberData"/> and  <see cref="GameService.GetCurrentPlayer"/>
-        /// </summary>
-        /// <value>the Member Online Status</value>
-        [JsonProperty("is_online")] public bool IsOnline;
 
         public override bool Equals(object obj)
         {

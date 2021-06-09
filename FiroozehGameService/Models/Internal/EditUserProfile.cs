@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.Internal
@@ -27,8 +28,11 @@ namespace FiroozehGameService.Models.Internal
     [Serializable]
     internal class EditUserProfile
     {
+        [JsonProperty("email")] public string Email;
+        [JsonProperty("global_property")] public string GlobalProperty;
+        [JsonProperty("label")] public string Label;
         [JsonProperty("name")] public string NickName;
         [JsonProperty("mobile")] public string PhoneNumber;
-        [JsonProperty("email")] public string Email;
+        [JsonProperty("tags")] public List<string> Tags;
     }
 }

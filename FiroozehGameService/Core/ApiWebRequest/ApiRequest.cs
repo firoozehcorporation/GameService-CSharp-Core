@@ -334,6 +334,71 @@ namespace FiroozehGameService.Core.ApiWebRequest
         }
 
 
+        internal static async Task<MemberInfo> SetCurrentPlayerTags(List<string> tags)
+        {
+            var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
+            {
+                Tags = tags
+            }, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = await GsWebRequest.Put(Api.GetMemberData, body, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<MemberInfo>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "SetCurrentPlayerTags");
+            }
+        }
+
+        internal static async Task<MemberInfo> SetCurrentPlayerLabel(string label)
+        {
+            var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
+            {
+                Label = label
+            }, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = await GsWebRequest.Put(Api.GetMemberData, body, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<MemberInfo>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "SetCurrentPlayerLabel");
+            }
+        }
+
+
+        internal static async Task<MemberInfo> SetCurrentPlayerGlobalProperty(string globalProperty)
+        {
+            var body = JsonConvert.SerializeObject(new Models.Internal.EditUserProfile
+            {
+                GlobalProperty = globalProperty
+            }, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            var response = await GsWebRequest.Put(Api.GetMemberData, body, CreatePlayTokenHeader());
+
+            using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))
+            {
+                if (response.IsSuccessStatusCode)
+                    return JsonConvert.DeserializeObject<MemberInfo>(await reader.ReadToEndAsync());
+                throw new GameServiceException(JsonConvert.DeserializeObject<Error>(await reader.ReadToEndAsync())
+                    .Message).LogException(typeof(ApiRequest), DebugLocation.Http, "SetCurrentPlayerGlobalProperty");
+            }
+        }
+
+
         internal static async Task<List<TItem>> GetTableItems<TItem>(string tableId, bool isGlobal,
             TableOption[] options)
         {
@@ -1231,7 +1296,8 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 {"token", userToken},
                 {"game", Configuration.ClientId},
                 {"secret", Configuration.ClientSecret},
-                {"system_info", JsonConvert.SerializeObject(Configuration.SystemInfo)}
+                {"system_info", JsonConvert.SerializeObject(Configuration.SystemInfo)},
+                {"connectionType", "tcp-sec"}
             };
 
 

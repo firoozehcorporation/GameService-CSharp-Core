@@ -85,6 +85,43 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             return await ApiRequest.EditCurrentPlayer(profile);
         }
 
+        public async Task<MemberInfo> SetCurrentPlayerTags(List<string> tags)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
+                    DebugLocation.Internal, "SetCurrentPlayerTags");
+            if (tags == null)
+                throw new GameServiceException("tags Cant Be Null").LogException(typeof(PlayerProvider),
+                    DebugLocation.Internal, "SetCurrentPlayerTags");
+
+            return await ApiRequest.SetCurrentPlayerTags(tags);
+        }
+
+        public async Task<MemberInfo> SetCurrentPlayerLabel(string label)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
+                    DebugLocation.Internal, "SetCurrentPlayerLabel");
+            if (string.IsNullOrEmpty(label))
+                throw new GameServiceException("label Cant Be NullOrEmpty").LogException(typeof(PlayerProvider),
+                    DebugLocation.Internal, "SetCurrentPlayerLabel");
+
+            return await ApiRequest.SetCurrentPlayerLabel(label);
+        }
+
+        public async Task<MemberInfo> SetCurrentPlayerGlobalProperty(string globalProperty)
+        {
+            if (!GameService.IsAuthenticated())
+                throw new GameServiceException("GameService Not Available").LogException(typeof(PlayerProvider),
+                    DebugLocation.Internal, "SetCurrentPlayerGlobalProperty");
+            if (string.IsNullOrEmpty(globalProperty))
+                throw new GameServiceException("globalProperty Cant Be NullOrEmpty").LogException(
+                    typeof(PlayerProvider),
+                    DebugLocation.Internal, "SetCurrentPlayerGlobalProperty");
+
+            return await ApiRequest.SetCurrentPlayerGlobalProperty(globalProperty);
+        }
+
         public async Task<bool> ChangePassword(string currentPassword, string newPassword)
         {
             if (!GameService.IsAuthenticated())

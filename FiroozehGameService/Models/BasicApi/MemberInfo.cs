@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
@@ -36,12 +37,26 @@ namespace FiroozehGameService.Models.BasicApi
         /// <value>the Member Email</value>
         [JsonProperty("email")] public string Email;
 
+
+        /// <summary>
+        ///     Gets the Member Global Property.
+        /// </summary>
+        /// <value>the Member Global Property</value>
+        [JsonProperty("global_property")] public string GlobalProperty;
+
         /// <summary>
         ///     Gets the Member ID
         ///     You Can Use it In MultiPlayer Functions that Needs Member id
         /// </summary>
         /// <value>the Member ID</value>
         [JsonProperty("_id")] public string Id;
+
+
+        /// <summary>
+        ///     Gets the Member Label.
+        /// </summary>
+        /// <value>the Member Label</value>
+        [JsonProperty("label")] public string Label;
 
         /// <summary>
         ///     Gets the Member Logo URL.
@@ -62,6 +77,13 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Member Phone Number</value>
         [JsonProperty("phone_number")] public string PhoneNumber;
+
+
+        /// <summary>
+        ///     Gets the Member Tags.
+        /// </summary>
+        /// <value>the Member Tags</value>
+        [JsonProperty("tags")] public List<string> Tags;
 
 
         public override bool Equals(object obj)

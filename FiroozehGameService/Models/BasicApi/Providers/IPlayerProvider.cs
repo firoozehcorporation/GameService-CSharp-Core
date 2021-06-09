@@ -63,11 +63,33 @@ namespace FiroozehGameService.Models.BasicApi.Providers
 
 
         /// <summary>
-        ///     With this command you can Edit information about the current player is playing
+        ///     With this command you can Edit information about the current player
         /// </summary>
         /// <value> return Edited Current Member Info Data </value>
         /// <param name="profile">(NOTNULL)Specifies EditUserProfile Class </param>
         Task<MemberInfo> EditCurrentPlayerProfile(EditUserProfile profile);
+
+
+        /// <summary>
+        ///     With this command you can Set Tags to Current player That Defined in Developer Panel
+        ///     NOTE : Set Empty List as Tags to Remove All Tags
+        /// </summary>
+        /// <param name="tags">(NOTNULL)Specifies Tags</param>
+        Task<MemberInfo> SetCurrentPlayerTags(List<string> tags);
+
+
+        /// <summary>
+        ///     With this command you can Set Label to Current player
+        /// </summary>
+        /// <param name="label">(NOTNULL)Specifies label</param>
+        Task<MemberInfo> SetCurrentPlayerLabel(string label);
+
+
+        /// <summary>
+        ///     With this command you can Set Global Property to Current player
+        /// </summary>
+        /// <param name="globalProperty">(NOTNULL)Specifies the Global Property</param>
+        Task<MemberInfo> SetCurrentPlayerGlobalProperty(string globalProperty);
 
 
         /// <summary>

@@ -193,6 +193,14 @@ namespace FiroozehGameService.Models.Consts
                 public const string InvalidStructure = "invalid_structure";
                 public const string ApplicationNotFound = "no_running_application";
             }
+
+            /// <summary>
+            ///     Represents GameService MemberTag HTTP Errors
+            /// </summary>
+            public class MemberTag
+            {
+                public const string TagNotfound = "tag_notfound";
+            }
         }
 
         /// <summary>
