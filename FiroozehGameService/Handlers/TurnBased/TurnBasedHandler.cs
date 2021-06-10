@@ -184,7 +184,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             _cancellationToken = new CancellationTokenSource();
 
             _tcpClient.SetEncryptionStatus(false);
-            await _tcpClient.Init(null);
+            await _tcpClient.Init(null, GameService.CommandInfo.Cipher);
         }
 
         public void Dispose()

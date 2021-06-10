@@ -236,7 +236,7 @@ namespace FiroozehGameService.Handlers.Command
             _cancellationToken = new CancellationTokenSource();
 
             _tcpClient.SetEncryptionStatus(false);
-            await _tcpClient.Init(GameService.CommandInfo);
+            await _tcpClient.Init(GameService.CommandInfo, GameService.CommandInfo.Cipher);
         }
 
         internal static short GetPing()

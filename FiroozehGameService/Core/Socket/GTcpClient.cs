@@ -52,7 +52,7 @@ namespace FiroozehGameService.Core.Socket
             else TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null, new GameServiceException(errorArg.Error));
         }
 
-        internal abstract Task Init(CommandInfo info);
+        internal abstract Task Init(CommandInfo info, string cipher);
 
         internal abstract void Send(Packet packet);
 

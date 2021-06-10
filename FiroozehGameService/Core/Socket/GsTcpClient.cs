@@ -86,14 +86,14 @@ namespace FiroozehGameService.Core.Socket
         }
 
 
-        internal override async Task Init(CommandInfo info)
+        internal override async Task Init(CommandInfo info, string cipher)
         {
             try
             {
                 CommandInfo = info;
+                Key = cipher;
                 Type = CommandInfo == null ? GSLiveType.TurnBased : GSLiveType.Command;
 
-                if (CommandInfo != null) Key = CommandInfo.Cipher;
 
                 var ip = CommandInfo == null ? Area.Ip : CommandInfo.Ip;
                 var port = CommandInfo?.Port ?? Area.Port;
