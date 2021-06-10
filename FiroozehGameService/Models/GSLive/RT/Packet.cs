@@ -52,7 +52,7 @@ namespace FiroozehGameService.Models.GSLive.RT
             SendType = sendType;
         }
 
-        internal override byte[] Serialize(string key = null)
+        internal override byte[] Serialize(string key, bool isEncryptionEnabled)
         {
             byte havePayload = 0x0, haveSendTime = 0x0;
             short prefixLen = 4 * sizeof(byte) + sizeof(ulong);

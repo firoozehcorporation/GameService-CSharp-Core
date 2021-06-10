@@ -52,9 +52,9 @@ namespace FiroozehGameService.Models.GSLive.Command
         }
 
 
-        internal override byte[] Serialize(string key = null)
+        internal override byte[] Serialize(string key, bool isEncryptionEnabled)
         {
-            if (key != null) this.EncryptPacket(key);
+            if (isEncryptionEnabled) this.EncryptPacket(key);
             return ConvertToBytes(JsonConvert.SerializeObject(this, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore

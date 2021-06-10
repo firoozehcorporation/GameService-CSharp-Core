@@ -123,7 +123,7 @@ namespace FiroozehGameService.Core.Socket
                 if (IsConnected())
                 {
                     packet.SendType = type;
-                    var buffer = PacketSerializable.Serialize(packet);
+                    var buffer = PacketSerializable.Serialize(packet, null, false);
 
                     if (!canSendBigSize && !PacketUtil.CheckPacketSize(buffer))
                         throw new GameServiceException("this Packet Is Too Big!,Max Packet Size is " +

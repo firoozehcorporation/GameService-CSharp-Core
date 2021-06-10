@@ -26,6 +26,6 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal interface ISerializer
     {
-        byte[] Serialize(APacket packet, string key = null);
+        byte[] Serialize(APacket packet, string key, bool isEncryptionEnabled);
     }
 }

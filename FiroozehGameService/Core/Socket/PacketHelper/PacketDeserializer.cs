@@ -46,12 +46,13 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             }
         }
 
-        public APacket Deserialize(string buffer, string key = null)
+        public APacket Deserialize(string buffer, string key, bool isEncryptionEnabled)
         {
             try
             {
                 var packet = JsonConvert.DeserializeObject<Models.GSLive.Command.Packet>(buffer);
-                packet.DecryptPacket(key);
+
+                if (isEncryptionEnabled) packet.DecryptPacket(key);
 
                 return packet;
             }

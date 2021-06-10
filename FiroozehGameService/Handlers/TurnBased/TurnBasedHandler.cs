@@ -108,6 +108,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
 
+            _tcpClient.SetEncryptionStatus(true);
+
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
                 "TurnBasedHandler Init done");
@@ -180,6 +182,8 @@ namespace FiroozehGameService.Handlers.TurnBased
         public async Task Init()
         {
             _cancellationToken = new CancellationTokenSource();
+
+            _tcpClient.SetEncryptionStatus(false);
             await _tcpClient.Init(null);
         }
 

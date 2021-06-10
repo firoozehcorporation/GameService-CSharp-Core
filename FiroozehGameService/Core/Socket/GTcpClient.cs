@@ -66,12 +66,15 @@ namespace FiroozehGameService.Core.Socket
 
         internal abstract bool IsConnected();
 
+        internal abstract void SetEncryptionStatus(bool isEnabled);
+
         #region Fields
 
         private const int BufferCapacity = 1024 * 128;
         protected CommandInfo CommandInfo;
         protected Area Area;
         protected string Key;
+        protected bool IsEncryptionEnabled;
         protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected KeepAliveUtil KeepAliveUtil;
