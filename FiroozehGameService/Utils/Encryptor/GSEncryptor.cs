@@ -2,11 +2,10 @@ using System;
 using System.Text;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.Command;
-using FiroozehGameService.Utils.Encryptor;
 
-namespace FiroozehGameService.Utils
+namespace FiroozehGameService.Utils.Encryptor
 {
-    internal static class EncryptionUtil
+    internal static class GsEncryptor
     {
         internal static void EncryptPacket(this Packet packet, string key)
         {
@@ -33,7 +32,7 @@ namespace FiroozehGameService.Utils
             }
             catch (Exception e)
             {
-                e.LogException(typeof(EncryptionUtil), DebugLocation.Internal, "EncryptSrt");
+                e.LogException(typeof(GsEncryptor), DebugLocation.Internal, "EncryptSrt");
                 return "";
             }
         }
@@ -50,7 +49,7 @@ namespace FiroozehGameService.Utils
             }
             catch (Exception e)
             {
-                e.LogException(typeof(EncryptionUtil), DebugLocation.Internal, "DecryptSrt");
+                e.LogException(typeof(GsEncryptor), DebugLocation.Internal, "DecryptSrt");
                 return "";
             }
         }

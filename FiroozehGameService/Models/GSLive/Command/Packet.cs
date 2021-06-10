@@ -20,7 +20,7 @@
 */
 
 using System;
-using FiroozehGameService.Utils;
+using FiroozehGameService.Utils.Encryptor;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.GSLive.Command

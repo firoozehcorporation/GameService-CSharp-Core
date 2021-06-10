@@ -26,6 +26,7 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Utils;
+using FiroozehGameService.Utils.Encryptor;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Core.Socket.PacketHelper
