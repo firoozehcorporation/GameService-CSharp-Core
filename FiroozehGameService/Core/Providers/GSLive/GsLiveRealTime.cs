@@ -27,6 +27,7 @@ using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
@@ -45,9 +46,18 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "CreateRoom");
+
             if (option == null)
                 throw new GameServiceException("option Cant Be Null").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "CreateRoom");
+
+            if (option.MinPlayer < RealTimeConst.MinPlayer || option.MinPlayer > RealTimeConst.MaxPlayer)
+                throw new GameServiceException("Invalid MinPlayer Value")
+                    .LogException<GsLiveRealTime>(DebugLocation.RealTime, "CreateRoom");
+
+            if (option.MaxPlayer < RealTimeConst.MinPlayer || option.MaxPlayer > RealTimeConst.MaxPlayer)
+                throw new GameServiceException("Invalid MaxPlayer Value")
+                    .LogException<GsLiveRealTime>(DebugLocation.RealTime, "CreateRoom");
 
             if (InAutoMatch)
                 throw new GameServiceException("You Can't Create Room When You are In AutoMatch State")
@@ -68,9 +78,18 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "AutoMatch");
+
             if (option == null)
                 throw new GameServiceException("option Cant Be Null").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "AutoMatch");
+
+            if (option.MinPlayer < RealTimeConst.MinPlayer || option.MinPlayer > RealTimeConst.MaxPlayer)
+                throw new GameServiceException("Invalid MinPlayer Value")
+                    .LogException<GsLiveRealTime>(DebugLocation.RealTime, "AutoMatch");
+
+            if (option.MaxPlayer < RealTimeConst.MinPlayer || option.MaxPlayer > RealTimeConst.MaxPlayer)
+                throw new GameServiceException("Invalid MaxPlayer Value")
+                    .LogException<GsLiveRealTime>(DebugLocation.RealTime, "AutoMatch");
 
             if (InAutoMatch)
                 throw new GameServiceException("You Can't Do Multiple AutoMatch In SameTime")

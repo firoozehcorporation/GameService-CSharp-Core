@@ -39,9 +39,7 @@ namespace FiroozehGameService.Models.Consts
         internal const int OnSnapshot = 15;
 
 
-        
         internal const int ActionKeepAlive = byte.MaxValue;
-
 
 
         internal const int Errors = 100;
@@ -51,5 +49,8 @@ namespace FiroozehGameService.Models.Consts
         internal const int RestLimit = 1000; //  RestLimit per sec in long
         internal const int KeepAliveTime = 1000;
         internal const short MaxRetryConnect = 5;
+
+        internal const int MinPlayer = 2;
+        internal const int MaxPlayer = 10;
     }
 }
