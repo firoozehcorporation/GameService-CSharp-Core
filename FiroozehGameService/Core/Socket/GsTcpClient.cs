@@ -56,8 +56,6 @@ namespace FiroozehGameService.Core.Socket
             else
             {
                 KeepAliveUtil = new KeepAliveUtil(TurnBasedConst.KeepAliveTime);
-                //TODO Add Cipher To Area
-                //Key = area.Cert;
 
                 TurnBasedEventHandlers.TurnBasedClientConnected += OnTcpClientConnected;
                 KeepAliveUtil.Caller += KeepAliveCaller;

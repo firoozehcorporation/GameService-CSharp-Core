@@ -106,7 +106,7 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             try
             {
                 DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal, "BeginConnect",
-                    "Connect To " + _hostname);
+                    $"Connecting To {_hostname}:{_port} ...");
 
                 _connection = new TcpClient(_hostname, _port);
                 _connected = true;
