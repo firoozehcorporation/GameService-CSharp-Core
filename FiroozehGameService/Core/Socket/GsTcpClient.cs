@@ -223,6 +223,8 @@ namespace FiroozehGameService.Core.Socket
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
 
+                Thread.Sleep(50);
+
                 _client?.Close();
                 Thread?.Interrupt();
             }
