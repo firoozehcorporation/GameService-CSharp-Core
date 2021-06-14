@@ -49,7 +49,7 @@ namespace FiroozehGameService.Core.Socket
         {
             Area = area;
 
-            Thread = new Thread(Receiving)
+            Thread = new Thread(async () => await Receiving())
             {
                 Priority = ThreadPriority.Highest,
                 IsBackground = true
@@ -123,7 +123,7 @@ namespace FiroozehGameService.Core.Socket
             Thread?.Start();
         }
 
-        private void Receiving()
+        private async Task Receiving()
         {
             DebugUtil.LogNormal<GsTcpClient>(
                 Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StartReceiving",
@@ -134,15 +134,18 @@ namespace FiroozehGameService.Core.Socket
             while (IsConnected())
                 try
                 {
-                    BufferReceivedBytes += _clientStream.Read(Buffer, BufferOffset, Buffer.Length - BufferOffset);
+                    BufferReceivedBytes += await _clientStream.ReadAsync(Buffer, BufferOffset,
+                        Buffer.Length - BufferOffset, OperationCancellationToken.Token);
 
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
+
                     foreach (var packet in packets)
                         OnDataReceived(new SocketDataReceived
                         {
                             Packet = PacketDeserializer.Deserialize(packet, Key, IsEncryptionEnabled)
                         });
+
                     BufferReceivedBytes = 0;
                 }
                 catch (Exception e)
