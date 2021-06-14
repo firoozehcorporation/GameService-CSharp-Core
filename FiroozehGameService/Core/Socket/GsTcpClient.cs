@@ -49,6 +49,12 @@ namespace FiroozehGameService.Core.Socket
         {
             Area = area;
 
+            Thread = new Thread(Receiving)
+            {
+                Priority = ThreadPriority.Highest,
+                IsBackground = true
+            };
+
             if (area == null)
             {
                 CommandEventHandlers.CommandClientConnected += OnTcpClientConnected;
@@ -112,7 +118,12 @@ namespace FiroozehGameService.Core.Socket
         }
 
 
-        internal override async Task StartReceiving()
+        internal override void StartReceiving()
+        {
+            Thread?.Start();
+        }
+
+        private void Receiving()
         {
             DebugUtil.LogNormal<GsTcpClient>(
                 Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StartReceiving",
@@ -123,11 +134,7 @@ namespace FiroozehGameService.Core.Socket
             while (IsConnected())
                 try
                 {
-                    BufferReceivedBytes += await _clientStream.ReadAsync(
-                        Buffer,
-                        BufferOffset,
-                        Buffer.Length - BufferOffset,
-                        OperationCancellationToken.Token);
+                    BufferReceivedBytes += _clientStream.Read(Buffer, BufferOffset, Buffer.Length - BufferOffset);
 
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
@@ -214,6 +221,7 @@ namespace FiroozehGameService.Core.Socket
                 OperationCancellationToken?.Dispose();
 
                 _client?.Close();
+                Thread?.Interrupt();
             }
             catch (Exception)
             {
@@ -227,6 +235,7 @@ namespace FiroozehGameService.Core.Socket
                 _clientStream = null;
                 OperationCancellationToken = null;
                 DataReceived = null;
+                Thread = null;
                 IsEncryptionEnabled = false;
 
                 try

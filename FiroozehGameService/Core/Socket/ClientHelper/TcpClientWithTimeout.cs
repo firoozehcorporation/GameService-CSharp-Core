@@ -62,14 +62,18 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
 
             await Task.Delay(_timeoutWaitMilliseconds);
 
-            var thread = new Thread(BeginConnect) {IsBackground = true};
+            var thread = new Thread(BeginConnect)
+            {
+                Priority = ThreadPriority.Highest,
+                IsBackground = true
+            };
             thread.Start();
 
             thread.Join(TimeoutThreadWaitMilliseconds);
 
             if (_connected)
             {
-                thread.Abort();
+                thread.Interrupt();
 
                 if (type == GSLiveType.Command) CommandEventHandlers.CommandClientConnected?.Invoke(type, _connection);
                 else TurnBasedEventHandlers.TurnBasedClientConnected?.Invoke(type, _connection);
@@ -79,7 +83,7 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
 
             if (_exception != null)
             {
-                thread.Abort();
+                thread.Interrupt();
 
                 if (type == GSLiveType.Command)
                     CommandEventHandlers.GsCommandClientError?.Invoke(null,
@@ -91,7 +95,7 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
                 return;
             }
 
-            thread.Abort();
+            thread.Interrupt();
 
             if (type == GSLiveType.Command)
                 CommandEventHandlers.GsCommandClientError?.Invoke(null,

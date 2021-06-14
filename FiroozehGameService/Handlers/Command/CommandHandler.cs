@@ -141,7 +141,10 @@ namespace FiroozehGameService.Handlers.Command
 
             _retryConnectCounter = 0;
 
-            Task.Run(async () => { await _tcpClient.StartReceiving(); }, _cancellationToken.Token);
+            _tcpClient?.StartReceiving();
+
+            await Task.Delay(100);
+
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
 
             _tcpClient?.SetEncryptionStatus(true);

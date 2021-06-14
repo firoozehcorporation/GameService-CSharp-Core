@@ -45,7 +45,7 @@ namespace FiroozehGameService.Core.Socket
 
         protected void OnClosed(ErrorArg errorArg)
         {
-            DataBuilder?.Clear();
+            StopReceiving();
 
             if (Type == GSLiveType.Command)
                 CommandEventHandlers.GsCommandClientError?.Invoke(null, new GameServiceException(errorArg.Error));
@@ -60,7 +60,7 @@ namespace FiroozehGameService.Core.Socket
 
         protected abstract Task SendAsync(byte[] payload);
 
-        internal abstract Task StartReceiving();
+        internal abstract void StartReceiving();
 
         internal abstract void StopReceiving();
 
@@ -70,7 +70,8 @@ namespace FiroozehGameService.Core.Socket
 
         #region Fields
 
-        private const int BufferCapacity = 1024 * 128;
+        private const int BufferCapacity = 8192;
+        protected Thread Thread;
         protected CommandInfo CommandInfo;
         protected Area Area;
         protected string Key;
