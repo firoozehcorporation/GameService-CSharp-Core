@@ -1,4 +1,4 @@
-﻿// <copyright file="CompleteResponseHandler.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="AcceptVoteResponseHandler.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +26,14 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 {
-    internal class CompleteResponseHandler : BaseResponseHandler
+    internal class AcceptVoteResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand => TurnBasedConst.OnComplete;
+        public static int ActionCommand => TurnBasedConst.OnAcceptVote;
 
         protected override void HandleResponse(Packet packet)
         {
-            TurnBasedEventHandlers.Completed?.Invoke(this,
-                JsonConvert.DeserializeObject<Complete>(packet.Data));
+            TurnBasedEventHandlers.AcceptVoteReceived?.Invoke(this,
+                JsonConvert.DeserializeObject<AcceptVote>(packet.Data));
 
             TurnBasedEventHandlers.LeftDispose?.Invoke(null, null);
         }

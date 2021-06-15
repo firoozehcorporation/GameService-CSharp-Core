@@ -1,4 +1,4 @@
-﻿// <copyright file="CompleteHandler.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="AcceptVoteHandler.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +26,14 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 {
-    internal class CompleteHandler : BaseRequestHandler
+    internal class AcceptVoteHandler : BaseRequestHandler
     {
         public static string Signature =>
-            "COMPLETE";
+            "ACCEPT_VOTE";
 
         private static Packet DoAction(DataPayload payload)
         {
-            return new Packet(TurnBasedHandler.PlayerHash, TurnBasedConst.OnComplete,
+            return new Packet(TurnBasedHandler.PlayerHash, TurnBasedConst.OnAcceptVote,
                 JsonConvert.SerializeObject(payload
                     , new JsonSerializerSettings
                     {

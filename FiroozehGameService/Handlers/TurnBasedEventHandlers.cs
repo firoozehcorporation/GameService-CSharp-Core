@@ -116,11 +116,11 @@ namespace FiroozehGameService.Handlers
 
 
         /// <summary>
-        ///     Calls When The Game Is Finished
+        ///     Calls When Accept Vote Received From Other Players
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveTurnBased.Complete" />
+        ///     <see cref="GsLiveTurnBased.AcceptVote" />
         /// </summary>
-        public static EventHandler<Complete> Completed;
+        public static EventHandler<AcceptVote> AcceptVoteReceived;
 
         /// <summary>
         ///     Returns Current Room Members Detail  When Call The Following Function :

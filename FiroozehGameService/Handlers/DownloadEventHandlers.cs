@@ -34,7 +34,7 @@ namespace FiroozehGameService.Handlers
         public static EventHandler<DownloadProgressArgs> DownloadProgress;
 
         /// <summary>
-        ///     Calls When Download Completed
+        ///     Calls When Download AcceptVoteReceived
         /// </summary>
         public static EventHandler<DownloadCompleteArgs> DownloadCompleted;
 

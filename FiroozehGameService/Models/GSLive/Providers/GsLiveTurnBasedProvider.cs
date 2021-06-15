@@ -134,7 +134,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         ///     If you would like to confirm one of the results posted by other Players
         /// </summary>
         /// <param name="memberId">(NOTNULL)The Specific player ID</param>
-        public abstract Task Complete(string memberId);
+        public abstract Task AcceptVote(string memberId);
 
 
         /// <summary>

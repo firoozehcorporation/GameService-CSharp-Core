@@ -1,4 +1,4 @@
-// <copyright file="Complete.cs" company="Firoozeh Technology LTD">
+// <copyright file="AcceptVote.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +25,10 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.TB
 {
     /// <summary>
-    ///     Represents Complete Data Model In GameService TurnBased MultiPlayer System
+    ///     Represents AcceptVote Data Model In GameService TurnBased MultiPlayer System
     /// </summary>
     [Serializable]
-    public class Complete
+    public class AcceptVote
     {
         /// <summary>
         ///     Gets the Accept Counts from Other Players.

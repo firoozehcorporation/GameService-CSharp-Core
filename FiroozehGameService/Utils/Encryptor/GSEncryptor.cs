@@ -33,7 +33,7 @@ namespace FiroozehGameService.Utils.Encryptor
             catch (Exception e)
             {
                 e.LogException(typeof(GsEncryptor), DebugLocation.Internal, "EncryptSrt");
-                return "";
+                return srt;
             }
         }
 
@@ -50,7 +50,7 @@ namespace FiroozehGameService.Utils.Encryptor
             catch (Exception e)
             {
                 e.LogException(typeof(GsEncryptor), DebugLocation.Internal, "DecryptSrt");
-                return "";
+                return srt;
             }
         }
     }

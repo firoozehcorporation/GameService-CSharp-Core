@@ -305,21 +305,21 @@ namespace FiroozehGameService.Core.Providers.GSLive
         }
 
 
-        public override async Task Complete(string memberId)
+        public override async Task AcceptVote(string memberId)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveTurnBased>(
-                    DebugLocation.TurnBased, "Complete");
+                    DebugLocation.TurnBased, "AcceptVote");
 
             if (string.IsNullOrEmpty(memberId))
                 throw new GameServiceException("memberId Cant Be EmptyOrNull").LogException<GsLiveTurnBased>(
-                    DebugLocation.TurnBased, "Complete");
+                    DebugLocation.TurnBased, "AcceptVote");
 
             if (GameService.GSLive.GetGsHandler().TurnBasedHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveTurnBased>(
-                    DebugLocation.TurnBased, "Complete");
+                    DebugLocation.TurnBased, "AcceptVote");
 
-            await GameService.GSLive.GetGsHandler().TurnBasedHandler.RequestAsync(CompleteHandler.Signature,
+            await GameService.GSLive.GetGsHandler().TurnBasedHandler.RequestAsync(AcceptVoteHandler.Signature,
                 new DataPayload {Id = memberId});
         }
 
