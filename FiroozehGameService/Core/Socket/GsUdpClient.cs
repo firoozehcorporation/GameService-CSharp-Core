@@ -40,16 +40,17 @@ namespace FiroozehGameService.Core.Socket
         public GsUdpClient(Area endpoint)
         {
             Area = endpoint;
-            CreateInstance();
         }
 
         internal override void Init()
         {
             try
             {
-                if (Client == null) CreateInstance();
+                CreateInstance();
+
                 DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "Init",
                     "Connecting to  " + Area.Ip + ":" + Area.Port);
+
                 Client?.Connect(Area.Ip, (ushort) Area.Port);
             }
             catch (Exception e)
@@ -80,10 +81,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                Client?.Disconnect(0);
-                Client?.Dispose();
-                Client = null;
-
+                StopReceiving();
                 OnClosed(new ErrorArg {Error = "Client Timeout"});
             }
             catch (Exception e)
@@ -189,8 +187,22 @@ namespace FiroozehGameService.Core.Socket
             {
                 e.LogException<GsUdpClient>(DebugLocation.RealTime, "StopReceiving");
             }
+            finally
+            {
+                Client = null;
 
-            Client = null;
+                try
+                {
+                    GC.SuppressFinalize(this);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "StopReceiving",
+                    "GsUdpClient -> StopReceiving Done");
+            }
         }
     }
 }
