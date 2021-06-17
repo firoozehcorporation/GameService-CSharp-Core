@@ -81,7 +81,7 @@ namespace FiroozehGameService.Core.GSLive
             /// <param name="roomName">(Not NULL)Specifies the Room Name</param>
             /// <param name="role">(Not NULL)Specifies the Room Role</param>
             /// <param name="minPlayer">Specifies the Room min player limit (MIN=2)</param>
-            /// <param name="maxPlayer">Specifies the Room max player limit (MAX=8)</param>
+            /// <param name="maxPlayer">Specifies the Room max player limit</param>
             /// <param name="isPrivate">Specifies the Room Privacy</param>
             /// <param name="isPersist">Specifies the Room Persistence</param>
             /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
