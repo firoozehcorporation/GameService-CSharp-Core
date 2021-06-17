@@ -60,21 +60,14 @@ namespace FiroozehGameService.Core.Socket
 
         internal sealed override void CreateInstance()
         {
-            if (Area?.ConnectToken != null)
-            {
-                Client = new GClient(GameService.Configuration.PlatformType);
+            Client = new GClient(GameService.Configuration.PlatformType);
 
-                GClient.OnConnect += OnConnect;
-                GClient.OnDisconnect += OnDisconnect;
-                GClient.OnTimeout += OnTimeout;
-                GClient.OnReceive += OnReceive;
+            GClient.OnConnect += OnConnect;
+            GClient.OnDisconnect += OnDisconnect;
+            GClient.OnTimeout += OnTimeout;
+            GClient.OnReceive += OnReceive;
 
-                DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "CreateInstance", "GsUdpClient Created");
-            }
-            else
-            {
-                DebugUtil.LogError<GsUdpClient>(DebugLocation.RealTime, "CreateInstance", "Token Is NULL");
-            }
+            DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "CreateInstance", "GsUdpClient Created");
         }
 
         private static void OnConnect(object sender, EventArgs e)
