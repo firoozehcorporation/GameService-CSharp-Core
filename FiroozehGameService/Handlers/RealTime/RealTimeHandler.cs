@@ -70,7 +70,7 @@ namespace FiroozehGameService.Handlers.RealTime
         private static void OnLeftDispose(object sender, EventArgs e)
         {
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnLeftDispose",
-                "Current Player Left From Server, so dispose Realtime...");
+                "Connection Gracefully Closed By Server, so dispose Realtime...");
 
             CoreEventHandlers.Dispose?.Invoke(null, GSLiveType.RealTime);
         }
