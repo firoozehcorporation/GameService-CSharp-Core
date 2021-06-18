@@ -334,10 +334,6 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "GetRoundTripTime");
 
-            if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "GetRoundTripTime");
-
             return RealTimeHandler.GetRoundTripTime();
         }
 
@@ -350,10 +346,6 @@ namespace FiroozehGameService.Core.Providers.GSLive
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "GetPacketLost");
-
-            if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
-                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "GetPacketLost");
 
             return RealTimeHandler.GetPacketLost();

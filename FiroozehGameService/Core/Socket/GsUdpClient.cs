@@ -93,6 +93,7 @@ namespace FiroozehGameService.Core.Socket
         private static void OnDisconnect(object sender, EventArgs e)
         {
             DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "OnDisconnect", "GsUdpClient Disconnected");
+            RealTimeEventHandlers.LeftDispose?.Invoke(null, null);
         }
 
         private void OnReceive(object sender, ReceiveData data)
