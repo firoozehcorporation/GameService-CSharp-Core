@@ -35,7 +35,7 @@
       <DocumentationFile>bin\Release\FiroozehGameService.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="GProtocol, Version=2.0.0.1, Culture=neutral, PublicKeyToken=null">
+      <Reference Include="GProtocol, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
       </Reference>
       <Reference Include="mscorlib"/>
