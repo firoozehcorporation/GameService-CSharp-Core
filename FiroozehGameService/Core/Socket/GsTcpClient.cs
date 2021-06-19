@@ -213,7 +213,7 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-        internal override void StopReceiving()
+        internal override void StopReceiving(bool isGraceful)
         {
             try
             {

@@ -15,8 +15,8 @@
 // </copyright>
 
 using System;
-using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.Internal;
 
 /**
 * @author Alireza Ghodrati
@@ -30,7 +30,7 @@ namespace FiroozehGameService.Handlers
     public class CoreEventHandlers
     {
         internal static EventHandler<StartPayload> GsLiveSystemStarted;
-        internal static EventHandler<GSLiveType> Dispose;
+        internal static EventHandler<DisposeData> Dispose;
 
         /// <summary>
         ///     Calls When Your Game Successfully Connected To GameService

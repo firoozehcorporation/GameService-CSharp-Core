@@ -25,6 +25,7 @@ using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.TurnBased;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils.Serializer;
 
 namespace FiroozehGameService.Handlers
@@ -39,24 +40,24 @@ namespace FiroozehGameService.Handlers
         }
 
 
-        private void OnDispose(object sender, GSLiveType type)
+        private void OnDispose(object sender, DisposeData disposeData)
         {
-            switch (type)
+            switch (disposeData.Type)
             {
                 case GSLiveType.RealTime:
-                    RealTimeHandler?.Dispose();
+                    RealTimeHandler?.Dispose(disposeData.IsGraceful);
                     RealTimeHandler = null;
                     GsSerializer.CurrentPlayerLeftRoom?.Invoke(this, null);
                     break;
                 case GSLiveType.TurnBased:
-                    TurnBasedHandler?.Dispose();
+                    TurnBasedHandler?.Dispose(disposeData.IsGraceful);
                     TurnBasedHandler = null;
                     break;
                 case GSLiveType.NotSet:
                 case GSLiveType.Command:
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                    throw new ArgumentOutOfRangeException(nameof(disposeData), disposeData, null);
             }
         }
 
@@ -89,9 +90,9 @@ namespace FiroozehGameService.Handlers
 
         internal void Dispose()
         {
-            CommandHandler?.Dispose();
-            RealTimeHandler?.Dispose();
-            TurnBasedHandler?.Dispose();
+            CommandHandler?.Dispose(false);
+            RealTimeHandler?.Dispose(false);
+            TurnBasedHandler?.Dispose(false);
 
             CommandHandler = null;
             RealTimeHandler = null;

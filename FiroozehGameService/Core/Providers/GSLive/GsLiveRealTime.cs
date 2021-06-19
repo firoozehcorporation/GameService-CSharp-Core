@@ -33,6 +33,7 @@ using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.Providers;
 using FiroozehGameService.Models.GSLive.RT;
+using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.Providers.GSLive
@@ -155,7 +156,10 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 GProtocolSendType.Reliable,
                 isCritical: true);
 
-            CoreEventHandlers.Dispose?.Invoke(null, GSLiveType.RealTime);
+            CoreEventHandlers.Dispose?.Invoke(null, new DisposeData
+            {
+                Type = GSLiveType.RealTime, IsGraceful = true
+            });
         }
 
 

@@ -64,7 +64,7 @@ namespace FiroozehGameService.Handlers.Command
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "Constructor", "CommandHandler Initialized");
         }
 
-        public void Dispose()
+        public void Dispose(bool isGraceful)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace FiroozehGameService.Handlers.Command
                 _observer?.Dispose();
                 PingUtil.Dispose();
 
-                _tcpClient?.StopReceiving();
+                _tcpClient?.StopReceiving(isGraceful);
             }
             catch (Exception)
             {

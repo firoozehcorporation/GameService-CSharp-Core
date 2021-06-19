@@ -62,7 +62,7 @@ namespace FiroozehGameService.Core.Socket
 
         internal abstract void StartReceiving();
 
-        internal abstract void StopReceiving();
+        internal abstract void StopReceiving(bool isGraceful);
 
         internal abstract bool IsConnected();
 

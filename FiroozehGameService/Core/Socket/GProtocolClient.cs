@@ -35,7 +35,7 @@ namespace FiroozehGameService.Core.Socket
 
         internal abstract void CreateInstance();
 
-        internal abstract void StopReceiving();
+        internal abstract void StopReceiving(bool isGraceful);
 
         internal abstract void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false,
             bool isCritical = false, bool isEvent = false);

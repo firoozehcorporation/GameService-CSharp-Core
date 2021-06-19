@@ -34,6 +34,7 @@ using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Handlers.TurnBased
@@ -70,7 +71,10 @@ namespace FiroozehGameService.Handlers.TurnBased
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnLeftDispose",
                 "Connection Gracefully Closed By Server, so Dispose TurnBased...");
 
-            CoreEventHandlers.Dispose?.Invoke(this, GSLiveType.TurnBased);
+            CoreEventHandlers.Dispose?.Invoke(this, new DisposeData
+            {
+                Type = GSLiveType.TurnBased, IsGraceful = false
+            });
         }
 
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
@@ -88,7 +92,10 @@ namespace FiroozehGameService.Handlers.TurnBased
                 DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientError",
                     "TurnBasedHandler Reached to MaxRetryConnect , so dispose TurnBased...");
 
-                CoreEventHandlers.Dispose?.Invoke(this, GSLiveType.TurnBased);
+                CoreEventHandlers.Dispose?.Invoke(this, new DisposeData
+                {
+                    Type = GSLiveType.TurnBased, IsGraceful = false
+                });
                 return;
             }
 
@@ -190,7 +197,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             await _tcpClient.Init(null, GameService.CommandInfo.Cipher);
         }
 
-        public void Dispose()
+        public void Dispose(bool isGraceful)
         {
             try
             {
@@ -207,7 +214,7 @@ namespace FiroozehGameService.Handlers.TurnBased
                 _observer?.Dispose();
                 _cancellationToken?.Cancel(true);
 
-                _tcpClient?.StopReceiving();
+                _tcpClient?.StopReceiving(isGraceful);
             }
             catch (Exception)
             {

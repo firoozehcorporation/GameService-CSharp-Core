@@ -21,6 +21,7 @@
 
 
 using System;
+using System.Threading;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
@@ -81,7 +82,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                StopReceiving();
+                StopReceiving(false);
                 OnClosed(new ErrorArg {Error = "Client Timeout"});
             }
             catch (Exception e)
@@ -177,11 +178,26 @@ namespace FiroozehGameService.Core.Socket
             return Client?.GetStatus() == PeerState.Connected;
         }
 
-        internal override void StopReceiving()
+        internal override void StopReceiving(bool isGraceful)
         {
             try
             {
-                Client?.Disconnect(0);
+                if (isGraceful)
+                {
+                    var rtt = GetRtt();
+
+                    Client?.GracefullyDisconnect(0);
+
+                    DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "StopReceiving",
+                        "GsUdpClient -> Wait " + 2 * rtt + " ms to Gracefully StopReceiving");
+
+                    Thread.Sleep(2 * rtt);
+                }
+                else
+                {
+                    Client?.ImmediateDisconnect(0);
+                }
+
                 Client?.Dispose();
             }
             catch (Exception e)

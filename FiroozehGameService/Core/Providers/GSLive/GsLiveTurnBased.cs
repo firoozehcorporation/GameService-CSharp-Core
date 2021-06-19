@@ -282,7 +282,10 @@ namespace FiroozehGameService.Core.Providers.GSLive
             await GameService.GSLive.GetGsHandler().TurnBasedHandler
                 .RequestAsync(LeaveRoomHandler.Signature, new DataPayload {NextId = whoIsNext});
 
-            CoreEventHandlers.Dispose?.Invoke(null, GSLiveType.TurnBased);
+            CoreEventHandlers.Dispose?.Invoke(null, new DisposeData
+            {
+                Type = GSLiveType.TurnBased, IsGraceful = true
+            });
         }
 
 

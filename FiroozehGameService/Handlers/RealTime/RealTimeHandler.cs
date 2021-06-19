@@ -31,6 +31,7 @@ using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using FiroozehGameService.Utils.Serializer;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
@@ -72,7 +73,10 @@ namespace FiroozehGameService.Handlers.RealTime
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnLeftDispose",
                 "Connection Gracefully Closed By Server, so dispose Realtime...");
 
-            CoreEventHandlers.Dispose?.Invoke(null, GSLiveType.RealTime);
+            CoreEventHandlers.Dispose?.Invoke(null, new DisposeData
+            {
+                Type = GSLiveType.RealTime, IsGraceful = false
+            });
         }
 
 
@@ -163,7 +167,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _udpClient.Init();
         }
 
-        public void Dispose()
+        public void Dispose(bool isGraceful)
         {
             try
             {
@@ -180,7 +184,7 @@ namespace FiroozehGameService.Handlers.RealTime
                 _dataObserver?.Dispose();
                 ObserverCompacterUtil.Dispose();
 
-                _udpClient?.StopReceiving();
+                _udpClient?.StopReceiving(isGraceful);
             }
             catch (Exception)
             {

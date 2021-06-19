@@ -324,6 +324,7 @@
         <Compile Include="Models\Internal\AssetsInfo.cs"/>
         <Compile Include="Models\Internal\ChangePassword.cs"/>
         <Compile Include="Models\Internal\CreateParty.cs"/>
+        <Compile Include="Models\Internal\DisposeData.cs"/>
         <Compile Include="Models\Internal\EditUserProfile.cs"/>
         <Compile Include="Models\Internal\InternalGame.cs"/>
         <Compile Include="Models\Internal\GSTime.cs"/>
