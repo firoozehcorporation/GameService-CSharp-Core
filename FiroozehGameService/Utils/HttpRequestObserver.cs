@@ -19,6 +19,7 @@
 * @author Alireza Ghodrati
 */
 
+using System;
 using System.Timers;
 
 namespace FiroozehGameService.Utils
@@ -29,8 +30,6 @@ namespace FiroozehGameService.Utils
         internal const int MaxRequest = 20;
         private readonly Timer _timer;
         private int _counter;
-        internal bool IsDisposed;
-
 
         public HttpRequestObserver()
         {
@@ -41,7 +40,6 @@ namespace FiroozehGameService.Utils
             };
             _timer.Elapsed += (sender, args) => { _counter = 0; };
             _timer.Start();
-            IsDisposed = false;
         }
 
 
@@ -55,9 +53,15 @@ namespace FiroozehGameService.Utils
 
         public void Dispose()
         {
-            _timer?.Stop();
-            _timer?.Close();
-            IsDisposed = true;
+            try
+            {
+                _timer?.Stop();
+                _timer?.Close();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
     }
 }

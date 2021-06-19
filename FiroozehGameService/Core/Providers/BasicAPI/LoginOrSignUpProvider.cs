@@ -35,6 +35,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
     /// </summary>
     internal class LoginOrSignUpProvider : ILoginOrSignUpProvider
     {
+        private bool _doingLogin;
         private static GameServiceClientConfiguration Configuration => GameService.Configuration;
 
         public async Task<string> Login(string email, string password)
@@ -43,17 +44,26 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 throw new GameServiceException("You Must Configuration First").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
+
             if (!NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
+
             if (string.IsNullOrEmpty(email))
                 throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
+
             if (string.IsNullOrEmpty(password))
                 throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
-            if (GameService.IsAuthenticated()) GameService.Logout();
+
+            if (GameService.IsAuthenticated() || _doingLogin)
+                throw new GameServiceException("You Must Logout For Re-Login").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "Login");
+
+            _doingLogin = true;
 
             var login = await ApiRequest.Login(email, password);
             GameService.UserToken = login.Token;
@@ -63,6 +73,9 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
+
+            _doingLogin = false;
+
             await GameService.GSLive.Init();
 
             return GameService.UserToken;
@@ -75,22 +88,32 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 throw new GameServiceException("You Must Configuration First").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithSms");
+
             if (!NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithSms");
+
             if (string.IsNullOrEmpty(nickName))
                 throw new GameServiceException("nickName Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithSms");
+
             if (string.IsNullOrEmpty(phoneNumber))
                 throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithSms");
+
             if (string.IsNullOrEmpty(smsCode))
                 throw new GameServiceException("smsCode Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithSms");
-            if (GameService.IsAuthenticated()) GameService.Logout();
+
+            if (GameService.IsAuthenticated() || _doingLogin)
+                throw new GameServiceException("You Must Logout For Re-Login").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginOrSignUpWithSms");
+
+            _doingLogin = true;
 
             var login = await ApiRequest.LoginWithPhoneNumber(nickName, phoneNumber, smsCode);
             GameService.UserToken = login.Token;
@@ -100,7 +123,11 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
+
+            _doingLogin = false;
+
             await GameService.GSLive.Init();
+
             return GameService.UserToken;
         }
 
@@ -110,14 +137,22 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 throw new GameServiceException("You Must Configuration First").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginWithToken");
+
             if (!NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginWithToken");
+
             if (string.IsNullOrEmpty(userToken))
                 throw new GameServiceException("UserToken Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginWithToken");
-            if (GameService.IsAuthenticated()) GameService.Logout();
+
+            if (GameService.IsAuthenticated() || _doingLogin)
+                throw new GameServiceException("You Must Logout For Re-Login").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginWithToken");
+
+            _doingLogin = true;
 
             GameService.UserToken = userToken;
             var auth = await ApiRequest.Authorize();
@@ -126,6 +161,9 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
+
+            _doingLogin = false;
+
             await GameService.GSLive.Init();
         }
 
@@ -135,14 +173,22 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 throw new GameServiceException("You Must Configuration First").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithGoogle");
+
             if (!NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithGoogle");
+
             if (string.IsNullOrEmpty(googleIdToken))
                 throw new GameServiceException("IdToken Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithGoogle");
-            if (GameService.IsAuthenticated()) GameService.Logout();
+
+            if (GameService.IsAuthenticated() || _doingLogin)
+                throw new GameServiceException("You Must Logout For Re-Login").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginOrSignUpWithGoogle");
+
+            _doingLogin = true;
 
             var login = await ApiRequest.LoginWithGoogle(googleIdToken);
             GameService.UserToken = login.Token;
@@ -152,6 +198,9 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
+
+            _doingLogin = false;
+
             await GameService.GSLive.Init();
 
             return GameService.UserToken;
@@ -164,21 +213,31 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 throw new GameServiceException("You Must Configuration First").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
+
             if (!NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
+
             if (string.IsNullOrEmpty(nickName))
                 throw new GameServiceException("NickName Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
+
             if (string.IsNullOrEmpty(email))
                 throw new GameServiceException("Email Cant Be EmptyOrNull").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
+
             if (string.IsNullOrEmpty(password))
                 throw new GameServiceException("Password Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
-            if (GameService.IsAuthenticated()) GameService.Logout();
+
+            if (GameService.IsAuthenticated() || _doingLogin)
+                throw new GameServiceException("You Must Logout For Re-Login").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "SignUp");
+
+            _doingLogin = true;
 
             var login = await ApiRequest.SignUp(nickName, email, password);
             GameService.UserToken = login.Token;
@@ -188,6 +247,9 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = false;
+
+            _doingLogin = false;
+
             await GameService.GSLive.Init();
 
             return GameService.UserToken;
@@ -199,6 +261,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 throw new GameServiceException("You Must Configuration First").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "CheckSmsStatus");
+
             return await ApiRequest.CheckPhoneLoginStatus();
         }
 
@@ -208,14 +271,16 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 throw new GameServiceException("You Must Configuration First").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SendLoginCodeSms");
+
             if (!NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SendLoginCodeSms");
+
             if (string.IsNullOrEmpty(phoneNumber))
                 throw new GameServiceException("phoneNumber Cant Be EmptyOrNull").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SendLoginCodeSms");
-            if (GameService.IsAuthenticated()) GameService.Logout();
+
             return await ApiRequest.SendLoginCodeWithSms(phoneNumber);
         }
 
@@ -225,10 +290,17 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 throw new GameServiceException("You Must Configuration First").LogException(
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginAsGuest");
+
             if (!NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginAsGuest");
-            if (GameService.IsAuthenticated()) GameService.Logout();
+
+            if (GameService.IsAuthenticated() || _doingLogin)
+                throw new GameServiceException("You Must Logout For Re-Login").LogException(
+                    typeof(LoginOrSignUpProvider),
+                    DebugLocation.Internal, "LoginAsGuest");
+
+            _doingLogin = true;
 
             var login = await ApiRequest.LoginAsGuest();
             GameService.UserToken = login.Token;
@@ -237,6 +309,9 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             GameService.CurrentInternalGame = auth.Game;
             GameService.IsAvailable = true;
             GameService.IsGuest = true;
+
+            _doingLogin = false;
+
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }
     }

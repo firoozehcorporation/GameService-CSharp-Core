@@ -34,35 +34,49 @@ namespace FiroozehGameService.Core.ApiWebRequest
 {
     internal static class GsWebRequest
     {
-        private static HttpRequestObserver _observer = new HttpRequestObserver();
-        private static HttpClient _client = new HttpClient {Timeout = TimeSpan.FromSeconds(15)};
+        private static HttpRequestObserver _observer;
+        private static HttpClient _client;
         private static readonly string UserAgent = "UnitySDK-" + GameService.Version();
+
+        private static void InitGsWebRequest()
+        {
+            if (_observer != null && _client != null) return;
+
+            _observer = new HttpRequestObserver();
+            _client = new HttpClient {Timeout = TimeSpan.FromSeconds(15)};
+        }
 
         internal static async Task<HttpResponseMessage> Get(string url, Dictionary<string, string> headers = null)
         {
+            InitGsWebRequest();
             return await DoRequest(url, GsWebRequestMethod.Get, null, headers);
         }
 
         internal static async Task<HttpResponseMessage> Put(string url, string body = null,
             Dictionary<string, string> headers = null)
         {
+            InitGsWebRequest();
             return await DoRequest(url, GsWebRequestMethod.Put, body, headers);
         }
 
         internal static async Task<HttpResponseMessage> Post(string url, string body = null,
             Dictionary<string, string> headers = null)
         {
+            InitGsWebRequest();
             return await DoRequest(url, GsWebRequestMethod.Post, body, headers);
         }
 
         internal static async Task<HttpResponseMessage> Delete(string url, Dictionary<string, string> headers = null)
         {
+            InitGsWebRequest();
             return await DoRequest(url, GsWebRequestMethod.Delete, null, headers);
         }
 
         internal static async Task<HttpResponseMessage> DoMultiPartPost(string url, byte[] data,
             Dictionary<string, string> headers = null)
         {
+            InitGsWebRequest();
+
             var httpClient = Init(headers);
             var dataContent = new MultipartFormDataContent
             {
@@ -85,15 +99,18 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static void Dispose()
         {
-            _observer?.Dispose();
-            _client?.Dispose();
-        }
+            try
+            {
+                _observer?.Dispose();
+                _client?.Dispose();
 
-        private static void CheckDisposed()
-        {
-            if (!_observer.IsDisposed) return;
-            _observer = new HttpRequestObserver();
-            _client = new HttpClient();
+                _observer = null;
+                _client = null;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
 
@@ -101,7 +118,6 @@ namespace FiroozehGameService.Core.ApiWebRequest
             GsWebRequestMethod method = GsWebRequestMethod.Get, string body = null,
             Dictionary<string, string> headers = null)
         {
-            CheckDisposed();
             if (!_observer.Increase())
                 throw new GameServiceException("Too Many Requests, You Can Send " + HttpRequestObserver.MaxRequest +
                                                " Requests Per " + HttpRequestObserver.Reset + " Secs")
