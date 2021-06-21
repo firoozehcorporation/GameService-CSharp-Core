@@ -34,7 +34,7 @@ namespace FiroozehGameService.Models.GSLive.TB
         ///     Gets the Accept Counts from Other Players.
         /// </summary>
         /// <value>the Accept Counts from Other Players</value>
-        [JsonProperty("Accept")] public int AcceptCounts;
+        [JsonProperty("1")] public int AcceptCounts;
 
 
         /// <summary>
@@ -42,6 +42,6 @@ namespace FiroozehGameService.Models.GSLive.TB
         ///     (Type : Dictionary(MemberID,Outcome))
         /// </summary>
         /// <value>the Game Result(Outcomes)</value>
-        [JsonProperty("Outcomes")] public Dictionary<string, Outcome> Result;
+        [JsonProperty("2")] public Dictionary<string, Outcome> Result;
     }
 }

@@ -32,18 +32,17 @@ namespace FiroozehGameService.Models.GSLive.TB
     public class Vote
     {
         /// <summary>
-        ///     Gets Member Data of Has Announced The End Of The Game.
-        /// </summary>
-        /// <value>Member Data of Has Announced The End Of The Game</value>
-        [JsonProperty("0")] public Member MemberFinish;
-
-
-        /// <summary>
         ///     Gets the Outcomes sent from the player.
         ///     Call From Other Player With this Function <see cref="Vote" />
         ///     (Type : Dictionary(MemberID,Outcome))
         /// </summary>
         /// <value>the Outcomes sent from the player</value>
         [JsonProperty("1")] public Dictionary<string, Outcome> Outcomes;
+
+        /// <summary>
+        ///     Gets Member Data That Submit This Vote
+        /// </summary>
+        /// <value>Member Data That Submit This Vote</value>
+        [JsonProperty("0")] public Member Submitter;
     }
 }

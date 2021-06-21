@@ -24,7 +24,6 @@ using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
-using GProtocol.Models;
 
 namespace FiroozehGameService.Builder
 {
@@ -35,7 +34,6 @@ namespace FiroozehGameService.Builder
     {
         internal readonly string ClientId;
         internal readonly string ClientSecret;
-        internal readonly PlatformType PlatformType;
         internal readonly SystemInfo SystemInfo;
 
         /// <summary>
@@ -44,10 +42,8 @@ namespace FiroozehGameService.Builder
         /// <param name="clientId">Set The ClientId From Developers Panel</param>
         /// <param name="clientSecret">Set The ClientSecret From Developers Panel</param>
         /// <param name="systemInfo">Set systemInfo</param>
-        /// <param name="platformType">Set The Type of Running Platform</param>
         /// <exception cref="GameServiceException">May GameServiceException Occur</exception>
-        public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo,
-            PlatformType platformType = PlatformType.Default)
+        public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo)
         {
             ClientId = string.IsNullOrEmpty(clientId)
                 ? throw new GameServiceException("ClientId Cant Be Empty").LogException<GameServiceClientConfiguration>(
@@ -64,8 +60,6 @@ namespace FiroozehGameService.Builder
             if (systemInfo.DeviceUniqueId == null)
                 throw new GameServiceException("DeviceUniqueId In SystemInfo Cant Be NULL")
                     .LogException<GameServiceClientConfiguration>(DebugLocation.Internal, "Constructor");
-
-            PlatformType = platformType;
         }
     }
 }

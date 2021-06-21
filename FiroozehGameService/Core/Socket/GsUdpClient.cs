@@ -62,7 +62,7 @@ namespace FiroozehGameService.Core.Socket
 
         internal sealed override void CreateInstance()
         {
-            Client = new GClient(GameService.Configuration.PlatformType);
+            Client = new GClient();
 
             GClient.OnConnect += OnConnect;
             GClient.OnDisconnect += OnDisconnect;
