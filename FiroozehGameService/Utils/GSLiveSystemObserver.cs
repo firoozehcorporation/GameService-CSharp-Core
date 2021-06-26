@@ -65,7 +65,7 @@ namespace FiroozehGameService.Utils
 
                     break;
                 case GSLiveType.RealTime:
-                    if (_counter <= RealTimeConst.RealTimeLimit)
+                    if (_counter <= RealTimeConst.RealTimeSendLimit)
                     {
                         _counter++;
                         return true;
@@ -95,7 +95,7 @@ namespace FiroozehGameService.Utils
                 case GSLiveType.TurnBased:
                     return TurnBasedConst.TurnBasedLimit;
                 case GSLiveType.RealTime:
-                    return RealTimeConst.RealTimeLimit;
+                    return RealTimeConst.RealTimeSendLimit;
                 case GSLiveType.Command:
                     return TurnBasedConst.TurnBasedLimit;
                 case GSLiveType.NotSet:

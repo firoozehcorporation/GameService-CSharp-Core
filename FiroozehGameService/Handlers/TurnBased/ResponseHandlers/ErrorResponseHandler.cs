@@ -18,6 +18,7 @@
 * @author Alireza Ghodrati
 */
 
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
@@ -31,6 +32,8 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
+            if (GsLiveTurnBased.InAutoMatch) GsLiveTurnBased.InAutoMatch = false;
+
             CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {
                 Type = GSLiveType.TurnBased,

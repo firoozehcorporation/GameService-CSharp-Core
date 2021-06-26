@@ -22,69 +22,89 @@
 using System;
 using System.Timers;
 using FiroozehGameService.Core;
+using FiroozehGameService.Handlers.RealTime;
+using FiroozehGameService.Models.Consts;
 
 namespace FiroozehGameService.Utils
 {
     /// <summary>
-    ///  Represents Event In Game Service
+    ///     Represents Event In Game Service
     /// </summary>
     public class EventUtil
     {
-        private readonly long _interval;
+        private readonly bool _isInternal;
+        private double _interval;
+
+        private Timer _timer;
+
         /// <summary>
-        /// Set New EventHandler by Observer
+        ///     Set New EventHandler by Observer
         /// </summary>
         public EventHandler<EventUtil> EventHandler;
-        internal Timer Timer;
 
-        internal EventUtil(long interval)
+
+        internal EventUtil(bool isInternal)
         {
-            _interval = interval;
+            _isInternal = isInternal;
+            UpdateInterval();
+        }
+
+        private void UpdateInterval()
+        {
+            _interval = 1000f / RealTimeHandler.GetSerializationRate();
+            if (_isInternal) _interval += 10 * RealTimeConst.MinObserverThreshold;
         }
 
         /// <summary>
-        /// Start EventHandler
+        ///     Start EventHandler
         /// </summary>
         public void Start()
         {
-            Timer = new Timer
+            _timer = new Timer
             {
                 Interval = _interval,
                 Enabled = false
             };
 
-            Timer.Elapsed += (sender, args) =>
+            _timer.Elapsed += (sender, args) =>
             {
                 GameService.SynchronizationContext?.Send(
                     delegate { EventHandler?.Invoke(this, this); }, null);
+
+
+                UpdateInterval();
+                if (!(Math.Abs(_timer.Interval - _interval) > 1f)) return;
+
+                _timer.Stop();
+                _timer.Interval = _interval;
+                _timer.Start();
             };
-            Timer.Start();
+            _timer.Start();
         }
 
         /// <summary>
-        /// Dispose EventHandler
+        ///     Dispose EventHandler
         /// </summary>
         public void Dispose()
         {
-            Timer?.Stop();
-            Timer?.Close();
+            _timer?.Stop();
+            _timer?.Close();
+            EventHandler = null;
         }
     }
 
 
     /// <summary>
-    /// Represents Event In Game Service Observer
+    ///     Represents Event In Game Service Observer
     /// </summary>
     public static class EventCallerUtil
     {
         /// <summary>
-        /// CreateNewEvent by Observer
+        ///     CreateNewEvent by Observer
         /// </summary>
-        /// <param name="interval">interval time</param>
-        /// <returns></returns>
-        public static EventUtil CreateNewEvent(long interval)
+        public static EventUtil CreateNewEvent()
         {
-            var newEvent = new EventUtil(interval);
+            var newEvent = new EventUtil(false);
             return newEvent;
         }
     }

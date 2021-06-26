@@ -240,6 +240,16 @@ namespace FiroozehGameService.Utils.Serializer
             }
 
 
+            /// <summary>
+            ///     Get Serialization Rate In GProtocol
+            /// </summary>
+            /// <returns></returns>
+            public static int GetSerializationRate()
+            {
+                return RealTimeHandler.GetSerializationRate();
+            }
+
+
             internal static List<SnapShotData> GetSnapShotsFromBuffer(byte[] buffer)
             {
                 return SerializerUtil.GetSnapShotsFromBuffer(buffer);

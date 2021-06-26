@@ -18,6 +18,7 @@
 * @author Alireza Ghodrati
 */
 
+using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
@@ -33,6 +34,8 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
 
         protected override void HandleResponse(Packet packet, GProtocolSendType type)
         {
+            if (GsLiveRealTime.InAutoMatch) GsLiveRealTime.InAutoMatch = false;
+
             CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {
                 Type = GSLiveType.RealTime,

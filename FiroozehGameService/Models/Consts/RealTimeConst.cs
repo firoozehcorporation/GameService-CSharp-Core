@@ -42,9 +42,12 @@ namespace FiroozehGameService.Models.Consts
         internal const int MaxPacketBeforeSize = 8 * 1024;
 
         // Limit Checker
-        internal const int RealTimeLimit = 15; // 15 Request per sec
+        internal const int MinObserverThreshold = 8; // 8 Request per sec
+        internal const int MaxObserverThreshold = 12; // 12 Request per sec
+
         internal const int RestLimit = 1000; //  RestLimit per sec in long
-        internal const int DataGetter = 1000; //  Data like rtt and packet lost
+        internal const int RealTimeSendLimit = 15;
+        internal const int DataGetter = 250; //  Data like rtt and packet lost
 
         internal const int MinPlayer = 2;
         internal const int MaxPlayer = 50;

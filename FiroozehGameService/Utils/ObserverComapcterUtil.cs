@@ -40,7 +40,7 @@ namespace FiroozehGameService.Utils
         internal static void Init()
         {
             _sendQueue = new Queue<byte[]>();
-            _queueWorkerEventUtil = EventCallerUtil.CreateNewEvent(1000 / RealTimeConst.RealTimeLimit);
+            _queueWorkerEventUtil = new EventUtil(true);
             _queueWorkerEventUtil.EventHandler += EventHandler;
             _queueWorkerEventUtil.Start();
         }
@@ -50,6 +50,7 @@ namespace FiroozehGameService.Utils
         {
             _sendQueue?.Clear();
             _queueWorkerEventUtil?.Dispose();
+            SendObserverEventHandler = null;
         }
 
         internal static void AddToQueue(DataPayload dataPayload)
@@ -57,17 +58,18 @@ namespace FiroozehGameService.Utils
             try
             {
                 var payload = dataPayload.Serialize();
-                if (GsSerializer.Object.GetSendQueueBufferSize(_sendQueue) + payload.Length <= RealTimeConst.MaxPacketBeforeSize
+                if (GsSerializer.Object.GetSendQueueBufferSize(_sendQueue) + payload.Length <=
+                    RealTimeConst.MaxPacketBeforeSize
                     && _sendQueue.Count <= MaxQueueSize)
                     _sendQueue?.Enqueue(payload);
                 else
-                    DebugUtil.LogError(typeof(ObserverCompacterUtil),DebugLocation.RealTime,"AddToQueue",new GameServiceException("Send Queue is Full"));
+                    DebugUtil.LogError(typeof(ObserverCompacterUtil), DebugLocation.RealTime, "AddToQueue",
+                        new GameServiceException("Send Queue is Full"));
             }
             catch (Exception e)
             {
-                e.LogException(typeof(ObserverCompacterUtil),DebugLocation.RealTime,"AddToQueue");
+                e.LogException(typeof(ObserverCompacterUtil), DebugLocation.RealTime, "AddToQueue");
             }
-          
         }
 
 

@@ -65,16 +65,22 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
 
             _doingLogin = true;
 
-            var login = await ApiRequest.Login(email, password);
-            GameService.UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            GameService.CommandInfo = auth.CommandInfo;
-            GameService.PlayToken = auth.Token;
-            GameService.CurrentInternalGame = auth.Game;
-            GameService.IsAvailable = true;
-            GameService.IsGuest = false;
+            try
+            {
+                var login = await ApiRequest.Login(email, password);
+                GameService.UserToken = login.Token;
+                var auth = await ApiRequest.Authorize();
+                GameService.CommandInfo = auth.CommandInfo;
+                GameService.PlayToken = auth.Token;
+                GameService.CurrentInternalGame = auth.Game;
+                GameService.IsAvailable = true;
+                GameService.IsGuest = false;
+            }
+            finally
+            {
+                _doingLogin = false;
+            }
 
-            _doingLogin = false;
 
             await GameService.GSLive.Init();
 
@@ -115,16 +121,21 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
 
             _doingLogin = true;
 
-            var login = await ApiRequest.LoginWithPhoneNumber(nickName, phoneNumber, smsCode);
-            GameService.UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            GameService.CommandInfo = auth.CommandInfo;
-            GameService.PlayToken = auth.Token;
-            GameService.CurrentInternalGame = auth.Game;
-            GameService.IsAvailable = true;
-            GameService.IsGuest = false;
-
-            _doingLogin = false;
+            try
+            {
+                var login = await ApiRequest.LoginWithPhoneNumber(nickName, phoneNumber, smsCode);
+                GameService.UserToken = login.Token;
+                var auth = await ApiRequest.Authorize();
+                GameService.CommandInfo = auth.CommandInfo;
+                GameService.PlayToken = auth.Token;
+                GameService.CurrentInternalGame = auth.Game;
+                GameService.IsAvailable = true;
+                GameService.IsGuest = false;
+            }
+            finally
+            {
+                _doingLogin = false;
+            }
 
             await GameService.GSLive.Init();
 
@@ -154,15 +165,20 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
 
             _doingLogin = true;
 
-            GameService.UserToken = userToken;
-            var auth = await ApiRequest.Authorize();
-            GameService.CommandInfo = auth.CommandInfo;
-            GameService.PlayToken = auth.Token;
-            GameService.CurrentInternalGame = auth.Game;
-            GameService.IsAvailable = true;
-            GameService.IsGuest = false;
-
-            _doingLogin = false;
+            try
+            {
+                GameService.UserToken = userToken;
+                var auth = await ApiRequest.Authorize();
+                GameService.CommandInfo = auth.CommandInfo;
+                GameService.PlayToken = auth.Token;
+                GameService.CurrentInternalGame = auth.Game;
+                GameService.IsAvailable = true;
+                GameService.IsGuest = false;
+            }
+            finally
+            {
+                _doingLogin = false;
+            }
 
             await GameService.GSLive.Init();
         }
@@ -190,16 +206,21 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
 
             _doingLogin = true;
 
-            var login = await ApiRequest.LoginWithGoogle(googleIdToken);
-            GameService.UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            GameService.CommandInfo = auth.CommandInfo;
-            GameService.PlayToken = auth.Token;
-            GameService.CurrentInternalGame = auth.Game;
-            GameService.IsAvailable = true;
-            GameService.IsGuest = false;
-
-            _doingLogin = false;
+            try
+            {
+                var login = await ApiRequest.LoginWithGoogle(googleIdToken);
+                GameService.UserToken = login.Token;
+                var auth = await ApiRequest.Authorize();
+                GameService.CommandInfo = auth.CommandInfo;
+                GameService.PlayToken = auth.Token;
+                GameService.CurrentInternalGame = auth.Game;
+                GameService.IsAvailable = true;
+                GameService.IsGuest = false;
+            }
+            finally
+            {
+                _doingLogin = false;
+            }
 
             await GameService.GSLive.Init();
 
@@ -239,16 +260,21 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
 
             _doingLogin = true;
 
-            var login = await ApiRequest.SignUp(nickName, email, password);
-            GameService.UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            GameService.CommandInfo = auth.CommandInfo;
-            GameService.PlayToken = auth.Token;
-            GameService.CurrentInternalGame = auth.Game;
-            GameService.IsAvailable = true;
-            GameService.IsGuest = false;
-
-            _doingLogin = false;
+            try
+            {
+                var login = await ApiRequest.SignUp(nickName, email, password);
+                GameService.UserToken = login.Token;
+                var auth = await ApiRequest.Authorize();
+                GameService.CommandInfo = auth.CommandInfo;
+                GameService.PlayToken = auth.Token;
+                GameService.CurrentInternalGame = auth.Game;
+                GameService.IsAvailable = true;
+                GameService.IsGuest = false;
+            }
+            finally
+            {
+                _doingLogin = false;
+            }
 
             await GameService.GSLive.Init();
 
@@ -302,15 +328,20 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
 
             _doingLogin = true;
 
-            var login = await ApiRequest.LoginAsGuest();
-            GameService.UserToken = login.Token;
-            var auth = await ApiRequest.Authorize();
-            GameService.PlayToken = auth.Token;
-            GameService.CurrentInternalGame = auth.Game;
-            GameService.IsAvailable = true;
-            GameService.IsGuest = true;
-
-            _doingLogin = false;
+            try
+            {
+                var login = await ApiRequest.LoginAsGuest();
+                GameService.UserToken = login.Token;
+                var auth = await ApiRequest.Authorize();
+                GameService.PlayToken = auth.Token;
+                GameService.CurrentInternalGame = auth.Game;
+                GameService.IsAvailable = true;
+                GameService.IsGuest = true;
+            }
+            finally
+            {
+                _doingLogin = false;
+            }
 
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }

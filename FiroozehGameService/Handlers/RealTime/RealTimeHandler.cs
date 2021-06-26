@@ -26,6 +26,7 @@ using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.RealTime.RequestHandlers;
 using FiroozehGameService.Handlers.RealTime.ResponseHandlers;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
@@ -121,6 +122,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
             ObserverCompacterUtil.Init();
             Request(SnapShotHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
+
             GsSerializer.CurrentPlayerJoinRoom?.Invoke(this, null);
 
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnAuth", "RealTimeHandler OnAuth Done");
@@ -197,6 +199,8 @@ namespace FiroozehGameService.Handlers.RealTime
                 MemberId = null;
                 AuthHash = null;
                 PlayerHash = -1;
+                PacketLost = 0;
+                Rtt = 0;
 
                 RealTimeEventHandlers.Authorized = null;
                 RealTimeEventHandlers.MemberId = null;
@@ -227,6 +231,16 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             if (_udpClient == null) return -1;
             return PacketLost;
+        }
+
+        internal static int GetSerializationRate()
+        {
+            if (PacketLost == -1 || PacketLost <= 10) return RealTimeConst.MinObserverThreshold;
+            if (PacketLost >= 10 && PacketLost < 40)
+                return (int) (RealTimeConst.MinObserverThreshold +
+                              (PacketLost / RealTimeConst.MinObserverThreshold - 1));
+
+            return RealTimeConst.MaxObserverThreshold;
         }
 
 

@@ -18,6 +18,8 @@
 * @author Alireza Ghodrati
 */
 
+using FiroozehGameService.Core.Providers.GSLive;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 
@@ -26,10 +28,16 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
     internal class ErrorResponseHandler : BaseResponseHandler
     {
         public static int ActionCommand
-            => Models.Consts.CommandConst.Error;
+            => CommandConst.Error;
 
         protected override void HandleResponse(Packet packet)
         {
+            if (GsLiveRealTime.InAutoMatch || GsLiveTurnBased.InAutoMatch)
+            {
+                GsLiveRealTime.InAutoMatch = false;
+                GsLiveTurnBased.InAutoMatch = false;
+            }
+
             CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {
                 Type = GSLiveType.Command,
