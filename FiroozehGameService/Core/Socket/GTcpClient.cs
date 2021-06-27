@@ -76,6 +76,7 @@ namespace FiroozehGameService.Core.Socket
         protected Area Area;
         protected string Key;
         protected bool IsEncryptionEnabled;
+        protected bool IsAvailable;
         protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected KeepAliveUtil KeepAliveUtil;

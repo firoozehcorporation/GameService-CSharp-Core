@@ -80,6 +80,7 @@ namespace FiroozehGameService.Core.Socket
             _client = client;
             _clientStream = _client.GetStream();
             OperationCancellationToken = new CancellationTokenSource();
+            IsAvailable = true;
 
             DebugUtil.LogNormal<GsTcpClient>(
                 Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "OnTcpClientConnected",
@@ -131,11 +132,13 @@ namespace FiroozehGameService.Core.Socket
 
             KeepAliveUtil?.Start();
 
-            while (IsConnected())
+            while (IsAvailable && IsConnected())
                 try
                 {
                     BufferReceivedBytes += await _clientStream.ReadAsync(Buffer, BufferOffset,
                         Buffer.Length - BufferOffset, OperationCancellationToken.Token);
+
+                    if (!IsAvailable) break;
 
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
@@ -157,6 +160,7 @@ namespace FiroozehGameService.Core.Socket
                             Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
                             "StartReceiving");
 
+                        IsAvailable = false;
                         OnClosed(new ErrorArg {Error = e.ToString()});
                     }
 
@@ -217,16 +221,14 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
+                IsAvailable = false;
                 KeepAliveUtil?.Dispose();
                 DataBuilder?.Clear();
 
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
 
-                Thread.Sleep(50);
-
                 _client?.Close();
-                Thread?.Interrupt();
             }
             catch (Exception)
             {
