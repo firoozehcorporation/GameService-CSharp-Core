@@ -48,16 +48,10 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         internal static void RegisterNewType<T>(ObjectSerializer<T> serializer)
         {
             var type = typeof(T);
-            if (TypeToHash.ContainsKey(type))
-                throw new GameServiceException("The Type " + type + " is Exist!")
-                    .LogException(typeof(TypeUtil),DebugLocation.RealTime,"RegisterNewType");
-
+            if (TypeToHash.ContainsKey(type)) return;
 
             var typeHash = HashUtil.GetHashFromType(type);
-            if (HashToType.ContainsKey(typeHash))
-                throw new GameServiceException("The Type " + type + " Hash is Exist!")
-                    .LogException(typeof(TypeUtil),DebugLocation.RealTime,"RegisterNewType");
-
+            if (HashToType.ContainsKey(typeHash)) return;
 
             TypeToHash.Add(type, typeHash);
             HashToType.Add(typeHash, type);
@@ -78,15 +72,14 @@ namespace FiroozehGameService.Utils.Serializer.Utils
 
             if (!TypeToHash.ContainsKey(type))
                 throw new GameServiceException("The Type " + type + " is Not Registered as New Type!")
-                    .LogException(typeof(TypeUtil),DebugLocation.RealTime,"GetWriteStream");
+                    .LogException(typeof(TypeUtil), DebugLocation.RealTime, "GetWriteStream");
 
 
             var serializer = ObjectsCache[TypeToHash[type]];
 
             if (!serializer.CanSerializeModel(obj))
                 throw new GameServiceException("The Type " + type + " Not Serializable!")
-                    .LogException(typeof(TypeUtil),DebugLocation.RealTime,"GetWriteStream");
-
+                    .LogException(typeof(TypeUtil), DebugLocation.RealTime, "GetWriteStream");
 
 
             var writeStream = new GsWriteStream();
@@ -107,13 +100,13 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         {
             if (!HashToType.ContainsKey(hash))
                 throw new GameServiceException("Type With Hash " + hash + " is Not Registered!")
-                    .LogException(typeof(TypeUtil),DebugLocation.RealTime,"GetFinalObject");
+                    .LogException(typeof(TypeUtil), DebugLocation.RealTime, "GetFinalObject");
 
 
             var serializer = ObjectsCache[hash];
             if (!serializer.CanSerializeModel(HashToType[hash]))
                 throw new GameServiceException("Type With Hash " + hash + " is Not Serializable!")
-                    .LogException(typeof(TypeUtil),DebugLocation.RealTime,"GetFinalObject");
+                    .LogException(typeof(TypeUtil), DebugLocation.RealTime, "GetFinalObject");
 
             return serializer.DeserializeObject(readStream);
         }
@@ -130,11 +123,11 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         {
             if (data == null)
                 throw new GameServiceException("Params Cant Be Null")
-                    .LogException(typeof(TypeUtil),DebugLocation.RealTime,"GetWriteStreamFromParams");
+                    .LogException(typeof(TypeUtil), DebugLocation.RealTime, "GetWriteStreamFromParams");
 
             if (data.Length == 0)
                 throw new GameServiceException("Params Cant Be Empty")
-                    .LogException(typeof(TypeUtil),DebugLocation.RealTime,"GetWriteStreamFromParams");
+                    .LogException(typeof(TypeUtil), DebugLocation.RealTime, "GetWriteStreamFromParams");
 
 
             var writeStream = new GsWriteStream();
