@@ -48,10 +48,16 @@ namespace FiroozehGameService.Utils.Serializer.Utils
         internal static void RegisterNewType<T>(ObjectSerializer<T> serializer)
         {
             var type = typeof(T);
-            if (TypeToHash.ContainsKey(type)) return;
+            if (TypeToHash.ContainsKey(type))
+                throw new GameServiceException("The Type " + type + " is Exist!")
+                    .LogException(typeof(TypeUtil), DebugLocation.RealTime, "RegisterNewType");
+
 
             var typeHash = HashUtil.GetHashFromType(type);
-            if (HashToType.ContainsKey(typeHash)) return;
+            if (HashToType.ContainsKey(typeHash))
+                throw new GameServiceException("The Type " + type + " Hash is Exist!")
+                    .LogException(typeof(TypeUtil), DebugLocation.RealTime, "RegisterNewType");
+
 
             TypeToHash.Add(type, typeHash);
             HashToType.Add(typeHash, type);
