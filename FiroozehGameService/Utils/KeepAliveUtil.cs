@@ -44,6 +44,11 @@ namespace FiroozehGameService.Utils
             _timer?.Start();
         }
 
+        internal void Stop()
+        {
+            _timer?.Stop();
+        }
+
 
         internal void Dispose()
         {

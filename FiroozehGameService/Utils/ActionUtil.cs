@@ -58,7 +58,7 @@ namespace FiroozehGameService.Utils
 
         private static bool IsInternalCAction(int action)
         {
-            return action == CommandConst.ActionPing;
+            return action == CommandConst.ActionPing || action == CommandConst.ActionMirror;
         }
     }
 }

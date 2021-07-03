@@ -45,8 +45,6 @@ namespace FiroozehGameService.Core.Socket
 
         protected void OnClosed(ErrorArg errorArg)
         {
-            DataBuilder?.Clear();
-
             if (Type == GSLiveType.Command)
                 CommandEventHandlers.GsCommandClientError?.Invoke(null, new GameServiceException(errorArg.Error));
             else TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null, new GameServiceException(errorArg.Error));
@@ -59,6 +57,8 @@ namespace FiroozehGameService.Core.Socket
         internal abstract Task SendAsync(Packet packet);
 
         protected abstract Task SendAsync(byte[] payload);
+
+        protected abstract void Suspend();
 
         internal abstract void StartReceiving();
 

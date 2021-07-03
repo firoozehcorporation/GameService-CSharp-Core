@@ -49,7 +49,6 @@ namespace FiroozehGameService.Handlers.Command
             _isDisposed = false;
             _isFirstInit = false;
 
-
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
@@ -70,6 +69,7 @@ namespace FiroozehGameService.Handlers.Command
             {
                 _isDisposed = true;
                 _isFirstInit = false;
+                _isPingRequested = false;
 
                 _cancellationToken?.Cancel(false);
                 _observer?.Dispose();
@@ -106,17 +106,30 @@ namespace FiroozehGameService.Handlers.Command
             }
         }
 
-        private static void OnMirror(object sender, Packet packet)
+        private void OnMirror(object sender, Packet packet)
         {
             var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             var lastCurrentTime = long.Parse(packet.Data);
+            _isPingRequested = false;
 
             PingUtil.SetLastPing(currentTime, lastCurrentTime);
         }
 
         private async void RequestPing(object sender, EventArgs e)
         {
+            if (_isPingRequested)
+            {
+                DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "RequestPing",
+                    "CommandHandler -> Server Not Response Ping, Reconnecting...");
+
+                await Init();
+                _isPingRequested = false;
+                return;
+            }
+
             var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            _isPingRequested = true;
+
             await RequestAsync(TimeHandler.Signature, currentTime, true);
         }
 
@@ -305,6 +318,7 @@ namespace FiroozehGameService.Handlers.Command
         private int _retryConnectCounter;
         private bool _isDisposed;
         private bool _isFirstInit;
+        private bool _isPingRequested;
 
         internal static string PlayerHash { private set; get; }
 

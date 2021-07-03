@@ -62,6 +62,7 @@ namespace FiroozehGameService.Utils
             _lastPing = -1;
             _timer?.Close();
             _timer?.Dispose();
+            RequestPing = null;
         }
     }
 }

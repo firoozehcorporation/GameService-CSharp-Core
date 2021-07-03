@@ -49,12 +49,6 @@ namespace FiroozehGameService.Core.Socket
         {
             Area = area;
 
-            Thread = new Thread(async () => await Receiving())
-            {
-                Priority = ThreadPriority.Highest,
-                IsBackground = true
-            };
-
             if (area == null)
             {
                 CommandEventHandlers.CommandClientConnected += OnTcpClientConnected;
@@ -99,6 +93,7 @@ namespace FiroozehGameService.Core.Socket
                 Key = cipher;
                 Type = CommandInfo == null ? GSLiveType.TurnBased : GSLiveType.Command;
 
+                Suspend();
 
                 var ip = CommandInfo == null ? Area.Ip : CommandInfo.Ip;
                 var port = CommandInfo?.Port ?? Area.Port;
@@ -121,14 +116,19 @@ namespace FiroozehGameService.Core.Socket
 
         internal override void StartReceiving()
         {
-            Thread?.Start();
+            Thread = new Thread(async () => await Receiving())
+            {
+                Priority = ThreadPriority.Highest,
+                IsBackground = true
+            };
+            Thread.Start();
         }
 
         private async Task Receiving()
         {
             DebugUtil.LogNormal<GsTcpClient>(
-                Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StartReceiving",
-                "GsTcpClient -> StartReceiving");
+                Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Receiving",
+                "GsTcpClient -> Start Receiving...");
 
             KeepAliveUtil?.Start();
 
@@ -160,12 +160,15 @@ namespace FiroozehGameService.Core.Socket
                             Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
                             "StartReceiving");
 
-                        IsAvailable = false;
                         OnClosed(new ErrorArg {Error = e.ToString()});
                     }
 
                     break;
                 }
+
+            DebugUtil.LogNormal<GsTcpClient>(
+                Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Receiving",
+                "GsTcpClient -> Receiving Done!");
         }
 
 
@@ -257,6 +260,45 @@ namespace FiroozehGameService.Core.Socket
                 DebugUtil.LogNormal<GsTcpClient>(
                     Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "StopReceiving",
                     "GsTcpClient -> StopReceiving Done");
+            }
+        }
+
+        protected override void Suspend()
+        {
+            try
+            {
+                IsAvailable = false;
+                KeepAliveUtil?.Stop();
+                DataBuilder?.Clear();
+
+                OperationCancellationToken?.Cancel(false);
+                OperationCancellationToken?.Dispose();
+
+                _client?.Close();
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
+                _client = null;
+                _clientStream = null;
+                OperationCancellationToken = null;
+                Thread = null;
+
+                try
+                {
+                    GC.SuppressFinalize(this);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                DebugUtil.LogNormal<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Suspend",
+                    "GsTcpClient -> Suspend Done");
             }
         }
 
