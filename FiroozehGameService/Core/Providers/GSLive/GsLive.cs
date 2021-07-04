@@ -20,7 +20,6 @@
 */
 
 
-using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command;
 using FiroozehGameService.Handlers.RealTime;
@@ -44,9 +43,9 @@ namespace FiroozehGameService.Core.Providers.GSLive
             _chat = new GsLiveChat();
         }
 
-        internal override async Task Init()
+        internal override void Init()
         {
-            await _handler.Init();
+            _handler.Init();
         }
 
         public override GsLiveRealTimeProvider RealTime()

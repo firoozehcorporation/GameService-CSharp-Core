@@ -20,7 +20,9 @@
 */
 
 
+using FiroozehGameService.Core;
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 
 namespace FiroozehGameService.Utils
@@ -48,17 +50,24 @@ namespace FiroozehGameService.Utils
 
         private static bool IsInternalRtAction(int action)
         {
-            return false;
+            return GameService.HandlerType == EventHandlerType.NativeContext 
+                && action != RealTimeConst.ActionEvent 
+                && action != RealTimeConst.ActionObserver 
+                && action != RealTimeConst.ActionSnapShot;
         }
 
         private static bool IsInternalTbAction(int action)
-        {
-            return action == TurnBasedConst.ActionPing || action == TurnBasedConst.ActionMirror;
+        {         
+            return GameService.HandlerType == EventHandlerType.NativeContext 
+                   || action == TurnBasedConst.ActionPing 
+                   || action == TurnBasedConst.ActionMirror;
         }
 
         private static bool IsInternalCAction(int action)
         {
-            return action == CommandConst.ActionPing || action == CommandConst.ActionMirror;
+            return GameService.HandlerType == EventHandlerType.NativeContext 
+                   || action == CommandConst.ActionPing 
+                   || action == CommandConst.ActionMirror;
         }
     }
 }

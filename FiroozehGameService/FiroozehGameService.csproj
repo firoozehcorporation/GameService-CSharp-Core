@@ -264,6 +264,7 @@
         <Compile Include="Models\Enums\DBaaS\ObjectMatcherTypes.cs"/>
         <Compile Include="Models\Enums\DebugLocation.cs"/>
         <Compile Include="Models\Enums\EventAction.cs"/>
+        <Compile Include="Models\Enums\EventHandlerType.cs"/>
         <Compile Include="Models\Enums\GProtocolSendType.cs"/>
         <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs"/>
         <Compile Include="Models\Enums\GSLive\Command\AutoMatchCancel.cs"/>

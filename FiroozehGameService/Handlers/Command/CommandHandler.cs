@@ -51,6 +51,8 @@ namespace FiroozehGameService.Handlers.Command
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
+            
+            PingUtil.Init();
 
             // Set Internal Event Handlers
             CommandEventHandlers.CommandPing += OnPing;
@@ -121,8 +123,8 @@ namespace FiroozehGameService.Handlers.Command
             {
                 DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "RequestPing",
                     "CommandHandler -> Server Not Response Ping, Reconnecting...");
-
-                await Init();
+                
+                Init();
                 _isPingRequested = false;
                 return;
             }
@@ -133,7 +135,7 @@ namespace FiroozehGameService.Handlers.Command
             await RequestAsync(MirrorHandler.Signature, currentTime, true);
         }
 
-        private async void OnGsTcpClientError(object sender, GameServiceException exception)
+        private void OnGsTcpClientError(object sender, GameServiceException exception)
         {
             if (_isDisposed) return;
 
@@ -144,7 +146,7 @@ namespace FiroozehGameService.Handlers.Command
             DebugUtil.LogError<CommandHandler>(DebugLocation.Command, "OnGsTcpClientError",
                 "CommandHandler Reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
 
-            await Init();
+            Init();
         }
 
         private async void OnGsTcpClientConnected(object sender, object e)
@@ -169,15 +171,13 @@ namespace FiroozehGameService.Handlers.Command
 
         private void OnAuth(object sender, string playerHash)
         {
-            PlayerHash = playerHash;
-
-            if (_isFirstInit) return;
-
-            _isFirstInit = true;
-            PingUtil.Init();
-
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnAuth", "CommandHandler OnAuth Done");
 
+            PlayerHash = playerHash;
+            PingUtil.Start();
+            
+            if (_isFirstInit) return;
+            _isFirstInit = true;
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }
 
@@ -247,12 +247,13 @@ namespace FiroozehGameService.Handlers.Command
                 new MirrorResponseHandler());
         }
 
-        public async Task Init()
+        public void Init()
         {
             _cancellationToken = new CancellationTokenSource();
 
             _tcpClient.SetEncryptionStatus(false);
-            await _tcpClient.Init(GameService.CommandInfo, GameService.CommandInfo.Cipher);
+            PingUtil.Stop();
+            _tcpClient.Init(GameService.CommandInfo, GameService.CommandInfo.Cipher);
         }
 
         internal static short GetPing()

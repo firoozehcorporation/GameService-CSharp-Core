@@ -82,7 +82,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             }
 
 
-            await GameService.GSLive.Init();
+            GameService.GSLive.Init();
 
             return GameService.UserToken;
         }
@@ -137,7 +137,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 _doingLogin = false;
             }
 
-            await GameService.GSLive.Init();
+            GameService.GSLive.Init();
 
             return GameService.UserToken;
         }
@@ -180,7 +180,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 _doingLogin = false;
             }
 
-            await GameService.GSLive.Init();
+            GameService.GSLive.Init();
         }
 
         public async Task<string> LoginOrSignUpWithGoogle(string googleIdToken)
@@ -222,7 +222,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 _doingLogin = false;
             }
 
-            await GameService.GSLive.Init();
+            GameService.GSLive.Init();
 
             return GameService.UserToken;
         }
@@ -276,7 +276,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                 _doingLogin = false;
             }
 
-            await GameService.GSLive.Init();
+            GameService.GSLive.Init();
 
             return GameService.UserToken;
         }

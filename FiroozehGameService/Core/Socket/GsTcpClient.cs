@@ -70,7 +70,7 @@ namespace FiroozehGameService.Core.Socket
         }
 
 
-        internal override async Task Init(CommandInfo info, string cipher)
+        internal override void Init(CommandInfo info, string cipher)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace FiroozehGameService.Core.Socket
                     "GsTcpClient -> Init Started...");
 
 
-                await new TcpClientWithTimeout(ip, port, timeOutWait).Connect(Type);
+                new TcpClientWithTimeout(ip, port, timeOutWait).Connect(Type);
             }
             catch (Exception e)
             {
@@ -116,6 +116,7 @@ namespace FiroozehGameService.Core.Socket
                 "GsTcpClient -> Start Receiving...");
 
             while (IsAvailable && IsConnected())
+            {
                 try
                 {
                     BufferReceivedBytes += await _clientStream.ReadAsync(Buffer, BufferOffset,
@@ -148,6 +149,7 @@ namespace FiroozehGameService.Core.Socket
 
                     break;
                 }
+            }
 
             DebugUtil.LogNormal<GsTcpClient>(
                 Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Receiving",
@@ -253,8 +255,6 @@ namespace FiroozehGameService.Core.Socket
 
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
-
-                _client?.Close();
             }
             catch (Exception)
             {

@@ -26,7 +26,7 @@ namespace FiroozehGameService.Utils
 {
     internal static class PingUtil
     {
-        private const int Interval = 2000;
+        private const int Interval = 1000;
         private const float Wq = 0.2f;
         private static short _lastPing = 60;
         private static Timer _timer;
@@ -39,10 +39,19 @@ namespace FiroozehGameService.Utils
             if (_timer != null) return;
             _timer = new Timer
             {
-                Interval = Interval,
-                Enabled = true
+                Interval = Interval
             };
             _timer.Elapsed += (sender, args) => { RequestPing?.Invoke(null, null); };
+        }
+
+        internal static void Start()
+        {
+            _timer?.Start();
+        }
+
+        internal static void Stop()
+        {
+            _timer?.Stop();
         }
 
         internal static short GetLastPing()

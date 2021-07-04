@@ -30,7 +30,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
     /// </summary>
     public abstract class GsLiveProvider
     {
-        internal abstract Task Init();
+        internal abstract void Init();
 
         internal abstract void Dispose();
 

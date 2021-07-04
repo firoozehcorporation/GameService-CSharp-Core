@@ -51,8 +51,10 @@ namespace FiroozehGameService.Core
             if (configuration == null)
                 throw new GameServiceException("Configuration Cant Be Null").LogException(typeof(GameService),
                     DebugLocation.Internal, "ConfigurationInstance");
+          
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+           
             SynchronizationContext = SynchronizationContext.Current;
 
             if (IsAuthenticated())
@@ -60,6 +62,7 @@ namespace FiroozehGameService.Core
                     DebugLocation.Internal, "ConfigurationInstance");
 
             Configuration = configuration;
+            HandlerType = EventHandlerType.UnityContext;
             DownloadManager = new DownloadManager(Configuration);
 
             Achievement = new AchievementProvider();
@@ -88,7 +91,17 @@ namespace FiroozehGameService.Core
                                      typeof(GameService), DebugLocation.Internal, "ConfigurationDebug");
         }
 
+        
+        /// <summary>
+        ///    Set Event Handlers Type to Work Chat System with it
+        /// </summary>
+        /// <param name="handlerType">Type of Event Handler You Want to Set</param>
+        public static void SetEventHandlersType(EventHandlerType handlerType)
+        {
+            HandlerType = handlerType;
+        }
 
+        
         /// <summary>
         ///     Check if Current User Authenticated
         /// </summary>
@@ -105,7 +118,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "8.1.1";
+            return "8.2.0";
         }
 
 
@@ -205,6 +218,7 @@ namespace FiroozehGameService.Core
         internal static string PlayToken;
 
         internal static InternalGame CurrentInternalGame;
+        internal static EventHandlerType HandlerType;
         internal static CommandInfo CommandInfo;
         internal static SynchronizationContext SynchronizationContext;
         internal static GameServiceClientConfiguration Configuration { get; private set; }

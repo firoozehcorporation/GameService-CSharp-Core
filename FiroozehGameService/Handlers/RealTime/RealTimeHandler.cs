@@ -271,8 +271,11 @@ namespace FiroozehGameService.Handlers.RealTime
                 if (_isDisposed) return;
                 var packet = (Packet) e.Packet;
                 packet.ClientReceiveTime = e.Time;
-
-                GameService.SynchronizationContext?.Send(
+                
+                if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.RealTime))
+                    _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType);
+                else
+                    GameService.SynchronizationContext?.Send(
                     delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType); },
                     null);
             }

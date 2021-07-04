@@ -47,7 +47,7 @@ namespace FiroozehGameService.Models.Consts
 
 
         internal const int TurnBasedLimit = 5; // 5 Request per sec
-        internal const int ConnectivityCheckInterval = 1000;
+        internal const int ConnectivityCheckInterval = 2000;
         internal const short MaxRetryConnect = 5;
 
         internal const int MinPlayer = 2;

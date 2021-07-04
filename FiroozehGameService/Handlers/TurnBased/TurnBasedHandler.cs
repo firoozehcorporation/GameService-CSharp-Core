@@ -51,6 +51,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
             _callerUtil = new ObjectCallerUtil(TurnBasedConst.ConnectivityCheckInterval, null);
             _isDisposed = false;
+            
 
             // Set Internal Event Handlers
             TurnBasedEventHandlers.TurnBasedPing += OnPing;
@@ -75,10 +76,9 @@ namespace FiroozehGameService.Handlers.TurnBased
                 DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "RequestPing"
                     , "TurnBasedHandler -> Server Not Response Ping, Reconnecting...");
 
-                _callerUtil?.Stop();
-
-                await Init();
-                _isPingRequested = false;
+                TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+                
+                Init();
                 return;
             }
 
@@ -103,7 +103,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             });
         }
 
-        private async void OnGsTcpClientError(object sender, GameServiceException exception)
+        private void OnGsTcpClientError(object sender, GameServiceException exception)
         {
             if (_isDisposed) return;
 
@@ -128,7 +128,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientError",
                 "TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
 
-            await Init();
+            Init();
         }
 
         private async void OnGsTcpClientConnected(object sender, object e)
@@ -154,10 +154,12 @@ namespace FiroozehGameService.Handlers.TurnBased
         private void OnAuth(object sender, string playerHash)
         {
             // this is Reconnect
-            if (PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
+            if (PlayerHash != null || _isPingRequested) TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
 
             PlayerHash = playerHash;
             GsLiveTurnBased.InAutoMatch = false;
+            _isPingRequested = false;
+            
             _callerUtil?.Start();
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnAuth", "TurnBasedHandler OnAuth Done");
@@ -218,12 +220,13 @@ namespace FiroozehGameService.Handlers.TurnBased
         }
 
 
-        public async Task Init()
+        public void Init()
         {
             _cancellationToken = new CancellationTokenSource();
 
             _tcpClient.SetEncryptionStatus(false);
-            await _tcpClient.Init(null, GameService.CommandInfo.Cipher);
+            _callerUtil?.Stop();
+            _tcpClient.Init(null, GameService.CommandInfo.Cipher);
         }
 
         public void Dispose(bool isGraceful)

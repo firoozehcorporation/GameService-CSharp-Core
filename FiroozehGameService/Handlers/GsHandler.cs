@@ -61,13 +61,13 @@ namespace FiroozehGameService.Handlers
             }
         }
 
-        private async void OnJoinRoom(object sender, StartPayload startPayload)
+        private void OnJoinRoom(object sender, StartPayload startPayload)
         {
             switch (startPayload.Room.GsLiveType)
             {
                 case GSLiveType.TurnBased:
                     TurnBasedHandler = new TurnBasedHandler(startPayload);
-                    await TurnBasedHandler.Init();
+                    TurnBasedHandler.Init();
                     break;
                 case GSLiveType.RealTime:
                     RealTimeHandler = new RealTimeHandler(startPayload);
@@ -83,9 +83,9 @@ namespace FiroozehGameService.Handlers
         }
 
 
-        internal async Task Init()
+        internal void Init()
         {
-            await CommandHandler.Init();
+            CommandHandler.Init();
         }
 
         internal void Dispose()

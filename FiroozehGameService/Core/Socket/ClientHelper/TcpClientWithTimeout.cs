@@ -55,12 +55,12 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             _timeoutWaitMilliseconds = timeoutWaitMilliseconds;
         }
 
-        internal async Task Connect(GSLiveType type)
+        internal void Connect(GSLiveType type)
         {
             _connected = false;
             _exception = null;
 
-            await Task.Delay(_timeoutWaitMilliseconds);
+            Thread.Sleep(_timeoutWaitMilliseconds);
 
             var thread = new Thread(BeginConnect)
             {
