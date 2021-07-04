@@ -30,7 +30,6 @@ using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
-using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -79,7 +78,6 @@ namespace FiroozehGameService.Core.Socket
         protected bool IsAvailable;
         protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
-        protected KeepAliveUtil KeepAliveUtil;
         protected CancellationTokenSource OperationCancellationToken;
 
 

@@ -1,4 +1,4 @@
-// <copyright file="KeepAliveUtil.cs" company="Firoozeh Technology LTD">
+// <copyright file="ObjectCallerUtil.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,19 +24,19 @@ using System.Timers;
 
 namespace FiroozehGameService.Utils
 {
-    internal class KeepAliveUtil
+    internal class ObjectCallerUtil
     {
         private readonly Timer _timer;
-        internal EventHandler<byte[]> Caller;
+        internal EventHandler<object> Caller;
 
-        internal KeepAliveUtil(int interval)
+        internal ObjectCallerUtil(int interval, object body)
         {
             _timer = new Timer
             {
                 Interval = interval,
                 Enabled = false
             };
-            _timer.Elapsed += (sender, args) => { Caller?.Invoke(null, new byte[] {0x93, 0x96, 0x9F}); };
+            _timer.Elapsed += (sender, args) => { Caller?.Invoke(null, body); };
         }
 
         internal void Start()
@@ -53,8 +53,8 @@ namespace FiroozehGameService.Utils
         internal void Dispose()
         {
             Caller = null;
-            _timer?.Stop();
             _timer?.Close();
+            _timer?.Dispose();
         }
     }
 }

@@ -53,7 +53,7 @@ namespace FiroozehGameService.Utils
 
         private static bool IsInternalTbAction(int action)
         {
-            return action == TurnBasedConst.ActionPingPong;
+            return action == TurnBasedConst.ActionPing || action == TurnBasedConst.ActionMirror;
         }
 
         private static bool IsInternalCAction(int action)

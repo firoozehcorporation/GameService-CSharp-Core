@@ -31,7 +31,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            CommandEventHandlers.Mirror?.Invoke(this, packet);
+            CommandEventHandlers.CommandMirror?.Invoke(this, packet);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace FiroozehGameService.Models.Consts
     {
         // Packet Actions
         internal const int ActionAuth = 1;
-        internal const int ActionPingPong = 2;
+        internal const int ActionPing = 2;
         internal const int OnTakeTurn = 4;
         internal const int OnChooseNext = 5;
         internal const int OnLeave = 6;
@@ -38,16 +38,16 @@ namespace FiroozehGameService.Models.Consts
         internal const int OnRoomInfo = 14;
         internal const int OnSnapshot = 15;
 
+        internal const int ActionMirror = 99;
+
 
         internal const int ActionKeepAlive = byte.MaxValue;
-
 
         internal const int Errors = 100;
 
 
         internal const int TurnBasedLimit = 5; // 5 Request per sec
-        internal const int RestLimit = 1000; //  RestLimit per sec in long
-        internal const int KeepAliveTime = 1000;
+        internal const int ConnectivityCheckInterval = 1000;
         internal const short MaxRetryConnect = 5;
 
         internal const int MinPlayer = 2;

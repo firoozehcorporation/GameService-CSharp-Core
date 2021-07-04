@@ -42,7 +42,7 @@ namespace FiroozehGameService.Handlers
         internal static EventHandler<TcpClient> CommandClientConnected;
         internal static EventHandler<GameServiceException> GsCommandClientError;
         internal static EventHandler CommandPing;
-        internal static EventHandler<Packet> Mirror;
+        internal static EventHandler<Packet> CommandMirror;
 
         internal static EventHandler GsCommandClientConnected;
 

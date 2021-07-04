@@ -103,7 +103,7 @@
         <Compile Include="Handlers\Command\RequestHandlers\InviteUserHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\IRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\JoinRoomHandler.cs"/>
-        <Compile Include="Handlers\Command\RequestHandlers\TimeHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\MirrorHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\PingPongHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\AuthResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\AutoMatchResponseHandler.cs"/>
@@ -164,6 +164,7 @@
         <Compile Include="Handlers\TurnBased\RequestHandlers\ChooseNextHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\AcceptVoteHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\CurrentTurnHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\RequestHandlers\MirrorHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\RoomInfoHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\VoteHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\GetMembersHandler.cs"/>
@@ -179,6 +180,7 @@
         <Compile Include="Handlers\TurnBased\ResponseHandlers\AcceptVoteResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\CurrentTurnResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\ErrorResponseHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\ResponseHandlers\MirrorResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\RoomInfoResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\VoteResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\IResponseHandler.cs"/>
@@ -344,7 +346,7 @@
         <Compile Include="Utils\Encryptor\GSEncryptor.cs"/>
         <Compile Include="Utils\Encryptor\RC4.cs"/>
         <Compile Include="Utils\EventCallerUtil.cs"/>
-        <Compile Include="Utils\KeepAliveUtil.cs"/>
+        <Compile Include="Utils\ObjectCallerUtil.cs"/>
         <Compile Include="Utils\ObserverComapcterUtil.cs"/>
         <Compile Include="Utils\GSLiveSystemObserver.cs"/>
         <Compile Include="Utils\HttpRequestObserver.cs"/>

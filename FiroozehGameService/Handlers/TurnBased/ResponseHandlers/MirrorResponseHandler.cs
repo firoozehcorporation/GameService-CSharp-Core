@@ -1,5 +1,5 @@
-﻿// <copyright file="PingResponseHandler.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+﻿// <copyright file="MirrorResponseHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,18 +18,19 @@
 * @author Alireza Ghodrati
 */
 
+
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
 {
-    internal class PingResponseHandler : BaseResponseHandler
+    internal class MirrorResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand => TurnBasedConst.ActionPing;
+        public static int ActionCommand => TurnBasedConst.ActionMirror;
 
         protected override void HandleResponse(Packet packet)
         {
-            TurnBasedEventHandlers.TurnBasedPing?.Invoke(null, null);
+            TurnBasedEventHandlers.TurnBasedMirror?.Invoke(this, packet);
         }
     }
 }

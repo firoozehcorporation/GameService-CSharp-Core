@@ -55,7 +55,7 @@ namespace FiroozehGameService.Handlers.Command
             // Set Internal Event Handlers
             CommandEventHandlers.CommandPing += OnPing;
             CommandEventHandlers.CommandAuthorized += OnAuth;
-            CommandEventHandlers.Mirror += OnMirror;
+            CommandEventHandlers.CommandMirror += OnMirror;
             PingUtil.RequestPing += RequestPing;
             CommandEventHandlers.GsCommandClientConnected += OnGsTcpClientConnected;
             CommandEventHandlers.GsCommandClientError += OnGsTcpClientError;
@@ -91,7 +91,7 @@ namespace FiroozehGameService.Handlers.Command
                 CommandEventHandlers.GsCommandClientConnected = null;
                 CommandEventHandlers.GsCommandClientError = null;
                 CommandEventHandlers.CommandPing = null;
-                CommandEventHandlers.Mirror = null;
+                CommandEventHandlers.CommandMirror = null;
 
                 try
                 {
@@ -130,7 +130,7 @@ namespace FiroozehGameService.Handlers.Command
             var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             _isPingRequested = true;
 
-            await RequestAsync(TimeHandler.Signature, currentTime, true);
+            await RequestAsync(MirrorHandler.Signature, currentTime, true);
         }
 
         private async void OnGsTcpClientError(object sender, GameServiceException exception)
@@ -213,7 +213,7 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(SubscribeChannelHandler.Signature, new SubscribeChannelHandler());
             _requestHandlers.Add(UnsubscribeChannelHandler.Signature, new UnsubscribeChannelHandler());
 
-            _requestHandlers.Add(TimeHandler.Signature, new TimeHandler());
+            _requestHandlers.Add(MirrorHandler.Signature, new MirrorHandler());
         }
 
         private void InitResponseMessageHandlers()

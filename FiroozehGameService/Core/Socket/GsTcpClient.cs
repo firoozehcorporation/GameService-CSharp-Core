@@ -27,7 +27,6 @@ using System.Threading.Tasks;
 using FiroozehGameService.Core.Socket.ClientHelper;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models.BasicApi;
-using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
@@ -49,22 +48,8 @@ namespace FiroozehGameService.Core.Socket
         {
             Area = area;
 
-            if (area == null)
-            {
-                CommandEventHandlers.CommandClientConnected += OnTcpClientConnected;
-            }
-            else
-            {
-                KeepAliveUtil = new KeepAliveUtil(TurnBasedConst.KeepAliveTime);
-
-                TurnBasedEventHandlers.TurnBasedClientConnected += OnTcpClientConnected;
-                KeepAliveUtil.Caller += KeepAliveCaller;
-            }
-        }
-
-        private async void KeepAliveCaller(object sender, byte[] payload)
-        {
-            await SendAsync(payload);
+            if (area == null) CommandEventHandlers.CommandClientConnected += OnTcpClientConnected;
+            else TurnBasedEventHandlers.TurnBasedClientConnected += OnTcpClientConnected;
         }
 
         private void OnTcpClientConnected(object sender, TcpClient client)
@@ -129,8 +114,6 @@ namespace FiroozehGameService.Core.Socket
             DebugUtil.LogNormal<GsTcpClient>(
                 Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Receiving",
                 "GsTcpClient -> Start Receiving...");
-
-            KeepAliveUtil?.Start();
 
             while (IsAvailable && IsConnected())
                 try
@@ -225,7 +208,6 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 IsAvailable = false;
-                KeepAliveUtil?.Dispose();
                 DataBuilder?.Clear();
 
                 OperationCancellationToken?.Cancel(false);
@@ -239,7 +221,6 @@ namespace FiroozehGameService.Core.Socket
             }
             finally
             {
-                KeepAliveUtil = null;
                 Key = null;
                 _client = null;
                 _clientStream = null;
@@ -268,7 +249,6 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 IsAvailable = false;
-                KeepAliveUtil?.Stop();
                 DataBuilder?.Clear();
 
                 OperationCancellationToken?.Cancel(false);

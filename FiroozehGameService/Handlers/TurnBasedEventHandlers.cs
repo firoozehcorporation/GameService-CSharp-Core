@@ -40,6 +40,8 @@ namespace FiroozehGameService.Handlers
         internal static EventHandler<string> TurnBasedAuthorized;
         internal static EventHandler<TcpClient> TurnBasedClientConnected;
         internal static EventHandler<GameServiceException> GsTurnBasedClientError;
+        internal static EventHandler<Packet> TurnBasedMirror;
+
         internal static EventHandler TurnBasedPing;
 
         internal static EventHandler LeftDispose;

@@ -49,6 +49,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
+            _callerUtil = new ObjectCallerUtil(TurnBasedConst.ConnectivityCheckInterval, null);
             _isDisposed = false;
 
             // Set Internal Event Handlers
@@ -57,12 +58,37 @@ namespace FiroozehGameService.Handlers.TurnBased
             TurnBasedEventHandlers.LeftDispose += OnLeftDispose;
             TurnBasedEventHandlers.GsTurnBasedClientConnected += OnGsTcpClientConnected;
             TurnBasedEventHandlers.GsTurnBasedClientError += OnGsTcpClientError;
+            TurnBasedEventHandlers.TurnBasedMirror += TurnBasedMirror;
+            _callerUtil.Caller += RequestPing;
 
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "Constructor", "TurnBasedHandler Init");
+        }
+
+        private async void RequestPing(object sender, object e)
+        {
+            if (_isPingRequested)
+            {
+                DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "RequestPing"
+                    , "TurnBasedHandler -> Server Not Response Ping, Reconnecting...");
+
+                _callerUtil?.Stop();
+
+                await Init();
+                _isPingRequested = false;
+                return;
+            }
+
+            _isPingRequested = true;
+            await RequestAsync(MirrorHandler.Signature, null, true);
+        }
+
+        private void TurnBasedMirror(object sender, Packet packet)
+        {
+            _isPingRequested = false;
         }
 
 
@@ -125,13 +151,14 @@ namespace FiroozehGameService.Handlers.TurnBased
                 "TurnBasedHandler Init done");
         }
 
-        private static void OnAuth(object sender, string playerHash)
+        private void OnAuth(object sender, string playerHash)
         {
             // this is Reconnect
             if (PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
-            PlayerHash = playerHash;
 
+            PlayerHash = playerHash;
             GsLiveTurnBased.InAutoMatch = false;
+            _callerUtil?.Start();
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnAuth", "TurnBasedHandler OnAuth Done");
         }
@@ -156,6 +183,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             _requestHandlers.Add(PropertyHandler.Signature, new PropertyHandler());
             _requestHandlers.Add(RoomInfoHandler.Signature, new RoomInfoHandler());
             _requestHandlers.Add(SnapshotHandler.Signature, new SnapshotHandler());
+            _requestHandlers.Add(MirrorHandler.Signature, new MirrorHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -174,6 +202,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             _responseHandlers.Add(PropertyResponseHandler.ActionCommand, new PropertyResponseHandler());
             _responseHandlers.Add(RoomInfoResponseHandler.ActionCommand, new RoomInfoResponseHandler());
             _responseHandlers.Add(SnapShotResponseHandler.ActionCommand, new SnapShotResponseHandler());
+            _responseHandlers.Add(MirrorResponseHandler.ActionCommand, new MirrorResponseHandler());
         }
 
 
@@ -210,8 +239,10 @@ namespace FiroozehGameService.Handlers.TurnBased
 
                 _retryConnectCounter = 0;
                 _isDisposed = true;
+                _isPingRequested = false;
 
                 _observer?.Dispose();
+                _callerUtil?.Dispose();
                 _cancellationToken?.Cancel(true);
 
                 _tcpClient?.StopReceiving(isGraceful);
@@ -232,6 +263,7 @@ namespace FiroozehGameService.Handlers.TurnBased
                 TurnBasedEventHandlers.GsTurnBasedClientError = null;
                 TurnBasedEventHandlers.TurnBasedPing = null;
                 TurnBasedEventHandlers.LeftDispose = null;
+                TurnBasedEventHandlers.TurnBasedMirror = null;
 
                 try
                 {
@@ -290,9 +322,12 @@ namespace FiroozehGameService.Handlers.TurnBased
         private static GTcpClient _tcpClient;
         internal static Room CurrentRoom;
         private readonly GsLiveSystemObserver _observer;
+        private readonly ObjectCallerUtil _callerUtil;
         private CancellationTokenSource _cancellationToken;
         private int _retryConnectCounter;
         private bool _isDisposed;
+        private bool _isPingRequested;
+
 
         internal static string PlayerHash { private set; get; }
         internal static string PlayToken => GameService.PlayToken;

@@ -1,4 +1,4 @@
-﻿// <copyright file="TimeHandler.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="MirrorHandler.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +25,10 @@ using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers
 {
-    internal class TimeHandler : BaseRequestHandler
+    internal class MirrorHandler : BaseRequestHandler
     {
         public static string Signature
-            => "TIME";
+            => "MIRROR";
 
         private static Packet DoAction(long time)
         {

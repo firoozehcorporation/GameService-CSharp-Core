@@ -1,5 +1,5 @@
-﻿// <copyright file="PingPongHandler.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+﻿// <copyright file="MirrorHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,20 +19,19 @@
 */
 
 
-using System;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 {
-    internal class PingPongHandler : BaseRequestHandler
+    internal class MirrorHandler : BaseRequestHandler
     {
         public static string Signature
-            => "PING_PONG";
+            => "MIRROR";
 
         private static Packet DoAction()
         {
-            return new Packet(TurnBasedHandler.PlayerHash, TurnBasedConst.ActionPing);
+            return new Packet(TurnBasedHandler.PlayerHash, TurnBasedConst.ActionMirror);
         }
 
         protected override bool CheckAction(object payload)
@@ -42,7 +41,6 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
 
         protected override Packet DoAction(object payload)
         {
-            if (!CheckAction(payload)) throw new ArgumentException();
             return DoAction();
         }
     }
