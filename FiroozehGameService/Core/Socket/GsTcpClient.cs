@@ -37,9 +37,6 @@ namespace FiroozehGameService.Core.Socket
 {
     internal class GsTcpClient : GTcpClient
     {
-        private const short CommandTimeOutWait = 700;
-        private const short TurnTimeOutWait = 500;
-
         private TcpClient _client;
         private NetworkStream _clientStream;
 
@@ -58,6 +55,8 @@ namespace FiroozehGameService.Core.Socket
 
             _client = client;
             _clientStream = _client.GetStream();
+            _clientStream.WriteTimeout = TcpTimeout;
+            _clientStream.ReadTimeout = TcpTimeout;
             OperationCancellationToken = new CancellationTokenSource();
             IsAvailable = true;
 
@@ -115,14 +114,13 @@ namespace FiroozehGameService.Core.Socket
                 Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Receiving",
                 "GsTcpClient -> Start Receiving...");
 
-            while (IsAvailable && IsConnected())
-            {
+            while (IsConnected())
                 try
                 {
                     BufferReceivedBytes += await _clientStream.ReadAsync(Buffer, BufferOffset,
                         Buffer.Length - BufferOffset, OperationCancellationToken.Token);
 
-                    if (!IsAvailable) break;
+                    if (!IsConnected()) break;
 
                     DataBuilder.Append(Encoding.UTF8.GetString(Buffer, BufferOffset, BufferReceivedBytes));
                     var packets = PacketValidator.ValidateDataAndReturn(DataBuilder);
@@ -149,7 +147,6 @@ namespace FiroozehGameService.Core.Socket
 
                     break;
                 }
-            }
 
             DebugUtil.LogNormal<GsTcpClient>(
                 Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Receiving",
@@ -159,10 +156,29 @@ namespace FiroozehGameService.Core.Socket
 
         internal override void Send(Packet packet)
         {
-            Task.Run(() =>
+            Task.Factory.StartNew(() =>
             {
-                var buffer = PacketSerializer.Serialize(packet, Key, IsEncryptionEnabled);
-                _clientStream?.Write(buffer, 0, buffer.Length);
+                try
+                {
+                    var buffer = PacketSerializer.Serialize(packet, Key, IsEncryptionEnabled);
+
+                    if (_clientStream == null) return;
+
+                    _clientStream.Write(buffer, 0, buffer.Length);
+                    _clientStream.Flush();
+                }
+                catch (Exception e)
+                {
+                    if (!(e is OperationCanceledException || e is ObjectDisposedException ||
+                          e is ArgumentOutOfRangeException))
+                    {
+                        e.LogException<GsTcpClient>(
+                            Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
+                            "SendAsync");
+
+                        OnClosed(new ErrorArg {Error = e.ToString()});
+                    }
+                }
             }, OperationCancellationToken.Token);
         }
 
@@ -173,15 +189,20 @@ namespace FiroozehGameService.Core.Socket
             {
                 if (_clientStream != null)
                 {
-                    await _clientStream.WriteAsync(payload, 0, payload.Length);
-                    await _clientStream.FlushAsync();
+                    await _clientStream.WriteAsync(payload, 0, payload.Length, OperationCancellationToken.Token);
+                    await _clientStream.FlushAsync(OperationCancellationToken.Token);
                 }
             }
             catch (Exception e)
             {
-                e.LogException<GsTcpClient>(
-                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
-                OnClosed(new ErrorArg {Error = e.ToString()});
+                if (!(e is OperationCanceledException || e is ObjectDisposedException ||
+                      e is ArgumentOutOfRangeException))
+                {
+                    e.LogException<GsTcpClient>(
+                        Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
+
+                    OnClosed(new ErrorArg {Error = e.ToString()});
+                }
             }
         }
 
@@ -193,15 +214,20 @@ namespace FiroozehGameService.Core.Socket
                 var buffer = PacketSerializer.Serialize(packet, Key, IsEncryptionEnabled);
                 if (_clientStream != null)
                 {
-                    await _clientStream.WriteAsync(buffer, 0, buffer.Length);
-                    await _clientStream.FlushAsync();
+                    await _clientStream.WriteAsync(buffer, 0, buffer.Length, OperationCancellationToken.Token);
+                    await _clientStream.FlushAsync(OperationCancellationToken.Token);
                 }
             }
             catch (Exception e)
             {
-                e.LogException<GsTcpClient>(
-                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
-                OnClosed(new ErrorArg {Error = e.ToString()});
+                if (!(e is OperationCanceledException || e is ObjectDisposedException ||
+                      e is ArgumentOutOfRangeException))
+                {
+                    e.LogException<GsTcpClient>(
+                        Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
+
+                    OnClosed(new ErrorArg {Error = e.ToString()});
+                }
             }
         }
 
@@ -284,9 +310,7 @@ namespace FiroozehGameService.Core.Socket
 
         internal override bool IsConnected()
         {
-            var part1 = _client?.Client?.Poll(1000, SelectMode.SelectRead);
-            var part2 = _client?.Client?.Available == 0;
-            return part1 == false || part2 == false;
+            return IsAvailable;
         }
 
         internal override void SetEncryptionStatus(bool isEnabled)

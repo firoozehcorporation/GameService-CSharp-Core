@@ -51,7 +51,7 @@ namespace FiroozehGameService.Handlers.Command
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
-            
+
             PingUtil.Init();
 
             // Set Internal Event Handlers
@@ -123,7 +123,7 @@ namespace FiroozehGameService.Handlers.Command
             {
                 DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "RequestPing",
                     "CommandHandler -> Server Not Response Ping, Reconnecting...");
-                
+
                 Init();
                 _isPingRequested = false;
                 return;
@@ -175,7 +175,7 @@ namespace FiroozehGameService.Handlers.Command
 
             PlayerHash = playerHash;
             PingUtil.Start();
-            
+
             if (_isFirstInit) return;
             _isFirstInit = true;
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
@@ -261,7 +261,7 @@ namespace FiroozehGameService.Handlers.Command
             return PingUtil.GetLastPing();
         }
 
-        internal void Request(string handlerName, object payload = null, bool isCritical = false)
+        private void Request(string handlerName, object payload = null, bool isCritical = false)
         {
             Send(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
         }
@@ -276,7 +276,10 @@ namespace FiroozehGameService.Handlers.Command
         private void Send(Packet packet, bool isCritical = false)
         {
             if (!_observer.Increase(isCritical)) return;
-            _tcpClient.Send(packet);
+            if (IsAvailable()) _tcpClient.Send(packet);
+            else if (!isCritical)
+                throw new GameServiceException("GameService Not Available")
+                    .LogException<CommandHandler>(DebugLocation.Command, "Send");
         }
 
         private async Task SendAsync(Packet packet, bool isCritical = false, bool dontCheckAvailability = false)

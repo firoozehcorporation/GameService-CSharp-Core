@@ -69,7 +69,11 @@ namespace FiroozehGameService.Core.Socket
 
         #region Fields
 
+        protected const short CommandTimeOutWait = 700;
+        protected const short TurnTimeOutWait = 500;
+        protected const short TcpTimeout = 2000;
         private const int BufferCapacity = 8192;
+
         protected Thread Thread;
         protected CommandInfo CommandInfo;
         protected Area Area;

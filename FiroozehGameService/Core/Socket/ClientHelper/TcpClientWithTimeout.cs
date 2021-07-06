@@ -22,7 +22,6 @@
 using System;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
@@ -40,6 +39,8 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
     internal class TcpClientWithTimeout
     {
         private const int TimeoutThreadWaitMilliseconds = 5000;
+        private const short TcpTimeout = 2000;
+        private const int BufferCapacity = 8192;
         private readonly string _hostname;
         private readonly int _port;
         private readonly int _timeoutWaitMilliseconds;
@@ -112,7 +113,16 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
                 DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal, "BeginConnect",
                     $"Connecting To {_hostname}:{_port} ...");
 
-                _connection = new TcpClient(_hostname, _port);
+                _connection = new TcpClient
+                {
+                    ReceiveTimeout = TcpTimeout,
+                    SendTimeout = TcpTimeout,
+                    ReceiveBufferSize = BufferCapacity,
+                    SendBufferSize = BufferCapacity
+                };
+
+                _connection.Connect(_hostname, _port);
+
                 _connected = true;
             }
             catch (Exception ex)
