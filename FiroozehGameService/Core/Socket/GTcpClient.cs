@@ -44,6 +44,8 @@ namespace FiroozehGameService.Core.Socket
 
         protected void OnClosed(ErrorArg errorArg)
         {
+            IsAvailable = false;
+
             if (Type == GSLiveType.Command)
                 CommandEventHandlers.GsCommandClientError?.Invoke(null, new GameServiceException(errorArg.Error));
             else TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null, new GameServiceException(errorArg.Error));

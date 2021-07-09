@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive.Command;
@@ -39,7 +38,7 @@ namespace FiroozehGameService.Handlers
     public class CommandEventHandlers : CoreEventHandlers
     {
         internal static EventHandler<string> CommandAuthorized;
-        internal static EventHandler<TcpClient> CommandClientConnected;
+        internal static EventHandler<GTcpConnection> CommandClientConnected;
         internal static EventHandler<GameServiceException> GsCommandClientError;
         internal static EventHandler CommandPing;
         internal static EventHandler<Packet> CommandMirror;

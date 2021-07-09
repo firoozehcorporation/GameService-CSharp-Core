@@ -34,7 +34,9 @@ namespace FiroozehGameService.Builder
     {
         internal readonly string ClientId;
         internal readonly string ClientSecret;
+        internal readonly ConnectionType CommandConnectionType;
         internal readonly SystemInfo SystemInfo;
+        internal readonly ConnectionType TurnBasedConnectionType;
 
         /// <summary>
         ///     Set GameServiceClientConfiguration Values
@@ -42,9 +44,16 @@ namespace FiroozehGameService.Builder
         /// <param name="clientId">Set The ClientId From Developers Panel</param>
         /// <param name="clientSecret">Set The ClientSecret From Developers Panel</param>
         /// <param name="systemInfo">Set systemInfo</param>
+        /// <param name="commandConnectionType">Set Command Connection Type</param>
+        /// <param name="turnBasedConnectionType">Set TurnBased Connection Type</param>
         /// <exception cref="GameServiceException">May GameServiceException Occur</exception>
-        public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo)
+        public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo,
+            ConnectionType commandConnectionType = ConnectionType.Native,
+            ConnectionType turnBasedConnectionType = ConnectionType.Native)
         {
+            CommandConnectionType = commandConnectionType;
+            TurnBasedConnectionType = turnBasedConnectionType;
+
             ClientId = string.IsNullOrEmpty(clientId)
                 ? throw new GameServiceException("ClientId Cant Be Empty").LogException<GameServiceClientConfiguration>(
                     DebugLocation.Internal, "Constructor")

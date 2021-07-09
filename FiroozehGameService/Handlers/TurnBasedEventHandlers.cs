@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive;
@@ -38,7 +37,7 @@ namespace FiroozehGameService.Handlers
     public class TurnBasedEventHandlers : CommandEventHandlers
     {
         internal static EventHandler<string> TurnBasedAuthorized;
-        internal static EventHandler<TcpClient> TurnBasedClientConnected;
+        internal static EventHandler<GTcpConnection> TurnBasedClientConnected;
         internal static EventHandler<GameServiceException> GsTurnBasedClientError;
         internal static EventHandler<Packet> TurnBasedMirror;
 

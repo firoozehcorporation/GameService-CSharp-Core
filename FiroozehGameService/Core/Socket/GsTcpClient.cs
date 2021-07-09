@@ -30,6 +30,7 @@ using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
+using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
 
@@ -49,11 +50,11 @@ namespace FiroozehGameService.Core.Socket
             else TurnBasedEventHandlers.TurnBasedClientConnected += OnTcpClientConnected;
         }
 
-        private void OnTcpClientConnected(object sender, TcpClient client)
+        private void OnTcpClientConnected(object sender, GTcpConnection connection)
         {
-            if (Type != (GSLiveType) sender) return;
+            if (Type != (GSLiveType) sender || connection.IsWs) return;
 
-            _client = client;
+            _client = connection.TcpClient;
             _clientStream = _client.GetStream();
             _clientStream.WriteTimeout = TcpTimeout;
             _clientStream.ReadTimeout = TcpTimeout;
@@ -174,7 +175,7 @@ namespace FiroozehGameService.Core.Socket
                     {
                         e.LogException<GsTcpClient>(
                             Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
-                            "SendAsync");
+                            "Send");
 
                         OnClosed(new ErrorArg {Error = e.ToString()});
                     }

@@ -41,7 +41,18 @@ namespace FiroozehGameService.Handlers.Command
     {
         internal CommandHandler()
         {
-            _tcpClient = new GsTcpClient();
+            switch (GameService.Configuration.CommandConnectionType)
+            {
+                case ConnectionType.Native:
+                    _tcpClient = new GsTcpClient();
+                    break;
+                case ConnectionType.WebSocket:
+                    _tcpClient = new GsWebSocketClient();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             _tcpClient.DataReceived += OnDataReceived;
 
             _cancellationToken = new CancellationTokenSource();
@@ -110,11 +121,21 @@ namespace FiroozehGameService.Handlers.Command
 
         private void OnMirror(object sender, Packet packet)
         {
-            var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            var lastCurrentTime = long.Parse(packet.Data);
-            _isPingRequested = false;
+            try
+            {
+                var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                var lastCurrentTime = long.Parse(packet.Data);
 
-            PingUtil.SetLastPing(currentTime, lastCurrentTime);
+                PingUtil.SetLastPing(currentTime, lastCurrentTime);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            finally
+            {
+                _isPingRequested = false;
+            }
         }
 
         private async void RequestPing(object sender, EventArgs e)
@@ -124,8 +145,9 @@ namespace FiroozehGameService.Handlers.Command
                 DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "RequestPing",
                     "CommandHandler -> Server Not Response Ping, Reconnecting...");
 
-                Init();
                 _isPingRequested = false;
+
+                Init();
                 return;
             }
 
@@ -163,7 +185,6 @@ namespace FiroozehGameService.Handlers.Command
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
 
             _tcpClient?.SetEncryptionStatus(true);
-
 
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler Init done");
@@ -296,6 +317,7 @@ namespace FiroozehGameService.Handlers.Command
             try
             {
                 var packet = (Packet) e.Packet;
+
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.Command))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet);
                 else

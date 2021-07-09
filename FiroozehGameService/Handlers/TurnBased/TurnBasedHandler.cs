@@ -43,15 +43,26 @@ namespace FiroozehGameService.Handlers.TurnBased
     {
         internal TurnBasedHandler(StartPayload payload)
         {
+            switch (GameService.Configuration.CommandConnectionType)
+            {
+                case ConnectionType.Native:
+                    _tcpClient = new GsTcpClient(payload.Area);
+                    break;
+                case ConnectionType.WebSocket:
+                    _tcpClient = new GsWebSocketClient(payload.Area);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             CurrentRoom = payload.Room;
-            _tcpClient = new GsTcpClient(payload.Area);
             _tcpClient.DataReceived += OnDataReceived;
 
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
             _callerUtil = new ObjectCallerUtil(TurnBasedConst.ConnectivityCheckInterval, null);
             _isDisposed = false;
-            
+
 
             // Set Internal Event Handlers
             TurnBasedEventHandlers.TurnBasedPing += OnPing;
@@ -77,7 +88,9 @@ namespace FiroozehGameService.Handlers.TurnBased
                     , "TurnBasedHandler -> Server Not Response Ping, Reconnecting...");
 
                 TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
-                
+
+                _isPingRequested = false;
+
                 Init();
                 return;
             }
@@ -146,7 +159,6 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             _tcpClient?.SetEncryptionStatus(true);
 
-
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
                 "TurnBasedHandler Init done");
         }
@@ -154,12 +166,13 @@ namespace FiroozehGameService.Handlers.TurnBased
         private void OnAuth(object sender, string playerHash)
         {
             // this is Reconnect
-            if (PlayerHash != null || _isPingRequested) TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
+            if (PlayerHash != null || _isPingRequested)
+                TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
 
             PlayerHash = playerHash;
             GsLiveTurnBased.InAutoMatch = false;
             _isPingRequested = false;
-            
+
             _callerUtil?.Start();
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnAuth", "TurnBasedHandler OnAuth Done");

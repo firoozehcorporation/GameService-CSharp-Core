@@ -44,6 +44,10 @@
       </Reference>
       <Reference Include="System"/>
       <Reference Include="System.Net.Http"/>
+      <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e">
+          <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
+          <Private>True</Private>
+      </Reference>
   </ItemGroup>
     <ItemGroup>
         <Compile Include="Builder\GameServiceClientConfiguration.cs"/>
@@ -71,7 +75,9 @@
         <Compile Include="Core\Social\Party.cs"/>
         <Compile Include="Core\Social\Social.cs"/>
         <Compile Include="Core\Socket\ClientHelper\TcpClientWithTimeout.cs"/>
+        <Compile Include="Core\Socket\ClientHelper\WSClientWithTimeout.cs"/>
         <Compile Include="Core\Socket\GProtocolClient.cs"/>
+        <Compile Include="Core\Socket\GsWebSocketClient.cs"/>
         <Compile Include="Core\Socket\GTcpClient.cs"/>
         <Compile Include="Core\Socket\GsTcpClient.cs"/>
         <Compile Include="Core\Socket\GsUdpClient.cs"/>
@@ -258,6 +264,7 @@
         <Compile Include="Models\Consts\GameServiceErrors.cs"/>
         <Compile Include="Models\Consts\RealTimeConst.cs"/>
         <Compile Include="Models\Consts\TurnBasedConst.cs"/>
+        <Compile Include="Models\Enums\ConnectionType.cs"/>
         <Compile Include="Models\Enums\DBaaS\ItemOwnershipTypes.cs"/>
         <Compile Include="Models\Enums\DBaaS\TableSortOrder.cs"/>
         <Compile Include="Models\Enums\DBaaS\NumberMatcherTypes.cs"/>
@@ -299,6 +306,7 @@
         <Compile Include="Models\GSLive\Command\RoomDetail.cs"/>
         <Compile Include="Models\GSLive\Command\StartPayload.cs"/>
         <Compile Include="Models\GSLive\Game.cs"/>
+        <Compile Include="Models\GSLive\GTcpConnection.cs"/>
         <Compile Include="Models\GSLive\Invite.cs"/>
         <Compile Include="Models\GSLive\JoinData.cs"/>
         <Compile Include="Models\GSLive\Member.cs"/>
@@ -374,6 +382,9 @@
         <Compile Include="Utils\TimeUtil.cs"/>
         <Compile Include="Utils\URLUtil.cs"/>
         <Compile Include="Utils\DBaaSUtil.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="packages.config"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

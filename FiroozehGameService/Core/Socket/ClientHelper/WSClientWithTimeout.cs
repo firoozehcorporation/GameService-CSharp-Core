@@ -1,5 +1,5 @@
-// <copyright file="TcpClientWithTimeout.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
+// <copyright file="WsClientWithTimeout.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 */
 
 using System;
-using System.Net.Sockets;
 using System.Threading;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Models;
@@ -28,37 +27,31 @@ using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Utils;
+using WebSocketSharp;
 
 namespace FiroozehGameService.Core.Socket.ClientHelper
 {
-    /// <summary>
-    ///     TcpClientWithTimeout is used to open a TcpClient connection, with a
-    ///     user definable connection timeout in milliseconds (1000=1second)
-    ///     Use it like this:
-    ///     TcpClient connection = new TcpClientWithTimeout('127.0.0.1',80,1000).Connect();
-    /// </summary>
-    internal class TcpClientWithTimeout
+    internal class WsClientWithTimeout
     {
         private const int TimeoutThreadWaitMilliseconds = 5000;
-        private const short TcpTimeout = 2000;
-        private const int BufferCapacity = 8192;
         private readonly string _hostname;
         private readonly int _port;
         private readonly int _timeoutWaitMilliseconds;
         private bool _connected;
-        private TcpClient _connection;
+        private WebSocket _connection;
         private Exception _exception;
 
 
-        internal TcpClientWithTimeout(string hostname, int port, int timeoutWaitMilliseconds)
+        internal WsClientWithTimeout(string hostname, int port, int timeoutWaitMilliseconds)
         {
             _hostname = hostname;
             _port = port;
             _timeoutWaitMilliseconds = timeoutWaitMilliseconds;
         }
 
-        internal void Connect(GSLiveType type)
+        internal void Connect(GSLiveType type, WebSocket webSocket)
         {
+            _connection = webSocket;
             _connected = false;
             _exception = null;
 
@@ -80,12 +73,12 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
                 if (type == GSLiveType.Command)
                     CommandEventHandlers.CommandClientConnected?.Invoke(type, new GTcpConnection
                     {
-                        IsWs = false, TcpClient = _connection
+                        IsWs = true, WebSocket = _connection
                     });
                 else
                     TurnBasedEventHandlers.TurnBasedClientConnected?.Invoke(type, new GTcpConnection
                     {
-                        IsWs = false, TcpClient = _connection
+                        IsWs = true, WebSocket = _connection
                     });
 
                 return;
@@ -109,29 +102,20 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
 
             if (type == GSLiveType.Command)
                 CommandEventHandlers.GsCommandClientError?.Invoke(null,
-                    new GameServiceException($"TcpClient connection to {_hostname}:{_port} timed out"));
+                    new GameServiceException($"WS connection to {_hostname}:{_port} timed out"));
             else
                 TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null,
-                    new GameServiceException($"TcpClient connection to {_hostname}:{_port} timed out"));
+                    new GameServiceException($"WS connection to {_hostname}:{_port} timed out"));
         }
 
         private void BeginConnect()
         {
             try
             {
-                DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal, "BeginConnect",
+                DebugUtil.LogNormal<WsClientWithTimeout>(DebugLocation.Internal, "BeginConnect",
                     $"Connecting To {_hostname}:{_port} ...");
 
-                _connection = new TcpClient
-                {
-                    ReceiveTimeout = TcpTimeout,
-                    SendTimeout = TcpTimeout,
-                    ReceiveBufferSize = BufferCapacity,
-                    SendBufferSize = BufferCapacity
-                };
-
-                _connection.Connect(_hostname, _port);
-
+                _connection?.Connect();
                 _connected = true;
             }
             catch (Exception ex)

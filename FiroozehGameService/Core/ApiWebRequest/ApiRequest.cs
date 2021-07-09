@@ -1296,10 +1296,20 @@ namespace FiroozehGameService.Core.ApiWebRequest
                 {"token", userToken},
                 {"game", Configuration.ClientId},
                 {"secret", Configuration.ClientSecret},
-                {"system_info", JsonConvert.SerializeObject(Configuration.SystemInfo)},
-                {"connectionType", "tcp-sec"}
+                {"system_info", JsonConvert.SerializeObject(Configuration.SystemInfo)}
             };
 
+            switch (Configuration.CommandConnectionType)
+            {
+                case ConnectionType.Native:
+                    param.Add("connectionType", "tcp-sec");
+                    break;
+                case ConnectionType.WebSocket:
+                    param.Add("connectionType", "wss");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             return param;
         }
