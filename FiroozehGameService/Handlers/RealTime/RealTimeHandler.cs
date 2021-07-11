@@ -247,9 +247,13 @@ namespace FiroozehGameService.Handlers.RealTime
         private void Send(Packet packet, GProtocolSendType type, bool isCritical = false, bool canSendBigSize = false,
             bool isEvent = false)
         {
-            if (!_observer.Increase(isCritical)) return;
+            if (!_observer.Increase(isCritical))
+                throw new GameServiceException("Too Many Requests, You Can Send " + RealTimeConst.RealTimeSendLimit +
+                                               " Requests Per Second")
+                    .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");
+
             if (IsAvailable()) _udpClient.Send(packet, type, canSendBigSize, isCritical, isEvent);
-            else
+            else if (!isCritical)
                 throw new GameServiceException("GameService Not Available")
                     .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");
         }
@@ -271,13 +275,13 @@ namespace FiroozehGameService.Handlers.RealTime
                 if (_isDisposed) return;
                 var packet = (Packet) e.Packet;
                 packet.ClientReceiveTime = e.Time;
-                
+
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.RealTime))
                     _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType);
                 else
                     GameService.SynchronizationContext?.Send(
-                    delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType); },
-                    null);
+                        delegate { _responseHandlers.GetValue(packet.Action)?.HandlePacket(packet, packet.SendType); },
+                        null);
             }
             catch (Exception exception)
             {

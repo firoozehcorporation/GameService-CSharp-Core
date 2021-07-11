@@ -27,16 +27,18 @@ namespace FiroozehGameService.Utils
 {
     internal class GsLiveSystemObserver
     {
+        internal const int RestLimit = 1000;
         private readonly Timer _timer;
         private readonly GSLiveType _type;
         private int _counter;
+
 
         public GsLiveSystemObserver(GSLiveType type)
         {
             _type = type;
             _timer = new Timer
             {
-                Interval = RealTimeConst.RestLimit,
+                Interval = RestLimit,
                 Enabled = false
             };
             _timer.Elapsed += (sender, args) => { Reset(); };
@@ -73,7 +75,7 @@ namespace FiroozehGameService.Utils
 
                     break;
                 case GSLiveType.Command:
-                    if (_counter <= CommandConst.TimeLimit)
+                    if (_counter <= CommandConst.CommandLimit)
                     {
                         _counter++;
                         return true;

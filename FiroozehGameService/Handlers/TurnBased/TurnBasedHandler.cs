@@ -303,7 +303,11 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private async Task SendAsync(Packet packet, bool isCritical = false, bool dontCheckAvailability = false)
         {
-            if (!_observer.Increase(isCritical)) return;
+            if (!_observer.Increase(isCritical))
+                throw new GameServiceException("Too Many Requests, You Can Send " + TurnBasedConst.TurnBasedLimit +
+                                               " Requests Per Second")
+                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "SendAsync");
+
             if (IsAvailable()) await _tcpClient.SendAsync(packet);
             else if (!isCritical && !dontCheckAvailability)
                 throw new GameServiceException("GameService Not Available")

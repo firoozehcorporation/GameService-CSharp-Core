@@ -29,6 +29,7 @@ using FiroozehGameService.Handlers.Command.RequestHandlers.Chat;
 using FiroozehGameService.Handlers.Command.ResponseHandlers;
 using FiroozehGameService.Handlers.Command.ResponseHandlers.Chat;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
@@ -312,7 +313,11 @@ namespace FiroozehGameService.Handlers.Command
 
         private async Task SendAsync(Packet packet, bool isCritical = false, bool dontCheckAvailability = false)
         {
-            if (!_observer.Increase(isCritical)) return;
+            if (!_observer.Increase(isCritical))
+                throw new GameServiceException("Too Many Requests, You Can Send " + CommandConst.CommandLimit +
+                                               " Requests Per Second")
+                    .LogException<CommandHandler>(DebugLocation.Command, "SendAsync");
+
             if (IsAvailable()) await _tcpClient.SendAsync(packet);
             else if (!isCritical && !dontCheckAvailability)
                 throw new GameServiceException("GameService Not Available")
