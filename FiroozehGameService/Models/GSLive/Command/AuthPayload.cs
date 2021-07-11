@@ -27,22 +27,18 @@ namespace FiroozehGameService.Models.GSLive.Command
     [Serializable]
     internal class AuthPayload : Payload
     {
-        [JsonProperty("0")] public string GameId;
-        [JsonProperty("1")] public string Token;
+        [JsonProperty("0")] internal string GameId;
+        [JsonProperty("3")] internal string RealTimeConnectionType;
+        [JsonProperty("1")] internal string Token;
+        [JsonProperty("2")] internal string TurnBasedConnectionType;
 
-        public AuthPayload(string gameId, string token)
+        internal AuthPayload(string gameId, string token, string turnBasedConnectionType = null,
+            string realTimeConnectionType = null)
         {
             GameId = gameId;
             Token = token;
-        }
-
-
-        public override string ToString()
-        {
-            return "AuthPayload{" +
-                   "GameID='" + GameId + '\'' +
-                   ", Hash='" + Token + '\'' +
-                   '}';
+            TurnBasedConnectionType = turnBasedConnectionType;
+            RealTimeConnectionType = realTimeConnectionType;
         }
     }
 }

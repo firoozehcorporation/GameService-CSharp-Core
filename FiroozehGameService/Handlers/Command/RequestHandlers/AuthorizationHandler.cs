@@ -18,6 +18,10 @@
 * @author Alireza Ghodrati
 */
 
+using System;
+using FiroozehGameService.Core;
+using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
@@ -30,11 +34,30 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
 
         protected override Packet DoAction(object payload)
         {
+            string turnBasedConnectionType;
+            switch (GameService.Configuration.TurnBasedConnectionType)
+            {
+                case ConnectionType.Native:
+                    turnBasedConnectionType = "tcp-sec";
+                    break;
+                case ConnectionType.WebSocket:
+                    turnBasedConnectionType = "wss";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             return new Packet(
                 null,
-                Models.Consts.CommandConst.ActionAuth,
+                CommandConst.ActionAuth,
                 JsonConvert.SerializeObject(
-                    new AuthPayload(CommandHandler.GameId, CommandHandler.UserToken)));
+                    new AuthPayload(CommandHandler.GameId,
+                        CommandHandler.UserToken,
+                        turnBasedConnectionType,
+                        "gprotocol"
+                    )
+                )
+            );
         }
 
         protected override bool CheckAction(object payload)

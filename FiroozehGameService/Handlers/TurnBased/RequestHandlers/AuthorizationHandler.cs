@@ -35,8 +35,8 @@ namespace FiroozehGameService.Handlers.TurnBased.RequestHandlers
                 null,
                 TurnBasedConst.ActionAuth,
                 JsonConvert.SerializeObject(
-                    new AuthPayload(TurnBasedHandler.CurrentRoom?.Id, TurnBasedHandler.PlayToken),
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
+                    new AuthPayload(TurnBasedHandler.CurrentRoom?.Id, TurnBasedHandler.PlayToken)
+                    , new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
         }
 
 
