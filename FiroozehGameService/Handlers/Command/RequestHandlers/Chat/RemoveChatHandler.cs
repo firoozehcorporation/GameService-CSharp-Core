@@ -1,5 +1,5 @@
-﻿// <copyright file="SendChannelPrivateMessageHandler.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+﻿// <copyright file="RemoveChatHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,37 +22,31 @@
 using System;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
-using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
 {
-    internal class SendChannelPrivateMessageHandler : BaseRequestHandler
+    internal class RemoveChatHandler : BaseRequestHandler
     {
-        public static string Signature
-            => "SEND_PRIVATE_MESSAGE";
+        public static string Signature => "REMOVE_CHAT";
 
-        private static Packet DoAction(Message channelMessage)
+        private static Packet DoAction(string chatId)
         {
             return new Packet(
                 CommandHandler.PlayerHash,
-                CommandConst.ActionPrivateChat,
-                JsonConvert.SerializeObject(channelMessage, new JsonSerializerSettings
-                {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    DefaultValueHandling = DefaultValueHandling.Ignore
-                })
-            );
+                CommandConst.ActionChatRemoved,
+                null,
+                chatId);
         }
 
         protected override bool CheckAction(object payload)
         {
-            return payload.GetType() == typeof(Message);
+            return payload is string;
         }
 
         protected override Packet DoAction(object payload)
         {
             if (!CheckAction(payload)) throw new ArgumentException();
-            return DoAction(payload as Message);
+            return DoAction(payload as string);
         }
     }
 }

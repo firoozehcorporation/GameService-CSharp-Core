@@ -37,6 +37,12 @@ namespace FiroozehGameService.Models.GSLive.Chat
         [JsonProperty("5")] public string ChannelName;
 
         /// <summary>
+        ///     Gets the Chat Id
+        /// </summary>
+        /// <value>the Chat Id</value>
+        [JsonProperty("6")] public string Id;
+
+        /// <summary>
         ///     Gets the Chat Privacy.
         /// </summary>
         /// <value>the Chat Privacy</value>
@@ -47,6 +53,13 @@ namespace FiroozehGameService.Models.GSLive.Chat
         /// </summary>
         /// <value>the Chat Message Data</value>
         [JsonProperty("3")] public string Message;
+
+        /// <summary>
+        ///     Gets the Chat Property
+        ///     NOTE : Only have valid Data if Sender set it
+        /// </summary>
+        /// <value>the Chat Property</value>
+        [JsonProperty("7")] public string Property;
 
 
         /// <summary>

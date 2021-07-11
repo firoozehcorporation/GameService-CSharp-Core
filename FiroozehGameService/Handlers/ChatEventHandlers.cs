@@ -54,6 +54,19 @@ namespace FiroozehGameService.Handlers
 
 
         /// <summary>
+        ///     Calls When a Chat Removed
+        /// </summary>
+        public static EventHandler<Chat> OnChatRemoved;
+
+
+        /// <summary>
+        ///     Calls When all Chats belong a Member Removed
+        ///     NOTE : Call With Member Id that removed all chats belong to it
+        /// </summary>
+        public static EventHandler<string> OnMemberChatsRemoved;
+
+
+        /// <summary>
         ///     Calls When Current Player Get Channels Subscribed List
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChat.GetChannelsSubscribed" />

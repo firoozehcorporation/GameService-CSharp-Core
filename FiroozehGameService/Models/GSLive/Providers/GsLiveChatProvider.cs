@@ -48,7 +48,8 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
-        public abstract Task SendChannelMessage(string channelName, string message);
+        /// <param name="property">(NULLABLE) Message Extra Property</param>
+        public abstract Task SendChannelMessage(string channelName, string message, string property = null);
 
 
         /// <summary>
@@ -56,7 +57,22 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="memberId">(NOTNULL)ID of Member You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
-        public abstract Task SendPrivateMessage(string memberId, string message);
+        /// <param name="property">(NULLABLE) Message Extra Property</param>
+        public abstract Task SendPrivateMessage(string memberId, string message, string property = null);
+
+
+        /// <summary>
+        ///     Remove a Chat With chatId.
+        /// </summary>
+        /// <param name="chatId">(NOTNULL)The Chat Id You Want To Remove It</param>
+        public abstract Task RemoveChat(string chatId);
+
+
+        /// <summary>
+        ///     Remove all a Member Chats in Public Channel
+        /// </summary>
+        /// <param name="memberId">(NOTNULL)The Member Id You Want To Remove all Member Chats in Public Channel</param>
+        public abstract Task RemoveMemberChats(string memberId);
 
 
         /// <summary>

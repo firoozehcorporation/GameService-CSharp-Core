@@ -235,6 +235,9 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(UnsubscribeChannelHandler.Signature, new UnsubscribeChannelHandler());
 
             _requestHandlers.Add(MirrorHandler.Signature, new MirrorHandler());
+
+            _requestHandlers.Add(RemoveChatHandler.Signature, new RemoveChatHandler());
+            _requestHandlers.Add(RemoveMemberChatsHandler.Signature, new RemoveMemberChatsHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -266,6 +269,10 @@ namespace FiroozehGameService.Handlers.Command
 
             _responseHandlers.Add(MirrorResponseHandler.ActionCommand,
                 new MirrorResponseHandler());
+
+            _responseHandlers.Add(RemoveChatResponseHandler.ActionCommand, new RemoveChatResponseHandler());
+            _responseHandlers.Add(RemoveMemberChatsResponseHandler.ActionCommand,
+                new RemoveMemberChatsResponseHandler());
         }
 
         public void Init()

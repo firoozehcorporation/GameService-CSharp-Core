@@ -98,6 +98,8 @@
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelsMembersRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelsSubscribedRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetPendingMessagesRequestHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Chat\RemoveChatHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Chat\RemoveMemberChatsHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\SendChannelPrivateMessageHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\SendChannelPublicMessageHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\SubscribeChannelHandler.cs"/>
@@ -121,6 +123,8 @@
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\PendingMessagesResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\PrivateChatResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\PublicChatResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Chat\RemoveChatResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Chat\RemoveMemberChatsResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\SubscribeChannelResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\UnSubscribeChannelResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\ErrorResponseHandler.cs"/>
