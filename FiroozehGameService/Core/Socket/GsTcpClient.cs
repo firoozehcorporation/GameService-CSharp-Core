@@ -129,7 +129,7 @@ namespace FiroozehGameService.Core.Socket
                     foreach (var packet in packets)
                         OnDataReceived(new SocketDataReceived
                         {
-                            Packet = PacketDeserializer.Deserialize(packet, Key, IsEncryptionEnabled)
+                            Packet = PacketDeserializer.Deserialize(packet, Key, Type == GSLiveType.Command)
                         });
 
                     BufferReceivedBytes = 0;
@@ -161,7 +161,7 @@ namespace FiroozehGameService.Core.Socket
             {
                 try
                 {
-                    var buffer = PacketSerializer.Serialize(packet, Key, IsEncryptionEnabled);
+                    var buffer = PacketSerializer.Serialize(packet, Key, Type == GSLiveType.Command);
 
                     if (_clientStream == null) return;
 
@@ -212,7 +212,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                var buffer = PacketSerializer.Serialize(packet, Key, IsEncryptionEnabled);
+                var buffer = PacketSerializer.Serialize(packet, Key, Type == GSLiveType.Command);
                 if (_clientStream != null)
                 {
                     await _clientStream.WriteAsync(buffer, 0, buffer.Length, OperationCancellationToken.Token);
@@ -256,7 +256,6 @@ namespace FiroozehGameService.Core.Socket
                 OperationCancellationToken = null;
                 DataReceived = null;
                 Thread = null;
-                IsEncryptionEnabled = false;
 
                 try
                 {
@@ -312,11 +311,6 @@ namespace FiroozehGameService.Core.Socket
         internal override bool IsConnected()
         {
             return IsAvailable;
-        }
-
-        internal override void SetEncryptionStatus(bool isEnabled)
-        {
-            IsEncryptionEnabled = isEnabled;
         }
     }
 }

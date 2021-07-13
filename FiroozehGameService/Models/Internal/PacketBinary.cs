@@ -27,7 +27,7 @@ namespace FiroozehGameService.Models.Internal
     [Serializable]
     internal abstract class PacketBinary
     {
-        internal abstract byte[] Serialize(string key, bool isEncryptionEnabled);
+        internal abstract byte[] Serialize(string key, bool isCommand);
         internal abstract void Deserialize(byte[] buffer);
         internal abstract int BufferSize(short prefixLen);
 

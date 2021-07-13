@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.Command;
 
@@ -17,6 +18,18 @@ namespace FiroozehGameService.Utils.Encryptor
         {
             if (packet.Message != null) packet.Message = DecryptSrt(packet.Message, key);
             if (packet.Data != null) packet.Data = DecryptSrt(packet.Data, key);
+        }
+
+        internal static bool IsEncryptionEnabled(this Packet packet, bool isCommand, bool isSerializer)
+        {
+            if (isSerializer)
+            {
+                if (isCommand) return packet.Action != CommandConst.ActionAuth;
+                return packet.Action != TurnBasedConst.ActionAuth;
+            }
+
+            if (isCommand) return packet.Action != CommandConst.Error;
+            return packet.Action != TurnBasedConst.Errors;
         }
 
 

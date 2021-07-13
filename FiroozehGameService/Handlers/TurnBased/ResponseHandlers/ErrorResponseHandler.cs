@@ -33,6 +33,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
         protected override void HandleResponse(Packet packet)
         {
             if (GsLiveTurnBased.InAutoMatch) GsLiveTurnBased.InAutoMatch = false;
+            if (TurnBasedHandler.IsAuthRequested) TurnBasedHandler.IsAuthRequested = false;
 
             CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {

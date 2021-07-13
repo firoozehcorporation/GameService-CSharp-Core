@@ -27,8 +27,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 {
     internal class ErrorResponseHandler : BaseResponseHandler
     {
-        public static int ActionCommand
-            => CommandConst.Error;
+        public static int ActionCommand => CommandConst.Error;
 
         protected override void HandleResponse(Packet packet)
         {
@@ -37,6 +36,8 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
                 GsLiveRealTime.InAutoMatch = false;
                 GsLiveTurnBased.InAutoMatch = false;
             }
+
+            if (CommandHandler.IsAuthRequested) CommandHandler.IsAuthRequested = false;
 
             CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {

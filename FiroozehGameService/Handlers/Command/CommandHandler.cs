@@ -84,6 +84,7 @@ namespace FiroozehGameService.Handlers.Command
                 _isDisposed = true;
                 _isFirstInit = false;
                 _isPingRequested = false;
+                IsAuthRequested = false;
 
                 _cancellationToken?.Cancel(false);
                 _observer?.Dispose();
@@ -174,6 +175,8 @@ namespace FiroozehGameService.Handlers.Command
 
         private async void OnGsTcpClientConnected(object sender, object e)
         {
+            if (IsAuthRequested) return;
+
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler -> Connected,Waiting for Handshakes...");
 
@@ -185,7 +188,7 @@ namespace FiroozehGameService.Handlers.Command
 
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
 
-            _tcpClient?.SetEncryptionStatus(true);
+            IsAuthRequested = true;
 
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler Init done");
@@ -196,6 +199,7 @@ namespace FiroozehGameService.Handlers.Command
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnAuth", "CommandHandler OnAuth Done");
 
             PlayerHash = playerHash;
+            IsAuthRequested = false;
             PingUtil.Start();
 
             if (_isFirstInit) return;
@@ -280,7 +284,6 @@ namespace FiroozehGameService.Handlers.Command
         {
             _cancellationToken = new CancellationTokenSource();
 
-            _tcpClient.SetEncryptionStatus(false);
             PingUtil.Stop();
             _tcpClient.Init(GameService.CommandInfo, GameService.CommandInfo.Cipher);
         }
@@ -357,6 +360,7 @@ namespace FiroozehGameService.Handlers.Command
         private bool _isDisposed;
         private bool _isFirstInit;
         private bool _isPingRequested;
+        internal static bool IsAuthRequested;
 
         internal static string PlayerHash { private set; get; }
 

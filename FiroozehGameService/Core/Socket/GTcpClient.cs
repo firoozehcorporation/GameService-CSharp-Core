@@ -67,8 +67,6 @@ namespace FiroozehGameService.Core.Socket
 
         internal abstract bool IsConnected();
 
-        internal abstract void SetEncryptionStatus(bool isEnabled);
-
         #region Fields
 
         protected const short CommandTimeOutWait = 700;
@@ -80,7 +78,6 @@ namespace FiroozehGameService.Core.Socket
         protected CommandInfo CommandInfo;
         protected Area Area;
         protected string Key;
-        protected bool IsEncryptionEnabled;
         protected bool IsAvailable;
         protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();

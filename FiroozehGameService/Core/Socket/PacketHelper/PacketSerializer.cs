@@ -29,11 +29,11 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal class PacketSerializer : ISerializer
     {
-        public byte[] Serialize(APacket packet, string key, bool isEncryptionEnabled)
+        public byte[] Serialize(APacket packet, string key, bool isCommand)
         {
             try
             {
-                return packet.Serialize(key, isEncryptionEnabled);
+                return packet.Serialize(key, isCommand);
             }
             catch (Exception e)
             {

@@ -22,7 +22,6 @@
 
 using System;
 using System.Linq;
-using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
@@ -48,13 +47,13 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
             }
         }
 
-        public APacket Deserialize(string buffer, string key, bool isEncryptionEnabled)
+        public APacket Deserialize(string buffer, string key, bool isCommand)
         {
             try
             {
                 var packet = JsonConvert.DeserializeObject<Models.GSLive.Command.Packet>(buffer);
 
-                if (isEncryptionEnabled && packet.Action != CommandConst.Error) packet.DecryptPacket(key);
+                if (packet.IsEncryptionEnabled(isCommand, false)) packet.DecryptPacket(key);
 
                 return packet;
             }
