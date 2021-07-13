@@ -17,11 +17,11 @@
 
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums.GSLive.Command;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.GSLive.Providers;
 
 
 /**
@@ -48,8 +48,8 @@ namespace FiroozehGameService.Handlers
 
         /// <summary>
         ///     Returns Available Rooms When Call The Following Functions :
-        ///     <see cref="GsLiveRealTime.GetAvailableRooms" />
-        ///     <see cref="GsLiveTurnBased.GetAvailableRooms" />
+        ///     <see cref="GsLiveRealTimeProvider.GetAvailableRooms" />
+        ///     <see cref="GsLiveTurnBasedProvider.GetAvailableRooms" />
         /// </summary>
         public static EventHandler<List<Room>> AvailableRoomsReceived;
 
@@ -62,16 +62,16 @@ namespace FiroozehGameService.Handlers
 
         /// <summary>
         ///     Returns Current AutoMatch Canceled Status
-        ///     <see cref="GsLiveRealTime.CancelAutoMatch" />
-        ///     <see cref="GsLiveTurnBased.CancelAutoMatch" />
+        ///     <see cref="GsLiveRealTimeProvider.CancelAutoMatch" />
+        ///     <see cref="GsLiveTurnBasedProvider.CancelAutoMatch" />
         /// </summary>
         public static EventHandler<AutoMatchCancel> AutoMatchCanceled;
 
 
         /// <summary>
         ///     Returns Available Invite , When Call The Following Functions :
-        ///     <see cref="GsLiveRealTime.GetInviteInbox" />
-        ///     <see cref="GsLiveTurnBased.GetInviteInbox" />
+        ///     <see cref="GsLiveRealTimeProvider.GetInviteInbox" />
+        ///     <see cref="GsLiveTurnBasedProvider.GetInviteInbox" />
         /// </summary>
         public static EventHandler<List<Invite>> InviteInboxReceived;
 
@@ -84,16 +84,16 @@ namespace FiroozehGameService.Handlers
 
         /// <summary>
         ///     Returns List of Member , When Call The Following Functions :
-        ///     <see cref="GsLiveRealTime.FindMember" />
-        ///     <see cref="GsLiveTurnBased.FindMember" />
+        ///     <see cref="GsLiveRealTimeProvider.FindMember" />
+        ///     <see cref="GsLiveTurnBasedProvider.FindMember" />
         /// </summary>
         public static EventHandler<List<Member>> FindMemberReceived;
 
 
         /// <summary>
         ///     Calls When Current Invitation Sent Successfully
-        ///     <see cref="GsLiveRealTime.InviteUser" />
-        ///     <see cref="GsLiveTurnBased.InviteUser" />
+        ///     <see cref="GsLiveRealTimeProvider.InviteUser" />
+        ///     <see cref="GsLiveTurnBasedProvider.InviteUser" />
         /// </summary>
         public static EventHandler InvitationSent;
     }

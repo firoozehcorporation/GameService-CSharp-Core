@@ -44,7 +44,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
-        ///     Send Message In SubscribedChannel.
+        ///     Send Message In Subscribed Channel.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
@@ -62,17 +62,27 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
-        ///     Remove a Chat With chatId.
+        ///     Remove a Chat In Public Channel
         /// </summary>
-        /// <param name="chatId">(NOTNULL)The Chat Id You Want To Remove It</param>
-        public abstract Task RemoveChat(string chatId);
+        /// <param name="channelName">(NOTNULL)The Channel Name You want To Remove Message in it</param>
+        /// <param name="messageId">(NOTNULL)The message Id You Want To Remove It</param>
+        public abstract Task RemoveChannelMessage(string channelName, string messageId);
 
 
         /// <summary>
-        ///     Remove all a Member Chats in Public Channel
+        ///     Remove a Private Chat
         /// </summary>
-        /// <param name="memberId">(NOTNULL)The Member Id You Want To Remove all Member Chats in Public Channel</param>
-        public abstract Task RemoveMemberChats(string memberId);
+        /// <param name="memberId">(NOTNULL)The memberId You want To Remove Message that sent to it before</param>
+        /// <param name="messageId">(NOTNULL)The message Id You Want To Remove It</param>
+        public abstract Task RemovePrivateMessage(string memberId, string messageId);
+
+
+        /// <summary>
+        ///     Remove all a Member Messages in Public Channel
+        /// </summary>
+        /// <param name="channelName">(NOTNULL)The Channel Name You want To Remove Messages in it</param>
+        /// <param name="memberId">(NOTNULL)The Member Id You Want To Remove all Member Messages in Public Channel</param>
+        public abstract Task RemoveMemberMessages(string channelName, string memberId);
 
 
         /// <summary>

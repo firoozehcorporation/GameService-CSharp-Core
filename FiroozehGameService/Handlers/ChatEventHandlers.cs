@@ -16,9 +16,9 @@
 
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Chat;
+using FiroozehGameService.Models.GSLive.Providers;
 
 /**
 * @author Alireza Ghodrati
@@ -33,14 +33,14 @@ namespace FiroozehGameService.Handlers
     {
         /// <summary>
         ///     Calls When New Chat Received
-        ///     <see cref="GsLiveChat.SendChannelMessage" />
+        ///     <see cref="GsLiveChatProvider.SendChannelMessage" />
         /// </summary>
         public static EventHandler<Chat> OnChatReceived;
 
         /// <summary>
         ///     Calls When Current Player Subscribe Channel
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChat.SubscribeChannel" />
+        ///     <see cref="GsLiveChatProvider.SubscribeChannel" />
         /// </summary>
         public static EventHandler<string> OnSubscribeChannel;
 
@@ -48,15 +48,16 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Current Player UnSubscribe Channel
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChat.UnSubscribeChannel" />
+        ///     <see cref="GsLiveChatProvider.UnSubscribeChannel" />
         /// </summary>
         public static EventHandler<string> OnUnSubscribeChannel;
 
 
         /// <summary>
         ///     Calls When a Chat Removed
-        ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChat.RemoveChat" />
+        ///     This Event Handler Called By Following Functions :
+        ///     <see cref="GsLiveChatProvider.RemoveChannelMessage" />
+        ///     <see cref="GsLiveChatProvider.RemovePrivateMessage" />
         /// </summary>
         public static EventHandler<Chat> OnChatRemoved;
 
@@ -65,7 +66,7 @@ namespace FiroozehGameService.Handlers
         ///     Calls When all Chats belong a Member Removed
         ///     NOTE : Call With Member Id that removed all chats belong to it
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChat.RemoveMemberChats" />
+        ///     <see cref="GsLiveChatProvider.RemoveMemberMessages" />
         /// </summary>
         public static EventHandler<string> OnMemberChatsRemoved;
 
@@ -73,7 +74,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Current Player Get Channels Subscribed List
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChat.GetChannelsSubscribed" />
+        ///     <see cref="GsLiveChatProvider.GetChannelsSubscribed" />
         /// </summary>
         public static EventHandler<List<string>> ChannelsSubscribed;
 
@@ -81,7 +82,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Current Player Get Channel Members List
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChat.GetChannelMembers" />
+        ///     <see cref="GsLiveChatProvider.GetChannelMembers" />
         /// </summary>
         public static EventHandler<List<Member>> ChannelMembers;
 
@@ -89,7 +90,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Current Player Get Channel Recent Messages
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChat.GetChannelRecentMessages" />
+        ///     <see cref="GsLiveChatProvider.GetChannelRecentMessages" />
         /// </summary>
         public static EventHandler<List<Chat>> ChannelRecentMessages;
 
@@ -99,7 +100,7 @@ namespace FiroozehGameService.Handlers
         ///     Pending Messages Saved when the Current Player is offline
         ///     You Can Get Them With this Function
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChat.GetChannelRecentMessages" />
+        ///     <see cref="GsLiveChatProvider.GetChannelRecentMessages" />
         /// </summary>
         public static EventHandler<List<Chat>> PendingMessages;
     }

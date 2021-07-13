@@ -16,10 +16,10 @@
 
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.GSLive.Providers;
 using FiroozehGameService.Models.GSLive.RT;
 
 /**
@@ -46,9 +46,9 @@ namespace FiroozehGameService.Handlers
         ///     Calls When SomeOne Join To Current Room
         ///     It Maybe Current Player or Another
         ///     This Event Handler Called By Following Functions :
-        ///     <see cref="GsLiveRealTime.JoinRoom" />
-        ///     <see cref="GsLiveRealTime.CreateRoom" />
-        ///     <see cref="GsLiveRealTime.AutoMatch" />
+        ///     <see cref="GsLiveRealTimeProvider.JoinRoom" />
+        ///     <see cref="GsLiveRealTimeProvider.CreateRoom" />
+        ///     <see cref="GsLiveRealTimeProvider.AutoMatch" />
         /// </summary>
         public static EventHandler<JoinEvent> JoinedRoom;
 
@@ -61,7 +61,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When SomeOne Left the Current Room
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveRealTime.LeaveRoom" />
+        ///     <see cref="GsLiveRealTimeProvider.LeaveRoom" />
         /// </summary>
         public static EventHandler<Member> LeftRoom;
 
@@ -69,22 +69,22 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When SomeOne Send Message In Current Room
         ///     This Event Handler Called By Following Functions :
-        ///     <see cref="GsLiveRealTime.SendPublicMessage" />
-        ///     <see cref="GsLiveRealTime.SendPrivateMessage" />
+        ///     <see cref="GsLiveRealTimeProvider.SendPublicMessage" />
+        ///     <see cref="GsLiveRealTimeProvider.SendPrivateMessage" />
         /// </summary>
         public static EventHandler<MessageReceiveEvent> NewMessageReceived;
 
 
         /// <summary>
         ///     Returns Current Room Members Detail  When Call The Following Function :
-        ///     <see cref="GsLiveRealTime.GetRoomMembersDetail" />
+        ///     <see cref="GsLiveRealTimeProvider.GetRoomMembersDetail" />
         /// </summary>
         public static EventHandler<List<Member>> RoomMembersDetailReceived;
 
 
         /// <summary>
         ///     Returns Room Info When Call The Following Function :
-        ///     <see cref="GsLiveRealTime.GetCurrentRoomInfo" />
+        ///     <see cref="GsLiveRealTimeProvider.GetCurrentRoomInfo" />
         /// </summary>
         public static EventHandler<RoomData> CurrentRoomInfoReceived;
     }

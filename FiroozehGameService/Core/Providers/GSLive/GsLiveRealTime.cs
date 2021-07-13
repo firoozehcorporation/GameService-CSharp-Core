@@ -199,7 +199,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "SendPrivateMessage");
-            if (string.IsNullOrEmpty(receiverId) && data == null)
+            if (string.IsNullOrEmpty(receiverId) || data == null)
                 throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "SendPrivateMessage");
             if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
@@ -267,7 +267,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "InviteUser");
-            if (string.IsNullOrEmpty(roomId) && string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(roomId) || string.IsNullOrEmpty(userId))
                 throw new GameServiceException("roomId Or userId Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "InviteUser");
 

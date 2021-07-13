@@ -22,6 +22,7 @@
 using System;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
+using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
 {
@@ -29,24 +30,28 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
     {
         public static string Signature => "REMOVE_MEMBER_CHATS";
 
-        private static Packet DoAction(string memberId)
+        private static Packet DoAction(Message message)
         {
             return new Packet(
                 CommandHandler.PlayerHash,
                 CommandConst.ActionMemberChatsRemoved,
-                null,
-                memberId);
+                JsonConvert.SerializeObject(message, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore
+                })
+            );
         }
 
         protected override bool CheckAction(object payload)
         {
-            return payload is string;
+            return payload is Message;
         }
 
         protected override Packet DoAction(object payload)
         {
             if (!CheckAction(payload)) throw new ArgumentException();
-            return DoAction(payload as string);
+            return DoAction(payload as Message);
         }
     }
 }

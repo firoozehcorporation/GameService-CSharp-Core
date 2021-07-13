@@ -62,7 +62,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
                     DebugLocation.Chat, "SendChannelMessage");
-            if (string.IsNullOrEmpty(channelName) && string.IsNullOrEmpty(message))
+
+            if (string.IsNullOrEmpty(channelName) || string.IsNullOrEmpty(message))
                 throw new GameServiceException("channelName Or message Cant Be NullOrEmpty").LogException<GsLiveChat>(
                     DebugLocation.Chat, "SendChannelMessage");
 
@@ -76,7 +77,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
                     DebugLocation.Chat, "SendPrivateMessage");
-            if (string.IsNullOrEmpty(memberId) && string.IsNullOrEmpty(message))
+            if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(message))
                 throw new GameServiceException("memberId Or message Cant Be NullOrEmpty").LogException<GsLiveChat>(
                     DebugLocation.Chat, "SendPrivateMessage");
 
@@ -84,31 +85,46 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 SendChannelPrivateMessageHandler.Signature, new Message(true, memberId, message, property));
         }
 
-        public override async Task RemoveChat(string chatId)
+        public override async Task RemoveChannelMessage(string channelName, string messageId)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
-                    DebugLocation.Chat, "RemoveChat");
+                    DebugLocation.Chat, "RemoveChannelMessage");
 
-            if (string.IsNullOrEmpty(chatId))
-                throw new GameServiceException("chatId Cant Be NullOrEmpty").LogException<GsLiveChat>(
-                    DebugLocation.Chat, "RemoveChat");
+            if (string.IsNullOrEmpty(messageId) || string.IsNullOrEmpty(channelName))
+                throw new GameServiceException("channelName Or messageId Cant Be NullOrEmpty").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveChannelMessage");
 
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(RemoveChatHandler.Signature, chatId);
+            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(RemoveChatHandler.Signature,
+                new Message(false, channelName, messageId));
         }
 
-        public override async Task RemoveMemberChats(string memberId)
+        public override async Task RemovePrivateMessage(string memberId, string messageId)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
-                    DebugLocation.Chat, "RemoveMemberChats");
+                    DebugLocation.Chat, "RemovePrivateMessage");
 
-            if (string.IsNullOrEmpty(memberId))
-                throw new GameServiceException("memberId Cant Be NullOrEmpty").LogException<GsLiveChat>(
-                    DebugLocation.Chat, "RemoveMemberChats");
+            if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(memberId))
+                throw new GameServiceException("memberId Or messageId Cant Be NullOrEmpty").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemovePrivateMessage");
 
-            await GameService.GSLive.GetGsHandler().CommandHandler
-                .RequestAsync(RemoveMemberChatsHandler.Signature, memberId);
+            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(RemoveChatHandler.Signature,
+                new Message(true, memberId, messageId));
+        }
+
+        public override async Task RemoveMemberMessages(string channelName, string memberId)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveMemberMessages");
+
+            if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(channelName))
+                throw new GameServiceException("channelName Or memberId Cant Be NullOrEmpty").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveMemberMessages");
+
+            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(RemoveMemberChatsHandler.Signature,
+                new Message(false, channelName, memberId));
         }
 
 
