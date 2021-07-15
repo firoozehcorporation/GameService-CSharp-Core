@@ -123,7 +123,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                if (SendQueue.Count == 0 || SendTempQueue.Count == 0 || !IsConnected()) return;
+                if (IsSendingQueue || SendQueue.Count == 0 || SendTempQueue.Count == 0 || !IsConnected()) return;
 
                 IsSendingQueue = true;
 
@@ -197,19 +197,7 @@ namespace FiroozehGameService.Core.Socket
 
         protected override Task SendAsync(byte[] payload)
         {
-            try
-            {
-                _client?.SendAsync(payload, null);
-            }
-            catch (Exception e)
-            {
-                if (e is OperationCanceledException || e is ObjectDisposedException ||
-                    e is ArgumentOutOfRangeException) return Task.CompletedTask;
-                e.LogException<GsWebSocketClient>(
-                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
-
-                OnClosed(new ErrorArg {Error = e.ToString()});
-            }
+            _client?.SendAsync(payload, null);
 
             return Task.CompletedTask;
         }

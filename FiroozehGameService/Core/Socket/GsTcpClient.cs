@@ -123,7 +123,7 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                if (SendQueue.Count == 0 || SendTempQueue.Count == 0 || !IsConnected()) return;
+                if (IsSendingQueue || SendQueue.Count == 0 || SendTempQueue.Count == 0 || !IsConnected()) return;
 
                 IsSendingQueue = true;
 
