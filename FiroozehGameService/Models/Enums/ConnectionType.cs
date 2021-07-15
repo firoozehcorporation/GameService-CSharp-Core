@@ -28,6 +28,11 @@ namespace FiroozehGameService.Models.Enums
     public enum ConnectionType
     {
         /// <summary>
+        ///     Connection Not Set , that's Set Automatically By Server
+        /// </summary>
+        NotSet,
+
+        /// <summary>
         ///     Native Connection
         /// </summary>
         Native,

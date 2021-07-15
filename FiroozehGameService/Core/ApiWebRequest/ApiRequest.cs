@@ -1301,6 +1301,9 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
             switch (Configuration.CommandConnectionType)
             {
+                case ConnectionType.NotSet:
+                    param.Add("connectionType", "not-set");
+                    break;
                 case ConnectionType.Native:
                     param.Add("connectionType", "tcp-sec");
                     break;

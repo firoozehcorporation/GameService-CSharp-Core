@@ -35,6 +35,7 @@ using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
+using FiroozehGameService.Utils.Encryptor;
 
 namespace FiroozehGameService.Handlers.TurnBased
 {
@@ -42,16 +43,14 @@ namespace FiroozehGameService.Handlers.TurnBased
     {
         internal TurnBasedHandler(StartPayload payload)
         {
-            switch (GameService.Configuration.CommandConnectionType)
+            switch (payload.Area.Protocol)
             {
-                case ConnectionType.Native:
-                    _tcpClient = new GsTcpClient(payload.Area);
+                case GsEncryptor.TcpSec:
+                    _tcpClient = new GsTcpClient();
                     break;
-                case ConnectionType.WebSocket:
-                    _tcpClient = new GsWebSocketClient(payload.Area);
+                case GsEncryptor.WebSocketSec:
+                    _tcpClient = new GsWebSocketClient();
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
 
             CurrentRoom = payload.Room;

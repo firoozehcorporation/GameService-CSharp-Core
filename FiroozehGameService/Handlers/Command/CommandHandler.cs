@@ -34,6 +34,7 @@ using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
+using FiroozehGameService.Utils.Encryptor;
 
 namespace FiroozehGameService.Handlers.Command
 {
@@ -41,16 +42,14 @@ namespace FiroozehGameService.Handlers.Command
     {
         internal CommandHandler()
         {
-            switch (GameService.Configuration.CommandConnectionType)
+            switch (GameService.CommandInfo.Protocol)
             {
-                case ConnectionType.Native:
+                case GsEncryptor.TcpSec:
                     _tcpClient = new GsTcpClient();
                     break;
-                case ConnectionType.WebSocket:
+                case GsEncryptor.WebSocketSec:
                     _tcpClient = new GsWebSocketClient();
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
 
             _tcpClient.DataReceived += OnDataReceived;

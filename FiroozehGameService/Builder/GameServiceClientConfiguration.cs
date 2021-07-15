@@ -48,8 +48,8 @@ namespace FiroozehGameService.Builder
         /// <param name="turnBasedConnectionType">Set TurnBased Connection Type</param>
         /// <exception cref="GameServiceException">May GameServiceException Occur</exception>
         public GameServiceClientConfiguration(string clientId, string clientSecret, SystemInfo systemInfo,
-            ConnectionType commandConnectionType = ConnectionType.Native,
-            ConnectionType turnBasedConnectionType = ConnectionType.Native)
+            ConnectionType commandConnectionType = ConnectionType.NotSet,
+            ConnectionType turnBasedConnectionType = ConnectionType.NotSet)
         {
             CommandConnectionType = commandConnectionType;
             TurnBasedConnectionType = turnBasedConnectionType;

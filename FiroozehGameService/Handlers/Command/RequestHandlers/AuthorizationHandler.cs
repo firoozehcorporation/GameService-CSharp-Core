@@ -37,6 +37,9 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
             string turnBasedConnectionType;
             switch (GameService.Configuration.TurnBasedConnectionType)
             {
+                case ConnectionType.NotSet:
+                    turnBasedConnectionType = "not-set";
+                    break;
                 case ConnectionType.Native:
                     turnBasedConnectionType = "tcp-sec";
                     break;
@@ -55,8 +58,10 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
                         CommandHandler.UserToken,
                         turnBasedConnectionType,
                         "gprotocol"
-                    )
-                )
+                    ), new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    })
             );
         }
 

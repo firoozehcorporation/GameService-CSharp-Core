@@ -8,6 +8,10 @@ namespace FiroozehGameService.Utils.Encryptor
 {
     internal static class GsEncryptor
     {
+        internal const string Tcp = "tcp";
+        internal const string TcpSec = "tcp-sec";
+        internal const string WebSocketSec = "wss";
+
         internal static void EncryptPacket(this Packet packet, string key)
         {
             if (packet.Message != null) packet.Message = EncryptSrt(packet.Message, key);
