@@ -21,9 +21,13 @@
 
 
 using System;
+using System.Collections.Generic;
+using System.Text;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
+using Newtonsoft.Json;
 
 namespace FiroozehGameService.Core.Socket.PacketHelper
 {
@@ -40,6 +44,16 @@ namespace FiroozehGameService.Core.Socket.PacketHelper
                 DebugUtil.LogError<PacketDeserializer>(DebugLocation.Internal, "Serialize", e.Message);
                 return null;
             }
+        }
+
+        public byte[] Serialize(List<Packet> packets, string key, bool isCommand)
+        {
+            foreach (var packet in packets) packet.Encrypt(key, isCommand);
+
+            return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(packets, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            }));
         }
     }
 }

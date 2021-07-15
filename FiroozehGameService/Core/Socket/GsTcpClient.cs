@@ -101,12 +101,52 @@ namespace FiroozehGameService.Core.Socket
 
         internal override void StartReceiving()
         {
-            Thread = new Thread(async () => await Receiving())
+            RecvThread = new Thread(async () => await Receiving())
             {
                 Priority = ThreadPriority.Highest,
                 IsBackground = true
             };
-            Thread.Start();
+            SendThread = new Thread(async () => await Sending())
+            {
+                Priority = ThreadPriority.Highest,
+                IsBackground = true
+            };
+
+            RecvThread.Start();
+            SendThread.Start();
+        }
+
+
+        private async Task Sending()
+        {
+            DebugUtil.LogNormal<GsTcpClient>(
+                Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Sending",
+                "GsTcpClient -> Start Sending...");
+
+            while (IsConnected())
+                try
+                {
+                    if (SendQueue.Count == 0 || SendTempQueue.Count == 0) return;
+
+                    IsSendingQueue = true;
+                    SendQueue.AddRange(SendTempQueue);
+                    SendTempQueue.Clear();
+
+                    await SendAsync(PacketSerializer.Serialize(SendQueue, Key, Type == GSLiveType.Command));
+
+                    SendQueue.Clear();
+                }
+                catch (Exception e)
+                {
+                    e.LogException<GsTcpClient>(
+                        Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
+                        "Sending");
+                }
+                finally
+                {
+                    IsSendingQueue = false;
+                    Thread.Sleep(10);
+                }
         }
 
         private async Task Receiving()
@@ -141,7 +181,7 @@ namespace FiroozehGameService.Core.Socket
                     {
                         e.LogException<GsTcpClient>(
                             Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
-                            "StartReceiving");
+                            "Receiving");
 
                         OnClosed(new ErrorArg {Error = e.ToString()});
                     }
@@ -186,25 +226,17 @@ namespace FiroozehGameService.Core.Socket
 
         protected override async Task SendAsync(byte[] payload)
         {
-            try
+            if (_clientStream != null)
             {
-                if (_clientStream != null)
-                {
-                    await _clientStream.WriteAsync(payload, 0, payload.Length, OperationCancellationToken.Token);
-                    await _clientStream.FlushAsync(OperationCancellationToken.Token);
-                }
+                await _clientStream.WriteAsync(payload, 0, payload.Length, OperationCancellationToken.Token);
+                await _clientStream.FlushAsync(OperationCancellationToken.Token);
             }
-            catch (Exception e)
-            {
-                if (!(e is OperationCanceledException || e is ObjectDisposedException ||
-                      e is ArgumentOutOfRangeException))
-                {
-                    e.LogException<GsTcpClient>(
-                        Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "SendAsync");
+        }
 
-                    OnClosed(new ErrorArg {Error = e.ToString()});
-                }
-            }
+        internal override void AddToSendQueue(Packet packet)
+        {
+            if (IsSendingQueue) SendTempQueue?.Add(packet);
+            else SendQueue?.Add(packet);
         }
 
 
@@ -237,7 +269,11 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 IsAvailable = false;
+                IsSendingQueue = false;
+
                 DataBuilder?.Clear();
+                SendQueue?.Clear();
+                SendTempQueue?.Clear();
 
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
@@ -255,7 +291,8 @@ namespace FiroozehGameService.Core.Socket
                 _clientStream = null;
                 OperationCancellationToken = null;
                 DataReceived = null;
-                Thread = null;
+                RecvThread = null;
+                SendThread = null;
 
                 try
                 {
@@ -277,6 +314,8 @@ namespace FiroozehGameService.Core.Socket
             try
             {
                 IsAvailable = false;
+                IsSendingQueue = false;
+
                 DataBuilder?.Clear();
 
                 OperationCancellationToken?.Cancel(false);
@@ -293,7 +332,8 @@ namespace FiroozehGameService.Core.Socket
                 _client = null;
                 _clientStream = null;
                 OperationCancellationToken = null;
-                Thread = null;
+                RecvThread = null;
+                SendThread = null;
 
                 try
                 {

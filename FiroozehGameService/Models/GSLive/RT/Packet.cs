@@ -116,6 +116,10 @@ namespace FiroozehGameService.Models.GSLive.RT
             return prefixLen + _payloadLen;
         }
 
+        internal override void Encrypt(string key, bool isCommand)
+        {
+        }
+
         public override string ToString()
         {
             return "Packet{" +

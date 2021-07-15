@@ -20,6 +20,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -59,6 +60,8 @@ namespace FiroozehGameService.Core.Socket
 
         protected abstract Task SendAsync(byte[] payload);
 
+        internal abstract void AddToSendQueue(Packet packet);
+
         protected abstract void Suspend();
 
         internal abstract void StartReceiving();
@@ -74,17 +77,19 @@ namespace FiroozehGameService.Core.Socket
         protected const short TcpTimeout = 2000;
         private const int BufferCapacity = 8192;
 
-        protected Thread Thread;
+        protected Thread RecvThread, SendThread;
         protected CommandInfo CommandInfo;
         protected Area Area;
         protected string Key;
-        protected bool IsAvailable;
+        protected bool IsAvailable, IsSendingQueue;
         protected GSLiveType Type;
         protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected CancellationTokenSource OperationCancellationToken;
 
 
         protected readonly byte[] Buffer = new byte[BufferCapacity];
+        protected readonly List<Packet> SendQueue = new List<Packet>();
+        protected readonly List<Packet> SendTempQueue = new List<Packet>();
         protected const int BufferOffset = 0;
         protected int BufferReceivedBytes = 0;
         protected readonly IValidator PacketValidator = new JsonDataValidator();

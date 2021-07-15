@@ -61,6 +61,12 @@ namespace FiroozehGameService.Models.GSLive.Command
             }));
         }
 
+        internal override void Encrypt(string key, bool isCommand)
+        {
+            if (this.IsEncryptionEnabled(isCommand, true))
+                this.EncryptPacket(key);
+        }
+
         internal override void Deserialize(byte[] buffer)
         {
         }

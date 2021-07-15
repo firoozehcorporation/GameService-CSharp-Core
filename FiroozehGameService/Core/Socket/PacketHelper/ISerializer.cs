@@ -20,12 +20,16 @@
 */
 
 
+using System.Collections.Generic;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Core.Socket.PacketHelper
 {
     internal interface ISerializer
     {
         byte[] Serialize(APacket packet, string key, bool isCommand);
+
+        byte[] Serialize(List<Packet> packets, string key, bool isCommand);
     }
 }

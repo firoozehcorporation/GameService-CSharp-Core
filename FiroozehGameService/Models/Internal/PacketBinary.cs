@@ -30,6 +30,8 @@ namespace FiroozehGameService.Models.Internal
         internal abstract byte[] Serialize(string key, bool isCommand);
         internal abstract void Deserialize(byte[] buffer);
         internal abstract int BufferSize(short prefixLen);
+        internal abstract void Encrypt(string key, bool isCommand);
+
 
         internal string ConvertToString(byte[] data)
         {
