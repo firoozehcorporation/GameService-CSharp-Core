@@ -20,7 +20,6 @@
 */
 
 
-using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
@@ -42,7 +41,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
     {
         internal static bool InAutoMatch;
 
-        public override async Task CreateRoom(GSLiveOption.CreateRoomOption option)
+        public override void CreateRoom(GSLiveOption.CreateRoomOption option)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
@@ -71,10 +70,10 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
 
             option.GsLiveType = GSLiveType.RealTime;
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(CreateRoomHandler.Signature, option);
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(CreateRoomHandler.Signature, option);
         }
 
-        public override async Task AutoMatch(GSLiveOption.AutoMatchOption option)
+        public override void AutoMatch(GSLiveOption.AutoMatchOption option)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
@@ -104,21 +103,21 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             option.GsLiveType = GSLiveType.RealTime;
             InAutoMatch = true;
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(AutoMatchHandler.Signature, option);
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(AutoMatchHandler.Signature, option);
         }
 
-        public override async Task CancelAutoMatch()
+        public override void CancelAutoMatch()
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "CancelAutoMatch");
 
             InAutoMatch = false;
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(CancelAutoMatchHandler.Signature);
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(CancelAutoMatchHandler.Signature);
         }
 
 
-        public override async Task JoinRoom(string roomId, string extra = null, string password = null)
+        public override void JoinRoom(string roomId, string extra = null, string password = null)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
@@ -138,7 +137,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     DebugLocation.RealTime, "JoinRoom");
 
 
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(JoinRoomHandler.Signature,
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(JoinRoomHandler.Signature,
                 new RoomDetail {Id = roomId, Extra = extra, RoomPassword = password});
         }
 
@@ -163,7 +162,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
         }
 
 
-        public override async Task GetAvailableRooms(string role)
+        public override void GetAvailableRooms(string role)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
@@ -172,7 +171,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("role Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "GetAvailableRooms");
 
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(GetRoomsHandler.Signature,
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(GetRoomsHandler.Signature,
                 new RoomDetail {Role = role, GsLiveType = (int) GSLiveType.RealTime});
         }
 
@@ -246,13 +245,13 @@ namespace FiroozehGameService.Core.Providers.GSLive
         /// <summary>
         ///     Get Your Invite Inbox
         /// </summary>
-        public override async Task GetInviteInbox()
+        public override void GetInviteInbox()
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "GetInviteInbox");
 
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(InviteListHandler.Signature,
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(InviteListHandler.Signature,
                 new RoomDetail {GsLiveType = (int) GSLiveType.RealTime});
         }
 
@@ -262,7 +261,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
         /// </summary>
         /// <param name="roomId">(NOTNULL) (Type : RoomID)Room's ID</param>
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
-        public override async Task InviteUser(string roomId, string userId)
+        public override void InviteUser(string roomId, string userId)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
@@ -271,7 +270,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("roomId Or userId Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "InviteUser");
 
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(InviteUserHandler.Signature,
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(InviteUserHandler.Signature,
                 new RoomDetail {UserOrMemberId = userId, Id = roomId, GsLiveType = (int) GSLiveType.RealTime});
         }
 
@@ -282,7 +281,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
         /// </summary>
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
         /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
-        public override async Task AcceptInvite(string inviteId, string extra = null)
+        public override void AcceptInvite(string inviteId, string extra = null)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
@@ -303,7 +302,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     DebugLocation.RealTime, "AcceptInvite");
 
 
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(AcceptInviteHandler.Signature,
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(AcceptInviteHandler.Signature,
                 new RoomDetail {Invite = inviteId, Extra = extra, GsLiveType = (int) GSLiveType.RealTime});
         }
 
@@ -312,7 +311,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
         /// </summary>
         /// <param name="query">(NOTNULL) Query </param>
         /// <param name="limit">(Max = 15) The Result Limits</param>
-        public override async Task FindMember(string query, int limit = 10)
+        public override void FindMember(string query, int limit = 10)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
@@ -324,7 +323,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("invalid Limit Value").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "FindMember");
 
-            await GameService.GSLive.GetGsHandler().CommandHandler.RequestAsync(FindMemberHandler.Signature,
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(FindMemberHandler.Signature,
                 new RoomDetail {Max = limit, UserOrMemberId = query});
         }
 

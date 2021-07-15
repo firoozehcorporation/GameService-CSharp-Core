@@ -20,8 +20,6 @@
 */
 
 
-using System.Threading.Tasks;
-
 namespace FiroozehGameService.Models.GSLive.Providers
 {
     /// <summary>
@@ -33,14 +31,14 @@ namespace FiroozehGameService.Models.GSLive.Providers
         ///     Subscribe In Channel With channelName.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Subscribe</param>
-        public abstract Task SubscribeChannel(string channelName);
+        public abstract void SubscribeChannel(string channelName);
 
 
         /// <summary>
         ///     UnSubscribeChannel With channelName.
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To UnSubscribe</param>
-        public abstract Task UnSubscribeChannel(string channelName);
+        public abstract void UnSubscribeChannel(string channelName);
 
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
         /// <param name="property">(NULLABLE) Message Extra Property</param>
-        public abstract Task SendChannelMessage(string channelName, string message, string property = null);
+        public abstract void SendChannelMessage(string channelName, string message, string property = null);
 
 
         /// <summary>
@@ -58,7 +56,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="memberId">(NOTNULL)ID of Member You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
         /// <param name="property">(NULLABLE) Message Extra Property</param>
-        public abstract Task SendPrivateMessage(string memberId, string message, string property = null);
+        public abstract void SendPrivateMessage(string memberId, string message, string property = null);
 
 
         /// <summary>
@@ -66,7 +64,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="channelName">(NOTNULL)The Channel Name You want To Remove Message in it</param>
         /// <param name="messageId">(NOTNULL)The message Id You Want To Remove It</param>
-        public abstract Task RemoveChannelMessage(string channelName, string messageId);
+        public abstract void RemoveChannelMessage(string channelName, string messageId);
 
 
         /// <summary>
@@ -74,7 +72,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="memberId">(NOTNULL)The memberId You want To Remove Message that sent to it before</param>
         /// <param name="messageId">(NOTNULL)The message Id You Want To Remove It</param>
-        public abstract Task RemovePrivateMessage(string memberId, string messageId);
+        public abstract void RemovePrivateMessage(string memberId, string messageId);
 
 
         /// <summary>
@@ -82,20 +80,20 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="channelName">(NOTNULL)The Channel Name You want To Remove Messages in it</param>
         /// <param name="memberId">(NOTNULL)The Member Id You Want To Remove all Member Messages in Public Channel</param>
-        public abstract Task RemoveMemberMessages(string channelName, string memberId);
+        public abstract void RemoveMemberMessages(string channelName, string memberId);
 
 
         /// <summary>
         ///     Get Channels Subscribe List
         /// </summary>
-        public abstract Task GetChannelsSubscribed();
+        public abstract void GetChannelsSubscribed();
 
 
         /// <summary>
         ///     Get Channel last 30 Messages
         /// </summary>
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Get last 30 Messages</param>
-        public abstract Task GetChannelRecentMessages(string channelName);
+        public abstract void GetChannelRecentMessages(string channelName);
 
 
         /// <summary>
@@ -104,12 +102,12 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Get Members</param>
         /// <param name="skip">The skip value</param>
         /// <param name="limit">(Max = 15) The Limit value</param>
-        public abstract Task GetChannelMembers(string channelName, int skip = 0, int limit = 10);
+        public abstract void GetChannelMembers(string channelName, int skip = 0, int limit = 10);
 
 
         /// <summary>
         ///     Get Your Pending Messages
         /// </summary>
-        public abstract Task GetPendingMessages();
+        public abstract void GetPendingMessages();
     }
 }

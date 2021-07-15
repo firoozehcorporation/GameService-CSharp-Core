@@ -21,7 +21,6 @@
 
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Models.Enums.GSLive.TB;
 using FiroozehGameService.Models.GSLive.TB;
@@ -37,20 +36,20 @@ namespace FiroozehGameService.Models.GSLive.Providers
         ///     Create Room With Option Like : Name , Min , Max , Role , IsPrivate
         /// </summary>
         /// <param name="option">(NOTNULL)Create Room Option</param>
-        public abstract Task CreateRoom(GSLiveOption.CreateRoomOption option);
+        public abstract void CreateRoom(GSLiveOption.CreateRoomOption option);
 
 
         /// <summary>
         ///     Create AutoMatch With Option Like :  Min , Max , Role
         /// </summary>
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
-        public abstract Task AutoMatch(GSLiveOption.AutoMatchOption option);
+        public abstract void AutoMatch(GSLiveOption.AutoMatchOption option);
 
 
         /// <summary>
         ///     Cancel Current AutoMatch
         /// </summary>
-        public abstract Task CancelAutoMatch();
+        public abstract void CancelAutoMatch();
 
 
         /// <summary>
@@ -59,14 +58,14 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
         /// <param name="extra">(NULLABLE)Specifies the Extra Data To Send to Other Clients</param>
         /// <param name="password">(NULLABLE)Specifies the Password if Room is Private</param>
-        public abstract Task JoinRoom(string roomId, string extra = null, string password = null);
+        public abstract void JoinRoom(string roomId, string extra = null, string password = null);
 
 
         /// <summary>
         ///     Get Available Rooms According To Room's Role
         /// </summary>
         /// <param name="role">(NOTNULL)Room's Role </param>
-        public abstract Task GetAvailableRooms(string role);
+        public abstract void GetAvailableRooms(string role);
 
 
         /// <summary>
@@ -77,7 +76,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="data">(NULLABLE) Data to Send </param>
         /// <param name="whoIsNext">(NULLABLE) Next Player's ID </param>
-        public abstract Task TakeTurn(string data = null, string whoIsNext = null);
+        public abstract void TakeTurn(string data = null, string whoIsNext = null);
 
 
         /// <summary>
@@ -85,7 +84,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         ///     if whoIsNext Set Null , Server Automatically Selects Next Turn
         /// </summary>
         /// <param name="whoIsNext">(NULLABLE)Next Player's ID </param>
-        public abstract Task ChooseNext(string whoIsNext = null);
+        public abstract void ChooseNext(string whoIsNext = null);
 
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="type">The Type of Property </param>
         /// <param name="propertyData">(NOTNULL) The property Data</param>
-        public abstract Task SetOrUpdateProperty(PropertyType type, KeyValuePair<string, string> propertyData);
+        public abstract void SetOrUpdateProperty(PropertyType type, KeyValuePair<string, string> propertyData);
 
 
         /// <summary>
@@ -101,58 +100,58 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="key">(NOTNULL) The Key Value</param>
         /// <param name="type"> The Type of Property </param>
-        public abstract Task RemoveProperty(PropertyType type, string key);
+        public abstract void RemoveProperty(PropertyType type, string key);
 
 
         /// <summary>
         ///     Get All Member Properties
         /// </summary>
-        public abstract Task GetMemberProperties();
+        public abstract void GetMemberProperties();
 
 
         /// <summary>
         ///     Get Current Room Info
         /// </summary>
-        public abstract Task GetCurrentRoomInfo();
+        public abstract void GetCurrentRoomInfo();
 
 
         /// <summary>
         ///     Leave The Current Room , if whoIsNext Set Null , Server Automatically Selects Next Turn
         /// </summary>
         /// <param name="whoIsNext">(NULLABLE)(Type : Member's ID) Player's id You Want To Select Next Turn</param>
-        public abstract Task LeaveRoom(string whoIsNext = null);
+        public abstract void LeaveRoom(string whoIsNext = null);
 
 
         /// <summary>
         ///     If you want to announce the end of the game, use this function to send the result of your game to other players.
         /// </summary>
         /// <param name="outcomes">(NOTNULL) A set of players and their results</param>
-        public abstract Task Vote(Dictionary<string, Outcome> outcomes);
+        public abstract void Vote(Dictionary<string, Outcome> outcomes);
 
 
         /// <summary>
         ///     If you would like to confirm one of the results posted by other Players
         /// </summary>
         /// <param name="memberId">(NOTNULL)The Specific player ID</param>
-        public abstract Task AcceptVote(string memberId);
+        public abstract void AcceptVote(string memberId);
 
 
         /// <summary>
         ///     Get Room Members Details
         /// </summary>
-        public abstract Task GetRoomMembersDetail();
+        public abstract void GetRoomMembersDetail();
 
 
         /// <summary>
         ///     Get Current Turn Member Details
         /// </summary>
-        public abstract Task GetCurrentTurnMember();
+        public abstract void GetCurrentTurnMember();
 
 
         /// <summary>
         ///     Get Your Invite Inbox
         /// </summary>
-        public abstract Task GetInviteInbox();
+        public abstract void GetInviteInbox();
 
 
         /// <summary>
@@ -160,7 +159,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="roomId">(NOTNULL) (Type : RoomID)Room's ID</param>
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
-        public abstract Task InviteUser(string roomId, string userId);
+        public abstract void InviteUser(string roomId, string userId);
 
 
         /// <summary>
@@ -169,7 +168,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
         /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
-        public abstract Task AcceptInvite(string inviteId, string extra = null);
+        public abstract void AcceptInvite(string inviteId, string extra = null);
 
 
         /// <summary>
@@ -177,6 +176,6 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="query">(NOTNULL) Query </param>
         /// <param name="limit">(Max = 15) The Result Limits</param>
-        public abstract Task FindMember(string query, int limit = 10);
+        public abstract void FindMember(string query, int limit = 10);
     }
 }

@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
@@ -139,7 +138,7 @@ namespace FiroozehGameService.Handlers.Command
             }
         }
 
-        private async void RequestPing(object sender, EventArgs e)
+        private void RequestPing(object sender, EventArgs e)
         {
             if (_isPingRequested)
             {
@@ -155,7 +154,7 @@ namespace FiroozehGameService.Handlers.Command
             var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             _isPingRequested = true;
 
-            await RequestAsync(MirrorHandler.Signature, currentTime, true);
+            Send(MirrorHandler.Signature, currentTime, true);
         }
 
         private void OnGsTcpClientError(object sender, GameServiceException exception)
@@ -172,7 +171,7 @@ namespace FiroozehGameService.Handlers.Command
             Init();
         }
 
-        private async void OnGsTcpClientConnected(object sender, object e)
+        private void OnGsTcpClientConnected(object sender, object e)
         {
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler -> Connected,Waiting for Handshakes...");
@@ -181,9 +180,9 @@ namespace FiroozehGameService.Handlers.Command
 
             _tcpClient?.StartReceiving();
 
-            await Task.Delay(100);
+            Thread.Sleep(100);
 
-            await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
+            Send(AuthorizationHandler.Signature, isCritical: true);
 
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler Init done");
@@ -201,9 +200,9 @@ namespace FiroozehGameService.Handlers.Command
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }
 
-        private async void OnPing(object sender, object packet)
+        private void OnPing(object sender, object packet)
         {
-            await RequestAsync(PingPongHandler.Signature, isCritical: true);
+            Send(PingPongHandler.Signature, isCritical: true);
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnPing", "CommandHandler Ping Called");
         }
 
@@ -292,10 +291,9 @@ namespace FiroozehGameService.Handlers.Command
             Send(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
         }
 
-        internal async Task RequestAsync(string handlerName, object payload = null, bool isCritical = false,
-            bool dontCheckAvailability = false)
+        internal void Send(string handlerName, object payload = null, bool isCritical = false)
         {
-            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload), isCritical, dontCheckAvailability);
+            AddToSendQueue(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
         }
 
 
@@ -308,17 +306,17 @@ namespace FiroozehGameService.Handlers.Command
                     .LogException<CommandHandler>(DebugLocation.Command, "Send");
         }
 
-        private async Task SendAsync(Packet packet, bool isCritical = false, bool dontCheckAvailability = false)
+        private void AddToSendQueue(Packet packet, bool isCritical = false)
         {
             if (!_observer.Increase(isCritical))
                 throw new GameServiceException("Too Many Requests, You Can Send " + CommandConst.CommandLimit +
                                                " Requests Per Second")
-                    .LogException<CommandHandler>(DebugLocation.Command, "SendAsync");
-
-            if (IsAvailable()) await _tcpClient.SendAsync(packet);
-            else if (!isCritical && !dontCheckAvailability)
-                throw new GameServiceException("GameService Not Available")
-                    .LogException<CommandHandler>(DebugLocation.Command, "SendAsync");
+                    .LogException<CommandHandler>(DebugLocation.Command, "AddToSendQueue");
+            // TODO Check it
+            if (!_isDisposed) _tcpClient.AddToSendQueue(packet);
+            else if (!isCritical)
+                throw new GameServiceException("Command System Already Disposed")
+                    .LogException<CommandHandler>(DebugLocation.Command, "AddToSendQueue");
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)

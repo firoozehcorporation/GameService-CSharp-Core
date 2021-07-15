@@ -20,7 +20,6 @@
 */
 
 
-using System.Threading.Tasks;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Models.Enums;
 
@@ -35,20 +34,20 @@ namespace FiroozehGameService.Models.GSLive.Providers
         ///     Create Room With Option Like : Name , Min , Max , Role , IsPrivate
         /// </summary>
         /// <param name="option">(NOTNULL)Create Room Option</param>
-        public abstract Task CreateRoom(GSLiveOption.CreateRoomOption option);
+        public abstract void CreateRoom(GSLiveOption.CreateRoomOption option);
 
 
         /// <summary>
         ///     Create AutoMatch With Option Like :  Min , Max , Role
         /// </summary>
         /// <param name="option">(NOTNULL)AutoMatch Option</param>
-        public abstract Task AutoMatch(GSLiveOption.AutoMatchOption option);
+        public abstract void AutoMatch(GSLiveOption.AutoMatchOption option);
 
 
         /// <summary>
         ///     Cancel Current AutoMatch
         /// </summary>
-        public abstract Task CancelAutoMatch();
+        public abstract void CancelAutoMatch();
 
 
         /// <summary>
@@ -57,7 +56,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="roomId">(NOTNULL)Room's id You Want To Join</param>
         /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
         /// <param name="password">(NULLABLE)Specifies the Password if Room is Private</param>
-        public abstract Task JoinRoom(string roomId, string extra = null, string password = null);
+        public abstract void JoinRoom(string roomId, string extra = null, string password = null);
 
 
         /// <summary>
@@ -70,7 +69,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         ///     Get Available Rooms According To Room's Role
         /// </summary>
         /// <param name="role">(NOTNULL)Room's Role </param>
-        public abstract Task GetAvailableRooms(string role);
+        public abstract void GetAvailableRooms(string role);
 
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <summary>
         ///     Get Your Invite Inbox
         /// </summary>
-        public abstract Task GetInviteInbox();
+        public abstract void GetInviteInbox();
 
 
         /// <summary>
@@ -112,7 +111,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="roomId">(NOTNULL) (Type : RoomID)Room's ID</param>
         /// <param name="userId">(NOTNULL) (Type : UserID)User's ID</param>
-        public abstract Task InviteUser(string roomId, string userId);
+        public abstract void InviteUser(string roomId, string userId);
 
 
         /// <summary>
@@ -121,7 +120,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="inviteId">(NOTNULL) (Type : InviteID) Invite's ID</param>
         /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
-        public abstract Task AcceptInvite(string inviteId, string extra = null);
+        public abstract void AcceptInvite(string inviteId, string extra = null);
 
 
         /// <summary>
@@ -129,7 +128,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="query">(NOTNULL) Query </param>
         /// <param name="limit">(Max = 15) The Result Limits</param>
-        public abstract Task FindMember(string query, int limit = 10);
+        public abstract void FindMember(string query, int limit = 10);
 
 
         /// <summary>

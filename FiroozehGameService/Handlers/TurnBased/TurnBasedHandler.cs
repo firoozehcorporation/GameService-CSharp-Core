@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using FiroozehGameService.Core;
 using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Core.Socket;
@@ -80,7 +79,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "Constructor", "TurnBasedHandler Init");
         }
 
-        private async void RequestPing(object sender, object e)
+        private void RequestPing(object sender, object e)
         {
             if (_isPingRequested)
             {
@@ -96,7 +95,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             }
 
             _isPingRequested = true;
-            await RequestAsync(MirrorHandler.Signature, null, true);
+            Send(MirrorHandler.Signature, null, true);
         }
 
         private void TurnBasedMirror(object sender, Packet packet)
@@ -144,7 +143,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             Init();
         }
 
-        private async void OnGsTcpClientConnected(object sender, object e)
+        private void OnGsTcpClientConnected(object sender, object e)
         {
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
                 "TurnBasedHandler -> Connected,Waiting for Handshakes...");
@@ -153,9 +152,9 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             _tcpClient?.StartReceiving();
 
-            await Task.Delay(100);
+            Thread.Sleep(100);
 
-            await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
+            Send(AuthorizationHandler.Signature, isCritical: true);
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
                 "TurnBasedHandler Init done");
@@ -176,9 +175,9 @@ namespace FiroozehGameService.Handlers.TurnBased
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnAuth", "TurnBasedHandler OnAuth Done");
         }
 
-        private async void OnPing(object sender, object packet)
+        private void OnPing(object sender, object packet)
         {
-            await RequestAsync(PingPongHandler.Signature, isCritical: true);
+            Send(PingPongHandler.Signature, isCritical: true);
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnPing", "TurnBasedHandler Ping Called");
         }
 
@@ -224,10 +223,9 @@ namespace FiroozehGameService.Handlers.TurnBased
             Send(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
         }
 
-        public async Task RequestAsync(string handlerName, object payload = null, bool isCritical = false,
-            bool dontCheckAvailability = false)
+        public void Send(string handlerName, object payload = null, bool isCritical = false)
         {
-            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload), isCritical, dontCheckAvailability);
+            AddToSendQueue(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
         }
 
 
@@ -246,7 +244,7 @@ namespace FiroozehGameService.Handlers.TurnBased
                 if (_isDisposed)
                 {
                     DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "Dispose",
-                        "TurnBasedHandler Already Disposed");
+                        "TurnBased System Already Disposed");
                     return;
                 }
 
@@ -298,17 +296,18 @@ namespace FiroozehGameService.Handlers.TurnBased
             _tcpClient.Send(packet);
         }
 
-        private async Task SendAsync(Packet packet, bool isCritical = false, bool dontCheckAvailability = false)
+        private void AddToSendQueue(Packet packet, bool isCritical = false)
         {
             if (!_observer.Increase(isCritical))
                 throw new GameServiceException("Too Many Requests, You Can Send " + TurnBasedConst.TurnBasedLimit +
                                                " Requests Per Second")
-                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "SendAsync");
+                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "AddToSendQueue");
 
-            if (IsAvailable()) await _tcpClient.SendAsync(packet);
-            else if (!isCritical && !dontCheckAvailability)
-                throw new GameServiceException("GameService Not Available")
-                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "SendAsync");
+            // TODO Check it
+            if (!_isDisposed) _tcpClient.AddToSendQueue(packet);
+            else if (!isCritical)
+                throw new GameServiceException("TurnBased System Already Disposed")
+                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "AddToSendQueue");
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)
