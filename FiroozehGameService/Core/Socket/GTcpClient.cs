@@ -31,6 +31,7 @@ using FiroozehGameService.Models.BasicApi;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
+using Timer = System.Timers.Timer;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -74,10 +75,12 @@ namespace FiroozehGameService.Core.Socket
 
         protected const short CommandTimeOutWait = 700;
         protected const short TurnTimeOutWait = 500;
+        protected const short SendQueueInterval = 10;
         protected const short TcpTimeout = 2000;
-        private const int BufferCapacity = 8192;
+        private const short BufferCapacity = 8192;
 
-        protected Thread RecvThread, SendThread;
+        protected Thread RecvThread;
+        protected Timer SendQueueTimer;
         protected CommandInfo CommandInfo;
         protected Area Area;
         protected string Key;

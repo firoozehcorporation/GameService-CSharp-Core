@@ -33,6 +33,7 @@ using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Utils;
+using Timer = System.Timers.Timer;
 
 namespace FiroozehGameService.Core.Socket
 {
@@ -106,47 +107,43 @@ namespace FiroozehGameService.Core.Socket
                 Priority = ThreadPriority.Highest,
                 IsBackground = true
             };
-            SendThread = new Thread(async () => await Sending())
+
+            SendQueueTimer = new Timer
             {
-                Priority = ThreadPriority.Highest,
-                IsBackground = true
+                Interval = SendQueueInterval
             };
 
+            SendQueueTimer.Elapsed += async (sender, args) => { await Sending(); };
             RecvThread.Start();
-            SendThread.Start();
+            SendQueueTimer.Start();
         }
 
 
         private async Task Sending()
         {
-            DebugUtil.LogNormal<GsTcpClient>(
-                Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command, "Sending",
-                "GsTcpClient -> Start Sending...");
+            try
+            {
+                if (SendQueue.Count == 0 || SendTempQueue.Count == 0 || !IsConnected()) return;
 
-            while (IsConnected())
-                try
-                {
-                    if (SendQueue.Count == 0 || SendTempQueue.Count == 0) return;
+                IsSendingQueue = true;
 
-                    IsSendingQueue = true;
-                    SendQueue.AddRange(SendTempQueue);
-                    SendTempQueue.Clear();
+                SendQueue.AddRange(SendTempQueue);
+                SendTempQueue.Clear();
 
-                    await SendAsync(PacketSerializer.Serialize(SendQueue, Key, Type == GSLiveType.Command));
+                await SendAsync(PacketSerializer.Serialize(SendQueue, Key, Type == GSLiveType.Command));
 
-                    SendQueue.Clear();
-                }
-                catch (Exception e)
-                {
-                    e.LogException<GsTcpClient>(
-                        Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
-                        "Sending");
-                }
-                finally
-                {
-                    IsSendingQueue = false;
-                    Thread.Sleep(10);
-                }
+                SendQueue.Clear();
+            }
+            catch (Exception e)
+            {
+                e.LogException<GsTcpClient>(
+                    Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
+                    "Sending");
+            }
+            finally
+            {
+                IsSendingQueue = false;
+            }
         }
 
         private async Task Receiving()
@@ -275,6 +272,9 @@ namespace FiroozehGameService.Core.Socket
                 SendQueue?.Clear();
                 SendTempQueue?.Clear();
 
+                SendQueueTimer?.Stop();
+                SendQueueTimer?.Close();
+
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
 
@@ -292,7 +292,7 @@ namespace FiroozehGameService.Core.Socket
                 OperationCancellationToken = null;
                 DataReceived = null;
                 RecvThread = null;
-                SendThread = null;
+                SendQueueTimer = null;
 
                 try
                 {
@@ -318,6 +318,9 @@ namespace FiroozehGameService.Core.Socket
 
                 DataBuilder?.Clear();
 
+                SendQueueTimer?.Stop();
+                SendQueueTimer?.Close();
+
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
 
@@ -333,7 +336,7 @@ namespace FiroozehGameService.Core.Socket
                 _clientStream = null;
                 OperationCancellationToken = null;
                 RecvThread = null;
-                SendThread = null;
+                SendQueueTimer = null;
 
                 try
                 {
