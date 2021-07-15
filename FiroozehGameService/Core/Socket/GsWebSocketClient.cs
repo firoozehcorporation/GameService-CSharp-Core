@@ -123,12 +123,21 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                if (IsSendingQueue || SendQueue.Count == 0 || SendTempQueue.Count == 0 || !IsConnected()) return;
+                bool dontHaveTempData;
+                lock (SendTempQueueLock)
+                {
+                    dontHaveTempData = SendTempQueue.Count == 0;
+                }
+
+                if (IsSendingQueue || SendQueue.Count == 0 || dontHaveTempData || !IsConnected()) return;
 
                 IsSendingQueue = true;
 
-                SendQueue.AddRange(SendTempQueue);
-                SendTempQueue.Clear();
+                lock (SendTempQueueLock)
+                {
+                    SendQueue.InsertRange(0, SendTempQueue);
+                    SendTempQueue.Clear();
+                }
 
                 await SendAsync(PacketSerializer.Serialize(SendQueue, Key, Type == GSLiveType.Command));
 
@@ -204,7 +213,11 @@ namespace FiroozehGameService.Core.Socket
 
         internal override void AddToSendQueue(Packet packet)
         {
-            if (IsSendingQueue) SendTempQueue?.Add(packet);
+            if (IsSendingQueue)
+                lock (SendTempQueueLock)
+                {
+                    SendTempQueue?.Add(packet);
+                }
             else SendQueue?.Add(packet);
         }
 

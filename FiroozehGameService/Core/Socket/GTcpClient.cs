@@ -77,6 +77,8 @@ namespace FiroozehGameService.Core.Socket
         protected const short TurnTimeOutWait = 500;
         protected const short SendQueueInterval = 10;
         protected const short TcpTimeout = 2000;
+        protected const int BufferOffset = 0;
+        protected int BufferReceivedBytes = 0;
         private const short BufferCapacity = 8192;
 
         protected Thread RecvThread;
@@ -86,15 +88,14 @@ namespace FiroozehGameService.Core.Socket
         protected string Key;
         protected bool IsAvailable, IsSendingQueue;
         protected GSLiveType Type;
-        protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected CancellationTokenSource OperationCancellationToken;
 
 
         protected readonly byte[] Buffer = new byte[BufferCapacity];
+        protected readonly object SendTempQueueLock = new object();
+        protected readonly StringBuilder DataBuilder = new StringBuilder();
         protected readonly List<Packet> SendQueue = new List<Packet>();
         protected readonly List<Packet> SendTempQueue = new List<Packet>();
-        protected const int BufferOffset = 0;
-        protected int BufferReceivedBytes = 0;
         protected readonly IValidator PacketValidator = new JsonDataValidator();
         protected readonly IDeserializer PacketDeserializer = new PacketDeserializer();
         protected readonly ISerializer PacketSerializer = new PacketSerializer();
