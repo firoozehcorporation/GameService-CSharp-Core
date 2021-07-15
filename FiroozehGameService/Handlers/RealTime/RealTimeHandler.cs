@@ -272,7 +272,8 @@ namespace FiroozehGameService.Handlers.RealTime
         {
             try
             {
-                if (_isDisposed) return;
+                if (_isDisposed || e.Packet == null) return;
+
                 var packet = (Packet) e.Packet;
                 packet.ClientReceiveTime = e.Time;
 

@@ -37,8 +37,6 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
                 GsLiveTurnBased.InAutoMatch = false;
             }
 
-            if (CommandHandler.IsAuthRequested) CommandHandler.IsAuthRequested = false;
-
             CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {
                 Type = GSLiveType.Command,

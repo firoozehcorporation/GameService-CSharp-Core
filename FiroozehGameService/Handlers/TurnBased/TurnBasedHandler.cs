@@ -146,8 +146,6 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private async void OnGsTcpClientConnected(object sender, object e)
         {
-            if (IsAuthRequested) return;
-
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
                 "TurnBasedHandler -> Connected,Waiting for Handshakes...");
 
@@ -158,8 +156,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             await Task.Delay(100);
 
             await RequestAsync(AuthorizationHandler.Signature, isCritical: true);
-
-            IsAuthRequested = true;
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
                 "TurnBasedHandler Init done");
@@ -173,7 +169,6 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             PlayerHash = playerHash;
             GsLiveTurnBased.InAutoMatch = false;
-            IsAuthRequested = false;
             _isPingRequested = false;
 
             _callerUtil?.Start();
@@ -258,7 +253,6 @@ namespace FiroozehGameService.Handlers.TurnBased
                 _retryConnectCounter = 0;
                 _isDisposed = true;
                 _isPingRequested = false;
-                IsAuthRequested = false;
 
                 _observer?.Dispose();
                 _callerUtil?.Dispose();
@@ -321,6 +315,8 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             try
             {
+                if (e.Packet == null) return;
+
                 var packet = (Packet) e.Packet;
 
                 if (ActionUtil.IsInternalAction(packet.Action, GSLiveType.TurnBased))
@@ -350,8 +346,6 @@ namespace FiroozehGameService.Handlers.TurnBased
         private int _retryConnectCounter;
         private bool _isDisposed;
         private bool _isPingRequested;
-        internal static bool IsAuthRequested;
-
 
         internal static string PlayerHash { private set; get; }
         internal static string PlayToken => GameService.PlayToken;

@@ -281,6 +281,8 @@ namespace FiroozehGameService.Core.Socket
 
                 OperationCancellationToken?.Cancel(false);
                 OperationCancellationToken?.Dispose();
+
+                _client?.Close();
             }
             catch (Exception)
             {
