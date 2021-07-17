@@ -108,13 +108,29 @@ namespace FiroozehGameService.Core.Socket
                 IsBackground = true
             };
 
+            RecvThread.Start();
+        }
+
+        internal override void StartSending()
+        {
             SendQueueTimer = new Timer
             {
                 Interval = SendQueueInterval
             };
 
-            SendQueueTimer.Elapsed += async (sender, args) => { await Sending(); };
-            RecvThread.Start();
+            SendQueueTimer.Elapsed += async (sender, args) =>
+            {
+                bool dontHaveTempData;
+                lock (SendTempQueueLock)
+                {
+                    dontHaveTempData = SendTempQueue.Count == 0;
+                }
+
+                if (IsSendingQueue || SendQueue.Count == 0 && dontHaveTempData || !IsConnected()) return;
+
+                await Sending();
+            };
+
             SendQueueTimer.Start();
         }
 
@@ -123,14 +139,6 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
-                bool dontHaveTempData;
-                lock (SendTempQueueLock)
-                {
-                    dontHaveTempData = SendTempQueue.Count == 0;
-                }
-
-                if (IsSendingQueue || SendQueue.Count == 0 || dontHaveTempData || !IsConnected()) return;
-
                 IsSendingQueue = true;
 
                 lock (SendTempQueueLock)
@@ -140,18 +148,22 @@ namespace FiroozehGameService.Core.Socket
                 }
 
                 await SendAsync(PacketSerializer.Serialize(SendQueue, Key, Type == GSLiveType.Command));
-
-                SendQueue.Clear();
             }
             catch (Exception e)
             {
                 e.LogException<GsTcpClient>(
                     Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
                     "Sending");
+
+                lock (SendTempQueueLock)
+                {
+                    SendTempQueue.InsertRange(0, SendQueue);
+                }
             }
             finally
             {
                 IsSendingQueue = false;
+                SendQueue.Clear();
             }
         }
 
@@ -283,7 +295,11 @@ namespace FiroozehGameService.Core.Socket
 
                 DataBuilder?.Clear();
                 SendQueue?.Clear();
-                SendTempQueue?.Clear();
+
+                lock (SendTempQueueLock)
+                {
+                    SendTempQueue?.Clear();
+                }
 
                 SendQueueTimer?.Stop();
                 SendQueueTimer?.Close();

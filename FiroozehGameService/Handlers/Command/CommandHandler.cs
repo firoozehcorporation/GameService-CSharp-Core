@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
@@ -42,19 +43,6 @@ namespace FiroozehGameService.Handlers.Command
     {
         internal CommandHandler()
         {
-            switch (GameService.CommandInfo.Protocol)
-            {
-                case GsEncryptor.TcpSec:
-                    _tcpClient = new GsTcpClient();
-                    break;
-                case GsEncryptor.WebSocketSec:
-                    _tcpClient = new GsWebSocketClient();
-                    break;
-            }
-
-            _tcpClient.DataReceived += OnDataReceived;
-
-            _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.Command);
             _isDisposed = false;
             _isFirstInit = false;
@@ -127,17 +115,13 @@ namespace FiroozehGameService.Handlers.Command
 
                 PingUtil.SetLastPing(currentTime, lastCurrentTime);
             }
-            catch (Exception)
-            {
-                // ignored
-            }
             finally
             {
                 _isPingRequested = false;
             }
         }
 
-        private void RequestPing(object sender, EventArgs e)
+        private async void RequestPing(object sender, EventArgs e)
         {
             if (_isPingRequested)
             {
@@ -153,7 +137,7 @@ namespace FiroozehGameService.Handlers.Command
             var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             _isPingRequested = true;
 
-            Send(MirrorHandler.Signature, currentTime, true);
+            await RequestAsync(MirrorHandler.Signature, currentTime);
         }
 
         private void OnGsTcpClientError(object sender, GameServiceException exception)
@@ -170,7 +154,7 @@ namespace FiroozehGameService.Handlers.Command
             Init();
         }
 
-        private void OnGsTcpClientConnected(object sender, object e)
+        private async void OnGsTcpClientConnected(object sender, object e)
         {
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler -> Connected,Waiting for Handshakes...");
@@ -179,9 +163,7 @@ namespace FiroozehGameService.Handlers.Command
 
             _tcpClient?.StartReceiving();
 
-            Thread.Sleep(100);
-
-            Send(AuthorizationHandler.Signature, isCritical: true);
+            await RequestAsync(AuthorizationHandler.Signature);
 
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnGsTcpClientConnected",
                 "CommandHandler Init done");
@@ -192,6 +174,7 @@ namespace FiroozehGameService.Handlers.Command
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnAuth", "CommandHandler OnAuth Done");
 
             PlayerHash = playerHash;
+            _tcpClient?.StartSending();
             PingUtil.Start();
 
             if (_isFirstInit) return;
@@ -199,10 +182,9 @@ namespace FiroozehGameService.Handlers.Command
             CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
         }
 
-        private void OnPing(object sender, object packet)
+        private async void OnPing(object sender, object packet)
         {
-            Send(PingPongHandler.Signature, isCritical: true);
-            DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnPing", "CommandHandler Ping Called");
+            await RequestAsync(PingPongHandler.Signature);
         }
 
 
@@ -274,10 +256,25 @@ namespace FiroozehGameService.Handlers.Command
 
         public void Init()
         {
+            if (_tcpClient == null)
+            {
+                switch (GameService.CommandInfo.Protocol)
+                {
+                    case GsEncryptor.TcpSec:
+                        _tcpClient = new GsTcpClient();
+                        break;
+                    case GsEncryptor.WebSocketSec:
+                        _tcpClient = new GsWebSocketClient();
+                        break;
+                }
+
+                if (_tcpClient != null) _tcpClient.DataReceived += OnDataReceived;
+            }
+
             _cancellationToken = new CancellationTokenSource();
 
             PingUtil.Stop();
-            _tcpClient.Init(GameService.CommandInfo, GameService.CommandInfo.Cipher);
+            _tcpClient?.Init(GameService.CommandInfo, GameService.CommandInfo.Cipher);
         }
 
         internal static short GetPing()
@@ -285,35 +282,31 @@ namespace FiroozehGameService.Handlers.Command
             return PingUtil.GetLastPing();
         }
 
-        private void Request(string handlerName, object payload = null, bool isCritical = false)
+        private async Task RequestAsync(string handlerName, object payload = null)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
+            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
         }
 
-        internal void Send(string handlerName, object payload = null, bool isCritical = false)
+        internal void Send(string handlerName, object payload = null)
         {
-            AddToSendQueue(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
+            AddToSendQueue(_requestHandlers[handlerName]?.HandleAction(payload));
         }
 
 
-        private void Send(Packet packet, bool isCritical = false)
+        private static async Task SendAsync(Packet packet)
         {
-            if (!_observer.Increase(isCritical)) return;
-            if (IsAvailable()) _tcpClient.Send(packet);
-            else if (!isCritical)
-                throw new GameServiceException("GameService Not Available")
-                    .LogException<CommandHandler>(DebugLocation.Command, "Send");
+            if (IsAvailable()) await _tcpClient.SendAsync(packet);
         }
 
-        private void AddToSendQueue(Packet packet, bool isCritical = false)
+        private void AddToSendQueue(Packet packet)
         {
-            if (!_observer.Increase(isCritical))
+            if (!_observer.Increase(false))
                 throw new GameServiceException("Too Many Requests, You Can Send " + CommandConst.CommandLimit +
                                                " Requests Per Second")
                     .LogException<CommandHandler>(DebugLocation.Command, "AddToSendQueue");
-            // TODO Check it
+
             if (!_isDisposed) _tcpClient.AddToSendQueue(packet);
-            else if (!isCritical)
+            else
                 throw new GameServiceException("Command System Already Disposed")
                     .LogException<CommandHandler>(DebugLocation.Command, "AddToSendQueue");
         }

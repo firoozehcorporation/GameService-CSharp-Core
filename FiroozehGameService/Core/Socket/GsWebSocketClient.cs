@@ -119,9 +119,18 @@ namespace FiroozehGameService.Core.Socket
         }
 
 
-        private async Task Sending()
+        internal override void StartReceiving()
         {
-            try
+        }
+
+        internal override void StartSending()
+        {
+            SendQueueTimer = new Timer
+            {
+                Interval = SendQueueInterval
+            };
+
+            SendQueueTimer.Elapsed += async (sender, args) =>
             {
                 bool dontHaveTempData;
                 lock (SendTempQueueLock)
@@ -129,8 +138,17 @@ namespace FiroozehGameService.Core.Socket
                     dontHaveTempData = SendTempQueue.Count == 0;
                 }
 
-                if (IsSendingQueue || SendQueue.Count == 0 || dontHaveTempData || !IsConnected()) return;
+                if (IsSendingQueue || SendQueue.Count == 0 && dontHaveTempData || !IsConnected()) return;
 
+                await Sending();
+            };
+            SendQueueTimer.Start();
+        }
+
+        private async Task Sending()
+        {
+            try
+            {
                 IsSendingQueue = true;
 
                 lock (SendTempQueueLock)
@@ -140,18 +158,22 @@ namespace FiroozehGameService.Core.Socket
                 }
 
                 await SendAsync(PacketSerializer.Serialize(SendQueue, Key, Type == GSLiveType.Command));
-
-                SendQueue.Clear();
             }
             catch (Exception e)
             {
                 e.LogException<GsWebSocketClient>(
                     Type == GSLiveType.TurnBased ? DebugLocation.TurnBased : DebugLocation.Command,
                     "Sending");
+
+                lock (SendTempQueueLock)
+                {
+                    SendTempQueue.InsertRange(0, SendQueue);
+                }
             }
             finally
             {
                 IsSendingQueue = false;
+                SendQueue.Clear();
             }
         }
 
@@ -264,16 +286,6 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-        internal override void StartReceiving()
-        {
-            SendQueueTimer = new Timer
-            {
-                Interval = SendQueueInterval
-            };
-
-            SendQueueTimer.Elapsed += async (sender, args) => { await Sending(); };
-            SendQueueTimer.Start();
-        }
 
         internal override void StopReceiving(bool isGraceful)
         {
@@ -284,7 +296,11 @@ namespace FiroozehGameService.Core.Socket
 
                 DataBuilder?.Clear();
                 SendQueue?.Clear();
-                SendTempQueue?.Clear();
+
+                lock (SendTempQueueLock)
+                {
+                    SendTempQueue?.Clear();
+                }
 
                 SendQueueTimer?.Stop();
                 SendQueueTimer?.Close();

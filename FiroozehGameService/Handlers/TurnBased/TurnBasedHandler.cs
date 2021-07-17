@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using FiroozehGameService.Core;
 using FiroozehGameService.Core.Providers.GSLive;
 using FiroozehGameService.Core.Socket;
@@ -78,7 +79,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "Constructor", "TurnBasedHandler Init");
         }
 
-        private void RequestPing(object sender, object e)
+        private async void RequestPing(object sender, object e)
         {
             if (_isPingRequested)
             {
@@ -94,7 +95,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             }
 
             _isPingRequested = true;
-            Send(MirrorHandler.Signature, null, true);
+
+            await RequestAsync(MirrorHandler.Signature);
         }
 
         private void TurnBasedMirror(object sender, Packet packet)
@@ -142,7 +144,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             Init();
         }
 
-        private void OnGsTcpClientConnected(object sender, object e)
+        private async void OnGsTcpClientConnected(object sender, object e)
         {
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
                 "TurnBasedHandler -> Connected,Waiting for Handshakes...");
@@ -151,9 +153,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             _tcpClient?.StartReceiving();
 
-            Thread.Sleep(100);
-
-            Send(AuthorizationHandler.Signature, isCritical: true);
+            await RequestAsync(AuthorizationHandler.Signature);
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientConnected",
                 "TurnBasedHandler Init done");
@@ -169,15 +169,15 @@ namespace FiroozehGameService.Handlers.TurnBased
             GsLiveTurnBased.InAutoMatch = false;
             _isPingRequested = false;
 
+            _tcpClient?.StartSending();
             _callerUtil?.Start();
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnAuth", "TurnBasedHandler OnAuth Done");
         }
 
-        private void OnPing(object sender, object packet)
+        private async void OnPing(object sender, object packet)
         {
-            Send(PingPongHandler.Signature, isCritical: true);
-            DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnPing", "TurnBasedHandler Ping Called");
+            await RequestAsync(PingPongHandler.Signature);
         }
 
         private void InitRequestMessageHandlers()
@@ -217,14 +217,34 @@ namespace FiroozehGameService.Handlers.TurnBased
         }
 
 
-        public void Request(string handlerName, object payload = null, bool isCritical = false)
+        private async Task RequestAsync(string handlerName, object payload = null)
         {
-            Send(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
+            await SendAsync(_requestHandlers[handlerName]?.HandleAction(payload));
         }
 
-        public void Send(string handlerName, object payload = null, bool isCritical = false)
+        internal void Send(string handlerName, object payload = null)
         {
-            AddToSendQueue(_requestHandlers[handlerName]?.HandleAction(payload), isCritical);
+            AddToSendQueue(_requestHandlers[handlerName]?.HandleAction(payload));
+        }
+
+
+        private static async Task SendAsync(Packet packet)
+        {
+            if (IsAvailable()) await _tcpClient.SendAsync(packet);
+        }
+
+
+        private void AddToSendQueue(Packet packet)
+        {
+            if (!_observer.Increase(false))
+                throw new GameServiceException("Too Many Requests, You Can Send " + TurnBasedConst.TurnBasedLimit +
+                                               " Requests Per Second")
+                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "AddToSendQueue");
+
+            if (!_isDisposed) _tcpClient.AddToSendQueue(packet);
+            else
+                throw new GameServiceException("TurnBased System Already Disposed")
+                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "AddToSendQueue");
         }
 
 
@@ -287,26 +307,6 @@ namespace FiroozehGameService.Handlers.TurnBased
                 DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "Dispose",
                     "TurnBasedHandler Dispose Done");
             }
-        }
-
-        private void Send(Packet packet, bool isCritical = false)
-        {
-            if (!_observer.Increase(isCritical)) return;
-            _tcpClient.Send(packet);
-        }
-
-        private void AddToSendQueue(Packet packet, bool isCritical = false)
-        {
-            if (!_observer.Increase(isCritical))
-                throw new GameServiceException("Too Many Requests, You Can Send " + TurnBasedConst.TurnBasedLimit +
-                                               " Requests Per Second")
-                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "AddToSendQueue");
-
-            // TODO Check it
-            if (!_isDisposed) _tcpClient.AddToSendQueue(packet);
-            else if (!isCritical)
-                throw new GameServiceException("TurnBased System Already Disposed")
-                    .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "AddToSendQueue");
         }
 
         private void OnDataReceived(object sender, SocketDataReceived e)

@@ -67,6 +67,8 @@ namespace FiroozehGameService.Core.Socket
 
         internal abstract void StartReceiving();
 
+        internal abstract void StartSending();
+
         internal abstract void StopReceiving(bool isGraceful);
 
         internal abstract bool IsConnected();
@@ -75,7 +77,7 @@ namespace FiroozehGameService.Core.Socket
 
         protected const short CommandTimeOutWait = 700;
         protected const short TurnTimeOutWait = 500;
-        protected const short SendQueueInterval = 10;
+        protected const short SendQueueInterval = 100;
         protected const short TcpTimeout = 2000;
         protected const int BufferOffset = 0;
         protected int BufferReceivedBytes = 0;
