@@ -31,11 +31,10 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers
 
         protected override void HandleResponse(Packet packet)
         {
-            if (GsLiveRealTime.InAutoMatch || GsLiveTurnBased.InAutoMatch)
-            {
-                GsLiveRealTime.InAutoMatch = false;
-                GsLiveTurnBased.InAutoMatch = false;
-            }
+            GsLiveRealTime.InAutoMatch = false;
+            GsLiveTurnBased.InAutoMatch = false;
+
+            CommandHandler.IsInitializing = false;
 
             CoreEventHandlers.Error?.Invoke(this, new ErrorEvent
             {

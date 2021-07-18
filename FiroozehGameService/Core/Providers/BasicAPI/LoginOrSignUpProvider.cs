@@ -45,7 +45,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
 
-            if (!NetworkUtil.IsConnected())
+            if (!await NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "Login");
 
@@ -95,7 +95,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithSms");
 
-            if (!NetworkUtil.IsConnected())
+            if (!await NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithSms");
 
@@ -149,7 +149,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginWithToken");
 
-            if (!NetworkUtil.IsConnected())
+            if (!await NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginWithToken");
 
@@ -190,7 +190,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithGoogle");
 
-            if (!NetworkUtil.IsConnected())
+            if (!await NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginOrSignUpWithGoogle");
 
@@ -235,7 +235,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
 
-            if (!NetworkUtil.IsConnected())
+            if (!await NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SignUp");
 
@@ -298,7 +298,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SendLoginCodeSms");
 
-            if (!NetworkUtil.IsConnected())
+            if (!await NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "SendLoginCodeSms");
 
@@ -317,7 +317,7 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                     typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginAsGuest");
 
-            if (!NetworkUtil.IsConnected())
+            if (!await NetworkUtil.IsConnected())
                 throw new GameServiceException("Network Unreachable").LogException(typeof(LoginOrSignUpProvider),
                     DebugLocation.Internal, "LoginAsGuest");
 

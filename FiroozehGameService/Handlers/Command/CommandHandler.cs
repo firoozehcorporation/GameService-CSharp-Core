@@ -71,11 +71,13 @@ namespace FiroozehGameService.Handlers.Command
                 _isFirstInit = false;
                 _isPingRequested = false;
 
+                IsInitializing = false;
+
                 _cancellationToken?.Cancel(false);
                 _observer?.Dispose();
                 PingUtil.Dispose();
 
-                _tcpClient?.StopReceiving(isGraceful);
+                _connGateway?.StopReceiving(isGraceful);
             }
             catch (Exception)
             {
@@ -83,7 +85,7 @@ namespace FiroozehGameService.Handlers.Command
             }
             finally
             {
-                _tcpClient = null;
+                _connGateway = null;
                 PlayerHash = null;
 
                 CommandEventHandlers.CommandAuthorized = null;
@@ -151,6 +153,8 @@ namespace FiroozehGameService.Handlers.Command
             DebugUtil.LogError<CommandHandler>(DebugLocation.Command, "OnGsTcpClientError",
                 "CommandHandler Reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
 
+            IsInitializing = false;
+
             Init();
         }
 
@@ -161,7 +165,7 @@ namespace FiroozehGameService.Handlers.Command
 
             _retryConnectCounter = 0;
 
-            _tcpClient?.StartReceiving();
+            _connGateway?.StartReceiving();
 
             await RequestAsync(AuthorizationHandler.Signature);
 
@@ -173,8 +177,9 @@ namespace FiroozehGameService.Handlers.Command
         {
             DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "OnAuth", "CommandHandler OnAuth Done");
 
+            IsInitializing = false;
             PlayerHash = playerHash;
-            _tcpClient?.StartSending();
+            _connGateway?.StartSending();
             PingUtil.Start();
 
             if (_isFirstInit) return;
@@ -256,25 +261,29 @@ namespace FiroozehGameService.Handlers.Command
 
         public void Init()
         {
-            if (_tcpClient == null)
+            if (_connGateway == null)
             {
                 switch (GameService.CommandInfo.Protocol)
                 {
                     case GsEncryptor.TcpSec:
-                        _tcpClient = new GsTcpClient();
+                        _connGateway = new GsTcpClient();
                         break;
                     case GsEncryptor.WebSocketSec:
-                        _tcpClient = new GsWebSocketClient();
+                        _connGateway = new GsWebSocketClient();
                         break;
                 }
 
-                if (_tcpClient != null) _tcpClient.DataReceived += OnDataReceived;
+                if (_connGateway != null) _connGateway.DataReceived += OnDataReceived;
             }
 
             _cancellationToken = new CancellationTokenSource();
 
+
+            if (IsInitializing) return;
+
+            IsInitializing = true;
             PingUtil.Stop();
-            _tcpClient?.Init(GameService.CommandInfo, GameService.CommandInfo.Cipher);
+            _connGateway?.Init(GameService.CommandInfo, GameService.CommandInfo.Cipher);
         }
 
         internal static short GetPing()
@@ -295,7 +304,7 @@ namespace FiroozehGameService.Handlers.Command
 
         private static async Task SendAsync(Packet packet)
         {
-            if (IsAvailable()) await _tcpClient.SendAsync(packet);
+            if (IsAvailable()) await _connGateway.SendAsync(packet);
         }
 
         private void AddToSendQueue(Packet packet)
@@ -305,7 +314,7 @@ namespace FiroozehGameService.Handlers.Command
                                                " Requests Per Second")
                     .LogException<CommandHandler>(DebugLocation.Command, "AddToSendQueue");
 
-            if (!_isDisposed) _tcpClient.AddToSendQueue(packet);
+            if (!_isDisposed) _connGateway.AddToSendQueue(packet);
             else
                 throw new GameServiceException("Command System Already Disposed")
                     .LogException<CommandHandler>(DebugLocation.Command, "AddToSendQueue");
@@ -333,19 +342,21 @@ namespace FiroozehGameService.Handlers.Command
 
         internal static bool IsAvailable()
         {
-            return _tcpClient != null && _tcpClient.IsConnected();
+            return _connGateway != null && _connGateway.IsConnected();
         }
 
 
         #region Fields
 
-        private static GTcpClient _tcpClient;
+        private static GTcpClient _connGateway;
         private readonly GsLiveSystemObserver _observer;
         private CancellationTokenSource _cancellationToken;
         private int _retryConnectCounter;
         private bool _isDisposed;
         private bool _isFirstInit;
         private bool _isPingRequested;
+
+        internal static bool IsInitializing;
 
         internal static string PlayerHash { private set; get; }
 

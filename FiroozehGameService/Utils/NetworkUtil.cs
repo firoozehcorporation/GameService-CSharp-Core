@@ -20,37 +20,24 @@
 */
 
 
-using System.Net;
-using FiroozehGameService.Models.Consts;
+using System.Threading.Tasks;
+using FiroozehGameService.Core.ApiWebRequest;
 
 namespace FiroozehGameService.Utils
 {
     internal static class NetworkUtil
     {
-        internal static bool IsConnected()
+        internal static async Task<bool> IsConnected()
         {
             try
             {
-                using (var client = new WebClient())
-                using (client.OpenRead(Api.CurrentTime))
-                {
-                    return true;
-                }
+                await ApiRequest.GetCurrentServerTime();
+                return true;
             }
             catch
             {
                 return false;
             }
         }
-
-        /* internal static string GetMacAddress()
-         {
-            return NetworkInterface
-                 .GetAllNetworkInterfaces()
-                 .Where( nic => nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType != NetworkInterfaceType.Loopback )
-                 .Select( nic => nic.GetPhysicalAddress().ToString() )
-                 .FirstOrDefault();
-         }
-         */
     }
 }

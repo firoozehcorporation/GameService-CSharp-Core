@@ -47,15 +47,15 @@ namespace FiroozehGameService.Handlers.TurnBased
             switch (payload.Area.Protocol)
             {
                 case GsEncryptor.TcpSec:
-                    _tcpClient = new GsTcpClient();
+                    _connGateway = new GsTcpClient(payload.Area);
                     break;
                 case GsEncryptor.WebSocketSec:
-                    _tcpClient = new GsWebSocketClient();
+                    _connGateway = new GsWebSocketClient(payload.Area);
                     break;
             }
 
             CurrentRoom = payload.Room;
-            _tcpClient.DataReceived += OnDataReceived;
+            _connGateway.DataReceived += OnDataReceived;
 
             _cancellationToken = new CancellationTokenSource();
             _observer = new GsLiveSystemObserver(GSLiveType.TurnBased);
@@ -95,7 +95,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             }
 
             _isPingRequested = true;
-
             await RequestAsync(MirrorHandler.Signature);
         }
 
@@ -141,6 +140,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientError",
                 "TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
 
+            IsInitializing = false;
+
             Init();
         }
 
@@ -151,7 +152,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             _retryConnectCounter = 0;
 
-            _tcpClient?.StartReceiving();
+            _connGateway?.StartReceiving();
 
             await RequestAsync(AuthorizationHandler.Signature);
 
@@ -167,9 +168,10 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             PlayerHash = playerHash;
             GsLiveTurnBased.InAutoMatch = false;
+            IsInitializing = false;
             _isPingRequested = false;
 
-            _tcpClient?.StartSending();
+            _connGateway?.StartSending();
             _callerUtil?.Start();
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnAuth", "TurnBasedHandler OnAuth Done");
@@ -230,7 +232,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private static async Task SendAsync(Packet packet)
         {
-            if (IsAvailable()) await _tcpClient.SendAsync(packet);
+            if (IsAvailable()) await _connGateway.SendAsync(packet);
         }
 
 
@@ -241,7 +243,7 @@ namespace FiroozehGameService.Handlers.TurnBased
                                                " Requests Per Second")
                     .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "AddToSendQueue");
 
-            if (!_isDisposed) _tcpClient.AddToSendQueue(packet);
+            if (!_isDisposed) _connGateway.AddToSendQueue(packet);
             else
                 throw new GameServiceException("TurnBased System Already Disposed")
                     .LogException<TurnBasedHandler>(DebugLocation.TurnBased, "AddToSendQueue");
@@ -250,10 +252,13 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         public void Init()
         {
+            if (IsInitializing) return;
+            IsInitializing = true;
+
             _cancellationToken = new CancellationTokenSource();
 
             _callerUtil?.Stop();
-            _tcpClient.Init(null, GameService.CommandInfo.Cipher);
+            _connGateway.Init(null, GameService.CommandInfo.Cipher);
         }
 
         public void Dispose(bool isGraceful)
@@ -271,11 +276,13 @@ namespace FiroozehGameService.Handlers.TurnBased
                 _isDisposed = true;
                 _isPingRequested = false;
 
+                IsInitializing = false;
+
                 _observer?.Dispose();
                 _callerUtil?.Dispose();
                 _cancellationToken?.Cancel(true);
 
-                _tcpClient?.StopReceiving(isGraceful);
+                _connGateway?.StopReceiving(isGraceful);
             }
             catch (Exception)
             {
@@ -283,7 +290,7 @@ namespace FiroozehGameService.Handlers.TurnBased
             }
             finally
             {
-                _tcpClient = null;
+                _connGateway = null;
                 CurrentRoom = null;
                 PlayerHash = null;
 
@@ -331,12 +338,12 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         internal static bool IsAvailable()
         {
-            return _tcpClient != null && _tcpClient.IsConnected();
+            return _connGateway != null && _connGateway.IsConnected();
         }
 
         #region TBHandlerRegion
 
-        private static GTcpClient _tcpClient;
+        private static GTcpClient _connGateway;
         internal static Room CurrentRoom;
         private readonly GsLiveSystemObserver _observer;
         private readonly ObjectCallerUtil _callerUtil;
@@ -344,6 +351,8 @@ namespace FiroozehGameService.Handlers.TurnBased
         private int _retryConnectCounter;
         private bool _isDisposed;
         private bool _isPingRequested;
+
+        internal static bool IsInitializing;
 
         internal static string PlayerHash { private set; get; }
         internal static string PlayToken => GameService.PlayToken;

@@ -31,12 +31,6 @@ using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Core.Socket.ClientHelper
 {
-    /// <summary>
-    ///     TcpClientWithTimeout is used to open a TcpClient connection, with a
-    ///     user definable connection timeout in milliseconds (1000=1second)
-    ///     Use it like this:
-    ///     TcpClient connection = new TcpClientWithTimeout('127.0.0.1',80,1000).Connect();
-    /// </summary>
     internal class TcpClientWithTimeout
     {
         private const int TimeoutThreadWaitMilliseconds = 5000;
@@ -109,10 +103,10 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
 
             if (type == GSLiveType.Command)
                 CommandEventHandlers.GsCommandClientError?.Invoke(null,
-                    new GameServiceException($"TcpClient connection to {_hostname}:{_port} timed out"));
+                    new GameServiceException("TcpClient connection timed out"));
             else
                 TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null,
-                    new GameServiceException($"TcpClient connection to {_hostname}:{_port} timed out"));
+                    new GameServiceException("TcpClient connection timed out"));
         }
 
         private void BeginConnect()
@@ -120,7 +114,7 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             try
             {
                 DebugUtil.LogNormal<TcpClientWithTimeout>(DebugLocation.Internal, "BeginConnect",
-                    $"Connecting To {_hostname}:{_port} ...");
+                    "Connecting To TCP Edge...");
 
                 _connection = new TcpClient
                 {

@@ -102,10 +102,10 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
 
             if (type == GSLiveType.Command)
                 CommandEventHandlers.GsCommandClientError?.Invoke(null,
-                    new GameServiceException($"WS connection to {_hostname}:{_port} timed out"));
+                    new GameServiceException("WS connection timed out"));
             else
                 TurnBasedEventHandlers.GsTurnBasedClientError?.Invoke(null,
-                    new GameServiceException($"WS connection to {_hostname}:{_port} timed out"));
+                    new GameServiceException("WS connection timed out"));
         }
 
         private void BeginConnect()
@@ -113,7 +113,7 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
             try
             {
                 DebugUtil.LogNormal<WsClientWithTimeout>(DebugLocation.Internal, "BeginConnect",
-                    $"Connecting To {_hostname}:{_port} ...");
+                    "Connecting To WS Edge...");
 
                 _connection?.Connect();
                 _connected = true;
