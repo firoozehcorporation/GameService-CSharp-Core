@@ -63,12 +63,46 @@ namespace FiroozehGameService.Handlers
 
 
         /// <summary>
+        ///     Calls When all Chats belong a Channel Removed
+        ///     NOTE : Call With Channel Name that removed all chats belong to it
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GsLiveChatProvider.RemoveChannelMessages" />
+        /// </summary>
+        public static EventHandler<string> OnChannelChatsRemoved;
+
+
+        /// <summary>
+        ///     Calls When all Channel Chats Removed
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GsLiveChatProvider.RemoveAllChannelMessages" />
+        /// </summary>
+        public static EventHandler OnAllChannelChatsRemoved;
+
+
+        /// <summary>
         ///     Calls When all Chats belong a Member Removed
         ///     NOTE : Call With Member Id that removed all chats belong to it
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChatProvider.RemoveMemberMessages" />
+        ///     <see cref="GsLiveChatProvider.RemoveChannelMemberMessages" />
         /// </summary>
         public static EventHandler<string> OnMemberChatsRemoved;
+
+
+        /// <summary>
+        ///     Calls When all Private Chats belong a Member Removed
+        ///     NOTE : Call With MemberID that removed all chats belong to it
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GsLiveChatProvider.RemovePrivateMessages" />
+        /// </summary>
+        public static EventHandler<string> OnPrivateChatsRemoved;
+
+
+        /// <summary>
+        ///     Calls When all Private Chats Removed
+        ///     This Event Handler Called By Following Function :
+        ///     <see cref="GsLiveChatProvider.RemoveAllPrivateMessages" />
+        /// </summary>
+        public static EventHandler OnAllPrivateChatsRemoved;
 
 
         /// <summary>
@@ -96,12 +130,10 @@ namespace FiroozehGameService.Handlers
 
 
         /// <summary>
-        ///     Calls When Current Player Get Pending Messages
-        ///     Pending Messages Saved when the Current Player is offline
-        ///     You Can Get Them With this Function
+        ///     Calls When Current Player Get Private Messages
         ///     This Event Handler Called By Following Function :
-        ///     <see cref="GsLiveChatProvider.GetChannelRecentMessages" />
+        ///     <see cref="GsLiveChatProvider.GetPrivateRecentMessages" />
         /// </summary>
-        public static EventHandler<List<Chat>> PendingMessages;
+        public static EventHandler<List<PrivateChat>> PrivateRecentMessages;
     }
 }

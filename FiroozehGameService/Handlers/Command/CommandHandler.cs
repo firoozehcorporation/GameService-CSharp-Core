@@ -212,7 +212,6 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(GetChannelsMembersRequestHandler.Signature, new GetChannelsMembersRequestHandler());
             _requestHandlers.Add(GetChannelsSubscribedRequestHandler.Signature,
                 new GetChannelsSubscribedRequestHandler());
-            _requestHandlers.Add(GetPendingMessagesRequestHandler.Signature, new GetPendingMessagesRequestHandler());
             _requestHandlers.Add(SendChannelPrivateMessageHandler.Signature, new SendChannelPrivateMessageHandler());
             _requestHandlers.Add(SendChannelPublicMessageHandler.Signature, new SendChannelPublicMessageHandler());
             _requestHandlers.Add(SubscribeChannelHandler.Signature, new SubscribeChannelHandler());
@@ -221,7 +220,12 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(MirrorHandler.Signature, new MirrorHandler());
 
             _requestHandlers.Add(RemoveChatHandler.Signature, new RemoveChatHandler());
+            _requestHandlers.Add(RemoveChatsHandler.Signature, new RemoveChatsHandler());
+            _requestHandlers.Add(RemoveAllChatsHandler.Signature, new RemoveAllChatsHandler());
             _requestHandlers.Add(RemoveMemberChatsHandler.Signature, new RemoveMemberChatsHandler());
+
+            _requestHandlers.Add(GetPrivateRecentMessagesRequestHandler.Signature,
+                new GetPrivateRecentMessagesRequestHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -244,7 +248,6 @@ namespace FiroozehGameService.Handlers.Command
             _responseHandlers.Add(ChannelRecentResponseHandler.ActionCommand, new ChannelRecentResponseHandler());
             _responseHandlers.Add(ChannelSubscribedResponseHandler.ActionCommand,
                 new ChannelSubscribedResponseHandler());
-            _responseHandlers.Add(PendingMessagesResponseHandler.ActionCommand, new PendingMessagesResponseHandler());
             _responseHandlers.Add(PrivateChatResponseHandler.ActionCommand, new PrivateChatResponseHandler());
             _responseHandlers.Add(PublicChatResponseHandler.ActionCommand, new PublicChatResponseHandler());
             _responseHandlers.Add(SubscribeChannelResponseHandler.ActionCommand, new SubscribeChannelResponseHandler());
@@ -255,8 +258,14 @@ namespace FiroozehGameService.Handlers.Command
                 new MirrorResponseHandler());
 
             _responseHandlers.Add(RemoveChatResponseHandler.ActionCommand, new RemoveChatResponseHandler());
+            _responseHandlers.Add(RemoveChatsResponseHandler.ActionCommand, new RemoveChatsResponseHandler());
+            _responseHandlers.Add(RemoveAllChatResponseHandler.ActionCommand, new RemoveAllChatResponseHandler());
+
             _responseHandlers.Add(RemoveMemberChatsResponseHandler.ActionCommand,
                 new RemoveMemberChatsResponseHandler());
+
+            _responseHandlers.Add(PrivateRecentMessagesResponseHandler.ActionCommand,
+                new PrivateRecentMessagesResponseHandler());
         }
 
         public void Init()

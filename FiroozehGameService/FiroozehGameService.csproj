@@ -97,8 +97,10 @@
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelRecentMessagesRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelsMembersRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelsSubscribedRequestHandler.cs"/>
-        <Compile Include="Handlers\Command\RequestHandlers\Chat\GetPendingMessagesRequestHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Chat\GetPrivateRecentMessagesRequestHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Chat\RemoveAllChatsHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\RemoveChatHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Chat\RemoveChatsHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\RemoveMemberChatsHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\SendChannelPrivateMessageHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\SendChannelPublicMessageHandler.cs"/>
@@ -120,10 +122,12 @@
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\ChannelsMembersResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\ChannelsRecentResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\ChannelsSubscribedResponseHandler.cs"/>
-        <Compile Include="Handlers\Command\ResponseHandlers\Chat\PendingMessagesResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\PrivateChatResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Chat\PrivateRecentMessagesResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\PublicChatResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Chat\RemoveAllChatResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\RemoveChatResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Chat\RemoveChatsResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\RemoveMemberChatsResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\SubscribeChannelResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\UnSubscribeChannelResponseHandler.cs"/>
@@ -298,6 +302,7 @@
         <Compile Include="Models\GameServiceException.cs"/>
         <Compile Include="Models\GSLive\APacket.cs"/>
         <Compile Include="Models\GSLive\Chat\Chat.cs"/>
+        <Compile Include="Models\GSLive\Chat\PrivateChat.cs"/>
         <Compile Include="Models\GSLive\Command\Area.cs"/>
         <Compile Include="Models\GSLive\Command\AuthPayload.cs"/>
         <Compile Include="Models\GSLive\Command\AuthResPayload.cs"/>

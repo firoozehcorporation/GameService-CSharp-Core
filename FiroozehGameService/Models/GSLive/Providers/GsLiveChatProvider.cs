@@ -68,6 +68,27 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
+        ///     Remove all a Member Messages in Public Channel
+        /// </summary>
+        /// <param name="channelName">(NOTNULL)The Channel Name You want To Remove Messages in it</param>
+        /// <param name="memberId">(NOTNULL)The Member Id You Want To Remove all Member Messages in Public Channel</param>
+        public abstract void RemoveChannelMemberMessages(string channelName, string memberId);
+
+
+        /// <summary>
+        ///     Remove all Chats In Public Channel
+        /// </summary>
+        /// <param name="channelName">(NOTNULL)The Channel Name You want To Remove All Message in it</param>
+        public abstract void RemoveChannelMessages(string channelName);
+
+
+        /// <summary>
+        ///     Remove all Chats In All Public Channels
+        /// </summary>
+        public abstract void RemoveAllChannelMessages();
+
+
+        /// <summary>
         ///     Remove a Private Chat
         /// </summary>
         /// <param name="memberId">(NOTNULL)The memberId You want To Remove Message that sent to it before</param>
@@ -76,11 +97,16 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
-        ///     Remove all a Member Messages in Public Channel
+        ///     Remove all Your Messages That Sent them to a Member
         /// </summary>
-        /// <param name="channelName">(NOTNULL)The Channel Name You want To Remove Messages in it</param>
-        /// <param name="memberId">(NOTNULL)The Member Id You Want To Remove all Member Messages in Public Channel</param>
-        public abstract void RemoveMemberMessages(string channelName, string memberId);
+        /// <param name="memberId">(NOTNULL)The Member Id You Want To Remove all Your Messages That Sent them to a Member</param>
+        public abstract void RemovePrivateMessages(string memberId);
+
+
+        /// <summary>
+        ///     Remove all Your Private Messages
+        /// </summary>
+        public abstract void RemoveAllPrivateMessages();
 
 
         /// <summary>
@@ -90,10 +116,16 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
-        ///     Get Channel last 30 Messages
+        ///     Get Channel last 100 Messages
         /// </summary>
-        /// <param name="channelName">(NOTNULL)Name of Channel You want To Get last 30 Messages</param>
+        /// <param name="channelName">(NOTNULL)Name of Channel You want To Get last 100 Messages</param>
         public abstract void GetChannelRecentMessages(string channelName);
+
+
+        /// <summary>
+        ///     Get Current Player Private Recent Messages
+        /// </summary>
+        public abstract void GetPrivateRecentMessages();
 
 
         /// <summary>
@@ -103,11 +135,5 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="skip">The skip value</param>
         /// <param name="limit">(Max = 15) The Limit value</param>
         public abstract void GetChannelMembers(string channelName, int skip = 0, int limit = 10);
-
-
-        /// <summary>
-        ///     Get Your Pending Messages
-        /// </summary>
-        public abstract void GetPendingMessages();
     }
 }

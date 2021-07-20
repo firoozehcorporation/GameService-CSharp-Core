@@ -96,13 +96,50 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 .Send(RemoveChatHandler.Signature, new Message(false, channelName, messageId));
         }
 
+        public override void RemoveChannelMemberMessages(string channelName, string memberId)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveChannelMemberMessages");
+
+            if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(channelName))
+                throw new GameServiceException("channelName Or memberId Cant Be NullOrEmpty").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveChannelMemberMessages");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(RemoveMemberChatsHandler.Signature,
+                new Message(false, channelName, memberId));
+        }
+
+        public override void RemoveChannelMessages(string channelName)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveChannelMessages");
+
+            if (string.IsNullOrEmpty(channelName))
+                throw new GameServiceException("channelName Cant Be NullOrEmpty").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveChannelMessages");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(RemoveChatsHandler.Signature,
+                new Message(false, channelName));
+        }
+
+        public override void RemoveAllChannelMessages()
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveChannelMessages");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(RemoveAllChatsHandler.Signature, new Message(false));
+        }
+
         public override void RemovePrivateMessage(string memberId, string messageId)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
                     DebugLocation.Chat, "RemovePrivateMessage");
 
-            if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(memberId))
+            if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(messageId))
                 throw new GameServiceException("memberId Or messageId Cant Be NullOrEmpty").LogException<GsLiveChat>(
                     DebugLocation.Chat, "RemovePrivateMessage");
 
@@ -110,20 +147,28 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 new Message(true, memberId, messageId));
         }
 
-        public override void RemoveMemberMessages(string channelName, string memberId)
+        public override void RemovePrivateMessages(string memberId)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
-                    DebugLocation.Chat, "RemoveMemberMessages");
+                    DebugLocation.Chat, "RemovePrivateMessages");
 
-            if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(channelName))
-                throw new GameServiceException("channelName Or memberId Cant Be NullOrEmpty").LogException<GsLiveChat>(
-                    DebugLocation.Chat, "RemoveMemberMessages");
+            if (string.IsNullOrEmpty(memberId))
+                throw new GameServiceException("memberId Cant Be NullOrEmpty").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemovePrivateMessages");
 
-            GameService.GSLive.GetGsHandler().CommandHandler.Send(RemoveMemberChatsHandler.Signature,
-                new Message(false, channelName, memberId));
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(RemoveChatsHandler.Signature,
+                new Message(true, memberId));
         }
 
+        public override void RemoveAllPrivateMessages()
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "RemoveAllPrivateMessages");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(RemoveAllChatsHandler.Signature, new Message(true));
+        }
 
         public override void GetChannelsSubscribed()
         {
@@ -168,14 +213,14 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 new RoomDetail {Id = channelName, Min = skip, Max = limit});
         }
 
-
-        public override void GetPendingMessages()
+        public override void GetPrivateRecentMessages()
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
-                    DebugLocation.Chat, "GetPendingMessages");
+                    DebugLocation.Chat, "GetPrivateRecentMessages");
+
             GameService.GSLive.GetGsHandler().CommandHandler
-                .Send(GetPendingMessagesRequestHandler.Signature);
+                .Send(GetPrivateRecentMessagesRequestHandler.Signature);
         }
     }
 }

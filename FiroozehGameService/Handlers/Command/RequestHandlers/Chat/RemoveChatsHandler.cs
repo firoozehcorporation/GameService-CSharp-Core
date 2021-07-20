@@ -1,5 +1,5 @@
-﻿// <copyright file="GetPendingMessagesRequestHandler.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+﻿// <copyright file="RemoveChatsHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -18,33 +18,39 @@
 * @author Alireza Ghodrati
 */
 
-
 using System;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
+using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.RequestHandlers.Chat
 {
-    internal class GetPendingMessagesRequestHandler : BaseRequestHandler
+    internal class RemoveChatsHandler : BaseRequestHandler
     {
         public static string Signature
-            => "GET_PENDING_MESSAGES";
+            => "REMOVE_CHATS";
 
-        private static Packet DoAction()
+        private static Packet DoAction(Message message)
         {
             return new Packet(
                 CommandHandler.PlayerHash,
-                Models.Consts.CommandConst.ActionGetPendingChats);
+                CommandConst.ActionRemoveMessages,
+                JsonConvert.SerializeObject(message, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore
+                }));
         }
 
         protected override bool CheckAction(object payload)
         {
-            return true;
+            return payload is Message;
         }
 
         protected override Packet DoAction(object payload)
         {
             if (!CheckAction(payload)) throw new ArgumentException();
-            return DoAction();
+            return DoAction(payload as Message);
         }
     }
 }

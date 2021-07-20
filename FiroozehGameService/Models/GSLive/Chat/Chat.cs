@@ -25,13 +25,14 @@ using Newtonsoft.Json;
 namespace FiroozehGameService.Models.GSLive.Chat
 {
     /// <summary>
-    ///     Represents Chat Data Model In GameService Command System
+    ///     Represents Chat Data Model In GameService Chat System
     /// </summary>
     [Serializable]
     public class Chat
     {
         /// <summary>
         ///     Gets the Chat Channel Name
+        ///     NOTE : ChannelName Only Have Valid Data When is Not a Private Chat
         /// </summary>
         /// <value>the Chat Channel Name</value>
         [JsonProperty("5")] public string ChannelName;

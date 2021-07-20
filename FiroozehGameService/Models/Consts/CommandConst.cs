@@ -47,20 +47,20 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionPrivateChat = 18;
         internal const int ActionChatRoomDetails = 19;
         internal const int ActionGetLastChats = 20;
-        internal const int ActionGetPendingChats = 21;
+
         internal const int ActionChatRemoved = 22;
-        internal const int ActionMemberChatsRemoved = 23;
+        internal const int ActionRemoveMessages = 23;
+        internal const int ActionRemoveAllMessages = 24;
+        internal const int ActionMemberChatsRemoved = 25;
+        internal const int ActionPrivateRecentChats = 26;
+
 
         internal const int ActionMirror = 99;
-
-        internal const int ActionKeepAlive = byte.MaxValue;
 
 
         internal const int Error = 100;
 
         // Limit Checker
         internal const int CommandLimit = 5; // 10 Request per sec
-        internal const int KeepAliveTime = 3500;
-        internal const short MaxRetryConnect = 7;
     }
 }

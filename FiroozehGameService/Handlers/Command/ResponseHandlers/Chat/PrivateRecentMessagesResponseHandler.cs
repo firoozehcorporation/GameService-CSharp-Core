@@ -1,5 +1,5 @@
-﻿// <copyright file="PendingMessagesResponseHandler.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2019 Firoozeh Technology LTD. All Rights Reserved.
+﻿// <copyright file="PrivateRecentMessagesResponseHandler.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,20 +20,22 @@
 
 
 using System.Collections.Generic;
+using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.GSLive.Chat;
 using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
 {
-    internal class PendingMessagesResponseHandler : BaseResponseHandler
+    internal class PrivateRecentMessagesResponseHandler : BaseResponseHandler
     {
         public static int ActionCommand
-            => Models.Consts.CommandConst.ActionGetPendingChats;
+            => CommandConst.ActionPrivateRecentChats;
 
         protected override void HandleResponse(Packet packet)
         {
-            var chats = JsonConvert.DeserializeObject<List<Models.GSLive.Chat.Chat>>(packet.Data);
-            ChatEventHandlers.PendingMessages?.Invoke(this, chats);
+            var privateChats = JsonConvert.DeserializeObject<List<PrivateChat>>(packet.Data);
+            ChatEventHandlers.PrivateRecentMessages?.Invoke(this, privateChats);
         }
     }
 }
