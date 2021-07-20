@@ -88,8 +88,6 @@ namespace FiroozehGameService.Handlers.TurnBased
 
                 TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
 
-                _isPingRequested = false;
-
                 Init();
                 return;
             }

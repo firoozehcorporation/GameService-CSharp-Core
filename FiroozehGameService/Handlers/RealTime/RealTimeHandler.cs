@@ -46,9 +46,9 @@ namespace FiroozehGameService.Handlers.RealTime
             CurrentRoom = payload.Room;
             AuthHash = payload.Area.Hash;
 
-            _udpClient = new GsUdpClient(payload.Area);
-            _udpClient.DataReceived += OnDataReceived;
-            _udpClient.Error += OnError;
+            _connGateway = new GsUdpClient(payload.Area);
+            _connGateway.DataReceived += OnDataReceived;
+            _connGateway.Error += OnError;
 
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
             _dataObserver = new RealtimeDataObserver();
@@ -89,8 +89,8 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private static void DataGetter(object sender, EventArgs e)
         {
-            Rtt = _udpClient.GetRtt();
-            PacketLost = _udpClient.GetPacketLost();
+            Rtt = _connGateway.GetRtt();
+            PacketLost = _connGateway.GetPacketLost();
         }
 
 
@@ -166,7 +166,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
         internal void Init()
         {
-            _udpClient.Init();
+            _connGateway.Init();
         }
 
         public void Dispose(bool isGraceful)
@@ -186,7 +186,7 @@ namespace FiroozehGameService.Handlers.RealTime
                 _dataObserver?.Dispose();
                 ObserverCompacterUtil.Dispose();
 
-                _udpClient?.StopReceiving(isGraceful);
+                _connGateway?.StopReceiving(isGraceful);
             }
             catch (Exception)
             {
@@ -194,7 +194,7 @@ namespace FiroozehGameService.Handlers.RealTime
             }
             finally
             {
-                _udpClient = null;
+                _connGateway = null;
                 CurrentRoom = null;
                 MemberId = null;
                 AuthHash = null;
@@ -222,14 +222,14 @@ namespace FiroozehGameService.Handlers.RealTime
 
         internal static int GetRoundTripTime()
         {
-            if (_udpClient == null) return -1;
+            if (_connGateway == null) return -1;
             return Rtt;
         }
 
 
         internal static long GetPacketLost()
         {
-            if (_udpClient == null) return -1;
+            if (_connGateway == null) return -1;
             return PacketLost;
         }
 
@@ -252,7 +252,7 @@ namespace FiroozehGameService.Handlers.RealTime
                                                " Requests Per Second")
                     .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");
 
-            if (IsAvailable()) _udpClient.Send(packet, type, canSendBigSize, isCritical, isEvent);
+            if (IsAvailable()) _connGateway.Send(packet, type, canSendBigSize, isCritical, isEvent);
             else if (!isCritical)
                 throw new GameServiceException("GameService Not Available")
                     .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");
@@ -292,13 +292,13 @@ namespace FiroozehGameService.Handlers.RealTime
 
         internal static bool IsAvailable()
         {
-            return _udpClient != null && _udpClient.IsConnected();
+            return _connGateway != null && _connGateway.IsConnected();
         }
 
 
         #region RTHandlerRegion
 
-        private static GProtocolClient _udpClient;
+        private static GProtocolClient _connGateway;
         internal static Room CurrentRoom;
 
         private readonly GsLiveSystemObserver _observer;
