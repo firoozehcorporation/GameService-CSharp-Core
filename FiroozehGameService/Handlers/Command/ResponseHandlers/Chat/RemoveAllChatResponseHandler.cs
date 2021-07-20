@@ -32,8 +32,8 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
         {
             var message = JsonConvert.DeserializeObject<Message>(packet.Data);
 
-            if (message.IsPrivate) ChatEventHandlers.OnAllPrivateChatsRemoved?.Invoke(this, null);
-            else ChatEventHandlers.OnAllChannelChatsRemoved?.Invoke(this, null);
+            if (message.IsPrivate) ChatEventHandlers.AllPrivateChatsRemoved?.Invoke(this, null);
+            else ChatEventHandlers.AllChannelChatsRemoved?.Invoke(this, null);
         }
     }
 }

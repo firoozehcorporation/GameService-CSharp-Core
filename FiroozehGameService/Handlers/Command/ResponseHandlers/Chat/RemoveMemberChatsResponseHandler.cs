@@ -29,7 +29,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
 
         protected override void HandleResponse(Packet packet)
         {
-            ChatEventHandlers.OnMemberChatsRemoved?.Invoke(null, packet.Message);
+            ChatEventHandlers.MemberChatsRemoved?.Invoke(null, packet.Message);
         }
     }
 }

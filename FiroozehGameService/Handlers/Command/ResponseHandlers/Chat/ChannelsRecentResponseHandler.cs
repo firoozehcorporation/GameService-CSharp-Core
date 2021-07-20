@@ -33,7 +33,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
         protected override void HandleResponse(Packet packet)
         {
             var chats = JsonConvert.DeserializeObject<List<Models.GSLive.Chat.Chat>>(packet.Data);
-            ChatEventHandlers.ChannelRecentMessages?.Invoke(this, chats);
+            ChatEventHandlers.ChannelRecentMessagesReceived?.Invoke(this, chats);
         }
     }
 }

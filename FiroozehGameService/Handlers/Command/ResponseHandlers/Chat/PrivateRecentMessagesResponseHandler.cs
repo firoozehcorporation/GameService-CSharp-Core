@@ -35,7 +35,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
         protected override void HandleResponse(Packet packet)
         {
             var privateChats = JsonConvert.DeserializeObject<List<PrivateChat>>(packet.Data);
-            ChatEventHandlers.PrivateRecentMessages?.Invoke(this, privateChats);
+            ChatEventHandlers.PrivateRecentMessagesReceived?.Invoke(this, privateChats);
         }
     }
 }

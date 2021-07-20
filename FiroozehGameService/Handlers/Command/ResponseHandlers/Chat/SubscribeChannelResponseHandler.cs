@@ -18,6 +18,7 @@
 * @author Alireza Ghodrati
 */
 
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
@@ -25,11 +26,11 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
     internal class SubscribeChannelResponseHandler : BaseResponseHandler
     {
         public static int ActionCommand
-            => Models.Consts.CommandConst.ActionSubscribe;
+            => CommandConst.ActionSubscribe;
 
         protected override void HandleResponse(Packet packet)
         {
-            ChatEventHandlers.OnSubscribeChannel?.Invoke(null, packet.Message);
+            ChatEventHandlers.SubscribeChannelReceived?.Invoke(null, packet.Message);
         }
     }
 }

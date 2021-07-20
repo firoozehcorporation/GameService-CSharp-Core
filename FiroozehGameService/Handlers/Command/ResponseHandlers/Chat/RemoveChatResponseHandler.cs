@@ -31,7 +31,7 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
         protected override void HandleResponse(Packet packet)
         {
             var chat = JsonConvert.DeserializeObject<Models.GSLive.Chat.Chat>(packet.Data);
-            ChatEventHandlers.OnChatRemoved?.Invoke(null, chat);
+            ChatEventHandlers.ChatRemoved?.Invoke(null, chat);
         }
     }
 }

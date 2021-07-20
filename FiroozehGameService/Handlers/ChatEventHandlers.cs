@@ -35,14 +35,14 @@ namespace FiroozehGameService.Handlers
         ///     Calls When New Chat Received
         ///     <see cref="GsLiveChatProvider.SendChannelMessage" />
         /// </summary>
-        public static EventHandler<Chat> OnChatReceived;
+        public static EventHandler<Chat> ChatReceived;
 
         /// <summary>
         ///     Calls When Current Player Subscribe Channel
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.SubscribeChannel" />
         /// </summary>
-        public static EventHandler<string> OnSubscribeChannel;
+        public static EventHandler<string> SubscribeChannelReceived;
 
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.UnSubscribeChannel" />
         /// </summary>
-        public static EventHandler<string> OnUnSubscribeChannel;
+        public static EventHandler<string> UnSubscribeChannelReceived;
 
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace FiroozehGameService.Handlers
         ///     <see cref="GsLiveChatProvider.RemoveChannelMessage" />
         ///     <see cref="GsLiveChatProvider.RemovePrivateMessage" />
         /// </summary>
-        public static EventHandler<Chat> OnChatRemoved;
+        public static EventHandler<Chat> ChatRemoved;
 
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.RemoveChannelMessages" />
         /// </summary>
-        public static EventHandler<string> OnChannelChatsRemoved;
+        public static EventHandler<string> ChannelChatsRemoved;
 
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.RemoveAllChannelMessages" />
         /// </summary>
-        public static EventHandler OnAllChannelChatsRemoved;
+        public static EventHandler AllChannelChatsRemoved;
 
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.RemoveChannelMemberMessages" />
         /// </summary>
-        public static EventHandler<string> OnMemberChatsRemoved;
+        public static EventHandler<string> MemberChatsRemoved;
 
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.RemovePrivateMessages" />
         /// </summary>
-        public static EventHandler<string> OnPrivateChatsRemoved;
+        public static EventHandler<string> PrivateChatsRemoved;
 
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.RemoveAllPrivateMessages" />
         /// </summary>
-        public static EventHandler OnAllPrivateChatsRemoved;
+        public static EventHandler AllPrivateChatsRemoved;
 
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.GetChannelsSubscribed" />
         /// </summary>
-        public static EventHandler<List<string>> ChannelsSubscribed;
+        public static EventHandler<List<string>> SubscribedChannelsReceived;
 
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.GetChannelMembers" />
         /// </summary>
-        public static EventHandler<List<Member>> ChannelMembers;
+        public static EventHandler<List<Member>> ChannelMembersReceived;
 
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.GetChannelRecentMessages" />
         /// </summary>
-        public static EventHandler<List<Chat>> ChannelRecentMessages;
+        public static EventHandler<List<Chat>> ChannelRecentMessagesReceived;
 
 
         /// <summary>
@@ -134,6 +134,6 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.GetPrivateRecentMessages" />
         /// </summary>
-        public static EventHandler<List<PrivateChat>> PrivateRecentMessages;
+        public static EventHandler<List<PrivateChat>> PrivateRecentMessagesReceived;
     }
 }
