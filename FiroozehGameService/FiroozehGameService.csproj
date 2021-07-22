@@ -302,6 +302,7 @@
         <Compile Include="Models\GameServiceException.cs"/>
         <Compile Include="Models\GSLive\APacket.cs"/>
         <Compile Include="Models\GSLive\Chat\Chat.cs"/>
+        <Compile Include="Models\GSLive\Chat\MemberChatRemove.cs"/>
         <Compile Include="Models\GSLive\Chat\PrivateChat.cs"/>
         <Compile Include="Models\GSLive\Command\Area.cs"/>
         <Compile Include="Models\GSLive\Command\AuthPayload.cs"/>

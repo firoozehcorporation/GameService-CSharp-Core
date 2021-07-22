@@ -14,14 +14,14 @@ namespace FiroozehGameService.Utils.Encryptor
 
         internal static void EncryptPacket(this Packet packet, string key)
         {
-            if (packet.Message != null) packet.Message = EncryptSrt(packet.Message, key);
-            if (packet.Data != null) packet.Data = EncryptSrt(packet.Data, key);
+            if (!string.IsNullOrEmpty(packet.Message)) packet.Message = EncryptSrt(packet.Message, key);
+            if (!string.IsNullOrEmpty(packet.Data)) packet.Data = EncryptSrt(packet.Data, key);
         }
 
         internal static void DecryptPacket(this Packet packet, string key)
         {
-            if (packet.Message != null) packet.Message = DecryptSrt(packet.Message, key);
-            if (packet.Data != null) packet.Data = DecryptSrt(packet.Data, key);
+            if (!string.IsNullOrEmpty(packet.Message)) packet.Message = DecryptSrt(packet.Message, key);
+            if (!string.IsNullOrEmpty(packet.Data)) packet.Data = DecryptSrt(packet.Data, key);
         }
 
         internal static bool IsEncryptionEnabled(this Packet packet, bool isCommand, bool isSerializer)

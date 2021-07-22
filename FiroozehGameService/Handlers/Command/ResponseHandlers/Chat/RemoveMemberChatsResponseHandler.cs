@@ -19,7 +19,9 @@
 */
 
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.GSLive.Chat;
 using FiroozehGameService.Models.GSLive.Command;
+using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
 {
@@ -29,7 +31,12 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
 
         protected override void HandleResponse(Packet packet)
         {
-            ChatEventHandlers.MemberChatsRemoved?.Invoke(null, packet.Message);
+            var message = JsonConvert.DeserializeObject<Message>(packet.Data);
+
+            ChatEventHandlers.MemberChatsRemoved?.Invoke(null, new MemberChatRemove
+            {
+                ChannelName = message.ReceiverId, MemberId = message.Data
+            });
         }
     }
 }

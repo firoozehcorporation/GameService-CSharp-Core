@@ -36,6 +36,10 @@ namespace FiroozehGameService.Models.GSLive.Command
         [JsonProperty("2")] internal string SenderId;
         [JsonProperty("4")] internal long Time;
 
+        internal Message()
+        {
+        }
+
         internal Message(bool isPrivate, string receiverId = null, string data = null, string property = null)
         {
             IsPrivate = isPrivate;

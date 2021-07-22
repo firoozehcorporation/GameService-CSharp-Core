@@ -85,7 +85,7 @@ namespace FiroozehGameService.Handlers
         ///     This Event Handler Called By Following Function :
         ///     <see cref="GsLiveChatProvider.RemoveChannelMemberMessages" />
         /// </summary>
-        public static EventHandler<string> MemberChatsRemoved;
+        public static EventHandler<MemberChatRemove> MemberChatsRemoved;
 
 
         /// <summary>

@@ -486,6 +486,7 @@ namespace FiroozehGameService.Models.Consts
                 public class RemoveMessage
                 {
                     public const string MessageNotFound = "message_notfound";
+                    public const string MemberNotfound = "member_notfound";
                 }
             }
 
