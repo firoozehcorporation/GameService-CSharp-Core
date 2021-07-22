@@ -29,9 +29,9 @@ namespace FiroozehGameService.Models.GSLive.Command
     internal class Message
     {
         [JsonProperty("3")] internal string Data;
-        [JsonProperty("5")] internal string Id;
+        [JsonProperty("6")] internal string Id;
         [JsonProperty("0")] internal bool IsPrivate;
-        [JsonProperty("6")] internal string Property;
+        [JsonProperty("7")] internal string Property;
         [JsonProperty("1")] internal string ReceiverId;
         [JsonProperty("2")] internal string SenderId;
         [JsonProperty("4")] internal long Time;

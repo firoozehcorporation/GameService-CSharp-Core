@@ -73,6 +73,9 @@ namespace FiroozehGameService.Handlers.Command
 
                 IsInitializing = false;
 
+                _retryConnectCounter = 0;
+                _retryPingCounter = 0;
+
                 _cancellationToken?.Cancel(false);
                 _observer?.Dispose();
                 PingUtil.Dispose();
@@ -119,18 +122,22 @@ namespace FiroozehGameService.Handlers.Command
             }
             finally
             {
+                _retryPingCounter = 0;
                 _isPingRequested = false;
             }
         }
 
         private async void RequestPing(object sender, EventArgs e)
         {
-            if (_isPingRequested)
+            if (_isPingRequested && _retryPingCounter >= 3)
             {
                 DebugUtil.LogNormal<CommandHandler>(DebugLocation.Command, "RequestPing",
                     "CommandHandler -> Server Not Response Ping, Reconnecting...");
 
                 _isPingRequested = false;
+                _retryPingCounter = 0;
+
+                IsInitializing = false;
 
                 Init();
                 return;
@@ -138,6 +145,7 @@ namespace FiroozehGameService.Handlers.Command
 
             var currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             _isPingRequested = true;
+            _retryPingCounter++;
 
             await RequestAsync(MirrorHandler.Signature, currentTime);
         }
@@ -146,12 +154,13 @@ namespace FiroozehGameService.Handlers.Command
         {
             if (_isDisposed) return;
 
-            exception.LogException<CommandHandler>(DebugLocation.Command, "OnGsTcpClientError");
-
             _retryConnectCounter++;
 
             DebugUtil.LogError<CommandHandler>(DebugLocation.Command, "OnGsTcpClientError",
                 "CommandHandler Reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+
+            _isPingRequested = false;
+            _retryPingCounter = 0;
 
             IsInitializing = false;
 
@@ -184,7 +193,19 @@ namespace FiroozehGameService.Handlers.Command
 
             if (_isFirstInit) return;
             _isFirstInit = true;
-            CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
+
+            try
+            {
+                if (GameService.HandlerType == EventHandlerType.NativeContext)
+                    CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null);
+                else
+                    GameService.SynchronizationContext?.Send(
+                        delegate { CoreEventHandlers.SuccessfullyLogined?.Invoke(null, null); }, null);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
 
         private async void OnPing(object sender, object packet)
@@ -361,6 +382,7 @@ namespace FiroozehGameService.Handlers.Command
         private readonly GsLiveSystemObserver _observer;
         private CancellationTokenSource _cancellationToken;
         private int _retryConnectCounter;
+        private int _retryPingCounter;
         private bool _isDisposed;
         private bool _isFirstInit;
         private bool _isPingRequested;

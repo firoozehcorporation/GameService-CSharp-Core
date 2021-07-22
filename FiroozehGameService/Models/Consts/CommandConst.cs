@@ -39,7 +39,6 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionOnInvite = 15;
         internal const int ActionCancelAutoMatch = 16;
 
-
         internal const int ActionSubscribe = 12;
         internal const int ActionPublicChat = 13;
         internal const int ActionUnSubscribe = 14;

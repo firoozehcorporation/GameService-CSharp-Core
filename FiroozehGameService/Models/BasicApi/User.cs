@@ -20,7 +20,7 @@
 */
 
 using System;
-using FiroozehGameService.Core;
+using FiroozehGameService.Models.BasicApi.Providers;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
@@ -32,6 +32,12 @@ namespace FiroozehGameService.Models.BasicApi
     public class User
     {
         /// <summary>
+        ///     Gets the User Email.(NULLABLE)
+        /// </summary>
+        /// <value>the User Email</value>
+        [JsonProperty("email")] public string Email;
+
+        /// <summary>
         ///     Gets the User id.
         /// </summary>
         /// <value>the User id</value>
@@ -40,7 +46,7 @@ namespace FiroozehGameService.Models.BasicApi
 
         /// <summary>
         ///     get this User Is Guest or Not.
-        ///     (Note : Only Works on <see cref="GameService.GetCurrentPlayer" />)
+        ///     (Note : Only Works on <see cref="IPlayerProvider.GetCurrentPlayer" />)
         /// </summary>
         /// <value>this User Is Guest or Not</value>
         [JsonProperty("guest")] public bool IsGuest;
@@ -64,15 +70,8 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the User Name</value>
         [JsonProperty("name")] public string Name;
-        
-        
-        /// <summary>
-        ///     Gets the User Email.(NULLABLE)
-        /// </summary>
-        /// <value>the User Email</value>
-        [JsonProperty("email")] public string Email;
-        
-        
+
+
         /// <summary>
         ///     Gets the User Phone Number.(NULLABLE)
         /// </summary>

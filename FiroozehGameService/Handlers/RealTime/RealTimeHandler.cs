@@ -113,7 +113,20 @@ namespace FiroozehGameService.Handlers.RealTime
             // this is Reconnect
             if (PlayerHash != -1)
             {
-                RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
+                try
+                {
+                    if (GameService.HandlerType == EventHandlerType.NativeContext)
+                        RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
+                    else
+                        GameService.SynchronizationContext?.Send(
+                            delegate { RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected); },
+                            null);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
                 return;
             }
 
@@ -262,7 +275,21 @@ namespace FiroozehGameService.Handlers.RealTime
         private void OnError(object sender, ErrorArg e)
         {
             DebugUtil.LogError<RealTimeHandler>(DebugLocation.RealTime, "OnError", e.Error);
-            if (PlayerHash != -1) RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+            if (PlayerHash != -1)
+                try
+                {
+                    if (GameService.HandlerType == EventHandlerType.NativeContext)
+                        RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+                    else
+                        GameService.SynchronizationContext?.Send(
+                            delegate { RealTimeEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting); },
+                            null);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
             if (_isDisposed) return;
             Init();
         }

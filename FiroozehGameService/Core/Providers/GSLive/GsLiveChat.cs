@@ -121,7 +121,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     DebugLocation.Chat, "RemoveChannelMessages");
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(RemoveChatsHandler.Signature,
-                new Message(false, channelName));
+                new Message(false, null, channelName));
         }
 
         public override void RemoveAllChannelMessages()
@@ -158,7 +158,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     DebugLocation.Chat, "RemovePrivateMessages");
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(RemoveChatsHandler.Signature,
-                new Message(true, memberId));
+                new Message(true, null, memberId));
         }
 
         public override void RemoveAllPrivateMessages()

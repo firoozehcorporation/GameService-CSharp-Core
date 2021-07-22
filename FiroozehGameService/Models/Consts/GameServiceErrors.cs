@@ -478,6 +478,15 @@ namespace FiroozehGameService.Models.Consts
                 {
                     public const string NotMemberBefore = "not_member_before";
                 }
+
+                /// <summary>
+                ///     Represents GameService Remove Message Functions Errors
+                ///     Errors that occur in the following Functions:
+                /// </summary>
+                public class RemoveMessage
+                {
+                    public const string MessageNotFound = "message_notfound";
+                }
             }
 
 

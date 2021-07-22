@@ -21,6 +21,7 @@
 
 
 using System.Collections.Generic;
+using System.Threading;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
@@ -280,6 +281,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             GameService.GSLive.GetGsHandler().TurnBasedHandler
                 .Send(LeaveRoomHandler.Signature, new DataPayload {NextId = whoIsNext});
+
+            Thread.Sleep(200);
 
             CoreEventHandlers.Dispose?.Invoke(null, new DisposeData
             {

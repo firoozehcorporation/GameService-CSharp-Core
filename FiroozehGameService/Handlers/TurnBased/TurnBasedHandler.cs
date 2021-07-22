@@ -81,24 +81,43 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private async void RequestPing(object sender, object e)
         {
-            if (_isPingRequested)
+            if (_isPingRequested && _retryPingCounter >= 3)
             {
                 DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "RequestPing"
                     , "TurnBasedHandler -> Server Not Response Ping, Reconnecting...");
 
-                TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+                _retryPingCounter = 0;
+                IsInitializing = false;
 
                 Init();
+
+                try
+                {
+                    if (GameService.HandlerType == EventHandlerType.NativeContext)
+                        TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+                    else
+                        GameService.SynchronizationContext?.Send(
+                            delegate { TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting); },
+                            null);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
                 return;
             }
 
             _isPingRequested = true;
+            _retryPingCounter++;
+
             await RequestAsync(MirrorHandler.Signature);
         }
 
         private void TurnBasedMirror(object sender, Packet packet)
         {
             _isPingRequested = false;
+            _retryPingCounter = 0;
         }
 
 
@@ -119,7 +138,20 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             exception.LogException<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientError");
 
-            if (PlayerHash != null) TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+            if (PlayerHash != null)
+                try
+                {
+                    if (GameService.HandlerType == EventHandlerType.NativeContext)
+                        TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting);
+                    else
+                        GameService.SynchronizationContext?.Send(
+                            delegate { TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connecting); },
+                            null);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
 
             _retryConnectCounter++;
 
@@ -137,6 +169,9 @@ namespace FiroozehGameService.Handlers.TurnBased
 
             DebugUtil.LogNormal<TurnBasedHandler>(DebugLocation.TurnBased, "OnGsTcpClientError",
                 "TurnBasedHandler reconnect Retry " + _retryConnectCounter + " , Wait to Connect...");
+
+            _isPingRequested = false;
+            _retryPingCounter = 0;
 
             IsInitializing = false;
 
@@ -162,7 +197,19 @@ namespace FiroozehGameService.Handlers.TurnBased
         {
             // this is Reconnect
             if (PlayerHash != null || _isPingRequested)
-                TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
+                try
+                {
+                    if (GameService.HandlerType == EventHandlerType.NativeContext)
+                        TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected);
+                    else
+                        GameService.SynchronizationContext?.Send(
+                            delegate { TurnBasedEventHandlers.Reconnected?.Invoke(null, ReconnectStatus.Connected); },
+                            null);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
 
             PlayerHash = playerHash;
             GsLiveTurnBased.InAutoMatch = false;
@@ -271,6 +318,7 @@ namespace FiroozehGameService.Handlers.TurnBased
                 }
 
                 _retryConnectCounter = 0;
+                _retryPingCounter = 0;
                 _isDisposed = true;
                 _isPingRequested = false;
 
@@ -278,7 +326,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 
                 _observer?.Dispose();
                 _callerUtil?.Dispose();
-                _cancellationToken?.Cancel(true);
+                _cancellationToken?.Cancel(false);
 
                 _connGateway?.StopReceiving(isGraceful);
             }
@@ -347,6 +395,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         private readonly ObjectCallerUtil _callerUtil;
         private CancellationTokenSource _cancellationToken;
         private int _retryConnectCounter;
+        private int _retryPingCounter;
         private bool _isDisposed;
         private bool _isPingRequested;
 
