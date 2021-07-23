@@ -52,6 +52,7 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionRemoveAllMessages = 24;
         internal const int ActionMemberChatsRemoved = 25;
         internal const int ActionPrivateRecentChats = 26;
+        internal const int ActionEditChat = 27;
 
 
         internal const int ActionMirror = 99;

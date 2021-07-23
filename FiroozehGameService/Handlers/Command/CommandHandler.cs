@@ -245,6 +245,8 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(RemoveAllChatsHandler.Signature, new RemoveAllChatsHandler());
             _requestHandlers.Add(RemoveMemberChatsHandler.Signature, new RemoveMemberChatsHandler());
 
+            _requestHandlers.Add(EditChatHandler.Signature, new EditChatHandler());
+
             _requestHandlers.Add(GetPrivateRecentMessagesRequestHandler.Signature,
                 new GetPrivateRecentMessagesRequestHandler());
         }
@@ -284,6 +286,8 @@ namespace FiroozehGameService.Handlers.Command
 
             _responseHandlers.Add(RemoveMemberChatsResponseHandler.ActionCommand,
                 new RemoveMemberChatsResponseHandler());
+
+            _responseHandlers.Add(EditChatResponseHandler.ActionCommand, new EditChatResponseHandler());
 
             _responseHandlers.Add(PrivateRecentMessagesResponseHandler.ActionCommand,
                 new PrivateRecentMessagesResponseHandler());

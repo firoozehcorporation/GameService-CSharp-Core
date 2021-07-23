@@ -40,12 +40,14 @@ namespace FiroozehGameService.Models.GSLive.Command
         {
         }
 
-        internal Message(bool isPrivate, string receiverId = null, string data = null, string property = null)
+        internal Message(bool isPrivate, string receiverId = null, string data = null, string property = null,
+            string id = null)
         {
             IsPrivate = isPrivate;
             ReceiverId = receiverId;
             Data = data;
             Property = property;
+            Id = id;
         }
 
 

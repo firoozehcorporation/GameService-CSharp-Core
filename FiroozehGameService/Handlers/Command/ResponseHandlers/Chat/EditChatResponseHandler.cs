@@ -1,4 +1,4 @@
-﻿// <copyright file="RemoveMemberChatsResponseHandler.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="EditChatResponseHandler.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,24 +19,19 @@
 */
 
 using FiroozehGameService.Models.Consts;
-using FiroozehGameService.Models.GSLive.Chat;
 using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Chat
 {
-    internal class RemoveMemberChatsResponseHandler : BaseResponseHandler
+    internal class EditChatResponseHandler : BaseResponseHandler
     {
-        internal static int ActionCommand => CommandConst.ActionMemberChatsRemoved;
+        internal static int ActionCommand => CommandConst.ActionEditChat;
 
         protected override void HandleResponse(Packet packet)
         {
-            var message = JsonConvert.DeserializeObject<Message>(packet.Data);
-
-            ChatEventHandlers.MemberChatsRemoved?.Invoke(this, new MemberChatRemove
-            {
-                ChannelName = message.ReceiverId, MemberId = message.Data
-            });
+            var chat = JsonConvert.DeserializeObject<Models.GSLive.Chat.Chat>(packet.Data);
+            ChatEventHandlers.ChatEdited?.Invoke(this, chat);
         }
     }
 }

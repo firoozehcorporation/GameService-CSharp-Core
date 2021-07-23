@@ -94,6 +94,7 @@
         <Compile Include="Handlers\Command\RequestHandlers\AutoMatchHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\BaseRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\CancelAutoMatchHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Chat\EditChatHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelRecentMessagesRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelsMembersRequestHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelsSubscribedRequestHandler.cs"/>
@@ -122,6 +123,7 @@
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\ChannelsMembersResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\ChannelsRecentResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\ChannelsSubscribedResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Chat\EditChatResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\PrivateChatResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\PrivateRecentMessagesResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\PublicChatResponseHandler.cs"/>

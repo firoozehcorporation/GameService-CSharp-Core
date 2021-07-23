@@ -63,6 +63,15 @@ namespace FiroozehGameService.Handlers
 
 
         /// <summary>
+        ///     Calls When a Chat Edited
+        ///     This Event Handler Called By Following Functions :
+        ///     <see cref="GsLiveChatProvider.EditChannelMessage" />
+        ///     <see cref="GsLiveChatProvider.EditPrivateMessage" />
+        /// </summary>
+        public static EventHandler<Chat> ChatEdited;
+
+
+        /// <summary>
         ///     Calls When all Chats belong a Channel Removed
         ///     NOTE : Call With Channel Name that removed all chats belong to it
         ///     This Event Handler Called By Following Function :

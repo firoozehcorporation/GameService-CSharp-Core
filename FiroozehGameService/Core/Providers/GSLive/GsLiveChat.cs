@@ -82,6 +82,38 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 new Message(true, memberId, message, property));
         }
 
+        public override void EditChannelMessage(string channelName, string messageId, string message,
+            string property = null)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "EditChannelMessage");
+
+            if (string.IsNullOrEmpty(channelName) || string.IsNullOrEmpty(messageId) || string.IsNullOrEmpty(message))
+                throw new GameServiceException("channelName Or messageId Or message Cant Be NullOrEmpty")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "EditChannelMessage");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(EditChatHandler.Signature,
+                new Message(false, channelName, message, property, messageId));
+        }
+
+        public override void EditPrivateMessage(string memberId, string messageId, string message,
+            string property = null)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
+                    DebugLocation.Chat, "EditPrivateMessage");
+
+            if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(messageId) || string.IsNullOrEmpty(message))
+                throw new GameServiceException("memberId Or messageId Or message Cant Be NullOrEmpty")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "EditPrivateMessage");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(EditChatHandler.Signature,
+                new Message(true, memberId, message, property, messageId));
+        }
+
         public override void RemoveChannelMessage(string channelName, string messageId)
         {
             if (GameService.IsGuest)

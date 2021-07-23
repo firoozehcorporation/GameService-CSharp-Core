@@ -30,7 +30,7 @@ namespace FiroozehGameService.Models.GSLive.Chat
     public class MemberChatRemove
     {
         /// <summary>
-        ///     Gets the Channel Name That removed All Chats Chats Belong To Current Member id in it
+        ///     Gets the Channel Name That removed All Chats Belong To Current Member id
         /// </summary>
         /// <value>the Channel Name</value>
         public string ChannelName;

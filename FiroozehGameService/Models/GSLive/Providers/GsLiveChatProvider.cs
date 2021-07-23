@@ -60,6 +60,28 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
+        ///     Edit Message In Subscribed Channel.
+        /// </summary>
+        /// <param name="channelName">(NOTNULL)Name of Channel You want To Edit a Message in it</param>
+        /// <param name="messageId">(NOTNULL)Id of Message You want To Edit it</param>
+        /// <param name="message">(NOTNULL)Message Data</param>
+        /// <param name="property">(NULLABLE) Message Extra Property</param>
+        public abstract void EditChannelMessage(string channelName, string messageId, string message,
+            string property = null);
+
+
+        /// <summary>
+        ///     Edit Message That Sent to a Member.
+        /// </summary>
+        /// <param name="memberId">(NOTNULL)ID of Member You want To Edit Message that sent to it</param>
+        /// <param name="messageId">(NOTNULL)Id of Message You want To Edit it</param>
+        /// <param name="message">(NOTNULL)Message Data</param>
+        /// <param name="property">(NULLABLE) Message Extra Property</param>
+        public abstract void EditPrivateMessage(string memberId, string messageId, string message,
+            string property = null);
+
+
+        /// <summary>
         ///     Remove a Chat In Public Channel
         /// </summary>
         /// <param name="channelName">(NOTNULL)The Channel Name You want To Remove Message in it</param>
