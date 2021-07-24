@@ -39,15 +39,10 @@ namespace FiroozehGameService.Models.Consts
         internal const int OnSnapshot = 15;
 
         internal const int ActionMirror = 99;
-
-
-        internal const int ActionKeepAlive = byte.MaxValue;
-
         internal const int Errors = 100;
 
-
         internal const int TurnBasedLimit = 5; // 5 Request per sec
-        internal const int ConnectivityCheckInterval = 1000;
+        internal const int ConnectivityCheckInterval = 1500;
         internal const short MaxRetryConnect = 15;
 
         internal const int MinPlayer = 2;
