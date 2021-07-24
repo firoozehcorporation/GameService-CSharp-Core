@@ -270,6 +270,7 @@
         <Compile Include="Models\BasicApi\TResponse\TUser.cs"/>
         <Compile Include="Models\BasicApi\User.cs"/>
         <Compile Include="Models\Consts\Api.cs"/>
+        <Compile Include="Models\Consts\ChatConst.cs"/>
         <Compile Include="Models\Consts\CommandConst.cs"/>
         <Compile Include="Models\Consts\GameServiceErrors.cs"/>
         <Compile Include="Models\Consts\RealTimeConst.cs"/>

@@ -21,6 +21,7 @@
 
 using FiroozehGameService.Handlers.Command.RequestHandlers.Chat;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive.Command;
 using FiroozehGameService.Models.GSLive.Providers;
@@ -64,6 +65,18 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("channelName Or message Cant Be NullOrEmpty").LogException<GsLiveChat>(
                     DebugLocation.Chat, "SendChannelMessage");
 
+            if (message.Length > ChatConst.MaxMessageLength)
+                throw new GameServiceException("The message is Too Long, Max Message Length Is " +
+                                               ChatConst.MaxMessageLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "SendChannelMessage");
+
+            if (property != null && property.Length > ChatConst.MaxPropertyLength)
+                throw new GameServiceException("The property is Too Long, Max property Length Is " +
+                                               ChatConst.MaxPropertyLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "SendChannelMessage");
+
             GameService.GSLive.GetGsHandler().CommandHandler.Send(SendChannelPublicMessageHandler.Signature,
                 new Message(false, channelName, message, property));
         }
@@ -77,6 +90,18 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(message))
                 throw new GameServiceException("memberId Or message Cant Be NullOrEmpty").LogException<GsLiveChat>(
                     DebugLocation.Chat, "SendPrivateMessage");
+
+            if (message.Length > ChatConst.MaxMessageLength)
+                throw new GameServiceException("The message is Too Long, Max Message Length Is " +
+                                               ChatConst.MaxMessageLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "SendPrivateMessage");
+
+            if (property != null && property.Length > ChatConst.MaxPropertyLength)
+                throw new GameServiceException("The property is Too Long, Max property Length Is " +
+                                               ChatConst.MaxPropertyLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "SendPrivateMessage");
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(SendChannelPrivateMessageHandler.Signature,
                 new Message(true, memberId, message, property));
@@ -94,6 +119,18 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     .LogException<GsLiveChat>(
                         DebugLocation.Chat, "EditChannelMessage");
 
+            if (message.Length > ChatConst.MaxMessageLength)
+                throw new GameServiceException("The message is Too Long, Max Message Length Is " +
+                                               ChatConst.MaxMessageLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "EditChannelMessage");
+
+            if (property != null && property.Length > ChatConst.MaxPropertyLength)
+                throw new GameServiceException("The property is Too Long, Max property Length Is " +
+                                               ChatConst.MaxPropertyLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "EditChannelMessage");
+
             GameService.GSLive.GetGsHandler().CommandHandler.Send(EditChatHandler.Signature,
                 new Message(false, channelName, message, property, messageId));
         }
@@ -107,6 +144,18 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             if (string.IsNullOrEmpty(memberId) || string.IsNullOrEmpty(messageId) || string.IsNullOrEmpty(message))
                 throw new GameServiceException("memberId Or messageId Or message Cant Be NullOrEmpty")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "EditPrivateMessage");
+
+            if (message.Length > ChatConst.MaxMessageLength)
+                throw new GameServiceException("The message is Too Long, Max Message Length Is " +
+                                               ChatConst.MaxMessageLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "EditPrivateMessage");
+
+            if (property != null && property.Length > ChatConst.MaxPropertyLength)
+                throw new GameServiceException("The property is Too Long, Max property Length Is " +
+                                               ChatConst.MaxPropertyLength + " Characters.")
                     .LogException<GsLiveChat>(
                         DebugLocation.Chat, "EditPrivateMessage");
 
