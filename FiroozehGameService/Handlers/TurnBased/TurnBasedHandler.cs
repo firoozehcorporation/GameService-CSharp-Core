@@ -87,6 +87,8 @@ namespace FiroozehGameService.Handlers.TurnBased
                     , "TurnBasedHandler -> Server Not Response Ping, Reconnecting...");
 
                 _retryPingCounter = 0;
+                _isPingRequested = false;
+
                 IsInitializing = false;
 
                 Init();
@@ -196,7 +198,7 @@ namespace FiroozehGameService.Handlers.TurnBased
         private void OnAuth(object sender, string playerHash)
         {
             // this is Reconnect
-            if (PlayerHash != null || _isPingRequested)
+            if (PlayerHash != null)
                 try
                 {
                     if (GameService.HandlerType == EventHandlerType.NativeContext)
@@ -214,7 +216,6 @@ namespace FiroozehGameService.Handlers.TurnBased
             PlayerHash = playerHash;
             GsLiveTurnBased.InAutoMatch = false;
             IsInitializing = false;
-            _isPingRequested = false;
 
             _connGateway?.StartSending();
             _callerUtil?.Start();
