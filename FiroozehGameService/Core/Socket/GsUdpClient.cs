@@ -50,7 +50,7 @@ namespace FiroozehGameService.Core.Socket
                 CreateInstance();
 
                 DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "Init",
-                    "Connecting to  " + Area.Ip + ":" + Area.Port);
+                    "Connecting to GProtocol Edge...");
 
                 Client?.Connect(Area.Ip, (ushort) Area.Port);
             }
