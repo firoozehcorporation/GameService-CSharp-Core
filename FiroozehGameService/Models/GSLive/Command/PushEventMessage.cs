@@ -21,6 +21,7 @@
 
 
 using System;
+using FiroozehGameService.Models.Enums.GSLive;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.GSLive.Command
@@ -28,25 +29,26 @@ namespace FiroozehGameService.Models.GSLive.Command
     [Serializable]
     internal class PushEventMessage
     {
+        [JsonProperty("4")] internal PushEventBufferType BufferType;
         [JsonProperty("2")] internal string Data;
-        [JsonProperty("4")] internal bool IsBuffering;
-        [JsonProperty("0")] internal bool IsMember;
         [JsonProperty("3")] internal int NextSecs;
         [JsonProperty("1")] internal string ReceiverId;
+        [JsonProperty("0")] internal PushEventSendType SendType;
 
 
         internal PushEventMessage()
         {
         }
 
-        internal PushEventMessage(bool isMember, string receiverId = null, string data = null, int nextSecs = 0,
-            bool isBuffering = false)
+        internal PushEventMessage(PushEventSendType sendType, string receiverId = null, string data = null,
+            int nextSecs = 0,
+            PushEventBufferType bufferType = PushEventBufferType.NoBuffering)
         {
-            IsMember = isMember;
+            SendType = sendType;
             ReceiverId = receiverId;
             Data = data;
             NextSecs = nextSecs;
-            IsBuffering = isBuffering;
+            BufferType = bufferType;
         }
     }
 }

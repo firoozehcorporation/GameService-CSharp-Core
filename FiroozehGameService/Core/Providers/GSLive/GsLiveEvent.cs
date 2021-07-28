@@ -33,7 +33,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
     internal class GsLiveEvent : GsLiveEventProvider
     {
         public override void PushEventById(string memberId, string data,
-            PushEventType pushEventType = PushEventType.NoBuffering)
+            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveEvent>(
@@ -49,12 +49,12 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(PushEventHandler.Signature,
                 new PushEventMessage(
-                    true, memberId, data, default, pushEventType == PushEventType.WithBuffering
+                    PushEventSendType.MemberId, memberId, data, default, pushEventBufferType
                 ));
         }
 
         public override void PushEventById(string memberId, string data, SchedulerTime schedulerTime,
-            PushEventType pushEventType = PushEventType.NoBuffering)
+            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveEvent>(
@@ -74,12 +74,12 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(PushEventHandler.Signature,
                 new PushEventMessage(
-                    true, memberId, data, schedulerTime.TimeInSecs, pushEventType == PushEventType.WithBuffering
+                    PushEventSendType.MemberId, memberId, data, schedulerTime.TimeInSecs, pushEventBufferType
                 ));
         }
 
         public override void PushEventByTag(string memberTag, string data,
-            PushEventType pushEventType = PushEventType.NoBuffering)
+            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveEvent>(
@@ -95,12 +95,12 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(PushEventHandler.Signature,
                 new PushEventMessage(
-                    false, memberTag, data, default, pushEventType == PushEventType.WithBuffering
+                    PushEventSendType.MemberTag, memberTag, data, default, pushEventBufferType
                 ));
         }
 
         public override void PushEventByTag(string memberTag, string data, SchedulerTime schedulerTime,
-            PushEventType pushEventType = PushEventType.NoBuffering)
+            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveEvent>(
@@ -120,7 +120,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(PushEventHandler.Signature,
                 new PushEventMessage(
-                    false, memberTag, data, schedulerTime.TimeInSecs, pushEventType == PushEventType.WithBuffering
+                    PushEventSendType.MemberTag, memberTag, data, schedulerTime.TimeInSecs, pushEventBufferType
                 ));
         }
     }

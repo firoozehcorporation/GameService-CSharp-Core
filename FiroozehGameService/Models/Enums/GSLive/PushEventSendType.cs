@@ -1,4 +1,4 @@
-// <copyright file="PushEventType.cs" company="Firoozeh Technology LTD">
+// <copyright file="PushEventSendType.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,18 +23,18 @@
 namespace FiroozehGameService.Models.Enums.GSLive
 {
     /// <summary>
-    ///     Represents Push Event Type Class in GameService
+    ///     Represents Push Event Send Type Class in GameService
     /// </summary>
-    public enum PushEventType
+    public enum PushEventSendType
     {
         /// <summary>
-        ///     No Buffering Push Event Type
+        ///     Member Id Push Event Send Type
         /// </summary>
-        NoBuffering,
+        MemberId = 1,
 
         /// <summary>
-        ///     With Buffering Push Event Type
+        ///     Member Tag Push Event Send Type
         /// </summary>
-        WithBuffering
+        MemberTag = 2
     }
 }

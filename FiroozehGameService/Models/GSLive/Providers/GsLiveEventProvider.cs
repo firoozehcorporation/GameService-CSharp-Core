@@ -34,9 +34,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="memberId">(NOTNULL)ID of Member You Want To Sent an Event to it</param>
         /// <param name="data">(NOTNULL)The main Event Data </param>
-        /// <param name="pushEventType">The Type of Event</param>
+        /// <param name="pushEventBufferType">The Type of Event Buffering</param>
         public abstract void PushEventById(string memberId, string data,
-            PushEventType pushEventType = PushEventType.NoBuffering);
+            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering);
 
 
         /// <summary>
@@ -46,9 +46,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="memberId">(NOTNULL)ID of Member You Want To Sent an Event to it</param>
         /// <param name="data">(NOTNULL)The main Event Data </param>
         /// <param name="schedulerTime">(NOTNULL)The Event Scheduler Time Data</param>
-        /// <param name="pushEventType">The Type of Event</param>
+        /// <param name="pushEventBufferType">The Type of Event Buffering</param>
         public abstract void PushEventById(string memberId, string data, SchedulerTime schedulerTime,
-            PushEventType pushEventType = PushEventType.NoBuffering);
+            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering);
 
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// </summary>
         /// <param name="memberTag">(NOTNULL)Tag of Member You Want To Sent an Event to it</param>
         /// <param name="data">(NOTNULL)The main Event Data </param>
-        /// <param name="pushEventType">The Type of Event</param>
+        /// <param name="pushEventBufferType">The Type of Event Buffering</param>
         public abstract void PushEventByTag(string memberTag, string data,
-            PushEventType pushEventType = PushEventType.NoBuffering);
+            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering);
 
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="memberTag">(NOTNULL)Tag of Member You Want To Sent an Event to it</param>
         /// <param name="data">(NOTNULL)The main Event Data </param>
         /// <param name="schedulerTime">(NOTNULL)The Event Scheduler Time Data</param>
-        /// <param name="pushEventType">The Type of Event</param>
+        /// <param name="pushEventBufferType">The Type of Event Buffering</param>
         public abstract void PushEventByTag(string memberTag, string data, SchedulerTime schedulerTime,
-            PushEventType pushEventType = PushEventType.NoBuffering);
+            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering);
     }
 }

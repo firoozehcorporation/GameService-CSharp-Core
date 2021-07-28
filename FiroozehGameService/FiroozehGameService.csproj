@@ -146,6 +146,7 @@
         <Compile Include="Handlers\Command\ResponseHandlers\NotificationResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\PingResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\MirrorResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\PushEventResponseHandler.cs"/>
         <Compile Include="Handlers\CoreEventHandlers.cs"/>
         <Compile Include="Handlers\DownloadEventHandlers.cs"/>
         <Compile Include="Handlers\GsHandler.cs"/>
@@ -289,7 +290,8 @@
         <Compile Include="Models\Enums\GProtocolSendType.cs"/>
         <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs"/>
         <Compile Include="Models\Enums\GSLive\Command\AutoMatchCancel.cs"/>
-        <Compile Include="Models\Enums\GSLive\PushEventType.cs"/>
+        <Compile Include="Models\Enums\GSLive\PushEventSendType.cs"/>
+        <Compile Include="Models\Enums\GSLive\PushEventBufferType.cs"/>
         <Compile Include="Models\Enums\GSLive\GSLiveType.cs"/>
         <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
         <Compile Include="Models\Enums\GSLive\ReconnectStatus.cs"/>
@@ -335,6 +337,7 @@
         <Compile Include="Models\GSLive\Providers\GsLiveProvider.cs"/>
         <Compile Include="Models\GSLive\Providers\GsLiveRealTimeProvider.cs"/>
         <Compile Include="Models\GSLive\Providers\GsLiveTurnBasedProvider.cs"/>
+        <Compile Include="Models\GSLive\PushEvent.cs"/>
         <Compile Include="Models\GSLive\Room.cs"/>
         <Compile Include="Models\GSLive\RoomData.cs"/>
         <Compile Include="Models\GSLive\RT\AuthPayload.cs"/>

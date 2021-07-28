@@ -293,6 +293,8 @@ namespace FiroozehGameService.Handlers.Command
 
             _responseHandlers.Add(PrivateRecentMessagesResponseHandler.ActionCommand,
                 new PrivateRecentMessagesResponseHandler());
+
+            _responseHandlers.Add(PushEventResponseHandler.ActionCommand, new PushEventResponseHandler());
         }
 
         public void Init()

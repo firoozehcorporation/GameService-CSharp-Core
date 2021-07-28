@@ -96,5 +96,15 @@ namespace FiroozehGameService.Handlers
         ///     <see cref="GsLiveTurnBasedProvider.InviteUser" />
         /// </summary>
         public static EventHandler InvitationSent;
+
+
+        /// <summary>
+        ///     Calls When Current Push Event Received Successfully
+        ///     <see
+        ///         cref="GsLiveEventProvider.PushEventById(string,string,FiroozehGameService.Models.Enums.GSLive.PushEventBufferType)" />
+        ///     <see
+        ///         cref="GsLiveEventProvider.PushEventByTag(string,string,FiroozehGameService.Models.Enums.GSLive.PushEventBufferType)" />
+        /// </summary>
+        public static EventHandler<PushEvent> PushEventReceived;
     }
 }

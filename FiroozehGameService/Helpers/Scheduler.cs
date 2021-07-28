@@ -46,15 +46,6 @@ namespace FiroozehGameService.Helpers
         }
 
         /// <summary>
-        ///     returns The Now State
-        /// </summary>
-        /// <returns></returns>
-        public static SchedulerTime Now()
-        {
-            return new SchedulerTime(SchedulerTime.Now);
-        }
-
-        /// <summary>
         ///     returns next Seconds Time in Seconds
         /// </summary>
         /// <param name="data"></param>
