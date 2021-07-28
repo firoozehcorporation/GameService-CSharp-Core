@@ -20,7 +20,6 @@
 */
 
 
-using System.Threading.Tasks;
 using FiroozehGameService.Handlers;
 
 namespace FiroozehGameService.Models.GSLive.Providers
@@ -52,6 +51,12 @@ namespace FiroozehGameService.Models.GSLive.Providers
         ///     The GameService Chat System Provider
         /// </summary>
         public abstract GsLiveChatProvider Chat();
+
+
+        /// <summary>
+        ///     The GameService Event System Provider
+        /// </summary>
+        public abstract GsLiveEventProvider Event();
 
 
         /// <summary>

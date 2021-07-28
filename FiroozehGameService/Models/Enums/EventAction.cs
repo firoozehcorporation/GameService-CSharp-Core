@@ -1,4 +1,4 @@
-// <copyright file="EventAction.cs" company="Firoozeh Technology LTD">
+// <copyright file="PushEventType" company="Firoozeh Technology LTD">
 // Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,32 +23,32 @@
 namespace FiroozehGameService.Models.Enums
 {
     /// <summary>
-    ///  Represents EventType Class in GameService
+    ///     Represents EventType Class in GameService
     /// </summary>
     public enum EventAction
     {
         /// <summary>
-        /// Accept Friend Request Action
+        ///     Accept Friend Request Action
         /// </summary>
         AcceptFriendRequest = 1,
 
         /// <summary>
-        /// Accept Friend Request Action
+        ///     Accept Friend Request Action
         /// </summary>
         AcceptJoinPartyRequest = 2,
 
         /// <summary>
-        /// kick Member Action
+        ///     kick Member Action
         /// </summary>
         KickPartyMember = 3,
 
         /// <summary>
-        /// Change Member Role Action
+        ///     Change Member Role Action
         /// </summary>
         ChangePartyMemberRole = 4,
-        
+
         /// <summary>
-        /// Add To Party By Friend Action
+        ///     Add To Party By Friend Action
         /// </summary>
         AddToPartyByFriend = 5
     }

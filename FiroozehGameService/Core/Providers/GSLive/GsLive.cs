@@ -31,9 +31,11 @@ namespace FiroozehGameService.Core.Providers.GSLive
     internal class GsLive : GsLiveProvider
     {
         private readonly GsLiveChat _chat;
+        private readonly GsLiveEvent _event;
         private readonly GsHandler _handler;
         private readonly GsLiveRealTime _realTime;
         private readonly GsLiveTurnBased _turnBased;
+
 
         internal GsLive()
         {
@@ -41,6 +43,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
             _realTime = new GsLiveRealTime();
             _turnBased = new GsLiveTurnBased();
             _chat = new GsLiveChat();
+            _event = new GsLiveEvent();
         }
 
         internal override void Init()
@@ -61,6 +64,12 @@ namespace FiroozehGameService.Core.Providers.GSLive
         public override GsLiveChatProvider Chat()
         {
             return _chat;
+        }
+
+
+        public override GsLiveEventProvider Event()
+        {
+            return _event;
         }
 
         public override short GetPing()

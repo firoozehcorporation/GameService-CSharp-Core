@@ -22,48 +22,62 @@
 namespace FiroozehGameService.Models.Enums
 {
     /// <summary>
-    ///  Represents Game Service DebugLocation Class
+    ///     Represents Game Service DebugLocation Class
     /// </summary>
     public enum DebugLocation
     {
         /// <summary>
-        /// Happened In All GameService Systems
+        ///     Happened In All GameService Systems
         /// </summary>
-        All , 
+        All,
+
         /// <summary>
-        /// Happened In GameService Core 
+        ///     Happened In GameService Core
         /// </summary>
-        Internal , 
+        Internal,
+
         /// <summary>
-        /// Happened In Http System
+        ///     Happened In Http System
         /// </summary>
-        Http , 
+        Http,
+
         /// <summary>
-        /// Happened In Command System
+        ///     Happened In Command System
         /// </summary>
-        Command ,
+        Command,
+
         /// <summary>
-        /// Happened In Chat System
+        ///     Happened In Chat System
         /// </summary>
-        Chat ,
+        Chat,
+
         /// <summary>
-        /// Happened In TurnBased System
+        ///     Happened In Event System
         /// </summary>
-        TurnBased ,
+        Event,
+
         /// <summary>
-        /// Happened In RealTime System
+        ///     Happened In TurnBased System
+        /// </summary>
+        TurnBased,
+
+        /// <summary>
+        ///     Happened In RealTime System
         /// </summary>
         RealTime,
+
         /// <summary>
-        /// Happened In Social System
+        ///     Happened In Social System
         /// </summary>
         Social,
+
         /// <summary>
-        /// Happened In Friend System
+        ///     Happened In Friend System
         /// </summary>
         Friend,
+
         /// <summary>
-        /// Happened In Party System
+        ///     Happened In Party System
         /// </summary>
         Party
     }

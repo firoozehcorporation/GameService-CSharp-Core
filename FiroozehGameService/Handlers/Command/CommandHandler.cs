@@ -249,6 +249,8 @@ namespace FiroozehGameService.Handlers.Command
 
             _requestHandlers.Add(GetPrivateRecentMessagesRequestHandler.Signature,
                 new GetPrivateRecentMessagesRequestHandler());
+
+            _requestHandlers.Add(PushEventHandler.Signature, new PushEventHandler());
         }
 
         private void InitResponseMessageHandlers()
