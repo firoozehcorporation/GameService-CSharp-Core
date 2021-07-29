@@ -22,8 +22,6 @@
 
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Enums;
-using FiroozehGameService.Models.Internal;
-using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Builder
 {
@@ -32,21 +30,27 @@ namespace FiroozehGameService.Builder
     /// </summary>
     public class GameServiceDebugConfiguration
     {
-        internal readonly bool EnableException;
-        internal readonly bool EnableError;
-        internal readonly bool EnableDebug;
         internal readonly DebugLocation[] DebugLocations;
+        internal readonly bool EnableDebug;
+        internal readonly bool EnableError;
+        internal readonly bool EnableException;
+
+
+        private GameServiceDebugConfiguration()
+        {
+        }
 
 
         /// <summary>
-        /// Set GameServiceDebugConfiguration Values
+        ///     Set GameServiceDebugConfiguration Values
         /// </summary>
         /// <param name="enableException">Set Debug Exception Enable</param>
         /// <param name="enableError">Set Debug Error Enable</param>
         /// <param name="enableDebug">Set Debug Debug Enable</param>
         /// <param name="debugLocations">Set DebugLocations , If Not Set Debug All Systems</param>
         /// <exception cref="GameServiceException">May GameServiceException Occur</exception>
-        public GameServiceDebugConfiguration(bool enableException, bool enableError, bool enableDebug, DebugLocation[] debugLocations)
+        public GameServiceDebugConfiguration(bool enableException, bool enableError, bool enableDebug,
+            DebugLocation[] debugLocations)
         {
             EnableException = enableException;
             EnableError = enableError;

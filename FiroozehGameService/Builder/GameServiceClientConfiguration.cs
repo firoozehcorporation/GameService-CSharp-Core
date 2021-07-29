@@ -38,6 +38,10 @@ namespace FiroozehGameService.Builder
         internal readonly SystemInfo SystemInfo;
         internal readonly ConnectionType TurnBasedConnectionType;
 
+        private GameServiceClientConfiguration()
+        {
+        }
+
         /// <summary>
         ///     Set GameServiceClientConfiguration Values
         /// </summary>

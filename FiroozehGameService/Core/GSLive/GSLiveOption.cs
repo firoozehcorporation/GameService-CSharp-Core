@@ -36,6 +36,10 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public class AutoMatchOption
         {
+            internal AutoMatchOption()
+            {
+            }
+
             /// <summary>
             ///     Specifies the AutoMatch Options
             /// </summary>
@@ -75,6 +79,10 @@ namespace FiroozehGameService.Core.GSLive
         /// </summary>
         public class CreateRoomOption : AutoMatchOption
         {
+            internal CreateRoomOption()
+            {
+            }
+
             /// <summary>
             ///     Specifies the CreateRoom Options
             /// </summary>
