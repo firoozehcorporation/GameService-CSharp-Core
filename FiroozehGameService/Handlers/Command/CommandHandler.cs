@@ -251,6 +251,7 @@ namespace FiroozehGameService.Handlers.Command
                 new GetPrivateRecentMessagesRequestHandler());
 
             _requestHandlers.Add(PushEventHandler.Signature, new PushEventHandler());
+            _requestHandlers.Add(BufferedPushEventsHandler.Signature, new BufferedPushEventsHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -295,6 +296,8 @@ namespace FiroozehGameService.Handlers.Command
                 new PrivateRecentMessagesResponseHandler());
 
             _responseHandlers.Add(PushEventResponseHandler.ActionCommand, new PushEventResponseHandler());
+            _responseHandlers.Add(BufferedPushEventsResponseHandler.ActionCommand,
+                new BufferedPushEventsResponseHandler());
         }
 
         public void Init()

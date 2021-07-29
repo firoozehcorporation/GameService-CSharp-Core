@@ -54,6 +54,7 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionPrivateRecentChats = 26;
         internal const int ActionEditChat = 27;
 
+        internal const int ActionBufferedPushEvents = 28;
         internal const int ActionPushEvent = 29;
 
 

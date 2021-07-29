@@ -71,5 +71,11 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="pushEventBufferType">The Type of Event Buffering</param>
         public abstract void PushEventByTag(string memberTag, string data, SchedulerTime schedulerTime,
             PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering);
+
+
+        /// <summary>
+        ///     Get All Buffered Push Events and Remove them in Servers
+        /// </summary>
+        public abstract void GetBufferedPushEvents();
     }
 }

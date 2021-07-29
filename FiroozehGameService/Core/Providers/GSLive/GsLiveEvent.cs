@@ -123,5 +123,14 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     PushEventSendType.MemberTag, memberTag, data, schedulerTime.TimeInSecs, pushEventBufferType
                 ));
         }
+
+        public override void GetBufferedPushEvents()
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveEvent>(
+                    DebugLocation.Event, "GetBufferedPushEvents");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(BufferedPushEventsHandler.Signature);
+        }
     }
 }

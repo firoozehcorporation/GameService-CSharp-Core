@@ -94,6 +94,7 @@
         <Compile Include="Handlers\Command\RequestHandlers\AuthorizationHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\AutoMatchHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\BaseRequestHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\BufferedPushEventsHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\CancelAutoMatchHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\EditChatHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\GetChannelRecentMessagesRequestHandler.cs"/>
@@ -121,6 +122,7 @@
         <Compile Include="Handlers\Command\ResponseHandlers\AuthResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\AutoMatchResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\BaseResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\BufferedPushEventsResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\CancelAutoMatchResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\ChannelsMembersResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\ChannelsRecentResponseHandler.cs"/>

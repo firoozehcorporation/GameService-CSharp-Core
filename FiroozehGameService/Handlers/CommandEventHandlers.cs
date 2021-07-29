@@ -106,5 +106,13 @@ namespace FiroozehGameService.Handlers
         ///         cref="GsLiveEventProvider.PushEventByTag(string,string,FiroozehGameService.Models.Enums.GSLive.PushEventBufferType)" />
         /// </summary>
         public static EventHandler<PushEvent> PushEventReceived;
+
+
+        /// <summary>
+        ///     Calls When Current Buffered Push Events Received Successfully
+        ///     <see
+        ///         cref="GsLiveEventProvider.GetBufferedPushEvents()" />
+        /// </summary>
+        public static EventHandler<List<PushEvent>> BufferedPushEventsReceived;
     }
 }

@@ -27,7 +27,6 @@ namespace FiroozehGameService.Models.GSLive
     /// </summary>
     public class SchedulerTime
     {
-        internal const int Now = -1;
         internal readonly int TimeInSecs;
 
         internal SchedulerTime()

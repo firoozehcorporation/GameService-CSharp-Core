@@ -38,6 +38,13 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Event Buffer Type</value>
         [JsonProperty("4")] public PushEventBufferType BufferType;
 
+
+        /// <summary>
+        ///     Gets the Event Create Time in UNIX.
+        /// </summary>
+        /// <value>the Event Create Time in UNIX</value>
+        [JsonProperty("5")] public long CreateTime;
+
         /// <summary>
         ///     Gets the Event Data.
         /// </summary>
