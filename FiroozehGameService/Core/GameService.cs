@@ -51,10 +51,10 @@ namespace FiroozehGameService.Core
             if (configuration == null)
                 throw new GameServiceException("Configuration Cant Be Null").LogException(typeof(GameService),
                     DebugLocation.Internal, "ConfigurationInstance");
-          
+
             if (SynchronizationContext.Current == null)
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-           
+
             SynchronizationContext = SynchronizationContext.Current;
 
             if (IsAuthenticated())
@@ -91,9 +91,9 @@ namespace FiroozehGameService.Core
                                      typeof(GameService), DebugLocation.Internal, "ConfigurationDebug");
         }
 
-        
+
         /// <summary>
-        ///    Set Event Handlers Type to Work Chat System with it
+        ///     Set Event Handlers Type to Work Chat System with it
         /// </summary>
         /// <param name="handlerType">Type of Event Handler You Want to Set</param>
         public static void SetEventHandlersType(EventHandlerType handlerType)
@@ -101,7 +101,7 @@ namespace FiroozehGameService.Core
             HandlerType = handlerType;
         }
 
-        
+
         /// <summary>
         ///     Check if Current User Authenticated
         /// </summary>
@@ -118,7 +118,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "8.2.0";
+            return "8.3.0";
         }
 
 
