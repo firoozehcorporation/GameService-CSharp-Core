@@ -20,7 +20,11 @@
 */
 
 
+using System;
+using FiroozehGameService.Models;
+using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.GSLive;
+using FiroozehGameService.Utils;
 
 namespace FiroozehGameService.Helpers
 {
@@ -29,73 +33,45 @@ namespace FiroozehGameService.Helpers
     /// </summary>
     public static class Scheduler
     {
-        private const int Second = 1;
-        private const int Minute = 60 * Second;
-        private const int Hour = 60 * Minute;
-        private const int Day = 24 * Hour;
-        private const int Week = 7 * Day;
-
         /// <summary>
-        ///     returns the AbstractValue Of Time to Work With Scheduler Functions
+        ///     returns the ScheduleBuilder Of Time to Work With Scheduler Functions
         /// </summary>
-        /// <param name="time"></param>
+        /// <param name="time"> the Time Value</param>
         /// <returns></returns>
-        public static AbstractValue<int> Next(int time)
+        public static ScheduleBuilder Next(int time)
         {
-            return new AbstractValue<int>(time);
-        }
+            if (time <= 0)
+                throw new GameServiceException("Invalid Time, Time Must Be Greater Than Zero").LogException(
+                    typeof(Scheduler), DebugLocation.Internal, "Next");
 
-        /// <summary>
-        ///     returns next Seconds Time in Seconds
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static SchedulerTime Seconds(this AbstractValue<int> data)
-        {
-            return new SchedulerTime(Second * data.Value);
+            return new ScheduleBuilder(time);
         }
 
 
         /// <summary>
-        ///     returns next Minutes Time in Seconds
+        ///     returns next Date Time Offset in Seconds
+        ///     NOTE : Input DateTimeOffset Must Set With UTC Time
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="dateTimeOffset">the DateTimeOffset To Schedule</param>
         /// <returns></returns>
-        public static SchedulerTime Minutes(this AbstractValue<int> data)
+        public static SchedulerTime FromDate(DateTimeOffset dateTimeOffset)
         {
-            return new SchedulerTime(Minute * data.Value);
-        }
+            if (dateTimeOffset == null)
+                throw new GameServiceException("dateTimeOffset Cant Be Null").LogException(
+                    typeof(Scheduler), DebugLocation.Internal, "FromDate");
 
 
-        /// <summary>
-        ///     returns next Hours Time in Seconds
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static SchedulerTime Hours(this AbstractValue<int> data)
-        {
-            return new SchedulerTime(Hour * data.Value);
-        }
+            var seconds = dateTimeOffset
+                .ToUniversalTime()
+                .Subtract(DateTimeOffset.UtcNow)
+                .TotalSeconds;
 
-        /// <summary>
-        ///     returns next Days Time in Seconds
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static SchedulerTime Days(this AbstractValue<int> data)
-        {
-            return new SchedulerTime(Day * data.Value);
-        }
+            if (seconds <= 0)
+                throw new GameServiceException("Invalid Time, Time Must Be Greater Than Zero").LogException(
+                    typeof(Scheduler), DebugLocation.Internal, "FromDate");
 
 
-        /// <summary>
-        ///     returns next Weeks Time in Seconds
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static SchedulerTime Weeks(this AbstractValue<int> data)
-        {
-            return new SchedulerTime(Week * data.Value);
+            return new SchedulerTime((int) seconds);
         }
     }
 }

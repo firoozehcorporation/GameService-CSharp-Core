@@ -20,6 +20,9 @@
 */
 
 
+using FiroozehGameService.Models.Enums;
+using FiroozehGameService.Utils;
+
 namespace FiroozehGameService.Models.GSLive
 {
     /// <summary>
@@ -27,6 +30,7 @@ namespace FiroozehGameService.Models.GSLive
     /// </summary>
     public class SchedulerTime
     {
+        private const int YearInSecs = 31556926;
         internal readonly int TimeInSecs;
 
         internal SchedulerTime()
@@ -35,6 +39,10 @@ namespace FiroozehGameService.Models.GSLive
 
         internal SchedulerTime(int value)
         {
+            if (value > YearInSecs)
+                throw new GameServiceException("You Can Not Schedule For More Than One Year")
+                    .LogException<SchedulerTime>(DebugLocation.Internal, "Constructor");
+
             TimeInSecs = value;
         }
     }
