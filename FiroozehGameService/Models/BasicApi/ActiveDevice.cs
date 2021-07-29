@@ -49,8 +49,15 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Device Name</value>
         [JsonProperty("DeviceName")] public string DeviceName;
-        
-        
+
+
+        /// <summary>
+        ///     Gets the First Login Time
+        /// </summary>
+        /// <value>the First Login Time</value>
+        [JsonProperty("first_login")] public DateTimeOffset FirstLoginTime;
+
+
         /// <summary>
         ///     Gets the Device Graphics Name
         /// </summary>
@@ -58,14 +65,6 @@ namespace FiroozehGameService.Models.BasicApi
         [JsonProperty("GraphicsDeviceName")] public string GraphicsDeviceName;
 
 
-
-        /// <summary>
-        ///     Gets the Device Operating System
-        /// </summary>
-        /// <value>the Device Operating System</value>
-        [JsonProperty("OperatingSystem")] public string OperatingSystem;
-        
-        
         /// <summary>
         ///     returns true if the Active Device For Current Player
         /// </summary>
@@ -78,27 +77,17 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Last Login Time</value>
         [JsonProperty("last_login")] public DateTimeOffset LastLoginTime;
-        
-        
+
+
         /// <summary>
-        ///     Gets the First Login Time
+        ///     Gets the Device Operating System
         /// </summary>
-        /// <value>the First Login Time</value>
-        [JsonProperty("first_login")] public DateTimeOffset FirstLoginTime;
-        
+        /// <value>the Device Operating System</value>
+        [JsonProperty("OperatingSystem")] public string OperatingSystem;
 
 
-        public override string ToString()
+        internal ActiveDevice()
         {
-            return "ActiveDevice{" +
-                   "DeviceID='" + DeviceId + '\'' +
-                   ", DeviceName='" + DeviceName + '\'' +
-                   ", DeviceModel='" + DeviceModel + '\'' +
-                   ", OperatingSystem='" + OperatingSystem + '\'' +
-                   ", GraphicsDeviceName='" + GraphicsDeviceName + '\'' +
-                   ", FirstLoginTime=" + FirstLoginTime +
-                   ", LastLoginTime='" + LastLoginTime + '\'' +
-                   '}';
         }
     }
 }

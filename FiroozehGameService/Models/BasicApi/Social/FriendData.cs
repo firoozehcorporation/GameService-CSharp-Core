@@ -50,5 +50,9 @@ namespace FiroozehGameService.Models.BasicApi.Social
         /// </summary>
         /// <value>the Friend Request Time</value>
         [JsonProperty("requested_at")] public DateTimeOffset RequestedTime;
+
+        internal FriendData()
+        {
+        }
     }
 }

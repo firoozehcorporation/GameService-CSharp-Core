@@ -84,5 +84,9 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the User Point</value>
         [JsonProperty("point")] public int Point;
+
+        internal User()
+        {
+        }
     }
 }

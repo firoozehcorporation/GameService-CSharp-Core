@@ -55,5 +55,9 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Value of This Score</value>
         [JsonProperty("value")] public int Value;
+
+        internal Score()
+        {
+        }
     }
 }

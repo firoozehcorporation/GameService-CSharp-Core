@@ -26,6 +26,10 @@ namespace FiroozehGameService.Models.Internal
         /// </summary>
         /// <value>the Asset Size in Bytes</value>
         [JsonProperty("size")] public long Size;
+
+        internal AssetInfoData()
+        {
+        }
     }
 
     /// <summary>
@@ -45,5 +49,10 @@ namespace FiroozehGameService.Models.Internal
         /// </summary>
         /// <value>the Asset Info Get Status</value>
         [JsonProperty("status")] public bool Status;
+
+
+        internal AssetInfo()
+        {
+        }
     }
 }

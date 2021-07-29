@@ -44,12 +44,8 @@ namespace FiroozehGameService.Models.BasicApi
         /// <value>the List Of Scores</value>
         [JsonProperty("scores")] public List<Score> Scores;
 
-        public override string ToString()
+        internal LeaderBoardDetails()
         {
-            return "LeaderBoardReceiver{" +
-                   "leaderboard=" + Leaderboard +
-                   ", scores=" + Scores +
-                   '}';
         }
     }
 }

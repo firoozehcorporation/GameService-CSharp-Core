@@ -118,5 +118,10 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Room Status Value</value>
         [JsonProperty("status")] public int Status;
+
+
+        internal Room()
+        {
+        }
     }
 }

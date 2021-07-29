@@ -31,6 +31,12 @@ namespace FiroozehGameService.Models.BasicApi
     public class Game
     {
         /// <summary>
+        ///     Gets the Game Cover URL.
+        /// </summary>
+        /// <value>the Game Cover URL</value>
+        [JsonProperty("logo")] public string Image;
+
+        /// <summary>
         ///     Gets the Game Name.
         /// </summary>
         /// <value>the Game Name</value>
@@ -38,23 +44,20 @@ namespace FiroozehGameService.Models.BasicApi
 
 
         /// <summary>
-        ///     Gets the Game Cover URL.
+        ///     Gets the Game Online Players.
         /// </summary>
-        /// <value>the Game Cover URL</value>
-        [JsonProperty("logo")] public string Image;
-        
-        
+        /// <value>the Game Online Players</value>
+        [JsonProperty("onlines")] public int OnlinePlayers;
+
+
         /// <summary>
         ///     Gets the Game Publisher.
         /// </summary>
         /// <value>the Game Publisher</value>
         [JsonProperty("publisher")] public Publisher Publisher;
-        
-        
-        /// <summary>
-        ///     Gets the Game Online Players.
-        /// </summary>
-        /// <value>the Game Online Players</value>
-        [JsonProperty("onlines")] public int OnlinePlayers;
+
+        internal Game()
+        {
+        }
     }
 }

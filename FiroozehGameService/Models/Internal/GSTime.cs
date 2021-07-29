@@ -28,6 +28,10 @@ namespace FiroozehGameService.Models.Internal
     [Serializable]
     public class GSTime
     {
+        internal GSTime()
+        {
+        }
+
         /// <summary>
         ///     Gets the Current Server Time
         /// </summary>

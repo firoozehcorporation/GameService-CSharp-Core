@@ -51,5 +51,9 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the Tries Value</value>
         [JsonProperty("tries")] public int Tries;
+
+        internal SubmitScoreResponse()
+        {
+        }
     }
 }

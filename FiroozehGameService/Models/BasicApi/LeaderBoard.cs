@@ -103,20 +103,8 @@ namespace FiroozehGameService.Models.BasicApi
         [JsonProperty("to")] public int To;
 
 
-        public override string ToString()
+        internal LeaderBoard()
         {
-            return "LeaderBoard{" +
-                   "id='" + Id + '\'' +
-                   "name='" + Name + '\'' +
-                   ", key='" + Key + '\'' +
-                   ", status=" + Status +
-                   ", image='" + Image + '\'' +
-                   ", Description='" + Description + '\'' +
-                   ", from=" + From +
-                   ", to=" + To +
-                   ", OrderType=" + OrderType +
-                   ", game='" + Game + '\'' +
-                   '}';
         }
     }
 }

@@ -49,5 +49,10 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Game Name</value>
         [JsonProperty("name")] public string Name;
+
+
+        internal Game()
+        {
+        }
     }
 }

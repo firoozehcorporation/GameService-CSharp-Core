@@ -115,5 +115,10 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Room Role Value</value>
         [JsonProperty("7")] public string Role;
+
+
+        internal RoomData()
+        {
+        }
     }
 }

@@ -63,5 +63,9 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>The Room Where You Are Invited</value>
         [JsonProperty("room")] public Room Room;
+
+        internal Invite()
+        {
+        }
     }
 }

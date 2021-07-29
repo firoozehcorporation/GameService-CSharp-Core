@@ -15,8 +15,6 @@
 // </copyright>
 
 using System;
-using FiroozehGameService.Models.Enums;
-using FiroozehGameService.Utils;
 
 /**
 
@@ -32,18 +30,20 @@ namespace FiroozehGameService.Models
     /// </summary>
     public class GameServiceException : Exception
     {
-        public GameServiceException()
+        /// <summary>
+        ///     the Game Service Exception Main Constructor
+        /// </summary>
+        internal GameServiceException()
             : base("A GameService Runtime error occurred!")
         {
         }
 
-        public GameServiceException(string msg)
+        /// <summary>
+        ///     the Game Service Exception Message Constructor
+        /// </summary>
+        /// <param name="msg">the Exception Message</param>
+        internal GameServiceException(string msg)
             : base(msg)
-        {
-        }
-
-        public GameServiceException(string msg, Exception inner) :
-            base(msg, inner)
         {
         }
     }

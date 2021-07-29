@@ -91,19 +91,8 @@ namespace FiroozehGameService.Models.BasicApi
         [JsonProperty("status")] public bool Status;
 
 
-        public override string ToString()
+        internal Achievement()
         {
-            return "Achievement{" +
-                   "ID='" + Id + '\'' +
-                   "name='" + Name + '\'' +
-                   ", key='" + Key + '\'' +
-                   ", Description='" + Description + '\'' +
-                   ", point=" + Point +
-                   ", image='" + Image + '\'' +
-                   ", status=" + Status +
-                   ", game='" + Game + '\'' +
-                   ", IsUnlocked=" + IsUnlocked +
-                   '}';
         }
     }
 }

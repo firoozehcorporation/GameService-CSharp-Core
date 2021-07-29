@@ -95,5 +95,10 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Member User Data</value>
         [JsonProperty("user")] public User User;
+
+
+        internal Member()
+        {
+        }
     }
 }

@@ -43,5 +43,9 @@ namespace FiroozehGameService.Models.BasicApi.Social
         /// </summary>
         /// <value>the Party Members</value>
         [JsonProperty("members")] public List<PartyMember> PartyMembers;
+
+        internal PartyInfo()
+        {
+        }
     }
 }

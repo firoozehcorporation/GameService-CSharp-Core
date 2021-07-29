@@ -44,5 +44,9 @@ namespace FiroozehGameService.Models.BasicApi.DBaaS
         /// </summary>
         /// <value>the Results</value>
         [JsonProperty("list")] public List<T> Items;
+
+        internal TableResult()
+        {
+        }
     }
 }

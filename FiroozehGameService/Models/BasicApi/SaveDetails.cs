@@ -35,5 +35,10 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the User id</value>
         [JsonProperty("user")] public string User;
+
+
+        internal SaveDetails()
+        {
+        }
     }
 }

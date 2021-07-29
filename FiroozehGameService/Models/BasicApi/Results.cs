@@ -22,7 +22,6 @@
 
 using System;
 using System.Collections.Generic;
-using FiroozehGameService.Models.GSLive;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
@@ -38,12 +37,17 @@ namespace FiroozehGameService.Models.BasicApi
         /// </summary>
         /// <value>the All Results Count</value>
         [JsonProperty("count")] public int AllCount;
-        
-        
+
+
         /// <summary>
         ///     Gets the Results
         /// </summary>
         /// <value>the Results</value>
         [JsonProperty("list")] public List<T> Values;
+
+
+        internal Results()
+        {
+        }
     }
 }

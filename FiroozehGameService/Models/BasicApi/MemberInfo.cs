@@ -85,10 +85,8 @@ namespace FiroozehGameService.Models.BasicApi
         /// <value>the Member Tags</value>
         [JsonProperty("tags")] public List<string> Tags;
 
-
-        public override bool Equals(object obj)
+        internal MemberInfo()
         {
-            return Id == (obj as MemberInfo)?.Id;
         }
     }
 }

@@ -20,7 +20,6 @@
 */
 
 using System;
-using FiroozehGameService.Models.Internal;
 using Newtonsoft.Json;
 
 namespace FiroozehGameService.Models.BasicApi
@@ -32,16 +31,20 @@ namespace FiroozehGameService.Models.BasicApi
     public class Publisher
     {
         /// <summary>
+        ///     Gets the Game Cover URL.
+        /// </summary>
+        /// <value>the Game Cover URL</value>
+        [JsonProperty("logo")] public string Image;
+
+        /// <summary>
         ///     Gets the Game Name.
         /// </summary>
         /// <value>the Game Name</value>
         [JsonProperty("name")] public string Name;
 
 
-        /// <summary>
-        ///     Gets the Game Cover URL.
-        /// </summary>
-        /// <value>the Game Cover URL</value>
-        [JsonProperty("logo")] public string Image;
+        internal Publisher()
+        {
+        }
     }
 }

@@ -84,5 +84,9 @@ namespace FiroozehGameService.Models.BasicApi.Social
         /// </summary>
         /// <value>the Party Variables</value>
         [JsonProperty("variables")] public Dictionary<string, string> Variables;
+
+        internal Party()
+        {
+        }
     }
 }

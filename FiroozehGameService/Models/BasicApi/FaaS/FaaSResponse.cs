@@ -30,6 +30,10 @@ namespace FiroozehGameService.Models.BasicApi.FaaS
     [Serializable]
     public class FaaSResponse<TOutput>
     {
+        internal FaaSResponse()
+        {
+        }
+
         /// <summary>
         ///     Gets the FaaSResponse Status
         /// </summary>
