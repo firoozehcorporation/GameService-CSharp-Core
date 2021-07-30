@@ -33,7 +33,7 @@ namespace FiroozehGameService.Models
         /// <summary>
         ///     the Game Service Exception Main Constructor
         /// </summary>
-        internal GameServiceException()
+        public GameServiceException()
             : base("A GameService Runtime error occurred!")
         {
         }
@@ -42,7 +42,7 @@ namespace FiroozehGameService.Models
         ///     the Game Service Exception Message Constructor
         /// </summary>
         /// <param name="msg">the Exception Message</param>
-        internal GameServiceException(string msg)
+        public GameServiceException(string msg)
             : base(msg)
         {
         }

@@ -21,6 +21,7 @@
 
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Models;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive;
@@ -47,6 +48,11 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("data Cant Be NullOrEmpty").LogException<GsLiveEvent>(
                     DebugLocation.Event, "PushEventById");
 
+            if (data.Length > EventConst.MaxDataLength)
+                throw new GameServiceException("The data is Too Long, Max Data Length Is " +
+                                               EventConst.MaxDataLength + " Characters.")
+                    .LogException<GsLiveEvent>(DebugLocation.Event, "PushEventById");
+
             GameService.GSLive.GetGsHandler().CommandHandler.Send(PushEventHandler.Signature,
                 new PushEventMessage(
                     PushEventSendType.MemberId, memberId, data, default, pushEventBufferType
@@ -66,6 +72,11 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (string.IsNullOrEmpty(data))
                 throw new GameServiceException("data Cant Be NullOrEmpty").LogException<GsLiveEvent>(
                     DebugLocation.Event, "PushEventById");
+
+            if (data.Length > EventConst.MaxDataLength)
+                throw new GameServiceException("The data is Too Long, Max Data Length Is " +
+                                               EventConst.MaxDataLength + " Characters.")
+                    .LogException<GsLiveEvent>(DebugLocation.Event, "PushEventById");
 
             if (schedulerTime == null)
                 throw new GameServiceException("schedulerTime Cant Be Null").LogException<GsLiveEvent>(
@@ -93,6 +104,12 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("data Cant Be NullOrEmpty").LogException<GsLiveEvent>(
                     DebugLocation.Event, "PushEventByTag");
 
+            if (data.Length > EventConst.MaxDataLength)
+                throw new GameServiceException("The data is Too Long, Max Data Length Is " +
+                                               EventConst.MaxDataLength + " Characters.")
+                    .LogException<GsLiveEvent>(DebugLocation.Event, "PushEventByTag");
+
+
             GameService.GSLive.GetGsHandler().CommandHandler.Send(PushEventHandler.Signature,
                 new PushEventMessage(
                     PushEventSendType.MemberTag, memberTag, data, default, pushEventBufferType
@@ -112,6 +129,11 @@ namespace FiroozehGameService.Core.Providers.GSLive
             if (string.IsNullOrEmpty(data))
                 throw new GameServiceException("data Cant Be NullOrEmpty").LogException<GsLiveEvent>(
                     DebugLocation.Event, "PushEventByTag");
+
+            if (data.Length > EventConst.MaxDataLength)
+                throw new GameServiceException("The data is Too Long, Max Data Length Is " +
+                                               EventConst.MaxDataLength + " Characters.")
+                    .LogException<GsLiveEvent>(DebugLocation.Event, "PushEventByTag");
 
             if (schedulerTime == null)
                 throw new GameServiceException("schedulerTime Cant Be Null").LogException<GsLiveEvent>(

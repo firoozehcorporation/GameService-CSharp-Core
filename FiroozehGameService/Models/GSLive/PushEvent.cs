@@ -51,13 +51,14 @@ namespace FiroozehGameService.Models.GSLive
         [JsonProperty("2")] public string Data;
 
         /// <summary>
-        ///     Gets the Event Receiver Id Or Tag
+        ///     Gets the Event Receiver Member Id
         /// </summary>
-        /// <value>the Event Receiver Id Or Tag</value>
-        [JsonProperty("1")] public string MemberIdOrTag;
+        /// <value>the Event Receiver Member Id</value>
+        [JsonProperty("1")] public string ReceiverMemberId;
 
         /// <summary>
         ///     Gets the Event Scheduled Time in UNIX Time Seconds.
+        ///     NOTE : if the Event Not Scheduled , this value is 0
         /// </summary>
         /// <value>the Event Scheduled Time in UNIX Time Seconds</value>
         [JsonProperty("3")] public long ScheduledTime;
@@ -80,7 +81,7 @@ namespace FiroozehGameService.Models.GSLive
         /// <returns>the event Scheduled status</returns>
         public bool IsScheduled()
         {
-            return ScheduledTime != CreateTime;
+            return ScheduledTime != 0;
         }
     }
 }

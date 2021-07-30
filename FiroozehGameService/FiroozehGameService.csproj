@@ -278,6 +278,7 @@
         <Compile Include="Models\Consts\Api.cs"/>
         <Compile Include="Models\Consts\ChatConst.cs"/>
         <Compile Include="Models\Consts\CommandConst.cs"/>
+        <Compile Include="Models\Consts\EventConst.cs"/>
         <Compile Include="Models\Consts\GameServiceErrors.cs"/>
         <Compile Include="Models\Consts\RealTimeConst.cs"/>
         <Compile Include="Models\Consts\TurnBasedConst.cs"/>

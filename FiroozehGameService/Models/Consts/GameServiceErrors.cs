@@ -445,6 +445,28 @@ namespace FiroozehGameService.Models.Consts
             }
 
             /// <summary>
+            ///     Represents All GameService Errors in Push Event Requests
+            /// </summary>
+            public static class PushEvent
+            {
+                /// <summary>
+                ///     Represents GameService Push Event By Id Errors
+                /// </summary>
+                public class PushEventById
+                {
+                    public const string InvalidInput = "invalid_input";
+                }
+
+                /// <summary>
+                ///     Represents GameService Push Event By Tag Errors
+                /// </summary>
+                public class PushEventByTag
+                {
+                    public const string InvalidInput = "invalid_input";
+                }
+            }
+
+            /// <summary>
             ///     Represents All GameService Errors in Chat Requests
             /// </summary>
             public static class Chat
@@ -489,7 +511,6 @@ namespace FiroozehGameService.Models.Consts
                     public const string MemberNotfound = "member_notfound";
                 }
             }
-
 
             /// <summary>
             ///     Represents All GameService Errors in TurnBase Requests

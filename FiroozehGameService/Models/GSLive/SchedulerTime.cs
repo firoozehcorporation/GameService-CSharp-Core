@@ -30,7 +30,8 @@ namespace FiroozehGameService.Models.GSLive
     /// </summary>
     public class SchedulerTime
     {
-        private const int YearInSecs = 31556926;
+        private const int MaxValue = 31556926;
+        private const int MinValue = 3;
         internal readonly int TimeInSecs;
 
         internal SchedulerTime()
@@ -39,8 +40,12 @@ namespace FiroozehGameService.Models.GSLive
 
         internal SchedulerTime(int value)
         {
-            if (value > YearInSecs)
+            if (value > MaxValue)
                 throw new GameServiceException("You Can Not Schedule For More Than One Year")
+                    .LogException<SchedulerTime>(DebugLocation.Internal, "Constructor");
+
+            if (value < MinValue)
+                throw new GameServiceException("You Can Not Schedule For Less Than Three Seconds")
                     .LogException<SchedulerTime>(DebugLocation.Internal, "Constructor");
 
             TimeInSecs = value;
