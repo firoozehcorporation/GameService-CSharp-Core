@@ -53,8 +53,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 ));
         }
 
-        public override void PushEventById(string memberId, string data, SchedulerTime schedulerTime,
-            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering)
+        public override void PushEventById(string memberId, string data, SchedulerTime schedulerTime)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveEvent>(
@@ -74,7 +73,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(PushEventHandler.Signature,
                 new PushEventMessage(
-                    PushEventSendType.MemberId, memberId, data, schedulerTime.TimeInSecs, pushEventBufferType
+                    PushEventSendType.MemberId, memberId, data, schedulerTime.TimeInSecs,
+                    PushEventBufferType.WithBuffering
                 ));
         }
 
@@ -99,8 +99,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 ));
         }
 
-        public override void PushEventByTag(string memberTag, string data, SchedulerTime schedulerTime,
-            PushEventBufferType pushEventBufferType = PushEventBufferType.NoBuffering)
+        public override void PushEventByTag(string memberTag, string data, SchedulerTime schedulerTime)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveEvent>(
@@ -120,7 +119,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(PushEventHandler.Signature,
                 new PushEventMessage(
-                    PushEventSendType.MemberTag, memberTag, data, schedulerTime.TimeInSecs, pushEventBufferType
+                    PushEventSendType.MemberTag, memberTag, data, schedulerTime.TimeInSecs,
+                    PushEventBufferType.WithBuffering
                 ));
         }
 

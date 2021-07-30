@@ -38,11 +38,10 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Event Buffer Type</value>
         [JsonProperty("4")] public PushEventBufferType BufferType;
 
-
         /// <summary>
-        ///     Gets the Event Create Time in UNIX.
+        ///     Gets the Event Create Time in UNIX Time Seconds.
         /// </summary>
-        /// <value>the Event Create Time in UNIX</value>
+        /// <value>the Event Create Time in UNIX Time Seconds</value>
         [JsonProperty("5")] public long CreateTime;
 
         /// <summary>
@@ -58,6 +57,12 @@ namespace FiroozehGameService.Models.GSLive
         [JsonProperty("1")] public string MemberIdOrTag;
 
         /// <summary>
+        ///     Gets the Event Scheduled Time in UNIX Time Seconds.
+        /// </summary>
+        /// <value>the Event Scheduled Time in UNIX Time Seconds</value>
+        [JsonProperty("3")] public long ScheduledTime;
+
+        /// <summary>
         ///     Gets the Event Send Type.
         /// </summary>
         /// <value>the Event Send Type</value>
@@ -66,6 +71,16 @@ namespace FiroozehGameService.Models.GSLive
 
         internal PushEvent()
         {
+        }
+
+
+        /// <summary>
+        ///     Gets true when this event Scheduled
+        /// </summary>
+        /// <returns>the event Scheduled status</returns>
+        public bool IsScheduled()
+        {
+            return ScheduledTime != CreateTime;
         }
     }
 }
