@@ -44,6 +44,13 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Event Create Time in UNIX Time Seconds</value>
         [JsonProperty("5")] public long CreateTime;
 
+
+        /// <summary>
+        ///     Gets the Event Creator Member
+        /// </summary>
+        /// <value>the Event Creator Member</value>
+        [JsonProperty("6")] public Member CreatorMember;
+
         /// <summary>
         ///     Gets the Event Data.
         /// </summary>
@@ -55,6 +62,7 @@ namespace FiroozehGameService.Models.GSLive
         /// </summary>
         /// <value>the Event Receiver Member Id</value>
         [JsonProperty("1")] public string ReceiverMemberId;
+
 
         /// <summary>
         ///     Gets the Event Scheduled Time in UNIX Time Seconds.
