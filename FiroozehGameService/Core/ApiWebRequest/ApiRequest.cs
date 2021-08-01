@@ -417,7 +417,7 @@ namespace FiroozehGameService.Core.ApiWebRequest
 
         internal static async Task<TableResult<TItem>> GetTableItems<TItem>(TableAggregation aggregation)
         {
-            var response = await GsWebRequest.Post(Api.Table + aggregation.Builder.tableId + "/aggregation",
+            var response = await GsWebRequest.Post(Api.Table + aggregation.Builder.TableId + "/aggregation",
                 aggregation.Builder.AggregationData, CreatePlayTokenHeader());
 
             using (var reader = new StreamReader(await response.Content.ReadAsStreamAsync()))

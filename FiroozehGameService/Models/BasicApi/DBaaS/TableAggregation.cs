@@ -58,7 +58,7 @@ namespace FiroozehGameService.Models.BasicApi.DBaaS
         /// </summary>
         public class TableAggregationBuilder
         {
-            internal readonly string tableId;
+            internal readonly string TableId;
 
             private ConstraintAggregation _constraintAggregation;
             private MatchAggregation _matchAggregation;
@@ -68,7 +68,11 @@ namespace FiroozehGameService.Models.BasicApi.DBaaS
 
             internal TableAggregationBuilder(string tableId)
             {
-                this.tableId = tableId;
+                TableId = tableId;
+            }
+
+            internal TableAggregationBuilder()
+            {
             }
 
             /// <summary>

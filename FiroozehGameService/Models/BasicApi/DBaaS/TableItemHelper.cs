@@ -42,10 +42,6 @@ namespace FiroozehGameService.Models.BasicApi.DBaaS
         /// <value>the TableItem Owner ID</value>
         [JsonProperty("owner")] public string OwnerId;
 
-        internal TableItemHelper()
-        {
-        }
-
 
         /// <summary>
         ///     To Prevent Serialize Id Property
