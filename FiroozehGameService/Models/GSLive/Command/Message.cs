@@ -29,6 +29,7 @@ namespace FiroozehGameService.Models.GSLive.Command
     internal class Message
     {
         [JsonProperty("3")] internal string Data;
+        [JsonProperty("8")] internal string GlobalProperty;
         [JsonProperty("6")] internal string Id;
         [JsonProperty("0")] internal bool IsPrivate;
         [JsonProperty("7")] internal string Property;
@@ -41,25 +42,14 @@ namespace FiroozehGameService.Models.GSLive.Command
         }
 
         internal Message(bool isPrivate, string receiverId = null, string data = null, string property = null,
-            string id = null)
+            string id = null, string globalProperty = null)
         {
             IsPrivate = isPrivate;
             ReceiverId = receiverId;
             Data = data;
             Property = property;
             Id = id;
-        }
-
-
-        public override string ToString()
-        {
-            return "Message{" +
-                   "isPrivate=" + IsPrivate +
-                   ", ReceiverID='" + ReceiverId + '\'' +
-                   ", Sender='" + SenderId + '\'' +
-                   ", Data='" + Data + '\'' +
-                   ", Time=" + Time +
-                   '}';
+            GlobalProperty = globalProperty;
         }
     }
 }

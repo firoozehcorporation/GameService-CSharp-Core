@@ -47,7 +47,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="channelName">(NOTNULL)Name of Channel You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
         /// <param name="property">(NULLABLE) Message Extra Property</param>
-        public abstract void SendChannelMessage(string channelName, string message, string property = null);
+        /// <param name="globalProperty">(NULLABLE) Message Extra Global Property (All Subscribers Can Edit it)</param>
+        public abstract void SendChannelMessage(string channelName, string message, string property = null,
+            string globalProperty = null);
 
 
         /// <summary>
@@ -56,7 +58,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="memberId">(NOTNULL)ID of Member You want To Send Message</param>
         /// <param name="message">(NOTNULL)Message Data</param>
         /// <param name="property">(NULLABLE) Message Extra Property</param>
-        public abstract void SendPrivateMessage(string memberId, string message, string property = null);
+        /// <param name="globalProperty">(NULLABLE) Message Extra Global Property (All Subscribers Can Edit it)</param>
+        public abstract void SendPrivateMessage(string memberId, string message, string property = null,
+            string globalProperty = null);
 
 
         /// <summary>
@@ -66,8 +70,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="messageId">(NOTNULL)Id of Message You want To Edit it</param>
         /// <param name="message">(NOTNULL)Message Data</param>
         /// <param name="property">(NULLABLE) Message Extra Property</param>
+        /// <param name="globalProperty">(NULLABLE) Message Extra Global Property (All Subscribers Can Edit it)</param>
         public abstract void EditChannelMessage(string channelName, string messageId, string message,
-            string property = null);
+            string property = null, string globalProperty = null);
 
 
         /// <summary>
@@ -77,8 +82,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="messageId">(NOTNULL)Id of Message You want To Edit it</param>
         /// <param name="message">(NOTNULL)Message Data</param>
         /// <param name="property">(NULLABLE) Message Extra Property</param>
+        /// <param name="globalProperty">(NULLABLE) Message Extra Global Property (All Subscribers Can Edit it)</param>
         public abstract void EditPrivateMessage(string memberId, string messageId, string message,
-            string property = null);
+            string property = null, string globalProperty = null);
 
 
         /// <summary>

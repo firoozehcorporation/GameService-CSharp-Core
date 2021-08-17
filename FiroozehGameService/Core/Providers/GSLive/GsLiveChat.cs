@@ -55,7 +55,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
         }
 
 
-        public override void SendChannelMessage(string channelName, string message, string property = null)
+        public override void SendChannelMessage(string channelName, string message, string property = null,
+            string globalProperty = null)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
@@ -77,12 +78,20 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     .LogException<GsLiveChat>(
                         DebugLocation.Chat, "SendChannelMessage");
 
+            if (globalProperty != null && globalProperty.Length > ChatConst.MaxPropertyLength)
+                throw new GameServiceException("The globalProperty is Too Long, Max globalProperty Length Is " +
+                                               ChatConst.MaxPropertyLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "SendChannelMessage");
+
+
             GameService.GSLive.GetGsHandler().CommandHandler.Send(SendChannelPublicMessageHandler.Signature,
-                new Message(false, channelName, message, property));
+                new Message(false, channelName, message, property, globalProperty: globalProperty));
         }
 
 
-        public override void SendPrivateMessage(string memberId, string message, string property = null)
+        public override void SendPrivateMessage(string memberId, string message, string property = null,
+            string globalProperty = null)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
@@ -103,12 +112,19 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     .LogException<GsLiveChat>(
                         DebugLocation.Chat, "SendPrivateMessage");
 
+            if (globalProperty != null && globalProperty.Length > ChatConst.MaxPropertyLength)
+                throw new GameServiceException("The globalProperty is Too Long, Max globalProperty Length Is " +
+                                               ChatConst.MaxPropertyLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "SendPrivateMessage");
+
+
             GameService.GSLive.GetGsHandler().CommandHandler.Send(SendChannelPrivateMessageHandler.Signature,
-                new Message(true, memberId, message, property));
+                new Message(true, memberId, message, property, globalProperty: globalProperty));
         }
 
         public override void EditChannelMessage(string channelName, string messageId, string message,
-            string property = null)
+            string property = null, string globalProperty = null)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
@@ -131,12 +147,18 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     .LogException<GsLiveChat>(
                         DebugLocation.Chat, "EditChannelMessage");
 
+            if (globalProperty != null && globalProperty.Length > ChatConst.MaxPropertyLength)
+                throw new GameServiceException("The globalProperty is Too Long, Max globalProperty Length Is " +
+                                               ChatConst.MaxPropertyLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "EditChannelMessage");
+
             GameService.GSLive.GetGsHandler().CommandHandler.Send(EditChatHandler.Signature,
-                new Message(false, channelName, message, property, messageId));
+                new Message(false, channelName, message, property, messageId, globalProperty));
         }
 
         public override void EditPrivateMessage(string memberId, string messageId, string message,
-            string property = null)
+            string property = null, string globalProperty = null)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveChat>(
@@ -159,8 +181,15 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     .LogException<GsLiveChat>(
                         DebugLocation.Chat, "EditPrivateMessage");
 
+            if (globalProperty != null && globalProperty.Length > ChatConst.MaxPropertyLength)
+                throw new GameServiceException("The globalProperty is Too Long, Max globalProperty Length Is " +
+                                               ChatConst.MaxPropertyLength + " Characters.")
+                    .LogException<GsLiveChat>(
+                        DebugLocation.Chat, "EditPrivateMessage");
+
+
             GameService.GSLive.GetGsHandler().CommandHandler.Send(EditChatHandler.Signature,
-                new Message(true, memberId, message, property, messageId));
+                new Message(true, memberId, message, property, messageId, globalProperty));
         }
 
         public override void RemoveChannelMessage(string channelName, string messageId)

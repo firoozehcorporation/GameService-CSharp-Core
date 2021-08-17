@@ -38,6 +38,13 @@ namespace FiroozehGameService.Models.GSLive.Chat
         [JsonProperty("5")] public string ChannelName;
 
         /// <summary>
+        ///     Gets the Chat Global Property
+        ///     NOTE : Only have valid Data if Sender set it
+        /// </summary>
+        /// <value>the Chat Global Property</value>
+        [JsonProperty("8")] public string GlobalProperty;
+
+        /// <summary>
         ///     Gets the Chat Id
         /// </summary>
         /// <value>the Chat Id</value>
