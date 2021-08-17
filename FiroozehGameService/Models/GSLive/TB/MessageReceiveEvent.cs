@@ -41,10 +41,10 @@ namespace FiroozehGameService.Models.GSLive.TB
         public string Data { get; internal set; }
 
         /// <summary>
-        ///     Gets the Message Sender Member Id
+        ///     Gets the Message Sender
         /// </summary>
-        /// <value>Message Sender Member Id</value>
-        public string SenderMemberId { get; internal set; }
+        /// <value>Message Sender</value>
+        public Member Sender { get; internal set; }
 
         /// <summary>
         ///     Gets the Message Receiver Member Id

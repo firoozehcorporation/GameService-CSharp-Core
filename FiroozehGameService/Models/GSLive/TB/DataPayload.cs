@@ -34,18 +34,6 @@ namespace FiroozehGameService.Models.GSLive.TB
         [JsonProperty("5")] public bool IsPrivate;
         [JsonProperty("3")] public string NextId;
         [JsonProperty("4")] public Dictionary<string, Outcome> Outcomes;
-
-
-        public override string ToString()
-        {
-            return "DataPayload{" +
-                   "Action=" + Action +
-                   ", ID='" + Id + '\'' +
-                   ", Data='" + Data + '\'' +
-                   ", Next='" + NextId + '\'' +
-                   ", Outcomes=" + Outcomes +
-                   ", Private=" + IsPrivate +
-                   '}';
-        }
+        [JsonProperty("6")] public Member Sender;
     }
 }

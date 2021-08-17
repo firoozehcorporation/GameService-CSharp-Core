@@ -39,7 +39,7 @@ namespace FiroozehGameService.Handlers.TurnBased.ResponseHandlers
                 MessageType = MessageType.Public,
                 Data = data.Data,
                 ReceiverMemberId = data.NextId,
-                SenderMemberId = data.Id
+                Sender = data.Sender
             });
         }
     }
