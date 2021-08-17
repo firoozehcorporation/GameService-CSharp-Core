@@ -69,6 +69,21 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
+        ///     Send A Data To All Players in Room.
+        /// </summary>
+        /// <param name="data">(NOTNULL) Data To BroadCast </param>
+        public abstract void SendPublicMessage(string data);
+
+
+        /// <summary>
+        ///     Send A Data To Specific Player in Room.
+        /// </summary>
+        /// <param name="receiverMemberId">(NOTNULL) (Type : MemberID)Player's ID</param>
+        /// <param name="data">(NOTNULL) Data for Send</param>
+        public abstract void SendPrivateMessage(string receiverMemberId, string data);
+
+
+        /// <summary>
         ///     If is your Turn, you can send data to other players using this function.
         ///     Also if You Want to Move Your Turn to the Next player
         ///     put the next player ID in the function entry

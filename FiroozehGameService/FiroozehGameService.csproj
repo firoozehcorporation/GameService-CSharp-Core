@@ -187,6 +187,8 @@
         <Compile Include="Handlers\TurnBased\RequestHandlers\CurrentTurnHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\MirrorHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\RoomInfoHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\RequestHandlers\SendPrivateMessageHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\RequestHandlers\SendPublicMessageHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\VoteHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\GetMembersHandler.cs"/>
         <Compile Include="Handlers\TurnBased\RequestHandlers\IRequestHandler.cs"/>
@@ -202,6 +204,8 @@
         <Compile Include="Handlers\TurnBased\ResponseHandlers\CurrentTurnResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\ErrorResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\MirrorResponseHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\ResponseHandlers\PrivateMessageResponseHandler.cs"/>
+        <Compile Include="Handlers\TurnBased\ResponseHandlers\PublicMessageResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\RoomInfoResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\VoteResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\IResponseHandler.cs"/>
@@ -293,12 +297,12 @@
         <Compile Include="Models\Enums\GProtocolSendType.cs"/>
         <Compile Include="Models\Enums\GSLive\AutoMatchStatus.cs"/>
         <Compile Include="Models\Enums\GSLive\Command\AutoMatchCancel.cs"/>
+        <Compile Include="Models\Enums\GSLive\MessageType.cs"/>
         <Compile Include="Models\Enums\GSLive\PushEventSendType.cs"/>
         <Compile Include="Models\Enums\GSLive\PushEventBufferType.cs"/>
         <Compile Include="Models\Enums\GSLive\GSLiveType.cs"/>
         <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
         <Compile Include="Models\Enums\GSLive\ReconnectStatus.cs"/>
-        <Compile Include="Models\Enums\GSLive\RT\MessageType.cs"/>
         <Compile Include="Models\Enums\GSLive\TB\PropertyAction.cs"/>
         <Compile Include="Models\Enums\GSLive\TB\PropertyType.cs"/>
         <Compile Include="Models\Enums\GsWebRequestMethod.cs"/>
@@ -354,6 +358,7 @@
         <Compile Include="Models\GSLive\SchedulerTime.cs"/>
         <Compile Include="Models\GSLive\TB\AcceptVote.cs"/>
         <Compile Include="Models\GSLive\TB\DataPayload.cs"/>
+        <Compile Include="Models\GSLive\TB\MessageReceiveEvent.cs"/>
         <Compile Include="Models\GSLive\TB\Vote.cs"/>
         <Compile Include="Models\GSLive\TB\Outcome.cs"/>
         <Compile Include="Models\GSLive\TB\PropertyPayload.cs"/>
@@ -412,6 +417,9 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="packages.config"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Models\Enums\GSLive\RT"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

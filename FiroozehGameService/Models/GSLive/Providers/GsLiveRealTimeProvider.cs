@@ -83,9 +83,9 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <summary>
         ///     Send A Data To Specific Player in Room.
         /// </summary>
-        /// <param name="receiverId">(NOTNULL) (Type : MemberID)Player's ID</param>
+        /// <param name="receiverMemberId">(NOTNULL) (Type : MemberID)Player's ID</param>
         /// <param name="data">(NOTNULL) Data for Send</param>
-        public abstract void SendPrivateMessage(string receiverId, byte[] data);
+        public abstract void SendPrivateMessage(string receiverMemberId, byte[] data);
 
 
         /// <summary>

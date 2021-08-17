@@ -1,5 +1,5 @@
-// <copyright file="MessageInfo.cs" company="Firoozeh Technology LTD">
-// Copyright (C) 2020 Firoozeh Technology LTD. All Rights Reserved.
+// <copyright file="MessageReceiveEvent.cs" company="Firoozeh Technology LTD">
+// Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -15,20 +15,18 @@
 // </copyright>
 
 
-using FiroozehGameService.Models.Enums;
-using FiroozehGameService.Models.Enums.GSLive;
-
 /**
 * @author Alireza Ghodrati
 */
 
+using FiroozehGameService.Models.Enums.GSLive;
 
-namespace FiroozehGameService.Models.GSLive.RT
+namespace FiroozehGameService.Models.GSLive.TB
 {
     /// <summary>
-    ///     Represents MessageInfo When Message Received in GSLiveRealTime
+    ///     Represents MessageReceiveEvent When Message Received in GSLiveTurnBased
     /// </summary>
-    public class MessageInfo
+    public class MessageReceiveEvent
     {
         /// <summary>
         ///     Gets the Type of Received Message
@@ -36,19 +34,22 @@ namespace FiroozehGameService.Models.GSLive.RT
         /// <value>Type of Received Message</value>
         public MessageType MessageType { get; internal set; }
 
+        /// <summary>
+        ///     Gets the Message Data
+        /// </summary>
+        /// <value>the Message Data</value>
+        public string Data { get; internal set; }
 
         /// <summary>
-        ///     Gets the Type of Protocol Send Message
-        ///     if is Reliable , the Packet Loss is Minimized.
+        ///     Gets the Message Sender Member Id
         /// </summary>
-        /// <value>the Type of Protocol Send Message </value>
-        public GProtocolSendType SendType { get; internal set; }
-
+        /// <value>Message Sender Member Id</value>
+        public string SenderMemberId { get; internal set; }
 
         /// <summary>
-        ///     Gets Client Packet Receive Time in Unix
+        ///     Gets the Message Receiver Member Id
         /// </summary>
-        /// <value>Client Packet Receive Time</value>
-        public long ClientReceiveTime { get; internal set; }
+        /// <value>Message Receiver Member Id</value>
+        public string ReceiverMemberId { get; internal set; }
     }
 }

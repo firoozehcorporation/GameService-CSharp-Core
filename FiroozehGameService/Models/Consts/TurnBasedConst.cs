@@ -37,6 +37,9 @@ namespace FiroozehGameService.Models.Consts
         internal const int OnProperty = 13;
         internal const int OnRoomInfo = 14;
         internal const int OnSnapshot = 15;
+        internal const int OnPublicMessage = 16;
+        internal const int OnPrivateMessage = 17;
+
 
         internal const int ActionMirror = 99;
         internal const int Errors = 100;
@@ -47,5 +50,7 @@ namespace FiroozehGameService.Models.Consts
 
         internal const int MinPlayer = 2;
         internal const int MaxPlayer = 10;
+
+        internal const int MaxDataLength = 4096;
     }
 }

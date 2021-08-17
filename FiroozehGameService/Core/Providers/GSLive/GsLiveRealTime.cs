@@ -193,21 +193,22 @@ namespace FiroozehGameService.Core.Providers.GSLive
         }
 
 
-        public override void SendPrivateMessage(string receiverId, byte[] data)
+        public override void SendPrivateMessage(string receiverMemberId, byte[] data)
         {
             if (GameService.IsGuest)
                 throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "SendPrivateMessage");
-            if (string.IsNullOrEmpty(receiverId) || data == null)
-                throw new GameServiceException("data Or receiverId Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
-                    DebugLocation.RealTime, "SendPrivateMessage");
+            if (string.IsNullOrEmpty(receiverMemberId) || data == null)
+                throw new GameServiceException("data Or receiverMemberId Cant Be EmptyOrNull")
+                    .LogException<GsLiveRealTime>(
+                        DebugLocation.RealTime, "SendPrivateMessage");
             if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
                 throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "SendPrivateMessage");
 
             GameService.GSLive.GetGsHandler().RealTimeHandler.Request(SendPrivateMessageHandler.Signature,
                 GProtocolSendType.Reliable,
-                new DataPayload {ReceiverId = receiverId, Payload = data});
+                new DataPayload {ReceiverId = receiverMemberId, Payload = data});
         }
 
         public override void GetRoomMembersDetail()

@@ -73,6 +73,14 @@ namespace FiroozehGameService.Handlers
 
 
         /// <summary>
+        ///     Calls When SomeOne Send Message In Current Room
+        ///     This Event Handler Called By Following Functions :
+        ///     <see cref="GsLiveTurnBasedProvider.SendPublicMessage" />
+        ///     <see cref="GsLiveTurnBasedProvider.SendPrivateMessage" />
+        /// </summary>
+        public static EventHandler<MessageReceiveEvent> NewMessageReceived;
+
+        /// <summary>
         ///     Returns New Turn With Data From Another Players When Call The Following Function :
         ///     <see cref="GsLiveTurnBasedProvider.TakeTurn" />
         /// </summary>

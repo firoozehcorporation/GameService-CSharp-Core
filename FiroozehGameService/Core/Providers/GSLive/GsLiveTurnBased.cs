@@ -157,6 +157,55 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 new RoomDetail {Role = role, GsLiveType = (int) GSLiveType.TurnBased});
         }
 
+        public override void SendPublicMessage(string data)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "SendPublicMessage");
+
+            if (string.IsNullOrEmpty(data))
+                throw new GameServiceException("data Cant Be NullOrEmpty").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "SendPublicMessage");
+
+            if (data.Length > TurnBasedConst.MaxDataLength)
+                throw new GameServiceException("The Data is Too Long, Max Data Length Is " +
+                                               TurnBasedConst.MaxDataLength + " Characters.")
+                    .LogException<GsLiveTurnBased>(
+                        DebugLocation.TurnBased, "SendPublicMessage");
+
+            if (GameService.GSLive.GetGsHandler().TurnBasedHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "SendPublicMessage");
+
+            GameService.GSLive.GetGsHandler().TurnBasedHandler.Send(SendPublicMessageHandler.Signature,
+                new DataPayload {Data = data});
+        }
+
+        public override void SendPrivateMessage(string receiverMemberId, string data)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "SendPrivateMessage");
+
+            if (string.IsNullOrEmpty(receiverMemberId) || string.IsNullOrEmpty(data))
+                throw new GameServiceException("receiverMemberId Or data Cant Be NullOrEmpty")
+                    .LogException<GsLiveTurnBased>(
+                        DebugLocation.TurnBased, "SendPrivateMessage");
+
+            if (data.Length > TurnBasedConst.MaxDataLength)
+                throw new GameServiceException("The Data is Too Long, Max Data Length Is " +
+                                               TurnBasedConst.MaxDataLength + " Characters.")
+                    .LogException<GsLiveTurnBased>(
+                        DebugLocation.TurnBased, "SendPrivateMessage");
+
+            if (GameService.GSLive.GetGsHandler().TurnBasedHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "SendPrivateMessage");
+
+            GameService.GSLive.GetGsHandler().TurnBasedHandler.Send(SendPrivateMessageHandler.Signature,
+                new DataPayload {Data = data, Id = receiverMemberId});
+        }
+
 
         public override void TakeTurn(string data = null, string whoIsNext = null)
         {

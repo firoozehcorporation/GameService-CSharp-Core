@@ -19,19 +19,20 @@
 * @author Alireza Ghodrati
 */
 
-namespace FiroozehGameService.Models.Enums.GSLive.RT
+namespace FiroozehGameService.Models.Enums.GSLive
 {
     /// <summary>
-    ///     Represents MessageType Of RealTime System
+    ///     Represents MessageType Of GsLive System
     /// </summary>
     public enum MessageType
     {
         /// <summary>
-        /// Set When RealTime Message is Public
+        ///     Set When Message is Public
         /// </summary>
         Public,
+
         /// <summary>
-        /// Set When Realtime Message is Private
+        ///     Set When Message is Private
         /// </summary>
         Private
     }

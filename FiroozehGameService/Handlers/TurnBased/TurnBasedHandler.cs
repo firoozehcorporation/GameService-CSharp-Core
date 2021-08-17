@@ -243,6 +243,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             _requestHandlers.Add(RoomInfoHandler.Signature, new RoomInfoHandler());
             _requestHandlers.Add(SnapshotHandler.Signature, new SnapshotHandler());
             _requestHandlers.Add(MirrorHandler.Signature, new MirrorHandler());
+            _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
+            _requestHandlers.Add(SendPrivateMessageHandler.Signature, new SendPrivateMessageHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -262,6 +264,8 @@ namespace FiroozehGameService.Handlers.TurnBased
             _responseHandlers.Add(RoomInfoResponseHandler.ActionCommand, new RoomInfoResponseHandler());
             _responseHandlers.Add(SnapShotResponseHandler.ActionCommand, new SnapShotResponseHandler());
             _responseHandlers.Add(MirrorResponseHandler.ActionCommand, new MirrorResponseHandler());
+            _responseHandlers.Add(PublicMessageResponseHandler.ActionCommand, new PublicMessageResponseHandler());
+            _responseHandlers.Add(PrivateMessageResponseHandler.ActionCommand, new PrivateMessageResponseHandler());
         }
 
 

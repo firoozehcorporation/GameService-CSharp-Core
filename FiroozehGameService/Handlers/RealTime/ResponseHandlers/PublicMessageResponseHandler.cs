@@ -21,7 +21,7 @@
 using System;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
-using FiroozehGameService.Models.Enums.GSLive.RT;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Utils;
 
