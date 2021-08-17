@@ -140,7 +140,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(JoinRoomHandler.Signature,
-                new RoomDetail {Id = roomId, Extra = extra, RoomPassword = password});
+                new RoomDetail
+                    {Id = roomId, Extra = extra, RoomPassword = password, GsLiveType = (int) GSLiveType.TurnBased});
         }
 
 
@@ -451,7 +452,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(AcceptInviteHandler.Signature,
-                new RoomDetail {Invite = inviteId, Extra = extra, GsLiveType = (int) GSLiveType.RealTime});
+                new RoomDetail {Invite = inviteId, Extra = extra, GsLiveType = (int) GSLiveType.TurnBased});
         }
 
 

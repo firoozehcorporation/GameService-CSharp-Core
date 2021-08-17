@@ -138,7 +138,8 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
 
             GameService.GSLive.GetGsHandler().CommandHandler.Send(JoinRoomHandler.Signature,
-                new RoomDetail {Id = roomId, Extra = extra, RoomPassword = password});
+                new RoomDetail
+                    {Id = roomId, Extra = extra, RoomPassword = password, GsLiveType = (int) GSLiveType.RealTime});
         }
 
         public override void LeaveRoom()
