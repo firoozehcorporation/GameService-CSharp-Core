@@ -101,7 +101,6 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void OnConnected(object sender, EventArgs e)
         {
-            // Send OnAuth When Connected
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnConnected",
                 "RealTimeHandler GProtocol Connected");
             Request(AuthorizationHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
@@ -110,7 +109,6 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void OnAuth(object sender, long playerHash)
         {
-            // this is Reconnect
             if (PlayerHash != -1)
             {
                 try
@@ -134,8 +132,6 @@ namespace FiroozehGameService.Handlers.RealTime
             GsLiveRealTime.InAutoMatch = false;
 
             ObserverCompacterUtil.Init();
-            Request(SnapShotHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
-
             GsSerializer.CurrentPlayerJoinRoom?.Invoke(this, null);
 
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnAuth", "RealTimeHandler OnAuth Done");
@@ -149,7 +145,6 @@ namespace FiroozehGameService.Handlers.RealTime
             _requestHandlers.Add(SendPrivateMessageHandler.Signature, new SendPrivateMessageHandler());
             _requestHandlers.Add(SendPublicMessageHandler.Signature, new SendPublicMessageHandler());
             _requestHandlers.Add(NewEventHandler.Signature, new NewEventHandler());
-            _requestHandlers.Add(SnapShotHandler.Signature, new SnapShotHandler());
             _requestHandlers.Add(RoomInfoHandler.Signature, new RoomInfoHandler());
             _requestHandlers.Add(ObserverHandler.Signature, new ObserverHandler());
         }

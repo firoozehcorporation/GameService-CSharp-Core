@@ -163,7 +163,6 @@
         <Compile Include="Handlers\RealTime\RequestHandlers\SendPrivateMessageHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\SendPublicMessageHandler.cs"/>
         <Compile Include="Handlers\RealTime\RequestHandlers\LeaveRoomHandler.cs"/>
-        <Compile Include="Handlers\RealTime\RequestHandlers\SnapShotHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\AuthResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\BaseResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\ErrorResponseHandler.cs"/>

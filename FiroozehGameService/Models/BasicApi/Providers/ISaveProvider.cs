@@ -38,7 +38,7 @@ namespace FiroozehGameService.Models.BasicApi.Providers
 
 
         /// <summary>
-        ///     This command will get you save by Name
+        ///     This command restores the saved object with its name.
         /// </summary>
         /// <param name="saveName">(NOTNULL)the Name that you want to get it</param>
         /// <value> return Player Save </value>
