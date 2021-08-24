@@ -40,7 +40,7 @@
       </Reference>
       <Reference Include="mscorlib"/>
       <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\AOT\Newtonsoft.Json.dll</HintPath>
+          <HintPath>..\packages\Newtonsoft.Json.12.0.3\Newtonsoft.Json.dll</HintPath>
       </Reference>
       <Reference Include="System"/>
       <Reference Include="System.Net.Http"/>

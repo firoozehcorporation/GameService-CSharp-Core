@@ -104,6 +104,7 @@ namespace FiroozehGameService.Models.GSLive
 
         /// <summary>
         ///     Gets the Room Properties.
+        ///     NOTE : Only Available in TurnBased System
         /// </summary>
         /// <value>the Room Properties</value>
         [JsonProperty("11")] public Dictionary<string, string> Properties;
