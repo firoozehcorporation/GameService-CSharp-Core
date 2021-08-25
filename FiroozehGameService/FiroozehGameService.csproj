@@ -112,6 +112,7 @@
         <Compile Include="Handlers\Command\RequestHandlers\CreateRoomHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\FindMemberHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\GetRoomsHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\GetRoomsInfoHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\InviteListHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\InviteUserHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\IRequestHandler.cs"/>
@@ -141,6 +142,7 @@
         <Compile Include="Handlers\Command\ResponseHandlers\FindMemberResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\GetInviteInboxResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\GetRoomResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\GetRoomsInfoResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\InviteReceivedResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\InviteUserResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\IResponseHandler.cs"/>
@@ -315,6 +317,7 @@
         <Compile Include="Models\EventArgs\DownloadProgressArgs.cs"/>
         <Compile Include="Models\EventArgs\ErrorArg.cs"/>
         <Compile Include="Models\GameServiceException.cs"/>
+        <Compile Include="Models\GSLive\RoomsInfo.cs"/>
         <Compile Include="Models\GSLive\ScheduleBuilder.cs"/>
         <Compile Include="Models\GSLive\APacket.cs"/>
         <Compile Include="Models\GSLive\Chat\Chat.cs"/>

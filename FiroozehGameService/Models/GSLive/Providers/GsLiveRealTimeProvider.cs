@@ -145,6 +145,13 @@ namespace FiroozehGameService.Models.GSLive.Providers
         public abstract long GetPacketLost();
 
 
+        /// <summary>
+        ///     Get Rooms Info According To Room's Role
+        /// </summary>
+        /// <param name="role">(NOTNULL)Room's Role </param>
+        public abstract void GetRoomsInfo(string role);
+
+
         internal abstract void SendEvent(byte[] caller, byte[] data, GProtocolSendType sendType);
 
         internal abstract void SendObserver(byte[] caller, byte[] data);

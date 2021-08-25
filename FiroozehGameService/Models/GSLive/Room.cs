@@ -61,6 +61,14 @@ namespace FiroozehGameService.Models.GSLive
 
 
         /// <summary>
+        ///     Gets the Room Persistant Value.
+        ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
+        /// </summary>
+        /// <value>the Room Persistant Value</value>
+        [JsonProperty("persist")] public bool IsPersist;
+
+
+        /// <summary>
         ///     Gets the Room Privacy Value.
         ///     it Set in GSLiveOption <see cref="FiroozehGameService.Core.GSLive.GSLiveOption" />
         /// </summary>

@@ -471,5 +471,18 @@ namespace FiroozehGameService.Core.Providers.GSLive
             GameService.GSLive.GetGsHandler().CommandHandler.Send(FindMemberHandler.Signature,
                 new RoomDetail {Max = limit, UserOrMemberId = query});
         }
+
+        public override void GetRoomsInfo(string role)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "GetRoomsInfo");
+            if (string.IsNullOrEmpty(role))
+                throw new GameServiceException("Role Cant Be NullOrEmpty").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "GetRoomsInfo");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(GetRoomsInfoHandler.Signature,
+                new RoomDetail {Role = role, GsLiveType = (int) GSLiveType.TurnBased});
+        }
     }
 }

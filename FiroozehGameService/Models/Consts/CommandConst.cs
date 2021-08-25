@@ -56,6 +56,7 @@ namespace FiroozehGameService.Models.Consts
 
         internal const int ActionPushEvent = 29;
         internal const int ActionBufferedPushEvents = 30;
+        internal const int ActionGetRoomsInfo = 31;
 
 
         internal const int ActionMirror = 99;

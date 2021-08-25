@@ -114,5 +114,13 @@ namespace FiroozehGameService.Handlers
         ///         cref="GsLiveEventProvider.GetBufferedPushEvents()" />
         /// </summary>
         public static EventHandler<List<PushEvent>> BufferedPushEventsReceived;
+
+
+        /// <summary>
+        ///     Returns Rooms info When Call The Following Functions :
+        ///     <see cref="GsLiveRealTimeProvider.GetRoomsInfo" />
+        ///     <see cref="GsLiveTurnBasedProvider.GetRoomsInfo" />
+        /// </summary>
+        public static EventHandler<RoomsInfo> RoomsInfoReceived;
     }
 }

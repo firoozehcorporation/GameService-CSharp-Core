@@ -356,6 +356,19 @@ namespace FiroozehGameService.Core.Providers.GSLive
             return RealTimeHandler.GetPacketLost();
         }
 
+        public override void GetRoomsInfo(string role)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "GetRoomsInfo");
+            if (string.IsNullOrEmpty(role))
+                throw new GameServiceException("role Cant Be EmptyOrNull").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "GetRoomsInfo");
+
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(GetRoomsInfoHandler.Signature,
+                new RoomDetail {Role = role, GsLiveType = (int) GSLiveType.RealTime});
+        }
+
 
         internal override void SendEvent(byte[] caller, byte[] data, GProtocolSendType sendType)
         {

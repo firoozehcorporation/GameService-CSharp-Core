@@ -192,5 +192,12 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="query">(NOTNULL) Query </param>
         /// <param name="limit">(Max = 15) The Result Limits</param>
         public abstract void FindMember(string query, int limit = 10);
+
+
+        /// <summary>
+        ///     Get Rooms Info According To Room's Role
+        /// </summary>
+        /// <param name="role">(NOTNULL)Room's Role </param>
+        public abstract void GetRoomsInfo(string role);
     }
 }
