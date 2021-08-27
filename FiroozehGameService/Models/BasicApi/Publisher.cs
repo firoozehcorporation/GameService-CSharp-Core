@@ -31,15 +31,15 @@ namespace FiroozehGameService.Models.BasicApi
     public class Publisher
     {
         /// <summary>
-        ///     Gets the Game Cover URL.
+        ///     Gets the Publisher Cover URL.
         /// </summary>
-        /// <value>the Game Cover URL</value>
+        /// <value>the Publisher Cover URL</value>
         [JsonProperty("logo")] public string Image;
 
         /// <summary>
-        ///     Gets the Game Name.
+        ///     Gets the Publisher Name.
         /// </summary>
-        /// <value>the Game Name</value>
+        /// <value>the Publisher Name</value>
         [JsonProperty("name")] public string Name;
 
 

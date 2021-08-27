@@ -40,7 +40,7 @@ namespace FiroozehGameService.Models.BasicApi.DBaaS.Options
         ///     the Ownership TableOption
         /// </summary>
         /// <param name="ownershipTypes">type of ownership</param>
-        /// <param name="ownerUserId">user id of TableOwnershipTypes.Another type</param>
+        /// <param name="ownerUserId">user id of ItemOwnershipTypes.Another type</param>
         public Ownership(ItemOwnershipTypes ownershipTypes, string ownerUserId = null)
         {
             if (!GameService.IsAuthenticated())
