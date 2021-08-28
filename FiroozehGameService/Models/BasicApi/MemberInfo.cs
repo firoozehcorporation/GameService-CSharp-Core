@@ -76,7 +76,7 @@ namespace FiroozehGameService.Models.BasicApi
         ///     Gets the Member Phone Number.
         /// </summary>
         /// <value>the Member Phone Number</value>
-        [JsonProperty("phone_number")] public string PhoneNumber;
+        [JsonProperty("mobile")] public string PhoneNumber;
 
 
         /// <summary>
