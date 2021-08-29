@@ -88,15 +88,14 @@ namespace FiroozehGameService.Core.GSLive
             /// </summary>
             /// <param name="roomName">(Not NULL)Specifies the Room Name</param>
             /// <param name="role">(Not NULL)Specifies the Room Role</param>
-            /// <param name="minPlayer">Specifies the Room min player limit (MIN=2)</param>
             /// <param name="maxPlayer">Specifies the Room max player limit</param>
             /// <param name="isPrivate">Specifies the Room Privacy</param>
             /// <param name="isPersist">Specifies the Room Persistence</param>
             /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
             /// <param name="roomPassword">Specifies the Room Password If the Room is Private</param>
-            public CreateRoomOption(string roomName, string role, int minPlayer = 2, int maxPlayer = 2,
+            public CreateRoomOption(string roomName, string role, int maxPlayer = 2,
                 bool isPrivate = false, bool isPersist = false, string extra = null, string roomPassword = null)
-                : base(role, minPlayer, maxPlayer, isPersist, extra)
+                : base(role, 0, maxPlayer, isPersist, extra)
             {
                 if (string.IsNullOrEmpty(roomName))
                     throw new GameServiceException("RoomName Cant Be EmptyOrNull").LogException<CreateRoomOption>(

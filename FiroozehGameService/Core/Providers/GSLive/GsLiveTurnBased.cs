@@ -53,10 +53,6 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("option Cant Be Null").LogException<GsLiveTurnBased>(
                     DebugLocation.TurnBased, "CreateRoom");
 
-            if (option.MinPlayer < TurnBasedConst.MinPlayer || option.MinPlayer > TurnBasedConst.MaxPlayer)
-                throw new GameServiceException("Invalid MinPlayer Value")
-                    .LogException<GsLiveTurnBased>(DebugLocation.TurnBased, "CreateRoom");
-
             if (option.MaxPlayer < TurnBasedConst.MinPlayer || option.MaxPlayer > TurnBasedConst.MaxPlayer)
                 throw new GameServiceException("Invalid MaxPlayer Value")
                     .LogException<GsLiveTurnBased>(DebugLocation.TurnBased, "CreateRoom");

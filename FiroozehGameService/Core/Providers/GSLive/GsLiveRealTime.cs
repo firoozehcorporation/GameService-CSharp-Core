@@ -51,10 +51,6 @@ namespace FiroozehGameService.Core.Providers.GSLive
                 throw new GameServiceException("option Cant Be Null").LogException<GsLiveRealTime>(
                     DebugLocation.RealTime, "CreateRoom");
 
-            if (option.MinPlayer < RealTimeConst.MinPlayer || option.MinPlayer > RealTimeConst.MaxPlayer)
-                throw new GameServiceException("Invalid MinPlayer Value")
-                    .LogException<GsLiveRealTime>(DebugLocation.RealTime, "CreateRoom");
-
             if (option.MaxPlayer < RealTimeConst.MinPlayer || option.MaxPlayer > RealTimeConst.MaxPlayer)
                 throw new GameServiceException("Invalid MaxPlayer Value")
                     .LogException<GsLiveRealTime>(DebugLocation.RealTime, "CreateRoom");

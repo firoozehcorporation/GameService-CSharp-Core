@@ -20,7 +20,7 @@
 
 using System;
 using FiroozehGameService.Core.GSLive;
-using FiroozehGameService.Models;
+using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
 using Newtonsoft.Json;
 
@@ -35,18 +35,17 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers
         {
             return new Packet(
                 CommandHandler.PlayerHash,
-                Models.Consts.CommandConst.ActionCreateRoom,
+                CommandConst.ActionCreateRoom,
                 JsonConvert.SerializeObject(new RoomDetail
                 {
                     Name = options.RoomName,
                     Role = options.Role,
                     Extra = options.Extra,
-                    Min = options.MinPlayer,
                     Max = options.MaxPlayer,
                     IsPrivate = options.IsPrivate,
                     IsPersist = options.IsPersist,
                     RoomPassword = options.RoomPassword,
-                    Type = Models.Consts.CommandConst.ActionCreateRoom,
+                    Type = CommandConst.ActionCreateRoom,
                     GsLiveType = (int) options.GsLiveType
                 }, new JsonSerializerSettings
                 {
