@@ -25,6 +25,7 @@ using System.Threading;
 using FiroozehGameService.Core.GSLive;
 using FiroozehGameService.Handlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
+using FiroozehGameService.Handlers.TurnBased;
 using FiroozehGameService.Handlers.TurnBased.RequestHandlers;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
@@ -138,6 +139,28 @@ namespace FiroozehGameService.Core.Providers.GSLive
             GameService.GSLive.GetGsHandler().CommandHandler.Send(JoinRoomHandler.Signature,
                 new RoomDetail
                     {Id = roomId, Extra = extra, RoomPassword = password, GsLiveType = (int) GSLiveType.TurnBased});
+        }
+
+        public override void EditCurrentRoom(GSLiveOption.EditRoomOption option)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "EditCurrentRoom");
+
+            if (option == null)
+                throw new GameServiceException("option Cant Be Null").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "EditCurrentRoom");
+
+            if (option.MaxPlayer < TurnBasedConst.MinPlayer || option.MaxPlayer > TurnBasedConst.MaxPlayer)
+                throw new GameServiceException("Invalid MaxPlayer Value")
+                    .LogException<GsLiveTurnBased>(DebugLocation.TurnBased, "EditCurrentRoom");
+
+            if (GameService.GSLive.GetGsHandler().TurnBasedHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveTurnBased>(
+                    DebugLocation.TurnBased, "EditCurrentRoom");
+
+            option.RoomId = TurnBasedHandler.CurrentRoom?.Id;
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(EditRoomHandler.Signature, option);
         }
 
 

@@ -121,5 +121,54 @@ namespace FiroozehGameService.Core.GSLive
 
             internal bool IsPrivate { get; }
         }
+
+
+        /// <summary>
+        ///     Represents GSLive EditRoomOption
+        /// </summary>
+        public class EditRoomOption
+        {
+            internal EditRoomOption()
+            {
+            }
+
+            /// <summary>
+            ///     Specifies the EditRoom Options
+            /// </summary>
+            /// <param name="roomName">(NotNULL)Specifies the Room Name</param>
+            /// <param name="maxPlayer">Specifies the Room max player limit</param>
+            /// <param name="isPrivate">Specifies the Room Privacy</param>
+            /// <param name="roomPassword">Specifies the Room Password If the Room is Private</param>
+            public EditRoomOption(string roomName, int maxPlayer = 2, bool isPrivate = false,
+                string roomPassword = null)
+            {
+                if (string.IsNullOrEmpty(roomName))
+                    throw new GameServiceException("RoomName Cant Be EmptyOrNull").LogException<CreateRoomOption>(
+                        DebugLocation.Internal, "Constructor");
+                if (!isPrivate && !string.IsNullOrEmpty(roomPassword))
+                    throw new GameServiceException("RoomPassword Can Only Set When Room is Private")
+                        .LogException<CreateRoomOption>(DebugLocation.Internal, "Constructor");
+                if (isPrivate && string.IsNullOrEmpty(roomPassword))
+                    throw new GameServiceException("RoomPassword Cant Be EmptyOrNull When Room is Private")
+                        .LogException<CreateRoomOption>(DebugLocation.Internal, "Constructor");
+                if (isPrivate && (roomPassword.Length < 4 || roomPassword.Length > 15))
+                    throw new GameServiceException("RoomPassword Length Must Be Between 4 and 15")
+                        .LogException<CreateRoomOption>(DebugLocation.Internal, "Constructor");
+
+                RoomName = roomName;
+                MaxPlayer = maxPlayer;
+                RoomPassword = roomPassword;
+                IsPrivate = isPrivate;
+            }
+
+            internal string RoomId { set; get; }
+            internal string RoomName { get; }
+
+            internal int MaxPlayer { get; }
+
+            internal string RoomPassword { get; }
+
+            internal bool IsPrivate { get; }
+        }
     }
 }

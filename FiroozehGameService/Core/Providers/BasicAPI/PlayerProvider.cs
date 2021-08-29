@@ -105,6 +105,11 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
             if (string.IsNullOrEmpty(label))
                 throw new GameServiceException("label Cant Be NullOrEmpty").LogException(typeof(PlayerProvider),
                     DebugLocation.Internal, "SetCurrentPlayerLabel");
+            if (label.Length < 3 || label.Length > 21)
+                throw new GameServiceException("Invalid label Length, label Length Must Between 3 and 21 Characters")
+                    .LogException(
+                        typeof(PlayerProvider),
+                        DebugLocation.Internal, "SetCurrentPlayerLabel");
 
             return await ApiRequest.SetCurrentPlayerLabel(label);
         }
@@ -116,6 +121,10 @@ namespace FiroozehGameService.Core.Providers.BasicAPI
                     DebugLocation.Internal, "SetCurrentPlayerGlobalProperty");
             if (string.IsNullOrEmpty(globalProperty))
                 throw new GameServiceException("globalProperty Cant Be NullOrEmpty").LogException(
+                    typeof(PlayerProvider),
+                    DebugLocation.Internal, "SetCurrentPlayerGlobalProperty");
+            if (globalProperty.Length > 2048)
+                throw new GameServiceException("globalProperty is Too Large").LogException(
                     typeof(PlayerProvider),
                     DebugLocation.Internal, "SetCurrentPlayerGlobalProperty");
 

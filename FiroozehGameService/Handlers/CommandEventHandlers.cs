@@ -122,5 +122,13 @@ namespace FiroozehGameService.Handlers
         ///     <see cref="GsLiveTurnBasedProvider.GetRoomsInfo" />
         /// </summary>
         public static EventHandler<RoomsInfo> RoomsInfoReceived;
+
+
+        /// <summary>
+        ///     Returns New Room Option When Call The Following Functions :
+        ///     <see cref="GsLiveRealTimeProvider.EditCurrentRoom" />
+        ///     <see cref="GsLiveTurnBasedProvider.EditCurrentRoom" />
+        /// </summary>
+        public static EventHandler<Room> EditCurrentRoomReceived;
     }
 }

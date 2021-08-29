@@ -110,6 +110,7 @@
         <Compile Include="Handlers\Command\RequestHandlers\Chat\SubscribeChannelHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\Chat\UnsubscribeChannelHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\CreateRoomHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\EditRoomHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\FindMemberHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\GetRoomsHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\GetRoomsInfoHandler.cs"/>
@@ -138,6 +139,7 @@
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\RemoveMemberChatsResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\SubscribeChannelResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Chat\UnSubscribeChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\EditRoomResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\ErrorResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\FindMemberResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\GetInviteInboxResponseHandler.cs"/>

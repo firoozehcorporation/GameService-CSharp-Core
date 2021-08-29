@@ -253,6 +253,7 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(PushEventHandler.Signature, new PushEventHandler());
             _requestHandlers.Add(BufferedPushEventsHandler.Signature, new BufferedPushEventsHandler());
             _requestHandlers.Add(GetRoomsInfoHandler.Signature, new GetRoomsInfoHandler());
+            _requestHandlers.Add(EditRoomHandler.Signature, new EditRoomHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -301,6 +302,8 @@ namespace FiroozehGameService.Handlers.Command
                 new BufferedPushEventsResponseHandler());
             _responseHandlers.Add(GetRoomsInfoResponseHandler.ActionCommand,
                 new GetRoomsInfoResponseHandler());
+            _responseHandlers.Add(EditRoomResponseHandler.ActionCommand,
+                new EditRoomResponseHandler());
         }
 
         public void Init()

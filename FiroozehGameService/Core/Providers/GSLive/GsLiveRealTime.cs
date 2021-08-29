@@ -138,6 +138,28 @@ namespace FiroozehGameService.Core.Providers.GSLive
                     {Id = roomId, Extra = extra, RoomPassword = password, GsLiveType = (int) GSLiveType.RealTime});
         }
 
+        public override void EditCurrentRoom(GSLiveOption.EditRoomOption option)
+        {
+            if (GameService.IsGuest)
+                throw new GameServiceException("This Function Not Working In Guest Mode").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "EditCurrentRoom");
+
+            if (option == null)
+                throw new GameServiceException("option Cant Be Null").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "EditCurrentRoom");
+
+            if (option.MaxPlayer < RealTimeConst.MinPlayer || option.MaxPlayer > RealTimeConst.MaxPlayer)
+                throw new GameServiceException("Invalid MaxPlayer Value")
+                    .LogException<GsLiveRealTime>(DebugLocation.RealTime, "EditCurrentRoom");
+
+            if (GameService.GSLive.GetGsHandler().RealTimeHandler == null)
+                throw new GameServiceException("You Must Create or Join Room First").LogException<GsLiveRealTime>(
+                    DebugLocation.RealTime, "EditCurrentRoom");
+
+            option.RoomId = RealTimeHandler.CurrentRoom?.Id;
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(EditRoomHandler.Signature, option);
+        }
+
         public override void LeaveRoom()
         {
             if (GameService.IsGuest)

@@ -31,7 +31,7 @@ namespace FiroozehGameService.Models.GSLive.Providers
     public abstract class GsLiveRealTimeProvider
     {
         /// <summary>
-        ///     Create Room With Option Like : Name , Min , Max , Role , IsPrivate
+        ///     Create Room With Option Like : Name , Max , Role , IsPrivate
         /// </summary>
         /// <param name="option">(NOTNULL)Create Room Option</param>
         public abstract void CreateRoom(GSLiveOption.CreateRoomOption option);
@@ -57,6 +57,14 @@ namespace FiroozehGameService.Models.GSLive.Providers
         /// <param name="extra">Specifies the Extra Data To Send to Other Clients</param>
         /// <param name="password">(NULLABLE)Specifies the Password if Room is Private</param>
         public abstract void JoinRoom(string roomId, string extra = null, string password = null);
+
+
+        /// <summary>
+        ///     Edit Current Room With Option Like : Name , Min , IsPrivate , ...
+        ///     NOTE : You Must Joined To a Room to Edit it
+        /// </summary>
+        /// <param name="option">(NOTNULL)Edit Room Option</param>
+        public abstract void EditCurrentRoom(GSLiveOption.EditRoomOption option);
 
 
         /// <summary>
