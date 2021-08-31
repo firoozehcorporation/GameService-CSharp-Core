@@ -96,9 +96,14 @@ namespace FiroozehGameService.Models.GSLive
         /// <value>the Member User Data</value>
         [JsonProperty("user")] public User User;
 
-
         internal Member()
         {
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            return Id == (obj as Member)?.Id;
         }
     }
 }
