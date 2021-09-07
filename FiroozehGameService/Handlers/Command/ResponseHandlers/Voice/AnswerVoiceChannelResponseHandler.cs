@@ -1,4 +1,4 @@
-﻿// <copyright file="OfferVoiceChannelResponseHandler.cs" company="Firoozeh Technology LTD">
+﻿// <copyright file="AnswerVoiceChannelResponseHandler.cs" company="Firoozeh Technology LTD">
 // Copyright (C) 2021 Firoozeh Technology LTD. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,14 +26,14 @@ using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Voice
 {
-    internal class OfferVoiceChannelResponseHandler : BaseResponseHandler
+    internal class AnswerVoiceChannelResponseHandler : BaseResponseHandler
     {
-        internal static int ActionCommand => CommandConst.ActionOffer;
+        internal static int ActionCommand => CommandConst.ActionAnswer;
 
         protected override void HandleResponse(Packet packet)
         {
             var sdpVoiceChannel = JsonConvert.DeserializeObject<SdpVoiceChannel>(packet.Data);
-            VoiceEventHandlers.OfferMemberReceived?.Invoke(this, sdpVoiceChannel);
+            VoiceEventHandlers.AnswerMemberReceived?.Invoke(this, sdpVoiceChannel);
         }
     }
 }

@@ -332,8 +332,8 @@ namespace FiroozehGameService.Handlers.Command
                 new GetVoiceChannelInfoResponseHandler());
             _responseHandlers.Add(KickMemberVoiceChannelResponseHandler.ActionCommand,
                 new KickMemberVoiceChannelResponseHandler());
-            _responseHandlers.Add(OfferVoiceChannelResponseHandler.ActionCommand,
-                new OfferVoiceChannelResponseHandler());
+            _responseHandlers.Add(AnswerVoiceChannelResponseHandler.ActionCommand,
+                new AnswerVoiceChannelResponseHandler());
             _responseHandlers.Add(TrickleVoiceChannelResponseHandler.ActionCommand,
                 new TrickleVoiceChannelResponseHandler());
             _responseHandlers.Add(VoiceErrorResponseHandler.ActionCommand, new VoiceErrorResponseHandler());

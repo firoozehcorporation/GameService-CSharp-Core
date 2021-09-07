@@ -92,7 +92,7 @@ namespace FiroozehGameService.Handlers
         /// <summary>
         ///     Calls When Offer Voice Channel Received
         /// </summary>
-        internal static EventHandler<SdpVoiceChannel> OfferMemberReceived;
+        internal static EventHandler<SdpVoiceChannel> AnswerMemberReceived;
 
 
         /// <summary>

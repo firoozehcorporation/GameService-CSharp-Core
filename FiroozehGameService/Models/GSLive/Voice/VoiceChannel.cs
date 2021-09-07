@@ -52,7 +52,7 @@ namespace FiroozehGameService.Models.GSLive.Voice
         ///     Gets the Voice Channel Game Id
         /// </summary>
         /// <value>the Voice Channel Game Id</value>
-        [JsonProperty("6")] internal DateTimeOffset ChannelGameId;
+        [JsonProperty("6")] internal string ChannelGameId;
 
         /// <summary>
         ///     Gets the Voice Channel Id

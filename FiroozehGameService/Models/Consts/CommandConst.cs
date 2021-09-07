@@ -70,6 +70,7 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionVoiceDeafenState = 47;
         internal const int ActionTrickle = 50;
         internal const int ActionOffer = 51;
+        internal const int ActionAnswer = 52;
 
         internal const int ActionMirror = 99;
 
