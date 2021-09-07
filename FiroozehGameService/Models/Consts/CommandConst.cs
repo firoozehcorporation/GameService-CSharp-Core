@@ -60,9 +60,20 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionEditRoom = 32;
 
 
+        internal const int ActionCreateVoiceChannel = 40;
+        internal const int ActionJoinVoiceChannel = 41;
+        internal const int ActionLeaveVoiceChannel = 42;
+        internal const int ActionKickMemberVoiceChannel = 43;
+        internal const int ActionDestroyVoiceChannel = 44;
+        internal const int ActionGetVoiceChannelInfo = 45;
+        internal const int ActionSetLocalVoiceMuteState = 46;
+        internal const int ActionSetVoiceDeafenState = 47;
+        internal const int ActionSetTrickle = 50;
+        internal const int ActionSetOffer = 51;
+
         internal const int ActionMirror = 99;
 
-
+        internal const int ActionVoiceError = 60;
         internal const int Error = 100;
 
         // Limit Checker

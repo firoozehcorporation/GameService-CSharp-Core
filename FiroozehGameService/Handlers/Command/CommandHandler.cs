@@ -26,6 +26,7 @@ using FiroozehGameService.Core;
 using FiroozehGameService.Core.Socket;
 using FiroozehGameService.Handlers.Command.RequestHandlers;
 using FiroozehGameService.Handlers.Command.RequestHandlers.Chat;
+using FiroozehGameService.Handlers.Command.RequestHandlers.Voice;
 using FiroozehGameService.Handlers.Command.ResponseHandlers;
 using FiroozehGameService.Handlers.Command.ResponseHandlers.Chat;
 using FiroozehGameService.Models;
@@ -254,6 +255,17 @@ namespace FiroozehGameService.Handlers.Command
             _requestHandlers.Add(BufferedPushEventsHandler.Signature, new BufferedPushEventsHandler());
             _requestHandlers.Add(GetRoomsInfoHandler.Signature, new GetRoomsInfoHandler());
             _requestHandlers.Add(EditRoomHandler.Signature, new EditRoomHandler());
+
+            _requestHandlers.Add(CreateVoiceChannelHandler.Signature, new CreateVoiceChannelHandler());
+            _requestHandlers.Add(JoinVoiceChannelHandler.Signature, new JoinVoiceChannelHandler());
+            _requestHandlers.Add(LeaveVoiceChannelHandler.Signature, new LeaveVoiceChannelHandler());
+            _requestHandlers.Add(DestroyVoiceChannelHandler.Signature, new DestroyVoiceChannelHandler());
+            _requestHandlers.Add(DeafenVoiceChannelHandler.Signature, new DeafenVoiceChannelHandler());
+            _requestHandlers.Add(MuteLocalVoiceChannelHandler.Signature, new MuteLocalVoiceChannelHandler());
+            _requestHandlers.Add(GetVoiceChannelInfoHandler.Signature, new GetVoiceChannelInfoHandler());
+            _requestHandlers.Add(KickMemberVoiceChannelHandler.Signature, new KickMemberVoiceChannelHandler());
+            _requestHandlers.Add(OfferVoiceChannelHandler.Signature, new OfferVoiceChannelHandler());
+            _requestHandlers.Add(TrickleVoiceChannelHandler.Signature, new TrickleVoiceChannelHandler());
         }
 
         private void InitResponseMessageHandlers()

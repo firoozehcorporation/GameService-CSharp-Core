@@ -57,6 +57,7 @@
         <Compile Include="Core\DownloadManager.cs"/>
         <Compile Include="Core\GameService.cs"/>
         <Compile Include="Core\GSLive\GSLiveOption.cs"/>
+        <Compile Include="Core\GSLive\GSLiveMediaOption.cs"/>
         <Compile Include="Core\Providers\BasicAPI\AchievementProvider.cs"/>
         <Compile Include="Core\Providers\BasicAPI\AssetsProvider.cs"/>
         <Compile Include="Core\Providers\BasicAPI\DataProvider.cs"/>
@@ -71,6 +72,7 @@
         <Compile Include="Core\Providers\GSLive\GsLiveEvent.cs"/>
         <Compile Include="Core\Providers\GSLive\GsLiveRealTime.cs"/>
         <Compile Include="Core\Providers\GSLive\GsLiveTurnBased.cs"/>
+        <Compile Include="Core\Providers\GSLive\GsLiveVoice.cs"/>
         <Compile Include="Core\Social\Friend.cs"/>
         <Compile Include="Core\Social\SocialOptions.cs"/>
         <Compile Include="Core\Social\Party.cs"/>
@@ -121,6 +123,16 @@
         <Compile Include="Handlers\Command\RequestHandlers\MirrorHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\PingPongHandler.cs"/>
         <Compile Include="Handlers\Command\RequestHandlers\PushEventHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\CreateVoiceChannelHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\DeafenVoiceChannelHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\DestroyVoiceChannelHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\GetVoiceChannelInfoHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\JoinVoiceChannelHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\KickMemberVoiceChannelHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\LeaveVoiceChannelHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\MuteLocalVoiceChannelHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\OfferVoiceChannelHandler.cs"/>
+        <Compile Include="Handlers\Command\RequestHandlers\Voice\TrickleVoiceChannelHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\AuthResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\AutoMatchResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\BaseResponseHandler.cs"/>
@@ -289,6 +301,7 @@
         <Compile Include="Models\Consts\GameServiceErrors.cs"/>
         <Compile Include="Models\Consts\RealTimeConst.cs"/>
         <Compile Include="Models\Consts\TurnBasedConst.cs"/>
+        <Compile Include="Models\Consts\VoiceConst.cs"/>
         <Compile Include="Models\Enums\ConnectionType.cs"/>
         <Compile Include="Models\Enums\DBaaS\ItemOwnershipTypes.cs"/>
         <Compile Include="Models\Enums\DBaaS\TableSortOrder.cs"/>
@@ -319,6 +332,8 @@
         <Compile Include="Models\EventArgs\DownloadProgressArgs.cs"/>
         <Compile Include="Models\EventArgs\ErrorArg.cs"/>
         <Compile Include="Models\GameServiceException.cs"/>
+        <Compile Include="Models\GSLive\Command\VoicePayload.cs"/>
+        <Compile Include="Models\GSLive\Providers\GsLiveVoiceProvider.cs"/>
         <Compile Include="Models\GSLive\RoomsInfo.cs"/>
         <Compile Include="Models\GSLive\ScheduleBuilder.cs"/>
         <Compile Include="Models\GSLive\APacket.cs"/>

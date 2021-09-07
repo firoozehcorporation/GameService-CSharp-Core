@@ -52,6 +52,11 @@ namespace FiroozehGameService.Models.Enums
         Chat,
 
         /// <summary>
+        ///     Happened In Voice System
+        /// </summary>
+        Voice,
+
+        /// <summary>
         ///     Happened In Event System
         /// </summary>
         Event,
