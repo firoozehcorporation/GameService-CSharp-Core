@@ -26,20 +26,28 @@ namespace FiroozehGameService.Models.Enums.GSLive
     public enum GSLiveType
     {
         /// <summary>
-        /// Used No Where
+        ///     Used No Where
         /// </summary>
         NotSet,
+
         /// <summary>
-        /// Used in TurnBased System
+        ///     Used in TurnBased System
         /// </summary>
         TurnBased,
+
         /// <summary>
-        /// Used in RealTime System
+        ///     Used in RealTime System
         /// </summary>
         RealTime,
+
         /// <summary>
-        /// Used in Command System
+        ///     Used in Command System
         /// </summary>
-        Command
+        Command,
+
+        /// <summary>
+        ///     Used in Voice System
+        /// </summary>
+        Voice
     }
 }

@@ -19,6 +19,7 @@
 */
 
 using FiroozehGameService.Models.Consts;
+using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Voice
@@ -29,6 +30,11 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Voice
 
         protected override void HandleResponse(Packet packet)
         {
+            VoiceEventHandlers.ErrorReceived?.Invoke(this, new ErrorEvent
+            {
+                Type = GSLiveType.Voice,
+                Error = packet.Message
+            });
         }
     }
 }

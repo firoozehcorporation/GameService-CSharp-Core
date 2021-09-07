@@ -21,6 +21,8 @@
 
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.GSLive.Voice;
+using Newtonsoft.Json;
 
 namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Voice
 {
@@ -30,6 +32,8 @@ namespace FiroozehGameService.Handlers.Command.ResponseHandlers.Voice
 
         protected override void HandleResponse(Packet packet)
         {
+            var kickMemberVoiceChannel = JsonConvert.DeserializeObject<KickMemberVoiceChannel>(packet.Data);
+            VoiceEventHandlers.KickMemberReceived?.Invoke(this, kickMemberVoiceChannel);
         }
     }
 }

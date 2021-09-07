@@ -173,7 +173,7 @@
         <Compile Include="Handlers\Command\ResponseHandlers\Voice\JoinVoiceChannelResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Voice\KickMemberVoiceChannelResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Voice\LeaveVoiceChannelResponseHandler.cs"/>
-        <Compile Include="Handlers\Command\ResponseHandlers\Voice\MuteLocalVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\MuteVoiceChannelResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Voice\OfferVoiceChannelResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\Voice\TrickleVoiceChannelResponseHandler.cs"/>
         <Compile Include="Handlers\CoreEventHandlers.cs"/>
@@ -243,6 +243,7 @@
         <Compile Include="Handlers\TurnBased\ResponseHandlers\SnapShotResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\ResponseHandlers\TakeTurnResponseHandler.cs"/>
         <Compile Include="Handlers\TurnBased\TurnBasedHandler.cs"/>
+        <Compile Include="Handlers\VoiceEventHandlers.cs"/>
         <Compile Include="Helpers\Scheduler.cs"/>
         <Compile Include="Models\BasicApi\Achievement.cs"/>
         <Compile Include="Models\BasicApi\ActiveDevice.cs"/>
