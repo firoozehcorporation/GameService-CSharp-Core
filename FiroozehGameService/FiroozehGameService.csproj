@@ -394,7 +394,17 @@
         <Compile Include="Models\GSLive\TB\PropertyPayload.cs"/>
         <Compile Include="Models\GSLive\TB\PropertyData.cs"/>
         <Compile Include="Models\GSLive\TB\Turn.cs"/>
+        <Compile Include="Models\GSLive\Voice\DeafenMemberVoiceChannel.cs"/>
+        <Compile Include="Models\GSLive\Voice\DestroyVoiceChannel.cs"/>
+        <Compile Include="Models\GSLive\Voice\IceVoiceChannel.cs"/>
+        <Compile Include="Models\GSLive\Voice\JoinVoiceChannel.cs"/>
+        <Compile Include="Models\GSLive\Voice\KickMemberVoiceChannel.cs"/>
+        <Compile Include="Models\GSLive\Voice\LeaveVoiceChannel.cs"/>
+        <Compile Include="Models\GSLive\Voice\MuteMemberVoiceChannel.cs"/>
+        <Compile Include="Models\GSLive\Voice\SdpVoiceChannel.cs"/>
+        <Compile Include="Models\GSLive\Voice\VoiceChannel.cs"/>
         <Compile Include="Models\GSLive\Voice\VoiceChannelInfo.cs"/>
+        <Compile Include="Models\GSLive\Voice\VoiceChannelMember.cs"/>
         <Compile Include="Models\Internal\AssetsInfo.cs"/>
         <Compile Include="Models\Internal\ChangePassword.cs"/>
         <Compile Include="Models\Internal\CreateParty.cs"/>
