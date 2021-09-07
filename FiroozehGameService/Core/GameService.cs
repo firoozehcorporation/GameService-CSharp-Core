@@ -118,7 +118,7 @@ namespace FiroozehGameService.Core
         /// <value> return The Current GameService Version </value>
         public static string Version()
         {
-            return "8.6.0";
+            return "9.0.0";
         }
 
 

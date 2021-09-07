@@ -35,7 +35,7 @@ namespace FiroozehGameService.Handlers.Command.RequestHandlers.Voice
         {
             return new Packet(
                 CommandHandler.PlayerHash,
-                CommandConst.ActionSetVoiceDeafenState,
+                CommandConst.ActionVoiceDeafenState,
                 JsonConvert.SerializeObject(payload, new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore,

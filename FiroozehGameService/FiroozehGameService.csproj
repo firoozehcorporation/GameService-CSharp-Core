@@ -165,6 +165,17 @@
         <Compile Include="Handlers\Command\ResponseHandlers\PingResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\MirrorResponseHandler.cs"/>
         <Compile Include="Handlers\Command\ResponseHandlers\PushEventResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\CreateVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\DeafenVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\DestroyVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\VoiceErrorResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\GetVoiceChannelInfoResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\JoinVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\KickMemberVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\LeaveVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\MuteLocalVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\OfferVoiceChannelResponseHandler.cs"/>
+        <Compile Include="Handlers\Command\ResponseHandlers\Voice\TrickleVoiceChannelResponseHandler.cs"/>
         <Compile Include="Handlers\CoreEventHandlers.cs"/>
         <Compile Include="Handlers\DownloadEventHandlers.cs"/>
         <Compile Include="Handlers\GsHandler.cs"/>
@@ -383,6 +394,7 @@
         <Compile Include="Models\GSLive\TB\PropertyPayload.cs"/>
         <Compile Include="Models\GSLive\TB\PropertyData.cs"/>
         <Compile Include="Models\GSLive\TB\Turn.cs"/>
+        <Compile Include="Models\GSLive\Voice\VoiceChannelInfo.cs"/>
         <Compile Include="Models\Internal\AssetsInfo.cs"/>
         <Compile Include="Models\Internal\ChangePassword.cs"/>
         <Compile Include="Models\Internal\CreateParty.cs"/>

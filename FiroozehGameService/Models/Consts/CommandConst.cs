@@ -66,10 +66,10 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionKickMemberVoiceChannel = 43;
         internal const int ActionDestroyVoiceChannel = 44;
         internal const int ActionGetVoiceChannelInfo = 45;
-        internal const int ActionSetLocalVoiceMuteState = 46;
-        internal const int ActionSetVoiceDeafenState = 47;
-        internal const int ActionSetTrickle = 50;
-        internal const int ActionSetOffer = 51;
+        internal const int ActionVoiceMuteState = 46;
+        internal const int ActionVoiceDeafenState = 47;
+        internal const int ActionTrickle = 50;
+        internal const int ActionOffer = 51;
 
         internal const int ActionMirror = 99;
 

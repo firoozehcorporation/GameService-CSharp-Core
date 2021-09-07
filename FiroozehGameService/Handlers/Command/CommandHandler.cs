@@ -29,6 +29,7 @@ using FiroozehGameService.Handlers.Command.RequestHandlers.Chat;
 using FiroozehGameService.Handlers.Command.RequestHandlers.Voice;
 using FiroozehGameService.Handlers.Command.ResponseHandlers;
 using FiroozehGameService.Handlers.Command.ResponseHandlers.Chat;
+using FiroozehGameService.Handlers.Command.ResponseHandlers.Voice;
 using FiroozehGameService.Models;
 using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
@@ -316,6 +317,26 @@ namespace FiroozehGameService.Handlers.Command
                 new GetRoomsInfoResponseHandler());
             _responseHandlers.Add(EditRoomResponseHandler.ActionCommand,
                 new EditRoomResponseHandler());
+
+            _responseHandlers.Add(CreateVoiceChannelResponseHandler.ActionCommand,
+                new CreateVoiceChannelResponseHandler());
+            _responseHandlers.Add(JoinVoiceChannelResponseHandler.ActionCommand, new JoinVoiceChannelResponseHandler());
+            _responseHandlers.Add(LeaveVoiceChannelResponseHandler.ActionCommand,
+                new LeaveVoiceChannelResponseHandler());
+            _responseHandlers.Add(DestroyVoiceChannelResponseHandler.ActionCommand,
+                new DestroyVoiceChannelResponseHandler());
+            _responseHandlers.Add(DestroyVoiceChannelResponseHandler.ActionCommand,
+                new DestroyVoiceChannelResponseHandler());
+            _responseHandlers.Add(MuteVoiceChannelResponseHandler.ActionCommand, new MuteVoiceChannelResponseHandler());
+            _responseHandlers.Add(GetVoiceChannelInfoResponseHandler.ActionCommand,
+                new GetVoiceChannelInfoResponseHandler());
+            _responseHandlers.Add(KickMemberVoiceChannelResponseHandler.ActionCommand,
+                new KickMemberVoiceChannelResponseHandler());
+            _responseHandlers.Add(OfferVoiceChannelResponseHandler.ActionCommand,
+                new OfferVoiceChannelResponseHandler());
+            _responseHandlers.Add(TrickleVoiceChannelResponseHandler.ActionCommand,
+                new TrickleVoiceChannelResponseHandler());
+            _responseHandlers.Add(VoiceErrorResponseHandler.ActionCommand, new VoiceErrorResponseHandler());
         }
 
         public void Init()
