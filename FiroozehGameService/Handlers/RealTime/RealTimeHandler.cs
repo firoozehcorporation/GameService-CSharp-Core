@@ -194,7 +194,7 @@ namespace FiroozehGameService.Handlers.RealTime
                 _dataObserver?.Dispose();
                 ObserverCompacterUtil.Dispose();
 
-                _connGateway?.StopReceiving(isGraceful);
+                _connGateway?.StopReceiving(isGraceful, false);
             }
             catch (Exception)
             {

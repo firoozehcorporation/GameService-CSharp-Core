@@ -50,5 +50,8 @@ namespace FiroozehGameService.Models.Consts
 
         internal const int MinPlayer = 2;
         internal const int MaxPlayer = 50;
+
+        internal const uint ReconnectingDisconnectData = 1;
+        internal const uint NormalDisconnectData = 0;
     }
 }
