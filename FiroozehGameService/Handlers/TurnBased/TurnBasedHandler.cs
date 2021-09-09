@@ -328,6 +328,7 @@ namespace FiroozehGameService.Handlers.TurnBased
                 _isPingRequested = false;
 
                 IsInitializing = false;
+                GsLiveTurnBased.InAutoMatch = false;
 
                 _observer?.Dispose();
                 _callerUtil?.Dispose();

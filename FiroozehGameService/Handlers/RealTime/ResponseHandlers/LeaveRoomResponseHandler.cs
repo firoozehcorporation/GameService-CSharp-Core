@@ -34,8 +34,8 @@ namespace FiroozehGameService.Handlers.RealTime.ResponseHandlers
         {
             var member = JsonConvert.DeserializeObject<Member>(GetStringFromBuffer(packet.Payload));
 
-            if(member.User.IsMe) RealTimeEventHandlers.LeftDispose?.Invoke(this,null);
             RealTimeEventHandlers.LeftRoom?.Invoke(this, member);
+            if (member.User.IsMe) RealTimeEventHandlers.LeftDispose?.Invoke(this, null);
         }
     }
 }

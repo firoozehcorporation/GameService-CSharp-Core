@@ -189,6 +189,7 @@ namespace FiroozehGameService.Handlers.RealTime
                 }
 
                 _isDisposed = true;
+                GsLiveRealTime.InAutoMatch = false;
 
                 _observer?.Dispose();
                 _dataObserver?.Dispose();
