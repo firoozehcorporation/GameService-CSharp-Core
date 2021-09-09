@@ -54,6 +54,12 @@ namespace FiroozehGameService.Models.GSLive.Providers
 
 
         /// <summary>
+        ///     The GameService Voice System Provider
+        /// </summary>
+        internal abstract GsLiveVoiceProvider Voice();
+
+
+        /// <summary>
         ///     The GameService Event System Provider
         /// </summary>
         public abstract GsLiveEventProvider Event();

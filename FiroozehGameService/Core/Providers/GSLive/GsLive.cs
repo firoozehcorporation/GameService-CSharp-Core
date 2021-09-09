@@ -35,6 +35,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
         private readonly GsHandler _handler;
         private readonly GsLiveRealTime _realTime;
         private readonly GsLiveTurnBased _turnBased;
+        private readonly GsLiveVoice _voice;
 
 
         internal GsLive()
@@ -43,6 +44,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
             _realTime = new GsLiveRealTime();
             _turnBased = new GsLiveTurnBased();
             _chat = new GsLiveChat();
+            _voice = new GsLiveVoice();
             _event = new GsLiveEvent();
         }
 
@@ -66,6 +68,10 @@ namespace FiroozehGameService.Core.Providers.GSLive
             return _chat;
         }
 
+        internal override GsLiveVoiceProvider Voice()
+        {
+            return _voice;
+        }
 
         public override GsLiveEventProvider Event()
         {
