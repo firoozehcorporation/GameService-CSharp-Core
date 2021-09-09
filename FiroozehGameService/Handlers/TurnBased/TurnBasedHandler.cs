@@ -389,7 +389,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         internal static bool IsAvailable()
         {
-            return _connGateway != null && _connGateway.IsConnected();
+            return PlayerHash != null && _connGateway != null && _connGateway.IsConnected();
         }
 
         #region TBHandlerRegion

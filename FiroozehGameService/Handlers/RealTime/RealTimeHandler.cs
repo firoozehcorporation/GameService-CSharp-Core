@@ -314,7 +314,7 @@ namespace FiroozehGameService.Handlers.RealTime
 
         internal static bool IsAvailable()
         {
-            return _connGateway != null && _connGateway.IsConnected();
+            return PlayerHash != -1 && _connGateway != null && _connGateway.IsConnected();
         }
 
 

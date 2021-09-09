@@ -323,8 +323,8 @@ namespace FiroozehGameService.Handlers.Command
             _responseHandlers.Add(JoinVoiceChannelResponseHandler.ActionCommand, new JoinVoiceChannelResponseHandler());
             _responseHandlers.Add(LeaveVoiceChannelResponseHandler.ActionCommand,
                 new LeaveVoiceChannelResponseHandler());
-            _responseHandlers.Add(DestroyVoiceChannelResponseHandler.ActionCommand,
-                new DestroyVoiceChannelResponseHandler());
+            _responseHandlers.Add(DeafenVoiceChannelResponseHandler.ActionCommand,
+                new DeafenVoiceChannelResponseHandler());
             _responseHandlers.Add(DestroyVoiceChannelResponseHandler.ActionCommand,
                 new DestroyVoiceChannelResponseHandler());
             _responseHandlers.Add(MuteVoiceChannelResponseHandler.ActionCommand, new MuteVoiceChannelResponseHandler());
@@ -422,7 +422,7 @@ namespace FiroozehGameService.Handlers.Command
 
         internal static bool IsAvailable()
         {
-            return _connGateway != null && _connGateway.IsConnected();
+            return PlayerHash != null && _connGateway != null && _connGateway.IsConnected();
         }
 
 
