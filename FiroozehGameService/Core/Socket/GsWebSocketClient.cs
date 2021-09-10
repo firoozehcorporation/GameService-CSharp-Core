@@ -208,6 +208,8 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
+                if (!IsAvailable) return Task.CompletedTask;
+
                 var buffer = PacketSerializer.Serialize(packet, Key, Type == GSLiveType.Command);
                 _client?.SendAsync(buffer, null);
             }

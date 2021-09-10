@@ -384,7 +384,7 @@ namespace FiroozehGameService.Handlers.Command
 
         private static async Task SendAsync(Packet packet)
         {
-            if (IsAvailable()) await _connGateway.SendAsync(packet);
+            await _connGateway.SendAsync(packet);
         }
 
         private void AddToSendQueue(Packet packet)

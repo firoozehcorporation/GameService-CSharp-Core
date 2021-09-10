@@ -282,7 +282,7 @@ namespace FiroozehGameService.Handlers.TurnBased
 
         private static async Task SendAsync(Packet packet)
         {
-            if (IsAvailable()) await _connGateway.SendAsync(packet);
+            await _connGateway.SendAsync(packet);
         }
 
 

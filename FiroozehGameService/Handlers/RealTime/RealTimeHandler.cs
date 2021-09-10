@@ -263,7 +263,7 @@ namespace FiroozehGameService.Handlers.RealTime
                                                " Requests Per Second")
                     .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");
 
-            if (IsAvailable()) _connGateway.Send(packet, type, canSendBigSize, isCritical, isEvent);
+            if (IsAvailable(isCritical)) _connGateway.Send(packet, type, canSendBigSize, isCritical, isEvent);
             else if (!isCritical)
                 throw new GameServiceException("GameService Not Available")
                     .LogException<RealTimeHandler>(DebugLocation.RealTime, "Send");
@@ -315,8 +315,9 @@ namespace FiroozehGameService.Handlers.RealTime
             }
         }
 
-        internal static bool IsAvailable()
+        internal static bool IsAvailable(bool isCritical = false)
         {
+            if (isCritical) return _connGateway != null && _connGateway.IsConnected();
             return PlayerHash != -1 && _connGateway != null && _connGateway.IsConnected();
         }
 

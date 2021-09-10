@@ -266,6 +266,8 @@ namespace FiroozehGameService.Core.Socket
         {
             try
             {
+                if (!IsAvailable) return;
+
                 var buffer = PacketSerializer.Serialize(packet, Key, Type == GSLiveType.Command);
                 if (_clientStream != null)
                 {
