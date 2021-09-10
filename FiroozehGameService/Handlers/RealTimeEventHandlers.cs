@@ -83,6 +83,12 @@ namespace FiroozehGameService.Handlers
 
 
         /// <summary>
+        ///     Calls When Some Player Connection state Changed in Current Room
+        /// </summary>
+        public static EventHandler<MemberConnectionState> MemberConnectionStateChanged;
+
+
+        /// <summary>
         ///     Returns Room Info When Call The Following Function :
         ///     <see cref="GsLiveRealTimeProvider.GetCurrentRoomInfo" />
         /// </summary>

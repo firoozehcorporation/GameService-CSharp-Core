@@ -33,8 +33,6 @@ namespace FiroozehGameService.Core.Socket
     {
         internal abstract void Init(bool isReconnecting);
 
-        internal abstract void CreateInstance();
-
         internal abstract void StopReceiving(bool isGraceful, bool isReconnecting);
 
         internal abstract void Send(Packet packet, GProtocolSendType type, bool canSendBigSize = false,

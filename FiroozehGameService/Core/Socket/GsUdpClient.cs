@@ -60,7 +60,7 @@ namespace FiroozehGameService.Core.Socket
             }
         }
 
-        internal sealed override void CreateInstance()
+        private void CreateInstance()
         {
             Client = new GClient();
 

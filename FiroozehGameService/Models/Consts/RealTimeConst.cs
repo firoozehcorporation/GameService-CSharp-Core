@@ -34,6 +34,7 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionSnapShot = 12;
         internal const int ActionObserver = 13;
         internal const int ActionRoomInfo = 14;
+        internal const int ActionMemberConnectionStateChanged = 15;
 
         internal const int Error = 100;
 

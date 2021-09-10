@@ -198,6 +198,7 @@
         <Compile Include="Handlers\CommandEventHandlers.cs" />
         <Compile Include="Handlers\RealTime\ResponseHandlers\JoinRoomResponseHandler.cs" />
         <Compile Include="Handlers\RealTime\ResponseHandlers\LeaveRoomResponseHandler.cs" />
+        <Compile Include="Handlers\RealTime\ResponseHandlers\MemberConnectionStateResponseHandler.cs"/>
         <Compile Include="Handlers\RealTime\ResponseHandlers\MemberDetailsResponseHandler.cs" />
         <Compile Include="Handlers\RealTime\ResponseHandlers\NewEventResponseHandler.cs" />
         <Compile Include="Handlers\RealTime\ResponseHandlers\ObserverResponseHandler.cs" />
@@ -331,6 +332,7 @@
         <Compile Include="Models\Enums\GSLive\GSLiveType.cs" />
         <Compile Include="Models\Enums\GSLive\JoinType.cs" />
         <Compile Include="Models\Enums\GSLive\ReconnectStatus.cs" />
+        <Compile Include="Models\Enums\GSLive\RT\ConnectionState.cs"/>
         <Compile Include="Models\Enums\GSLive\TB\PropertyAction.cs" />
         <Compile Include="Models\Enums\GSLive\TB\PropertyType.cs" />
         <Compile Include="Models\Enums\GsWebRequestMethod.cs" />
@@ -347,6 +349,7 @@
         <Compile Include="Models\GSLive\Command\VoicePayload.cs" />
         <Compile Include="Models\GSLive\Providers\GsLiveVoiceProvider.cs" />
         <Compile Include="Models\GSLive\RoomsInfo.cs" />
+        <Compile Include="Models\GSLive\RT\MemberConnectionState.cs"/>
         <Compile Include="Models\GSLive\ScheduleBuilder.cs" />
         <Compile Include="Models\GSLive\APacket.cs" />
         <Compile Include="Models\GSLive\Chat\Chat.cs" />
@@ -459,9 +462,6 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Models\Enums\GSLive\RT" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

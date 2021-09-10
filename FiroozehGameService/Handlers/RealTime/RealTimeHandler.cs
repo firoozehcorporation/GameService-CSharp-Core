@@ -162,6 +162,8 @@ namespace FiroozehGameService.Handlers.RealTime
             _responseHandlers.Add(SnapShotResponseHandler.ActionCommand, new SnapShotResponseHandler());
             _responseHandlers.Add(RoomInfoResponseHandler.ActionCommand, new RoomInfoResponseHandler());
             _responseHandlers.Add(ObserverResponseHandler.ActionCommand, new ObserverResponseHandler());
+            _responseHandlers.Add(MemberConnectionStateResponseHandler.ActionCommand,
+                new MemberConnectionStateResponseHandler());
         }
 
 
