@@ -43,7 +43,7 @@ namespace FiroozehGameService.Core.Socket
             Area = endpoint;
         }
 
-        internal override void Init()
+        internal override void Init(bool isReconnecting)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace FiroozehGameService.Core.Socket
                 DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "Init",
                     "Connecting to GProtocol Edge...");
 
-                Client?.Connect(Area.Ip, (ushort) Area.Port);
+                Client?.Connect(Area.Ip, (ushort) Area.Port, isReconnecting);
             }
             catch (Exception e)
             {
@@ -186,9 +186,7 @@ namespace FiroozehGameService.Core.Socket
                 {
                     var rtt = GetRtt();
 
-                    Client?.GracefullyDisconnect(isReconnecting
-                        ? RealTimeConst.ReconnectingDisconnectData
-                        : RealTimeConst.NormalDisconnectData);
+                    Client?.GracefullyDisconnect(isReconnecting);
 
                     DebugUtil.LogNormal<GsUdpClient>(DebugLocation.RealTime, "StopReceiving",
                         "GsUdpClient -> Wait " + 2 * rtt + " ms to Gracefully StopReceiving");
@@ -197,9 +195,7 @@ namespace FiroozehGameService.Core.Socket
                 }
                 else
                 {
-                    Client?.ImmediateDisconnect(isReconnecting
-                        ? RealTimeConst.ReconnectingDisconnectData
-                        : RealTimeConst.NormalDisconnectData);
+                    Client?.ImmediateDisconnect(isReconnecting);
                 }
 
                 Client?.Dispose();

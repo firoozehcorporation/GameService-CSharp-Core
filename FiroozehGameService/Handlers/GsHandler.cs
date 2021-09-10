@@ -19,7 +19,6 @@
 */
 
 using System;
-using System.Threading.Tasks;
 using FiroozehGameService.Handlers.Command;
 using FiroozehGameService.Handlers.RealTime;
 using FiroozehGameService.Handlers.TurnBased;
@@ -71,7 +70,7 @@ namespace FiroozehGameService.Handlers
                     break;
                 case GSLiveType.RealTime:
                     RealTimeHandler = new RealTimeHandler(startPayload);
-                    RealTimeHandler.Init();
+                    RealTimeHandler.Init(false);
                     break;
 
                 case GSLiveType.Command:

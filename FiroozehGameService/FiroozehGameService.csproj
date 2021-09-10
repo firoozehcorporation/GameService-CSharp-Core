@@ -35,15 +35,15 @@
       <DocumentationFile>bin\Release\FiroozehGameService.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="GProtocol, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Reference Include="GProtocol, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
       </Reference>
-      <Reference Include="mscorlib" />
+      <Reference Include="mscorlib"/>
       <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\Newtonsoft.Json.12.0.3\Newtonsoft.Json.dll</HintPath>
       </Reference>
-      <Reference Include="System" />
-      <Reference Include="System.Net.Http" />
+      <Reference Include="System"/>
+      <Reference Include="System.Net.Http"/>
       <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e">
           <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
           <Private>True</Private>

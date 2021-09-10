@@ -172,9 +172,9 @@ namespace FiroozehGameService.Handlers.RealTime
         }
 
 
-        internal void Init()
+        internal static void Init(bool isReconnecting)
         {
-            _connGateway.Init();
+            _connGateway.Init(isReconnecting);
         }
 
         public void Dispose(bool isGraceful)
@@ -287,7 +287,7 @@ namespace FiroozehGameService.Handlers.RealTime
                 }
 
             if (_isDisposed) return;
-            Init();
+            Init(true);
         }
 
 

@@ -31,7 +31,7 @@ namespace FiroozehGameService.Core.Socket
 {
     internal abstract class GProtocolClient
     {
-        internal abstract void Init();
+        internal abstract void Init(bool isReconnecting);
 
         internal abstract void CreateInstance();
 
