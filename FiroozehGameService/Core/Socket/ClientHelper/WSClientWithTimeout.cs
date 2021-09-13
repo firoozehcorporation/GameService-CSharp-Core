@@ -116,7 +116,7 @@ namespace FiroozehGameService.Core.Socket.ClientHelper
                     "Connecting To WS Edge...");
 
                 _connection?.Connect();
-                _connected = true;
+                if(_connection?.IsAlive == true) _connected = true;
             }
             catch (Exception ex)
             {
