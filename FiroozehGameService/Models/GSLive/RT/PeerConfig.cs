@@ -31,9 +31,9 @@ namespace FiroozehGameService.Models.GSLive.RT
     [Serializable]
     internal class PeerConfig
     {
-        [JsonProperty("4")] internal uint PingInterval;
-        [JsonProperty("1")] internal uint TimeoutLimit;
-        [JsonProperty("3")] internal uint TimeoutMaximum;
-        [JsonProperty("2")] internal uint TimeoutMinimum;
+        [JsonProperty("3")] internal uint PingInterval;
+        [JsonProperty("0")] internal uint TimeoutLimit;
+        [JsonProperty("2")] internal uint TimeoutMaximum;
+        [JsonProperty("1")] internal uint TimeoutMinimum;
     }
 }

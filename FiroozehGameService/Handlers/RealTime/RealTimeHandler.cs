@@ -128,8 +128,14 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private void OnAuth(object sender, long playerHash)
         {
+            GsLiveRealTime.InAutoMatch = false;
+
             if (PlayerHash != -1)
             {
+                PlayerHash = playerHash;
+                DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnAuth",
+                    "RealTimeHandler Reconnect Done");
+
                 try
                 {
                     if (GameService.HandlerType == EventHandlerType.NativeContext)
@@ -148,9 +154,10 @@ namespace FiroozehGameService.Handlers.RealTime
             }
 
             PlayerHash = playerHash;
-            GsLiveRealTime.InAutoMatch = false;
 
             ObserverCompacterUtil.Init();
+            _keepAliveSender?.Start();
+
             GsSerializer.CurrentPlayerJoinRoom?.Invoke(this, null);
 
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnAuth", "RealTimeHandler OnAuth Done");

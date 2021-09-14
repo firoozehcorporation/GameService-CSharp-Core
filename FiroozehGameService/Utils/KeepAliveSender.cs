@@ -38,7 +38,17 @@ namespace FiroozehGameService.Utils
                 Enabled = false
             };
             _timer.Elapsed += (sender, args) => { Caller?.Invoke(null, null); };
-            _timer.Start();
+        }
+
+
+        public void Start()
+        {
+            _timer?.Start();
+        }
+
+        public void Stop()
+        {
+            _timer?.Stop();
         }
 
         public void Dispose()
