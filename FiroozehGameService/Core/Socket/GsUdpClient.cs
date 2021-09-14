@@ -28,6 +28,7 @@ using FiroozehGameService.Models.Consts;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Utils;
 using GProtocol.Models;
 using GProtocol.Utils;
@@ -176,6 +177,12 @@ namespace FiroozehGameService.Core.Socket
         internal override bool IsConnected()
         {
             return Client?.GetStatus() == PeerState.Connected;
+        }
+
+        internal override void ConfigPeer(PeerConfig peerConfig)
+        {
+            Client?.ConfigPeer(peerConfig.TimeoutLimit, peerConfig.TimeoutMinimum, peerConfig.TimeoutMaximum,
+                peerConfig.PingInterval);
         }
 
         internal override void StopReceiving(bool isGraceful, bool isReconnecting)

@@ -32,6 +32,7 @@ using FiroozehGameService.Models.Enums.GSLive;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.GSLive.RT;
 using FiroozehGameService.Models.Internal;
 using FiroozehGameService.Utils;
 using FiroozehGameService.Utils.Serializer;
@@ -52,6 +53,8 @@ namespace FiroozehGameService.Handlers.RealTime
 
             _observer = new GsLiveSystemObserver(GSLiveType.RealTime);
             _dataObserver = new RealtimeDataObserver();
+            _keepAliveSender = new KeepAliveSender();
+
             _isDisposed = false;
             PlayerHash = -1;
 
@@ -60,13 +63,29 @@ namespace FiroozehGameService.Handlers.RealTime
             RealTimeEventHandlers.MemberId += OnMemberId;
             RealTimeEventHandlers.GProtocolConnected += OnConnected;
             RealTimeEventHandlers.LeftDispose += OnLeftDispose;
+            RealTimeEventHandlers.PeerConfig += OnPeerConfig;
             ObserverCompacterUtil.SendObserverEventHandler += SendObserverEventHandler;
             RealtimeDataObserver.Caller += DataGetter;
+            KeepAliveSender.Caller += SendKeepAlive;
+
 
             InitRequestMessageHandlers();
             InitResponseMessageHandlers();
 
             DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "Constructor", "RealTimeHandler init");
+        }
+
+        private void SendKeepAlive(object sender, EventArgs e)
+        {
+            Request(KeepAliveHandler.Signature, GProtocolSendType.Reliable, isCritical: true);
+        }
+
+        private static void OnPeerConfig(object sender, PeerConfig peer)
+        {
+            _connGateway?.ConfigPeer(peer);
+
+            DebugUtil.LogNormal<RealTimeHandler>(DebugLocation.RealTime, "OnPeerConfig",
+                "Realtime Connection Config Done");
         }
 
         private static void OnLeftDispose(object sender, EventArgs e)
@@ -147,6 +166,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _requestHandlers.Add(NewEventHandler.Signature, new NewEventHandler());
             _requestHandlers.Add(RoomInfoHandler.Signature, new RoomInfoHandler());
             _requestHandlers.Add(ObserverHandler.Signature, new ObserverHandler());
+            _requestHandlers.Add(KeepAliveHandler.Signature, new KeepAliveHandler());
         }
 
         private void InitResponseMessageHandlers()
@@ -164,6 +184,7 @@ namespace FiroozehGameService.Handlers.RealTime
             _responseHandlers.Add(ObserverResponseHandler.ActionCommand, new ObserverResponseHandler());
             _responseHandlers.Add(MemberConnectionStateResponseHandler.ActionCommand,
                 new MemberConnectionStateResponseHandler());
+            _responseHandlers.Add(PeerConfigResponseHandler.ActionCommand, new PeerConfigResponseHandler());
         }
 
 
@@ -195,6 +216,8 @@ namespace FiroozehGameService.Handlers.RealTime
 
                 _observer?.Dispose();
                 _dataObserver?.Dispose();
+                _keepAliveSender?.Dispose();
+
                 ObserverCompacterUtil.Dispose();
 
                 _connGateway?.StopReceiving(isGraceful, false);
@@ -217,6 +240,7 @@ namespace FiroozehGameService.Handlers.RealTime
                 RealTimeEventHandlers.MemberId = null;
                 RealTimeEventHandlers.GProtocolConnected = null;
                 RealTimeEventHandlers.LeftDispose = null;
+                RealTimeEventHandlers.PeerConfig = null;
 
                 try
                 {
@@ -329,6 +353,8 @@ namespace FiroozehGameService.Handlers.RealTime
 
         private readonly GsLiveSystemObserver _observer;
         private readonly RealtimeDataObserver _dataObserver;
+        private readonly KeepAliveSender _keepAliveSender;
+
         private bool _isDisposed;
 
 

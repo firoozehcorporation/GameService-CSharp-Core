@@ -38,6 +38,7 @@ namespace FiroozehGameService.Handlers
         internal static EventHandler<long> Authorized;
         internal static EventHandler GProtocolConnected;
         internal static EventHandler<string> MemberId;
+        internal static EventHandler<PeerConfig> PeerConfig;
 
         internal static EventHandler LeftDispose;
 

@@ -50,23 +50,25 @@ namespace FiroozehGameService.Utils
 
         private static bool IsInternalRtAction(int action)
         {
-            return GameService.HandlerType == EventHandlerType.NativeContext 
-                && action != RealTimeConst.ActionEvent 
-                && action != RealTimeConst.ActionObserver 
-                && action != RealTimeConst.ActionSnapShot;
+            return GameService.HandlerType == EventHandlerType.NativeContext
+                   && action != RealTimeConst.ActionEvent
+                   && action != RealTimeConst.ActionObserver
+                   && action != RealTimeConst.ActionSnapShot
+                   || action == RealTimeConst.ActionConfigPeer
+                   || action == RealTimeConst.ActionKeepAlive;
         }
 
         private static bool IsInternalTbAction(int action)
-        {         
-            return GameService.HandlerType == EventHandlerType.NativeContext 
-                   || action == TurnBasedConst.ActionPing 
+        {
+            return GameService.HandlerType == EventHandlerType.NativeContext
+                   || action == TurnBasedConst.ActionPing
                    || action == TurnBasedConst.ActionMirror;
         }
 
         private static bool IsInternalCAction(int action)
         {
-            return GameService.HandlerType == EventHandlerType.NativeContext 
-                   || action == CommandConst.ActionPing 
+            return GameService.HandlerType == EventHandlerType.NativeContext
+                   || action == CommandConst.ActionPing
                    || action == CommandConst.ActionMirror;
         }
     }

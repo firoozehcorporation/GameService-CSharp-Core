@@ -24,6 +24,7 @@ using FiroozehGameService.Core.Socket.PacketHelper;
 using FiroozehGameService.Models.Enums;
 using FiroozehGameService.Models.EventArgs;
 using FiroozehGameService.Models.GSLive.Command;
+using FiroozehGameService.Models.GSLive.RT;
 using GClient = GProtocol.GProtocolClient;
 using Packet = FiroozehGameService.Models.GSLive.RT.Packet;
 
@@ -43,6 +44,8 @@ namespace FiroozehGameService.Core.Socket
         internal abstract long GetPacketLost();
 
         internal abstract bool IsConnected();
+
+        internal abstract void ConfigPeer(PeerConfig peerConfig);
 
 
         protected void OnDataReceived(SocketDataReceived arg)

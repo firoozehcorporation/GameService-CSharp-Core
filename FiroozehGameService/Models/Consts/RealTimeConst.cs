@@ -36,6 +36,8 @@ namespace FiroozehGameService.Models.Consts
         internal const int ActionRoomInfo = 14;
         internal const int ActionMemberConnectionStateChanged = 15;
 
+        internal const int ActionConfigPeer = 98;
+        internal const int ActionKeepAlive = 99;
         internal const int Error = 100;
 
 
@@ -48,6 +50,7 @@ namespace FiroozehGameService.Models.Consts
 
         internal const int RealTimeSendLimit = 15;
         internal const int DataGetter = 250; //  Data like rtt and packet lost
+        internal const int KeepAliveInterval = 1000;
 
         internal const int MinPlayer = 2;
         internal const int MaxPlayer = 50;
