@@ -29,6 +29,7 @@ namespace FiroozehGameService.Models.GSLive.RT
     internal class AuthPayload : Payload
     {
         [JsonProperty("3")] public string Hash;
+        [JsonProperty("4")] public bool HaveKeepAlive;
         [JsonProperty("1")] public string RoomId;
         [JsonProperty("2")] public string Token;
 
@@ -37,6 +38,7 @@ namespace FiroozehGameService.Models.GSLive.RT
             RoomId = roomId;
             Token = token;
             Hash = hash;
+            HaveKeepAlive = true;
         }
 
 
