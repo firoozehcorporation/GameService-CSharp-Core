@@ -35,7 +35,7 @@
       <DocumentationFile>bin\Release\FiroozehGameService.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-      <Reference Include="GProtocol, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null">
+      <Reference Include="GProtocol, Version=3.2.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\GProtocol\GProtocol.dll</HintPath>
       </Reference>
       <Reference Include="mscorlib"/>
@@ -331,16 +331,16 @@
         <Compile Include="Models\Enums\GSLive\MessageType.cs" />
         <Compile Include="Models\Enums\GSLive\PushEventSendType.cs" />
         <Compile Include="Models\Enums\GSLive\PushEventBufferType.cs" />
-        <Compile Include="Models\Enums\GSLive\GSLiveType.cs" />
-        <Compile Include="Models\Enums\GSLive\JoinType.cs" />
-        <Compile Include="Models\Enums\GSLive\ReconnectStatus.cs" />
+        <Compile Include="Models\Enums\GSLive\GSLiveType.cs"/>
+        <Compile Include="Models\Enums\GSLive\JoinType.cs"/>
+        <Compile Include="Models\Enums\GSLive\ReconnectStatus.cs"/>
         <Compile Include="Models\Enums\GSLive\RT\ConnectionState.cs"/>
-        <Compile Include="Models\Enums\GSLive\TB\PropertyAction.cs" />
-        <Compile Include="Models\Enums\GSLive\TB\PropertyType.cs" />
-        <Compile Include="Models\Enums\GsWebRequestMethod.cs" />
-        <Compile Include="Models\Enums\LeaderboardOrderTypes.cs" />
-        <Compile Include="Models\Enums\LogType.cs" />
-        <Compile Include="Models\EventArgs\Debug.cs" />
+        <Compile Include="Models\Enums\GSLive\TB\PropertyAction.cs"/>
+        <Compile Include="Models\Enums\GSLive\TB\PropertyType.cs"/>
+        <Compile Include="Models\Enums\GsWebRequestMethod.cs"/>
+        <Compile Include="Models\Enums\LeaderboardOrderTypes.cs"/>
+        <Compile Include="Models\Enums\LogType.cs"/>
+        <Compile Include="Models\EventArgs\Debug.cs"/>
         <Compile Include="Models\EventArgs\DownloadCancelledArgs.cs"/>
         <Compile Include="Models\EventArgs\DownloadCompleteArgs.cs"/>
         <Compile Include="Models\EventArgs\DownloadErrorArgs.cs"/>
@@ -363,16 +363,16 @@
         <Compile Include="Models\GSLive\Command\AuthResPayload.cs"/>
         <Compile Include="Models\GSLive\Command\AutoMatch.cs"/>
         <Compile Include="Models\GSLive\Command\AutoMatchEvent.cs"/>
-        <Compile Include="Models\GSLive\Command\ErrorEvent.cs" />
-        <Compile Include="Models\GSLive\Command\JoinEvent.cs" />
-        <Compile Include="Models\GSLive\Command\Message.cs" />
-        <Compile Include="Models\GSLive\Command\Packet.cs" />
-        <Compile Include="Models\GSLive\Command\PushEventMessage.cs" />
-        <Compile Include="Models\GSLive\Command\RoomDetail.cs" />
-        <Compile Include="Models\GSLive\Command\StartPayload.cs" />
-        <Compile Include="Models\GSLive\Game.cs" />
-        <Compile Include="Models\GSLive\GTcpConnection.cs" />
-        <Compile Include="Models\GSLive\Invite.cs" />
+        <Compile Include="Models\GSLive\Command\ErrorEvent.cs"/>
+        <Compile Include="Models\GSLive\Command\JoinEvent.cs"/>
+        <Compile Include="Models\GSLive\Command\Message.cs"/>
+        <Compile Include="Models\GSLive\Command\Packet.cs"/>
+        <Compile Include="Models\GSLive\Command\PushEventMessage.cs"/>
+        <Compile Include="Models\GSLive\Command\RoomDetail.cs"/>
+        <Compile Include="Models\GSLive\Command\StartPayload.cs"/>
+        <Compile Include="Models\GSLive\Game.cs"/>
+        <Compile Include="Models\GSLive\GTcpConnection.cs"/>
+        <Compile Include="Models\GSLive\Invite.cs"/>
         <Compile Include="Models\GSLive\JoinData.cs" />
         <Compile Include="Models\GSLive\Member.cs" />
         <Compile Include="Models\GSLive\Payload.cs" />
