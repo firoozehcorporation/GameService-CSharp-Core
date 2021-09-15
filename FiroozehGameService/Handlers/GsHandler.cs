@@ -54,6 +54,7 @@ namespace FiroozehGameService.Handlers
                     break;
                 case GSLiveType.NotSet:
                 case GSLiveType.Command:
+                case GSLiveType.Voice:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(disposeData), disposeData, null);
@@ -84,6 +85,7 @@ namespace FiroozehGameService.Handlers
 
         internal void Init()
         {
+            if (CommandHandler == null) CommandHandler = new CommandHandler();
             CommandHandler.Init();
         }
 
@@ -96,9 +98,6 @@ namespace FiroozehGameService.Handlers
             CommandHandler = null;
             RealTimeHandler = null;
             TurnBasedHandler = null;
-
-            CoreEventHandlers.GsLiveSystemStarted = null;
-            CoreEventHandlers.Dispose = null;
 
             try
             {
