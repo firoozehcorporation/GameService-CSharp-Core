@@ -31,10 +31,16 @@ namespace FiroozehGameService.Models.GSLive.Voice
     internal class SdpVoiceChannel
     {
         /// <summary>
+        ///     Gets the Voice Channel Member
+        /// </summary>
+        /// <value> the Voice Channel Member</value>
+        [JsonProperty("1")] internal Member Member;
+
+        /// <summary>
         ///     Gets the Voice Channel Sdp
         /// </summary>
         /// <value> the Voice Channel Sdp</value>
-        [JsonProperty("1")] internal string Sdp;
+        [JsonProperty("2")] internal string Sdp;
 
         /// <summary>
         ///     Gets the Voice Channel

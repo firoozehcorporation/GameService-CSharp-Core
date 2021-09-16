@@ -34,7 +34,7 @@ namespace FiroozehGameService.Models.GSLive.Voice
         ///     Gets the Voice Channel Left Member
         /// </summary>
         /// <value>the Voice Channel Left Member</value>
-        [JsonProperty("1")] internal VoiceChannelMember LeftMember;
+        [JsonProperty("1")] internal Member LeftMember;
 
         /// <summary>
         ///     Gets the Voice Channel
