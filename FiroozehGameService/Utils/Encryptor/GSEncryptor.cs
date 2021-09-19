@@ -32,7 +32,7 @@ namespace FiroozehGameService.Utils.Encryptor
                 return packet.Action != TurnBasedConst.ActionAuth;
             }
 
-            if (isCommand) return packet.Action != CommandConst.Error;
+            if (isCommand) return packet.Action != CommandConst.Error && packet.Action != CommandConst.ActionVoiceError;
             return packet.Action != TurnBasedConst.Errors;
         }
 
