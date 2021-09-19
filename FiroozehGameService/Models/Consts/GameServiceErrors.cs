@@ -512,6 +512,71 @@ namespace FiroozehGameService.Models.Consts
                 }
             }
 
+
+            /// <summary>
+            ///     Represents All GameService Errors in Voice Requests
+            /// </summary>
+            internal static class Voice
+            {
+                /// <summary>
+                ///     Represents GameService CreateVoiceChannel Error
+                /// </summary>
+                internal class CreateChannel
+                {
+                    internal const string VoiceChannelAlreadyExist = "VOICE_CHANNEL_EXIST";
+                }
+
+                /// <summary>
+                ///     Represents GameService JoinVoiceChannel Error
+                /// </summary>
+                internal class JoinChannel
+                {
+                    internal const string VoiceChannelNotFound = "VOICE_CHANNEL_NOTFOUND";
+                    internal const string VoiceChannelPermanentlyKicked = "VOICE_CHANNEL_PERMANENTLY_KICKED";
+                }
+
+                /// <summary>
+                ///     Represents GameService LeaveVoiceChannel Error
+                /// </summary>
+                internal class LeaveChannel
+                {
+                    internal const string VoiceChannelNotFound = "VOICE_CHANNEL_NOTFOUND";
+                }
+
+                /// <summary>
+                ///     Represents GameService KickMember Error
+                /// </summary>
+                internal class KickMember
+                {
+                    internal const string VoiceChannelNotFound = "VOICE_CHANNEL_NOTFOUND";
+                }
+
+
+                /// <summary>
+                ///     Represents GameService DestroyVoiceChannel Error
+                /// </summary>
+                internal class DestroyChannel
+                {
+                    internal const string VoiceChannelNotFound = "VOICE_CHANNEL_NOTFOUND";
+                }
+
+                /// <summary>
+                ///     Represents GameService MuteMember Error
+                /// </summary>
+                internal class MuteMember
+                {
+                    internal const string VoiceChannelNotFound = "VOICE_CHANNEL_NOTFOUND";
+                }
+
+                /// <summary>
+                ///     Represents GameService MuteMember Error
+                /// </summary>
+                internal class DeafenMember
+                {
+                    internal const string VoiceChannelNotFound = "VOICE_CHANNEL_NOTFOUND";
+                }
+            }
+
             /// <summary>
             ///     Represents All GameService Errors in TurnBase Requests
             /// </summary>
