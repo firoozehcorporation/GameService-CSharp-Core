@@ -533,6 +533,7 @@ namespace FiroozehGameService.Models.Consts
                 {
                     internal const string VoiceChannelNotFound = "VOICE_CHANNEL_NOTFOUND";
                     internal const string VoiceChannelPermanentlyKicked = "VOICE_CHANNEL_PERMANENTLY_KICKED";
+                    internal const string VoiceChannelIsFull = "VOICE_CHANNEL_IS_FULL";
                 }
 
                 /// <summary>

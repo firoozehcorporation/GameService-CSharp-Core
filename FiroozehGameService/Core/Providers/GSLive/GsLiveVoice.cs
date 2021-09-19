@@ -158,7 +158,7 @@ namespace FiroozehGameService.Core.Providers.GSLive
 
             // TODO Must Joined Before , so check it here
 
-            GameService.GSLive.GetGsHandler().CommandHandler.Send(DestroyVoiceChannelHandler.Signature,
+            GameService.GSLive.GetGsHandler().CommandHandler.Send(DeafenVoiceChannelHandler.Signature,
                 new VoicePayload(channelId, isDeafen: isDeafened));
         }
 
